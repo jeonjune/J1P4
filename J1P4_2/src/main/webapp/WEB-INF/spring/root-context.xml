@@ -11,8 +11,8 @@
 	<bean id="hikariConfig"
 		  class="com.zaxxer.hikari.HikariConfig">
 		  <property name="driverClassName" value="net.sf.log4jdbc.sql.jdbcapi.DriverSpy"/>
-		  <property name="jdbcUrl" value="jdbc:log4jdbc:mysql://itwillbs.com:3306/c7d2402t1"/>
-		  <property name="username" value="c7d2402t1"/>
+		  <property name="jdbcUrl" value="jdbc:log4jdbc:mysql://itwillbs.com:3306/c7d2402t1_2"/>
+		  <property name="username" value="c7d2402t1_2"/>
 		  <property name="password" value="1234"/>
 	</bean>
 	
@@ -42,9 +42,9 @@
 	<!-- SqlSession - 디비연결(자동), sql 처리, mybatis 설정, 자원해제 -->	
 	
 	<!-- DAO 객체 인식 -->
-<!-- 	<context:component-scan base-package="com.itwillbs.persistence"></context:component-scan> -->
+	<context:component-scan base-package="com.itwillbs.persistence"></context:component-scan>
 	
  	<!-- Service 객체 인식 -->
-<!-- 	<context:component-scan base-package="com.itwillbs.service"></context:component-scan> -->
+	<context:component-scan base-package="com.itwillbs.service"></context:component-scan>
 		
 </beans>

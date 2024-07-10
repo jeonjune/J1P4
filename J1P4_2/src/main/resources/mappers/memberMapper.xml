@@ -5,6 +5,9 @@
 
   <mapper namespace="com.itwillbs.mapper.MemberMapper">
 
-
+	<insert id="test">
+		insert into test (test1)
+		values (#{test1})
+	</insert>
 
   </mapper>
