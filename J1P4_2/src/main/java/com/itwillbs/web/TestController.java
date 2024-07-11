@@ -25,6 +25,10 @@ public class TestController {
 	public void test() {
 		
 	}
+	@GetMapping(value="/testlte")
+	public void testlte() {
+		
+	}
 	
 	@PostMapping(value="/test")
 	public String testPOST(TestVO vo) {
