@@ -13,7 +13,7 @@ public class PageVO {
 	private boolean next;		// 다음버튼 활성화 여부(t/f)
 	private boolean prev;		// 이전버튼 활성화 여부(t/f)
 	
-	private int pageBlock = 10; // 페이징 블럭의 개수	1,2,3,4,...,10
+	private int pageBlock = 3; // 페이징 블럭의 개수	1,2,3,4,...,10
 	
 	// private int page;		// 페이지 번호
 	// private int pageSize;	// 페이지당 출력 개수

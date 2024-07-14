@@ -7,7 +7,7 @@ public class Criteria {
 	
 	public Criteria() {
 		this.page = 1;
-		this.pageSize = 10;
+		this.pageSize = 2;
 	}
 	
 	public int getPage() {
@@ -27,7 +27,7 @@ public class Criteria {
 	}
 	public void setPageSize(int pageSize) {
 		if(pageSize <= 0 || pageSize > 100) {
-			this.pageSize = 10;
+			this.pageSize = 2;
 			return;
 		}
 		this.pageSize = pageSize;
