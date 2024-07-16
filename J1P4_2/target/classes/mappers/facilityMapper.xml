@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+  <mapper namespace="com.itwillbs.mapper.facilityMapper">
+	
+	<!-- 시설리스트 -->
+	<select id="facList" resultType="com.itwillbs.domain.FacilityVO">
+		select facility_name, facility_no, name from facility 
+	</select>
+	
+	<!-- 시설리스트 등록 -->
+	<insert id="facInsert">
+		insert into facility (facility_no,facility_name,manager_no,name)
+		values(#{facility_no},#{facility_name},#{manager_no},#{name})
+	</insert>
+
+
+  </mapper>

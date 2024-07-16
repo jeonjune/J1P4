@@ -10,9 +10,9 @@ public class EquipmentManagementVO {
 	//장비관리 테이블
 	
 	private int equipment_no; //장비번호 pk
-	private int manager_no; //담당자번호
+	private Integer manager_no; //담당자번호
 	private String equipment_name; //장비이름
-	private int cost; //비용
+	private Integer cost; //비용
 	private String manufacturer; //제조사
 	private String equipment_status; //장비상태
 	private Date purchase_date; //구입날짜
