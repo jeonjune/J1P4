@@ -8,13 +8,13 @@
 
 
 <h1>facility </h1>
-${facList} <br>
-<div class="content-wrapper" style="min-height: 831px;">
+<%-- ${facList} <br> --%>
 	
-		<div class="box-footer">
-			<button type="submit" class="btn btn-primary">등록하기</button>
-		</div>
-	
+
+		
+		<button class="btn btn-primary" type="button"
+		data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight"
+		aria-controls="offcanvasRight">등록하기</button>
 	<div class="col-sm-12">
 		<table id="example1"
 			class="table table-bordered table-striped dataTable dtr-inline"
@@ -34,12 +34,12 @@ ${facList} <br>
 				</tr>
 			</thead>
 			<tbody>
-				<c:forEach var="facility" items="${facLsit }">
+				<c:forEach var="facility" items="${facList }">
 					<tr class="odd">
-						<td class="dtr-control" tabindex="0">${vo.facility_no }</td>
+						<td class="dtr-control" tabindex="0">${facility.facility_no }</td>
 						<td class=""><a
-							href="/member/read?mem_no=${vo.facility_no }&page=${param.page==null? 1:param.page}">${vo.facility_name }</a></td>
-						<td>${vo.name }</td>
+							href="/member/read?mem_no=${vo.facility_no }&page=${param.page==null? 1:param.page}">${facility.facility_name }</a></td>
+						<td>${facility.name }</td>
 					</tr>
 				</c:forEach>
 			</tbody>
@@ -49,5 +49,76 @@ ${facList} <br>
 
 </div>
 
-</div>
+
+<form action="" method="post" id="fm1">
+	<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight"
+		aria-labelledby="offcanvasRightLabel">
+		<div class="offcanvas-header">
+			<h5 id="offcanvasRightLabel">시설등록</h5>
+			<button type="button" class="btn-close text-reset"
+				data-bs-dismiss="offcanvas" aria-label="Close"></button>
+		</div>
+		<div class="offcanvas-body">
+	 
+
+            <section class="content">
+                <div class="container-fluid">
+                  
+<!--                         <div class="form-group"> -->
+<!--                             <label>시설번호</label> -->
+<%--                             <input type="text" name="facility_no" value="${vo.facility_no}" class="form-control" required /> --%>
+<!--                         </div> -->
+                      
+                        
+                        <div class="form-group">
+                            <label>시설이름</label>
+                            <input type="text" name="facility_name"  class="form-control" id="facility_name">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>담당자</label>
+                            <input type="text" name="name"  class="form-control" />
+                        </div>
+                       
+                        <button type="button" class="btn btn-primary" id="submitButt">등록</button>
+                    
+                </div>
+            </section>
+		</div>
+	</div>
+	
+		</form>
+
+
+
+<script>
+
+
+	$(function() {
+		$("#submitButt").click(function() {
+			$.ajax({
+				url : "/maintenance/facility",
+				type : "POST",
+				data : $("#fm1").serialize(),
+				success : function(data) {
+					alert("시설이 등록 되었습니다.");
+// 					console.log(data);
+					
+					history.go(0);
+// 					$.each(data,function(){
+						
+// 						$("#facility_name").value(data.ddd.ddd);
+						
+// 					});
+					
+				},
+				error : function() {
+					alert("오류발생");
+				}
+			});
+		});
+	});
+</script>
+
+
 <%@ include file="../include/footer.jsp"%>

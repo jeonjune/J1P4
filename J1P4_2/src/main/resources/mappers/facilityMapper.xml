@@ -6,14 +6,14 @@
   <mapper namespace="com.itwillbs.mapper.facilityMapper">
 	
 	<!-- 시설리스트 -->
-	<select id="facList" resultType="com.itwillbs.domain.FacilityVO">
-		select facility_name, facility_no, name from facility 
+	<select id="facList" resultType="FacilityVO">
+		select * from facility 
 	</select>
 	
 	<!-- 시설리스트 등록 -->
 	<insert id="facInsert">
-		insert into facility (facility_no,facility_name,manager_no,name)
-		values(#{facility_no},#{facility_name},#{manager_no},#{name})
+		insert into facility (facility_name,name)
+		values(#{facility_name},#{name})
 	</insert>
 
 

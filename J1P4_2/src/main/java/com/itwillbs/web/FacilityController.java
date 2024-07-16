@@ -11,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.itwillbs.domain.FacilityVO;
 import com.itwillbs.service.FacilityService;
@@ -41,12 +42,13 @@ public class FacilityController {
 	
 	//시설리스트 등록
 	//http://localhost:8088/maintenance/facilityModal
-	@GetMapping(value = "/facilityModal")
-	public void facInsertGET() throws Exception {
-		logger.info("시설등록하는 모달창으로 이동");
-	}
+//	@GetMapping(value = "/facility")
+//	public void facInsertGET() throws Exception {
+//		logger.info("시설등록하는 모달창으로 이동");
+//	}
 	
-	@PostMapping(value = "/facilityModal")
+	@ResponseBody
+	@PostMapping(value = "/facility")
 	public String facInsertPOST(FacilityVO vo) throws Exception {
 		logger.info("모달창에 시설 등록 - 입력된 데이터 처리");
 		
@@ -54,7 +56,8 @@ public class FacilityController {
 		//DAO에 동작 호출
 		fService.facInsert(vo);
 		
-		return"maintenance/facility";
+		
+		return "maintenance/facility";
 	}
 	
 	
