@@ -17,6 +17,7 @@
 <div id="sidebar-overlay"></div></div>
 <!-- ./wrapper -->
 
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 <!-- jQuery -->
 <script src="${pageContext.request.contextPath }/resources/plugins/jquery/jquery.min.js"></script>
 <!-- jQuery UI 1.11.4 -->
@@ -70,6 +71,8 @@ $(function () {
         .css({'display': 'block'})
         .addClass('menu-open').prev('a')
         .addClass('active');
+    
+    
 });
 </script>
 <!-- 현재 페이지의 사이드메뉴 활성화 스크립트 -->

@@ -61,6 +61,20 @@
 		</table>
 	</div>
 
+	<button class="btn btn-primary" type="button"
+		data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight"
+		aria-controls="offcanvasRight">Toggle right offcanvas</button>
+
+	<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight"
+		aria-labelledby="offcanvasRightLabel">
+		<div class="offcanvas-header">
+			<h5 id="offcanvasRightLabel">Offcanvas right</h5>
+			<button type="button" class="btn-close text-reset"
+				data-bs-dismiss="offcanvas" aria-label="Close"></button>
+		</div>
+		<div class="offcanvas-body">...</div>
+	</div>
+
 	<div class="col-sm-12 col-md-5">
 		<div class="dataTables_info" id="example1_info" role="status"
 			aria-live="polite"></div>
@@ -100,13 +114,25 @@
 
 
 <script>
-  $(function () {
-    $("#example1").DataTable({
-      "responsive": true, "lengthChange": false, "autoWidth": false,
-      "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
-    }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+	$(function() {
+		$("#example1").DataTable({
+			"responsive" : true,
+			"lengthChange" : false,
+			"autoWidth" : false,
+			"buttons" : [ "copy", "csv", "excel", "pdf", "print", "colvis" ]
+		}).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
 
-  });
+	});
+
+// 	$('.dataTables_paginate.paging_simple_numbers').click(function() {
+// 		alert('test');
+
+// 		$('body').addClass('sidebar-collapse');
+		
+		
+// 	});
+	
+	
 </script>
 
 <%@ include file="../include/footer.jsp"%>

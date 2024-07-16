@@ -6,6 +6,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>J1P4 Sports</title>
+  <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/bootstrap-5.0.2-dist/bootstrap.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js' integrity='sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==' crossorigin='anonymous'></script>
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
@@ -47,12 +49,6 @@
       <li class="nav-item">
         <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
       </li>
-<!--       <li class="nav-item d-none d-sm-inline-block"> -->
-<!--         <a href="index3.html" class="nav-link">Home</a> -->
-<!--       </li> -->
-<!--       <li class="nav-item d-none d-sm-inline-block"> -->
-<!--         <a href="#" class="nav-link">Contact</a> -->
-<!--       </li> -->
     </ul>
 
     <!-- Right navbar links -->
