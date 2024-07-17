@@ -23,10 +23,6 @@ public class MemberDAOImpl implements MemberDAO {
 	
 	private static final String NAMESPACE = "com.itwillbs.mapper.MemberMapper.";
 
-	@Override
-	public List<MemberVO> listAll() throws Exception {
-		return sqlSession.selectList(NAMESPACE+"listAll");
-	}
 
 	@Override
 	public List<MemberVO> listPage(int page) throws Exception {
@@ -52,6 +48,12 @@ public class MemberDAOImpl implements MemberDAO {
 	@Override
 	public int getTotalCount() throws Exception {
 		return sqlSession.selectOne(NAMESPACE+"totalCount");
+	}
+
+	@Override
+	public MemberVO readMem(int mem_no) throws Exception {
+		logger.debug(" (⌐■_■) DAO : readMem(int mem_no) 실행 ");
+		return sqlSession.selectOne(NAMESPACE+"readMem",mem_no);
 	}
 	
 	
