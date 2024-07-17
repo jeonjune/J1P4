@@ -11,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.itwillbs.domain.Criteria;
 import com.itwillbs.domain.MemberVO;
@@ -28,19 +29,6 @@ public class MemberController {
 	@Inject
 	private MemberService mService;
 	
-	@GetMapping(value = "/listAll")
-	public String listAllGET(Model model) throws Exception{
-		logger.debug(" listAllGET() 실행 ");
-		
-		// 서비스 -> DB의 정보를 가져오기
-		List<MemberVO> memberList = mService.listAll();
-		logger.debug(" size : "+memberList.size());
-		
-		// 연결된 뷰페이지로 정보 전달
-		model.addAttribute("memberList", memberList);
-		
-		return "/member/list";
-	}
 	
 	@GetMapping(value="/list")
 	public void listPageGET(Criteria cri,Model model) throws Exception {
@@ -62,9 +50,13 @@ public class MemberController {
 	}
 	
 	@GetMapping(value = "/read")
-	public void readGET(Criteria cri,Model model) throws Exception{
+	public void readGET(Model model,@RequestParam int mem_no) throws Exception{
 		logger.debug(" readGET() 실행 ");
 		
+		logger.debug(" @@@@@@@@@@@ int mem_no = "+mem_no);
+		
+		
+		model.addAttribute("readMem",mService.readMem(mem_no));
 		
 	}
 	@GetMapping(value = "/details")
