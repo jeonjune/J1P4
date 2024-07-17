@@ -42,8 +42,8 @@ public class MemberController {
 		return "/member/list";
 	}
 	
-	@GetMapping(value="/listPage")
-	public String listPageGET(Criteria cri,Model model) throws Exception {
+	@GetMapping(value="/list")
+	public void listPageGET(Criteria cri,Model model) throws Exception {
 		
 		// 서비스 -> DB의 정보를 가져오기 (페이징처리)
 		List<MemberVO> memberList = mService.listPage(cri);
@@ -58,8 +58,31 @@ public class MemberController {
 		model.addAttribute("memberList", memberList);
 		model.addAttribute("pageVO",pageVO);
 		
-		return "/member/list";
 		
 	}
 	
+	@GetMapping(value = "/read")
+	public void readGET(Criteria cri,Model model) throws Exception{
+		logger.debug(" readGET() 실행 ");
+		
+		
+	}
+	@GetMapping(value = "/details")
+	public void detailsGET(Criteria cri,Model model) throws Exception{
+		logger.debug(" detailsGET() 실행 ");
+		
+		
+	}
+	@GetMapping(value = "/monitoring")
+	public void monitoringGET(Criteria cri,Model model) throws Exception{
+		logger.debug(" monitoringGET() 실행 ");
+		
+		
+	}
+	@GetMapping(value = "/document")
+	public void documentGET(Criteria cri,Model model) throws Exception{
+		logger.debug(" documentGET() 실행 ");
+		
+		
+	}
 }

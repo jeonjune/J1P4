@@ -63,7 +63,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="/member/listPage" class="nav-link">
+            <a href="/member/list" class="nav-link">
               <i class="nav-icon fas fa-copy"></i>
               <p>
                 회원 관리
