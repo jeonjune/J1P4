@@ -17,7 +17,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 	private EmployeeDAO edao;
 	
 	@Inject
-	private PasswordEncoder pwEncoder;
+//	private PasswordEncoder pwEncoder;
 
 	@Override
 	public List<EmployeeVO> empList() throws Exception {

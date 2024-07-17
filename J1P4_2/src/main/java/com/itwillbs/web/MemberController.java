@@ -16,9 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.itwillbs.domain.Criteria;
 import com.itwillbs.domain.MemberVO;
 import com.itwillbs.domain.PageVO;
-import com.itwillbs.domain.TestVO;
 import com.itwillbs.service.MemberService;
-import com.itwillbs.service.TestService;
 
 @Controller
 @RequestMapping(value="/member/*")

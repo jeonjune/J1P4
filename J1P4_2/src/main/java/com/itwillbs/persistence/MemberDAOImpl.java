@@ -11,7 +11,6 @@ import org.springframework.stereotype.Repository;
 
 import com.itwillbs.domain.Criteria;
 import com.itwillbs.domain.MemberVO;
-import com.itwillbs.domain.TestVO;
 
 @Repository
 public class MemberDAOImpl implements MemberDAO {
