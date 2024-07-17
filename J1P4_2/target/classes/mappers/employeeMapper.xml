@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  <mapper namespace="com.itwillbs.mapper.employeeMapper">
+  
+  	<!-- 테이블의 컬럼명과 VO객체의 정보를 매핑 -->
+  	<resultMap type="com.itwillbs.domain.EmployeeVO"
+  	           id="employeeMap">
+  	    <id property="user_no" column="user_no" />
+  	    <result property="user_no" column="user_no"/>
+  	    <result property="user_id" column="user_id"/>
+  	    <result property="user_pw" column="user_pw"/>
+  	    <result property="job_rank" column="job_rank"/>
+  	    <result property="job" column="job"/>
+  	    <result property="name" column="name"/>
+  	    <result property="birth_date" column="birth_date"/>
+  	    <result property="gender" column="gender"/>
+  	    <result property="phone_no" column="phone_no"/>
+  	    <result property="email" column="email"/>
+  	    <result property="emp_date" column="emp_date"/>
+  	    <result property="retire_status" column="retire_status"/>
+  	    <result property="retire_date" column="retire_date"/>
+  	    <result property="zip_code" column="zip_code"/>
+  	    <result property="addr1" column="addr1"/>
+  	    <result property="addr2" column="addr2"/>
+  	    <result property="enabled" column="enabled"/>
+		
+		<collection property="authList" resultMap="authMap"></collection>
+  	</resultMap>
+  	
+  	<resultMap type="com.itwillbs.domain.AuthVO" id="authMap">
+  		<result property="user_id" column="user_id"/>
+  		<result property="auth" column="auth"/>  	
+  	</resultMap>
+  	
+  
+  	 
+  	 <!-- 직원등록 -->
+  	 <insert id="empJoin" >
+  	 	insert into employee (user_id,user_pw,job_rank,job,name,birth_date,gender,phone_no,email,emp_date,retire_status,retire_date,zip_code,addr1,addr2) 
+ 		values(#{user_id},#{user_pw},#{job_rank},#{job},#{name},#{birth_date},#{gender},#{phone_no},#{email},#{emp_date},#{retire_status},#{retire_date},#{zip_code},#{addr1},#{addr2})
+  	 </insert>
+  	 
+  	 <!-- 로그인체크 -->
+<!--   	 <select id="loginCheck" resultType="com.itwillbs.domain.MemberVO"> -->
+<!--   	 	select * from tbl_member  -->
+<!--   	 	where userid=#{userid} and userpw=#{userpw}  	  -->
+<!--   	 </select> -->
+  	 
+  	 
+  	 <!-- 회원정보 조회 -->
+<!--   	 <select id="getMember" resultType="com.itwillbs.domain.MemberVO"> -->
+<!--   	 	select * from tbl_member  -->
+<!--   	 	where userid=#{userid} -->
+<!--   	 </select> -->
+  	 
+  	 <!-- 회원정보 수정 -->
+<!--   	 <update id="updateVO"> -->
+<!--   	 	update tbl_member set username=#{username},useremail=#{useremail},updatedate=now()  -->
+<!--   	 	where userid=#{userid} and userpw=#{userpw} 	 	 -->
+<!--   	 </update> -->
+  	 
+  	 <!-- 회원정보 삭제 -->
+<!-- 	 <delete id="deleteVO"> -->
+<!-- 	    delete from tbl_member  -->
+<!-- 	    where userid=#{userid} and userpw=#{userpw}	    	  -->
+<!-- 	 </delete>  	 -->
+	 
+	 
+	 <!-- 회원정보 목록 -->
+<!-- 	 <select id="memberList" resultType="com.itwillbs.domain.MemberVO"> -->
+<!-- 	 	select * from tbl_member	  -->
+<!-- 	 </select> 	  -->
+	 
+	 
+	 <!-- 회원정보와 인증정보를 한번에 조회(Join) -->
+<!-- 	 <select id="readMemberAuth" resultMap="memberMap"> -->
+<!-- 	 	select  -->
+<!-- 			mem.userid, userpw, username, enabled, regdate, updatedate, auth  -->
+<!--  		from  -->
+<!--    			tbl_member mem join tbl_member_auth auth on mem.userid = auth.userid  -->
+<!--  		where  -->
+<!-- 			mem.userid = #{userid} -->
+<!-- 	 </select> -->
+	 
+  	 
+  
+  
+  </mapper>
