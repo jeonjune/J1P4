@@ -21,11 +21,6 @@ public class MemberServiceImpl implements MemberService {
 	private MemberDAO mDao;
 
 	@Override
-	public List<MemberVO> listAll() throws Exception {
-		return mDao.listAll();
-	}
-
-	@Override
 	public List<MemberVO> listPage(Criteria cri) throws Exception {
 		logger.debug(" listPage(Criteria cri) 실행 ");
 		return mDao.listPage(cri);
@@ -36,5 +31,12 @@ public class MemberServiceImpl implements MemberService {
 		return mDao.getTotalCount();
 	}
 
+	@Override
+	public MemberVO readMem(int mem_no) throws Exception {
+		logger.debug(" (●'◡'●) Service : readMem(int mem_no) 실행 ");
+		return mDao.readMem(mem_no);
+	}
+
+	
 	
 }
