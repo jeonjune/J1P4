@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.itwillbs.mapper.ClassMapper">
+    <resultMap id="classResultMap" type="com.itwillbs.domain.ClassVO">
+        <id property="classNo" column="class_no"/>
+        <result property="className" column="class_name"/>
+        <result property="description" column="description"/>
+        <result property="fieldCode" column="field_code"/>
+        <result property="divisionCode" column="division_code"/>
+        <result property="levelCode" column="level_code"/>
+        <result property="maxCapacity" column="max_capacity"/>
+        <result property="instructorNo" column="instructor_no"/>
+    </resultMap>
+
+    <select id="getAllClasses" resultMap="classResultMap">
+        SELECT * FROM class
+    </select>
+
+    <select id="getClassById" parameterType="int" resultMap="classResultMap">
+        SELECT * FROM class WHERE class_no = #{classNo}
+    </select>
+
+    <insert id="addClass" parameterType="com.itwillbs.domain.ClassVO">
+        INSERT INTO class (class_name, description, field_code, division_code, level_code, max_capacity, instructor_no)
+        VALUES (#{className}, #{description}, #{fieldCode}, #{divisionCode}, #{levelCode}, #{maxCapacity}, #{instructorNo})
+    </insert>
+
+    <update id="editClass" parameterType="com.itwillbs.domain.ClassVO">
+        UPDATE class
+        SET class_name = #{className},
+            description = #{description},
+            field_code = #{fieldCode},
+            division_code = #{divisionCode},
+            level_code = #{levelCode},
+            max_capacity = #{maxCapacity},
+            instructor_no = #{instructorNo}
+        WHERE class_no = #{classNo}
+    </update>
+
+    <delete id="deleteClass" parameterType="int">
+        DELETE FROM class WHERE class_no = #{classNo}
+    </delete>
+</mapper>
