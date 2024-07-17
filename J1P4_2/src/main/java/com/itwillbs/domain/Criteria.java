@@ -4,11 +4,20 @@ public class Criteria {
 
 	private int page;
 	private int pageSize;
+	private String keyword;
 	
 	public Criteria() {
 		this.page = 1;
 		this.pageSize = 2;
 	}
+	
+	public String getKeyword() {
+        return keyword;
+    }
+    
+    public void setKeyword(String keyword) {
+        this.keyword = keyword;
+    }
 	
 	public int getPage() {
 		return page;
@@ -43,4 +52,5 @@ public class Criteria {
 	public String toString() {
 		return "Criteria [page=" + page + ", pageSize=" + pageSize + "]";
 	}
+	
 }
