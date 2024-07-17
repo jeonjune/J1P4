@@ -13,7 +13,7 @@ public class FacilityVO {
 	private String facility_name; //시설이름
 	private String name; //담당자이름
 	
-	private List<FacilityVO> facilityList;
+//	private List<FacilityVO> facilityList;
 	
 	
 }
