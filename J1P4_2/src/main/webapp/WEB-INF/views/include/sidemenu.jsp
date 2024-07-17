@@ -104,15 +104,15 @@
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-book"></i>
               <p>
-                예약 관리
+                수강 관리
                 <i class="fas fa-angle-left right"></i>
               </p>
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="pages/UI/general.html" class="nav-link">
+                <a href="/classes/list" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>기렬씨</p>
+                  <p>강의등록</p>
                 </a>
               </li>
               <li class="nav-item">
