@@ -13,6 +13,7 @@ public class FacilityManagementVO {
 	private Date repair_date; //유지보수 날짜
 	private String repair_type; //유지보수 유형(청소/방역/점검)
 	private String repair_status; //유지보수상세
+	private String name; //담당자이름
 	
 	
 	
