@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper  3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.itwillbs.mapper.CommonCodeMapper">
+    <resultMap id="commonCodeResultMap" type="com.itwillbs.domain.CommonCodeVO">
+        <id property="codeId" column="code_id"/>
+        <result property="codeName" column="code_name"/>
+    </resultMap>
+
+    <resultMap id="commonCodeDetailResultMap" type="com.itwillbs.domain.CommonCodeDetailVO">
+        <id property="codeId" column="code_id"/>
+        <id property="codeValue" column="code_value"/>
+        <result property="codeValueName" column="code_value_name"/>
+    </resultMap>
+
+    <select id="getAllCommonCodes" resultMap="commonCodeResultMap">
+        SELECT * FROM commonCode
+    </select>
+
+    <select id="getCommonCodeById" parameterType="string" resultMap="commonCodeResultMap">
+        SELECT * FROM commonCode WHERE code_id = #{codeId}
+    </select>
+
+    <select id="getCommonCodeDetailsByCodeId" parameterType="string" resultMap="commonCodeDetailResultMap">
+        SELECT * FROM commonCodeDetail WHERE code_id = #{codeId}
+    </select>
+</mapper>
