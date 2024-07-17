@@ -35,12 +35,15 @@
   		<result property="auth" column="auth"/>  	
   	</resultMap>
   	
-  
+  	<!-- 직원리스트 -->
+	<select id="empList" resultType="EmployeeVO">
+		select * from employee 
+	</select>
   	 
   	 <!-- 직원등록 -->
   	 <insert id="empJoin" >
-  	 	insert into employee (user_id,user_pw,job_rank,job,name,birth_date,gender,phone_no,email,emp_date,retire_status,retire_date,zip_code,addr1,addr2) 
- 		values(#{user_id},#{user_pw},#{job_rank},#{job},#{name},#{birth_date},#{gender},#{phone_no},#{email},#{emp_date},#{retire_status},#{retire_date},#{zip_code},#{addr1},#{addr2})
+  	 	insert into employee (user_id,user_pw,job_rank,job,name,birth_date,gender,phone_no,email,zip_code,addr1,addr2) 
+ 		values(#{user_id},#{user_pw},#{job_rank},#{job},#{name},#{birth_date},#{gender},#{phone_no},#{email},#{zip_code},#{addr1},#{addr2})
   	 </insert>
   	 
   	 <!-- 로그인체크 -->

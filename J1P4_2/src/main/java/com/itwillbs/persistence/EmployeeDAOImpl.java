@@ -1,5 +1,7 @@
 package com.itwillbs.persistence;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
 import org.apache.ibatis.session.SqlSession;
@@ -20,8 +22,13 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 	private static final String NAMESPACE = "com.itwillbs.mapper.employeeMapper.";
 
 	@Override
-	public void empJoin(EmployeeVO vo) {
-		
+	public List<EmployeeVO> empList() throws Exception {
+		return sqlSession.selectList(NAMESPACE+"empList");
+	}
+
+	@Override
+	public void empJoin(EmployeeVO vo) throws Exception {
+		sqlSession.insert(NAMESPACE+"empJoin", vo);
 	}
 	
 	
