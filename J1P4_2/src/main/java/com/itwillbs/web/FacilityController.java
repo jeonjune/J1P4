@@ -3,6 +3,7 @@ package com.itwillbs.web;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.itwillbs.domain.FacilityManagementVO;
 import com.itwillbs.domain.FacilityVO;
 import com.itwillbs.service.FacilityService;
 
@@ -40,13 +42,7 @@ public class FacilityController {
 	}
 	
 	
-	//시설리스트 등록
-	//http://localhost:8088/maintenance/facilityModal
-//	@GetMapping(value = "/facility")
-//	public void facInsertGET() throws Exception {
-//		logger.info("시설등록하는 모달창으로 이동");
-//	}
-	
+	//시설리스트 등록(모달창에 입력)
 	@ResponseBody
 	@PostMapping(value = "/facility")
 	public String facInsertPOST(FacilityVO vo) throws Exception {
@@ -59,6 +55,35 @@ public class FacilityController {
 		
 		return "maintenance/facility";
 	}
+	
+	
+	//시설상세페이지 리스트
+	@GetMapping(value = "/read")
+	public void facReadListGET(HttpServletRequest request,Model model)throws Exception {
+		logger.info("facReadListGET() 실행 :");
+		int no = (Integer.parseInt(request.getParameter("facility_no")));
+		logger.info("no :"+no);
+		List<FacilityManagementVO> facDe = fService.facDe(no);
+		logger.info("facDe :"+facDe);
+		
+		model.addAttribute("facDe",facDe);
+		
+	}
+	
+	
+	//시설상세내역페이지 등록(모달창)
+	@ResponseBody
+	@PostMapping(value = "/read")
+	public String facReadListPOST(FacilityManagementVO vo, HttpServletRequest request)throws Exception {
+		logger.info("모달창에 시설상세내역 등록 - 입력된 데이터 처리");
+		
+		fService.facDeIn(vo);
+		logger.info("#########vo########## :"+vo);
+		
+		return "maintenance/read";
+		
+	}
+	
 	
 	
 	
