@@ -61,24 +61,7 @@
 		</table>
 	</div>
 
-	<button class="btn btn-primary" type="button"
-		data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight"
-		aria-controls="offcanvasRight">Toggle right offcanvas</button>
 
-	<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight"
-		aria-labelledby="offcanvasRightLabel">
-		<div class="offcanvas-header">
-			<h5 id="offcanvasRightLabel">Offcanvas right</h5>
-			<button type="button" class="btn-close text-reset"
-				data-bs-dismiss="offcanvas" aria-label="Close"></button>
-		</div>
-		<div class="offcanvas-body">...</div>
-	</div>
-
-	<div class="col-sm-12 col-md-5">
-		<div class="dataTables_info" id="example1_info" role="status"
-			aria-live="polite"></div>
-	</div>
 
 	<!-- 페이징 처리 (현재 쌓인 데이터가 얼마 없어 Criteria.pageSize는 2, PageVO.pageBlock은 3 처리해둠) -->
 	<div class="col-sm-12 col-md-7">
@@ -88,7 +71,7 @@
 				<c:if test="${pageVO.prev }">
 					<li class="paginate_button page-item previous"
 						id="example1_previous"><a
-						href="/member/listPage?page=${pageVO.startPage-1 }"
+						href="/member/list?page=${pageVO.startPage-1 }"
 						aria-controls="example1" data-dt-idx="0" tabindex="0"
 						class="page-link">«</a></li>
 				</c:if>
@@ -96,12 +79,12 @@
 					end="${pageVO.endPage }" step="1">
 					<li
 						class="paginate_button page-item ${pageVO.cri.page == i ? 'active':'' }"><a
-						href="/member/listPage?page=${i }" aria-controls="example1"
+						href="/member/list?page=${i }" aria-controls="example1"
 						data-dt-idx="1" tabindex="0" class="page-link">${i }</a></li>
 				</c:forEach>
 				<c:if test="${pageVO.next && pageVO.endPage > 0 }">
 					<li class="paginate_button page-item next" id="example1_next"><a
-						href="/member/listPage?page=${pageVO.endPage+1 }"
+						href="/member/list?page=${pageVO.endPage+1 }"
 						aria-controls="example1" data-dt-idx="7" tabindex="0"
 						class="page-link">»</a></li>
 				</c:if>
