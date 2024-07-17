@@ -9,10 +9,16 @@
 	<bean id="customAccessDenied" class="com.itwillbs.security.CustomAccessDeniedHandler"/>
 	<bean id="customLoginSuccess" class="com.itwillbs.security.CustomLoginSuccessHandler"/>
 	
+	<!-- <bean id="CustomNoPasswordEncoder" class="com.itwillbs.security.CustomNoPasswordEncoder"/> -->
+	<!-- 암호화 처리를 위한 객체 생성 -->
+	<bean id="bcryptPasswordEncoder"
+		  class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" />
+	
 	<!-- 시큐리티 관련 설정 -->
 	<security:http>
 	 	<security:intercept-url pattern="/all" access="permitAll"/>
 	 	<security:intercept-url pattern="/maintenance/*" access="permitAll"/>
+	 	<security:intercept-url pattern="/employee/*" access="permitAll"/>
 		<security:intercept-url pattern="/member" access="hasRole('ROLE_MEMBER')"/>
 		<security:intercept-url pattern="/admin" access="hasRole('ROLE_ADMIN')"/>
 		<security:intercept-url pattern="/teamA/*" access="hasRole('ROLE_ADMIN')"/>
@@ -28,13 +34,17 @@
 		<security:access-denied-handler ref="customAccessDenied"/>
 	</security:http>
 	
-	<!-- 인증 관리자(1층 경비실) -->
+	<!-- 인증 관리자 (1층 경비실) -->
 	<security:authentication-manager>
 		<security:authentication-provider>
-			<security:user-service>
-				<security:user name="itwill" password="{noop}1234" authorities="ROLE_MEMBER"/>
-				<security:user name="admin" password="{noop}1234" authorities="ROLE_ADMIN,ROLE_MEMBER"/>
-			</security:user-service>		
+		
+			<security:jdbc-user-service data-source-ref="dataSource" 
+										users-by-username-query="select user_id,user_pw,enabled from employee where user_id=?" 
+										authorities-by-username-query="select user_id,auth from employee_auth where user_id=?"/>
+			
+			<!-- <security:password-encoder ref="CustomNoPasswordEncoder"/> -->
+			<security:password-encoder ref="bcryptPasswordEncoder"/>
+			
 		</security:authentication-provider>
 	</security:authentication-manager>
 
