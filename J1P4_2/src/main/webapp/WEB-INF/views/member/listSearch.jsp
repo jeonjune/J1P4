@@ -7,6 +7,7 @@
 
 <div class="content-wrapper" style="min-height: 831px;">
 
+<%-- ${pageVO.cri.keyword } --%>
 <form action="/member/listSearch" type="get">
 	<div class="form-inline">
 		<div class="input-group">
@@ -20,7 +21,6 @@
 		</div>
 	</div>
 </form>
-	
 
 	<div class="col-sm-12">
 		<table id="example1"
@@ -85,9 +85,7 @@
 			</tfoot>
 		</table>
 	</div>
-
-
-
+	
 	<!-- 페이징 처리 (현재 쌓인 데이터가 얼마 없어 Criteria.pageSize는 2, PageVO.pageBlock은 3 처리해둠) -->
 	<div class="col-sm-12 col-md-7">
 		<div class="dataTables_paginate paging_simple_numbers"
@@ -96,7 +94,7 @@
 				<c:if test="${pageVO.prev }">
 					<li class="paginate_button page-item previous"
 						id="example1_previous"><a
-						href="/member/list?page=${pageVO.startPage-1 }"
+						href="/member/listSearch?keyword=${pageVO.cri.keyword }&page=${pageVO.startPage-1 }"
 						aria-controls="example1" data-dt-idx="0" tabindex="0"
 						class="page-link">«</a></li>
 				</c:if>
@@ -104,12 +102,12 @@
 					end="${pageVO.endPage }" step="1">
 					<li
 						class="paginate_button page-item ${pageVO.cri.page == i ? 'active':'' }"><a
-						href="/member/list?page=${i }" aria-controls="example1"
+						href="/member/listSearch?keyword=${pageVO.cri.keyword }&page=${i }" aria-controls="example1"
 						data-dt-idx="1" tabindex="0" class="page-link">${i }</a></li>
 				</c:forEach>
 				<c:if test="${pageVO.next && pageVO.endPage > 0 }">
 					<li class="paginate_button page-item next" id="example1_next"><a
-						href="/member/list?page=${pageVO.endPage+1 }"
+						href="/member/listSearch?keyword=${pageVO.cri.keyword }&page=${pageVO.endPage+1 }"
 						aria-controls="example1" data-dt-idx="7" tabindex="0"
 						class="page-link">»</a></li>
 				</c:if>
@@ -118,26 +116,4 @@
 	</div>
 
 </div>
-
-
-
-<script>
-	// 	$(function() {
-	// 		$("#example1").DataTable({
-	// 			"responsive" : true,
-	// 			"lengthChange" : false,
-	// 			"autoWidth" : false,
-	// 			"buttons" : [ "copy", "csv", "excel", "pdf", "print", "colvis" ]
-	// 		}).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
-
-	// 	});
-
-	// 	$('.dataTables_paginate.paging_simple_numbers').click(function() {
-	// 		alert('test');
-
-	// 		$('body').addClass('sidebar-collapse');
-
-	// 	});
-</script>
-
 <%@ include file="../include/footer.jsp"%>

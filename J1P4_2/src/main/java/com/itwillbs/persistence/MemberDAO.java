@@ -8,7 +8,6 @@ import com.itwillbs.domain.MemberVO;
 public interface MemberDAO {
 	
 	// 회원 리스트
-	public List<MemberVO> listPage(int page) throws Exception;
 	
 	public List<MemberVO> listPage(Criteria cri) throws Exception;
 	

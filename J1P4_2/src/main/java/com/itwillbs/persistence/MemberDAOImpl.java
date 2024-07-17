@@ -23,21 +23,6 @@ public class MemberDAOImpl implements MemberDAO {
 	
 	private static final String NAMESPACE = "com.itwillbs.mapper.MemberMapper.";
 
-
-	@Override
-	public List<MemberVO> listPage(int page) throws Exception {
-		logger.debug(" listPage(int page) 실행");
-		
-		// 페이징 처리 계산
-		// 1p(0~9) , 2p(10~19), 3p(20~29) ...
-		if(page <= 0) {
-			page = 1;
-		}
-		page = (page - 1) * 10;
-		
-		return sqlSession.selectList(NAMESPACE+"listPage",page);
-	}
-
 	@Override
 	public List<MemberVO> listPage(Criteria cri) throws Exception {
 		logger.debug(" listPage(Criteria cri) 실행 ");
