@@ -58,21 +58,26 @@
 <script src="${pageContext.request.contextPath }/resources/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
 <script>
 $(function () {
-    var url = window.location.origin+window.location.pathname;
+    var pathname = window.location.pathname;
+
+    // Check if the current path starts with /member/
+    if (pathname.startsWith('/member/')) {
+        // Add active class to the member management link
+        $('ul.nav-sidebar a[href="/member/list"]').addClass('active');
+    }
+
     // for single sidebar menu
     $('ul.nav-sidebar a').filter(function () {
-        return this.href == url;
+        return this.href == window.location.origin + pathname;
     }).addClass('active');
 
     // for sidebar menu and treeview
     $('ul.nav-treeview a').filter(function () {
-        return this.href == url;
+        return this.href == window.location.origin + pathname;
     }).parentsUntil(".nav-sidebar > .nav-treeview")
         .css({'display': 'block'})
         .addClass('menu-open').prev('a')
         .addClass('active');
-    
-    
 });
 </script>
 <!-- 현재 페이지의 사이드메뉴 활성화 스크립트 -->

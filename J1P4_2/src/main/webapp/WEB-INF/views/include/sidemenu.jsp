@@ -54,7 +54,7 @@
           </li>
          <li class="nav-header">Management</li>
           <li class="nav-item">
-            <a href="#" class="nav-link">
+            <a href="/maintenance/test" class="nav-link">
               <i class="nav-icon fas fa-user"></i>
               <p>
                 직원 관리
@@ -87,13 +87,13 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a href="pages/charts/flot.html" class="nav-link">
+                <a href="/maintenance/test" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>장비 관리</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="pages/charts/inline.html" class="nav-link">
+                <a href="/maintenance/test" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>분석</p>
                 </a>
