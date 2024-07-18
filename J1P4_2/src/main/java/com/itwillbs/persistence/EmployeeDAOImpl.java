@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
+import com.itwillbs.domain.AuthVO;
 import com.itwillbs.domain.EmployeeVO;
 
 @Repository
@@ -29,6 +30,11 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 	@Override
 	public void empJoin(EmployeeVO vo) throws Exception {
 		sqlSession.insert(NAMESPACE+"empJoin", vo);
+	}
+
+	@Override
+	public void empAuth(AuthVO avo) throws Exception {
+		sqlSession.insert(NAMESPACE+"empAuth", avo);
 	}
 	
 	
