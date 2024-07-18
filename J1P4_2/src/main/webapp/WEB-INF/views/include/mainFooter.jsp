@@ -32,6 +32,9 @@
 <script src="${pageContext.request.contextPath }/resources/plugins/chart.js/Chart.min.js"></script>
 <!-- Sparkline -->
 <script src="${pageContext.request.contextPath }/resources/plugins/sparklines/sparkline.js"></script>
+<!-- JQVMap -->
+<script src="${pageContext.request.contextPath }/resources/plugins/jqvmap/jquery.vmap.min.js"></script>
+<script src="${pageContext.request.contextPath }/resources/plugins/jqvmap/maps/jquery.vmap.usa.js"></script>
 <!-- jQuery Knob Chart -->
 <script src="${pageContext.request.contextPath }/resources/plugins/jquery-knob/jquery.knob.min.js"></script>
 <!-- daterangepicker -->
@@ -45,6 +48,8 @@
 <script src="${pageContext.request.contextPath }/resources/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
 <!-- AdminLTE App -->
 <script src="${pageContext.request.contextPath }/resources/dist/js/adminlte.js"></script>
+<!-- AdminLTE dashboard demo (This is only for demo purposes) -->
+<script src="${pageContext.request.contextPath }/resources/dist/js/pages/dashboard.js"></script>
 <script>
 $(function () {
     var pathname = window.location.pathname;
@@ -73,47 +78,5 @@ $(function () {
 <!-- 현재 페이지의 사이드메뉴 활성화 스크립트 -->
 <!-- 코드 참고 : https://stackoverflow.com/questions/61025311/adminlte-sidebar-active-menu-doesnt-change-dynamically -->
 
-<!-- 웹소켓 JS -->
-<script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
-
-<script type="text/javascript">
-var socket = null;
-$(document).ready(function(){
-	if(${user_id != null}){
-		connectWs();
-	}
-})
-
-//소켓
-
-function connectWs(){
-	console.log("tttttt")
-	var ws = new SockJS("/alram");
-	socket = ws;
-
-	ws.onopen = function() {
- 		console.log('open');
- 	 };
-
-	ws.onmessage = function(event) {
-		console.log("onmessage"+event.data);
-		let $socketAlert = $('div#socketAlert');
-		$socketAlert.html(event.data)
-		$socketAlert.css('display', 'block');
-		
-		setTimeout(function(){
-			$socketAlert.css('display','none');
-			
-		}, 5000);
-	};
-
-	ws.onclose = function() {
-	    console.log('close');
- 	};
-};
-
-//소켓끝
-</script>
-
-</body>
+<div class="daterangepicker ltr show-ranges opensright"><div class="ranges"><ul><li data-range-key="Today">Today</li><li data-range-key="Yesterday">Yesterday</li><li data-range-key="Last 7 Days">Last 7 Days</li><li data-range-key="Last 30 Days">Last 30 Days</li><li data-range-key="This Month">This Month</li><li data-range-key="Last Month">Last Month</li><li data-range-key="Custom Range">Custom Range</li></ul></div><div class="drp-calendar left"><div class="calendar-table"></div><div class="calendar-time" style="display: none;"></div></div><div class="drp-calendar right"><div class="calendar-table"></div><div class="calendar-time" style="display: none;"></div></div><div class="drp-buttons"><span class="drp-selected"></span><button class="cancelBtn btn btn-sm btn-default" type="button">Cancel</button><button class="applyBtn btn btn-sm btn-primary" disabled="disabled" type="button">Apply</button> </div></div><div class="jqvmap-label" style="display: none;"></div></body>
 </html>

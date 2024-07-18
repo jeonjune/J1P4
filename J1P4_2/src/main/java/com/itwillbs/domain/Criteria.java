@@ -8,7 +8,7 @@ public class Criteria {
 	
 	public Criteria() {
 		this.page = 1;
-		this.pageSize = 2;
+		this.pageSize = 10;
 	}
 	
 	public String getKeyword() {

@@ -7,82 +7,108 @@
 
 <div class="content-wrapper" style="min-height: 831px;">
 
-<form action="/member/listSearch" type="get">
-	<div class="form-inline">
-		<div class="input-group">
-			<input class="form-control" type="search" name="keyword"
-				placeholder="Search" aria-label="Search">
-			<div class="input-group-append">
-				<button class="btn" type="submit">
-					<i class="fas fa-search fa-fw"></i>
-				</button>
+	<form action="/member/listSearch" type="get">
+		<div class="form-inline">
+			<div class="input-group">
+				<input class="form-control" type="search" name="keyword"
+					placeholder="Search" aria-label="Search">
+				<div class="input-group-append">
+					<button class="btn" type="submit">
+						<i class="fas fa-search fa-fw"></i>
+					</button>
+				</div>
+			</div>
+		</div>
+	</form>
+
+	<!-- Button trigger modal -->
+	<button type="button" class="btn btn-primary" data-bs-toggle="modal"
+		data-bs-target="#exampleModal">
+		<i class="fas fa-filter fa-fw"></i>
+	</button>
+
+	<!-- Modal -->
+	<div class="modal fade" id="exampleModal" tabindex="-1"
+		aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal"
+						aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+
+					<h5>회원등급</h5>
+					<div class="content">
+						<input type="radio" value="신규회원" class="btn-check"
+							name="work_field" id="radioWf1"> <label
+							class="btn btn-outline-dark radioField" for="radioWf1">신규회원</label>
+						<input type="radio" value="일반회원" class="btn-check"
+							name="work_field" id="radioWf2"> <label
+							class="btn btn-outline-dark radioField" for="radioWf2">일반회원</label>
+						<input type="radio" value="장기회원" class="btn-check"
+							name="work_field" id="radioWf3"> <label
+							class="btn btn-outline-dark radioField" for="radioWf3">장기회원</label>
+					</div>
+					<hr>
+					<h5>연도별</h5>
+					<input type="month">년
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary"
+						data-bs-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-primary">Save changes</button>
+				</div>
 			</div>
 		</div>
 	</div>
-</form>
-	
+
+	<select>
+		<option>등록순</option>
+		<option>이름순</option>
+		<option></option>
+	</select>
 
 	<div class="col-sm-12">
-		<table id="example1"
-			class="table table-bordered table-striped dataTable dtr-inline"
+		<table id="example1" class="table table-bordered table-striped"
 			aria-describedby="example1_info">
 			<thead>
 				<tr>
-					<th class="sorting" tabindex="0" aria-controls="example1"
-						rowspan="1" colspan="1"
-						aria-label="Rendering engine: activate to sort column ascending">회원번호</th>
-					<th class="sorting" tabindex="0" aria-controls="example1"
-						rowspan="1" colspan="1"
-						aria-label="Rendering engine: activate to sort column ascending">회원이름</th>
-					<th class="sorting" tabindex="0" aria-controls="example1"
-						rowspan="1" colspan="1"
-						aria-label="Browser: activate to sort column ascending">회원등급</th>
-					<th class="sorting" tabindex="0" aria-controls="example1"
-						rowspan="1" colspan="1"
-						aria-label="Platform(s): activate to sort column ascending">등록일</th>
-					<th class="sorting" tabindex="0" aria-controls="example1"
-						rowspan="1" colspan="1"
-						aria-label="Engine version: activate to sort column ascending">강의
-						누적 기간</th>
-					<th class="sorting sorting_asc" tabindex="0"
-						aria-controls="example1" rowspan="1" colspan="1"
-						aria-label="CSS grade: activate to sort column descending"
-						aria-sort="ascending">현재 수강상태</th>
+					<th class="sorting" width="20px"><input type="checkbox"
+						class="chkGrp" id="chkAll"></th>
+					<th class="sorting">NO<i
+						class="fas fa-sort fa-fw left-align-icon" onclick="sortMem()"></i></th>
+					<th class="sorting">회원이름<i
+						class="fas fa-sort fa-fw left-align-icon" onclick="sortMem()"></i></th>
+					<th class="sorting">회원등급</th>
+					<th class="sorting">등록일<i
+						class="fas fa-sort fa-fw left-align-icon" onclick="sortMem()"></i></th>
+					<th class="sorting">강의 누적 기간</th>
+					<th class="sorting sorting_asc">현재 수강상태</th>
 				</tr>
 			</thead>
 			<tbody>
 				<c:forEach var="vo" items="${memberList }">
 					<tr class="odd">
+						<td class="dtr-control" tabindex="0"><input type="checkbox"
+							class="chkGrp"></td>
 						<td class="dtr-control" tabindex="0">${vo.mem_no }</td>
 						<td class=""><a
 							href="/member/read?mem_no=${vo.mem_no }&page=${param.page==null? 1:param.page}">${vo.mem_name }</a></td>
-						<td>
-						<c:if test="${vo.mem_rank == 0}">
+						<td><c:if test="${vo.mem_rank == 0}">
 						신규회원
-						</c:if>
-						<c:if test="${vo.mem_rank == 1}">
+						</c:if> <c:if test="${vo.mem_rank == 1}">
 						일반회원
-						</c:if>
-						<c:if test="${vo.mem_rank == 2}">
+						</c:if> <c:if test="${vo.mem_rank == 2}">
 						장기회원
-						</c:if>
-						</td>
+						</c:if></td>
 						<td>${vo.reg_date }</td>
 						<td class="sorting_1">${vo.class_time }</td>
 						<td>${vo.class_status }</td>
 					</tr>
 				</c:forEach>
 			</tbody>
-			<tfoot>
-				<tr>
-					<th rowspan="1" colspan="1">회원번호</th>
-					<th rowspan="1" colspan="1">회원이름</th>
-					<th rowspan="1" colspan="1">회원등급</th>
-					<th rowspan="1" colspan="1">등록일</th>
-					<th rowspan="1" colspan="1">강의 누적 시간</th>
-					<th rowspan="1" colspan="1">현재 수강상태</th>
-				</tr>
-			</tfoot>
 		</table>
 	</div>
 
@@ -117,27 +143,54 @@
 		</div>
 	</div>
 
+	<button class="btn btn-primary" type="button" onclick="deleteMem()">삭제하기</button>
+
 </div>
 
 
 
 <script>
-	// 	$(function() {
-	// 		$("#example1").DataTable({
-	// 			"responsive" : true,
-	// 			"lengthChange" : false,
-	// 			"autoWidth" : false,
-	// 			"buttons" : [ "copy", "csv", "excel", "pdf", "print", "colvis" ]
-	// 		}).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
-
-	// 	});
-
 	// 	$('.dataTables_paginate.paging_simple_numbers').click(function() {
 	// 		alert('test');
 
 	// 		$('body').addClass('sidebar-collapse');
 
 	// 	});
+
+	//스크립트 영역
+
+	$(function() {
+		$("#chkAll").click(function() {
+			$(".chkGrp").attr("checked", this.checked);
+		});
+
+	});
+	
+	$(function() {
+		$(".left-align-icon").click(function() {
+			alert('wwwwwwwww');
+		});
+
+	});
+
+	function deleteMem() {
+
+		let groupList = "";
+
+		$(".chkGrp:checked").each(function(idx, item) {
+			if (idx == 0) {
+				groupList += item.value;
+			} else {
+				groupList += "," + item.value;
+			}
+
+		});
+		alert(grouplist);
+	}
+	
+	function sortMem() {
+		alert("정렬기능!");	
+	}
 </script>
 
 <%@ include file="../include/footer.jsp"%>

@@ -18,7 +18,7 @@
 <!--       Sidebar user panel (optional) -->
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">
-          <img src="${pageContext.request.contextPath }/resources/dist/img/증명1.jpg" class="img-circle elevation-2" alt="User Image">
+          <img src="${pageContext.request.contextPath }/resources/dist/img/해린2.jpg" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
           <a href="#" class="d-block">전지윤</a>
@@ -171,7 +171,7 @@
             </ul>
           </li>
          
-
+</ul>
 <!-- 		<div style="border: solid;">@@@@@@@@@@@@@</div> -->
       </nav>
       <!-- /.sidebar-menu -->
