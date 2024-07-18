@@ -7,6 +7,7 @@ import javax.inject.Inject;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.itwillbs.domain.AuthVO;
 import com.itwillbs.domain.EmployeeVO;
 import com.itwillbs.persistence.EmployeeDAO;
 
@@ -30,6 +31,11 @@ public class EmployeeServiceImpl implements EmployeeService {
 		//encode(pw)
 		// setUser_pw();
 		edao.empJoin(vo);
+	}
+
+	@Override
+	public void empAuth(AuthVO avo) throws Exception {
+		edao.empAuth(avo);
 	}
 	
 	

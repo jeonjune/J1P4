@@ -42,40 +42,17 @@
   	 
   	 <!-- 직원등록 -->
   	 <insert id="empJoin" >
-  	 	insert into employee (user_id,user_pw,job_rank,job,name,birth_date,gender,phone_no,email,zip_code,addr1,addr2) 
- 		values(#{user_id},#{user_pw},#{job_rank},#{job},#{name},#{birth_date},#{gender},#{phone_no},#{email},#{zip_code},#{addr1},#{addr2})
+  	 	insert into employee (user_id,user_pw,job_rank,job,name,birth_date,gender,phone_no,email,emp_date,zip_code,addr1,addr2) 
+ 		values(#{user_id},#{user_pw},#{job_rank},#{job},#{name},#{birth_date},#{gender},#{phone_no},#{email},#{emp_date},#{zip_code},#{addr1},#{addr2})
   	 </insert>
   	 
-  	 <!-- 로그인체크 -->
-<!--   	 <select id="loginCheck" resultType="com.itwillbs.domain.MemberVO"> -->
-<!--   	 	select * from tbl_member  -->
-<!--   	 	where userid=#{userid} and userpw=#{userpw}  	  -->
-<!--   	 </select> -->
+  	 <!-- 직원 권한등록 -->
+  	 <insert id="empAuth" parameterType="com.itwillbs.domain.AuthVO">
+  	 	insert into employee_auth (user_id, auth)
+  	 	values(#{user_id},#{auth})
+  	 </insert>
   	 
   	 
-  	 <!-- 회원정보 조회 -->
-<!--   	 <select id="getMember" resultType="com.itwillbs.domain.MemberVO"> -->
-<!--   	 	select * from tbl_member  -->
-<!--   	 	where userid=#{userid} -->
-<!--   	 </select> -->
-  	 
-  	 <!-- 회원정보 수정 -->
-<!--   	 <update id="updateVO"> -->
-<!--   	 	update tbl_member set username=#{username},useremail=#{useremail},updatedate=now()  -->
-<!--   	 	where userid=#{userid} and userpw=#{userpw} 	 	 -->
-<!--   	 </update> -->
-  	 
-  	 <!-- 회원정보 삭제 -->
-<!-- 	 <delete id="deleteVO"> -->
-<!-- 	    delete from tbl_member  -->
-<!-- 	    where userid=#{userid} and userpw=#{userpw}	    	  -->
-<!-- 	 </delete>  	 -->
-	 
-	 
-	 <!-- 회원정보 목록 -->
-<!-- 	 <select id="memberList" resultType="com.itwillbs.domain.MemberVO"> -->
-<!-- 	 	select * from tbl_member	  -->
-<!-- 	 </select> 	  -->
 	 
 	 
 	 <!-- 회원정보와 인증정보를 한번에 조회(Join) -->

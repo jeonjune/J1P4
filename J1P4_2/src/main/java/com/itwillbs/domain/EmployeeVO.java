@@ -1,6 +1,6 @@
 package com.itwillbs.domain;
 
-import java.sql.Timestamp;
+import java.sql.Date;
 import java.util.List;
 
 import lombok.Data;
@@ -16,15 +16,15 @@ public class EmployeeVO {
 	private String job;
 	private String name;
 	
-	private Timestamp birth_date;
+	private Date birth_date;
 	private boolean gender;
 	
 	private String phone_no;
 	private String email;
 	
-	private Timestamp emp_date;
+	private Date emp_date;
 	private boolean retire_status;
-	private Timestamp retire_date;
+	private Date retire_date;
 	
 	private int zip_code;
 	private String addr1;
