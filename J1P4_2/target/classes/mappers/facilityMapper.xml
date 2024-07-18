@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+  <mapper namespace="com.itwillbs.mapper.facilityMapper">
+	
+	<!-- 시설리스트조회 -->
+	<select id="facList" resultType="FacilityVO">
+		select * from facility 
+	</select>
+	
+	<!-- 시설리스트 등록 -->
+	<insert id="facInsert">
+		insert into facility (facility_name,name)
+		values(#{facility_name},#{name})
+	</insert>
+	
+	<!-- 시설상세페이지내역조회 -->
+	<select id="facDe" resultType="FacilityManagementVO">
+		select * from facilityManagement
+		where facility_no=#{facility_no}
+	</select>
+	
+	<!-- 시설상세페이지 등록 -->
+	<insert id="facDeIn">
+		insert into facilityManagement (repair_type,repair_status,repair_date,name,facility_no)
+		values(#{repair_type},#{repair_status},#{repair_date},#{name},#{facility_no})
+	</insert>	
+	
+	
+
+  </mapper>

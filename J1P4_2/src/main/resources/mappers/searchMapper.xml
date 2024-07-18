@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.itwillbs.mapper.SearchMapper">
+
+
+	<!-- 검색 결과 리스트 목록 ( 페이징 처리 ) -->
+	<select id="searchMem" resultType="MemberVO">
+    <![CDATA[
+		select * from member
+	    where mem_name like '%${keyword}%' or mem_phone like '%${keyword}%' or mem_email like '%${keyword}%'
+	    order by mem_no desc 
+		limit #{pageStart},${pageSize}
+    ]]>
+	</select>
+
+	<!-- 검색 결과 리스트 개수 ( 페이징 처리 ) -->
+	<select id="totalCount" resultType="int">
+		select count(mem_no) from member
+		where mem_name like '%${keyword}%' or mem_phone like
+		'%${keyword}%' or mem_email like '%${keyword}%'
+	</select>
+
+</mapper>
