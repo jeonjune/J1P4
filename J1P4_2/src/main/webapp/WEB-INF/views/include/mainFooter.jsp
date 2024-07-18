@@ -32,6 +32,9 @@
 <script src="${pageContext.request.contextPath }/resources/plugins/chart.js/Chart.min.js"></script>
 <!-- Sparkline -->
 <script src="${pageContext.request.contextPath }/resources/plugins/sparklines/sparkline.js"></script>
+<!-- JQVMap -->
+<script src="${pageContext.request.contextPath }/resources/plugins/jqvmap/jquery.vmap.min.js"></script>
+<script src="${pageContext.request.contextPath }/resources/plugins/jqvmap/maps/jquery.vmap.usa.js"></script>
 <!-- jQuery Knob Chart -->
 <script src="${pageContext.request.contextPath }/resources/plugins/jquery-knob/jquery.knob.min.js"></script>
 <!-- daterangepicker -->
@@ -45,6 +48,8 @@
 <script src="${pageContext.request.contextPath }/resources/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
 <!-- AdminLTE App -->
 <script src="${pageContext.request.contextPath }/resources/dist/js/adminlte.js"></script>
+<!-- AdminLTE dashboard demo (This is only for demo purposes) -->
+<script src="${pageContext.request.contextPath }/resources/dist/js/pages/dashboard.js"></script>
 <script>
 $(function () {
     var pathname = window.location.pathname;

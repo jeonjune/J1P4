@@ -9,9 +9,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.itwillbs.domain.Criteria;
 import com.itwillbs.domain.MemberVO;
@@ -20,7 +22,6 @@ import com.itwillbs.service.MemberService;
 
 @Controller
 @RequestMapping(value="/member/*")
-
 public class MemberController {
 	private static final Logger logger = LoggerFactory.getLogger(MemberController.class);
 	
@@ -44,11 +45,13 @@ public class MemberController {
 		model.addAttribute("memberList", memberList);
 		model.addAttribute("pageVO",pageVO);
 		
+		logger.debug(" @@@@@@ 매핑 완료 @@@@@@@@@@@@ ");
 		
 	}
 	
 	@GetMapping(value = "/read")
 	public void readGET(Model model,@RequestParam int mem_no) throws Exception{
+//		public void readGET(Model model,@PathVariable int mem_no) throws Exception{
 		logger.debug(" readGET() 실행 ");
 		
 		logger.debug(" @@@@@@@@@@@ int mem_no = "+mem_no);
