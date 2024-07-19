@@ -6,11 +6,11 @@
 <%@ include file="../include/sidemenu.jsp"%>
 <%@ include file="../include/equipMenu.jsp"%>
 
-
 <div class="content-wrapper" style="min-height: 831px;">
 
 
-<h1>장비신청내역 페이지 - request</h1>
+<h1>장비신청내역 페이지 - list</h1>
+
 
 
 	<button class="btn btn-primary" type="button"
@@ -41,21 +41,22 @@
 						aria-label="Browser: activate to sort column ascending">담당자</th>
 					<th class="sorting" tabindex="0" aria-controls="example1"
 						rowspan="1" colspan="1"
-						aria-label="Browser: activate to sort column ascending">날짜</th>
+						aria-label="Browser: activate to sort column ascending">작성날짜</th>
 
 				</tr>
 			</thead>
-<!-- 			<tbody> -->
-<%-- 				<c:forEach var="facDe" items="${facDe }"> --%>
-<!-- 					<tr class="odd"> -->
-<%-- 						<td class="dtr-control" tabindex="0">${facDe.facility_no }</td> --%>
-<%-- 						<td>${facDe.repair_type}</td> --%>
-<%-- 						<td>${facDe.repair_status}</td> --%>
-<%-- 						<td>${facDe.repair_date}</td> --%>
-<%-- 						<td>${facDe.name }</td> --%>
-<!-- 					</tr> -->
-<%-- 				</c:forEach> --%>
-<!-- 			</tbody> -->
+			<tbody>
+				<c:forEach var="list" items="${list}">
+					<tr class="odd">
+						<td class="dtr-control" tabindex="0">${list.equipment_no }</td>
+						<td>${list.field}</td>
+						<td>${list.e_repair_type}</td>
+						<td>${list.equipment_name}</td>
+						<td>${list.name }</td>
+						<td>${list.report_date }</td>
+					</tr>
+				</c:forEach>
+			</tbody>
 
 		</table>
 	</div>
@@ -65,8 +66,7 @@
 
 
 
+
 <%@ include file="../include/footer.jsp"%>
-
-
 
 
