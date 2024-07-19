@@ -71,8 +71,8 @@
               </p>
             </a>
           </li>
-          <li class="nav-item">
-            <a href="#" class="nav-link">
+          <li class="nav-item" id="centerLi">
+            <a href="#" class="nav-link" id="center">
               <i class="nav-icon fas fa-chart-pie"></i>
               <p>
                 센터 관리
@@ -87,7 +87,7 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a href="/maintenance/test" class="nav-link">
+                <a href="/maintenance/equipment" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>장비 관리</p>
                 </a>

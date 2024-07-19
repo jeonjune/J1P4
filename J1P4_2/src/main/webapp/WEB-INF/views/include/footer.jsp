@@ -59,6 +59,28 @@ $(function () {
         // Add active class to the member management link
         $('ul.nav-sidebar a[href="/member/list"]').addClass('active');
     }
+    if (pathname.startsWith('/maintenance/facility')) {
+        // Add active class to the member management link
+        $('ul.nav-sidebar a[href="/maintenance/facility"]').addClass('active');
+    }
+    if (pathname.startsWith('/maintenance/read')) {
+        // Add active class to the member management link
+        $('ul.nav-sidebar #centerLi').addClass('menu-is-opening menu-open');
+        $('ul.nav-sidebar #center').addClass('active');
+        $('ul.nav-sidebar a[href="/maintenance/facility"]').addClass('active');
+    }
+    if (pathname.startsWith('/maintenance/request')) {
+        // Add active class to the member management link
+        $('ul.nav-sidebar #centerLi').addClass('menu-is-opening menu-open');
+        $('ul.nav-sidebar #center').addClass('active');
+        $('ul.nav-sidebar a[href="/maintenance/equipment"]').addClass('active');
+    }
+    if (pathname.startsWith('/maintenance/reject')) {
+        // Add active class to the member management link
+        $('ul.nav-sidebar #centerLi').addClass('menu-is-opening menu-open');
+        $('ul.nav-sidebar #center').addClass('active');
+        $('ul.nav-sidebar a[href="/maintenance/equipment"]').addClass('active');
+    }
 
     // for single sidebar menu
     $('ul.nav-sidebar a').filter(function () {
@@ -74,6 +96,7 @@ $(function () {
         .addClass('active');
 });
 </script>
+
 <!-- <script src="http://jvectormap.com/js/jquery-jvectormap-1.2.2.min.js"></script> -->
 <!-- 현재 페이지의 사이드메뉴 활성화 스크립트 -->
 <!-- 코드 참고 : https://stackoverflow.com/questions/61025311/adminlte-sidebar-active-menu-doesnt-change-dynamically -->
