@@ -15,7 +15,7 @@
 
 	<button class="btn btn-primary" type="button"
 		data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight"
-		aria-controls="offcanvasRight">장비신청</button>
+		aria-controls="offcanvasRight" onclick = "location.href = '/maintenance/regist'">장비신청</button>
 
 	<div class="col-sm-12">
 		<table id="example1"
