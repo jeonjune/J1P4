@@ -19,7 +19,7 @@
                             <h1>Class List</h1>
                         </div>
                         <div class="col-sm-6">
-                            <button type="button" class="btn btn-primary float-right" data-toggle="modal" data-target="#classModal" onclick="openModal()">
+                            <button type="button" class="btn btn-primary float-end" data-bs-toggle="modal" data-bs-target="#classModal" onclick="openModal()">
                                 Add New Class
                             </button>
                         </div>
@@ -39,7 +39,7 @@
                                 <th>Division</th>
                                 <th>Level</th>
                                 <th>Max Capacity</th>
-                                <th>Instructor No</th>
+                                <th>Instructor</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -53,7 +53,7 @@
                                     <td>${classItem.divisionCode}</td>
                                     <td>${classItem.levelCode}</td>
                                     <td>${classItem.maxCapacity}</td>
-                                    <td>${classItem.instructorNo}</td>
+                                    <td>${classItem.instructorName}</td>
                                     <td>
                                         <button class="btn btn-warning" onclick="editClass(${classItem.classNo})">Edit</button>
                                         <form:form action="${pageContext.request.contextPath}/classes/delete/${classItem.classNo}" method="post" style="display:inline;">
@@ -68,52 +68,54 @@
             </section>
         </div>
 
-        <!-- Modal -->
-        <div class="modal fade" id="classModal" tabindex="-1" role="dialog" aria-labelledby="classModalLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
+        <!-- Class Modal -->
+        <div class="modal fade" id="classModal" tabindex="-1" aria-labelledby="classModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="classModalLabel">Add/Edit Class</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
                         <form:form id="classForm" method="post" action="${pageContext.request.contextPath}/classes/save" modelAttribute="classVO">
                             <form:hidden path="classNo" />
-                            <div class="form-group">
-                                <label>Class Name:</label>
-                                <form:input path="className" class="form-control" required="required"/>
+                            <div class="mb-3">
+                                <label for="className" class="form-label">Class Name:</label>
+                                <form:input path="className" class="form-control" required="required" id="className"/>
                             </div>
-                            <div class="form-group">
-                                <label>Description:</label>
-                                <form:textarea path="description" class="form-control"/>
+                            <div class="mb-3">
+                                <label for="description" class="form-label">Description:</label>
+                                <form:textarea path="description" class="form-control" id="description"/>
                             </div>
-                            <div class="form-group">
-                                <label>Field:</label>
-                                <form:select path="fieldCode" class="form-control">
+                            <div class="mb-3">
+                                <label for="fieldCode" class="form-label">Field:</label>
+                                <form:select path="fieldCode" class="form-control" id="fieldCode">
                                     <form:options items="${fields}" itemValue="codeValue" itemLabel="codeValueName"/>
                                 </form:select>
                             </div>
-                            <div class="form-group">
-                                <label>Division:</label>
-                                <form:select path="divisionCode" class="form-control">
+                            <div class="mb-3">
+                                <label for="divisionCode" class="form-label">Division:</label>
+                                <form:select path="divisionCode" class="form-control" id="divisionCode">
                                     <form:options items="${divisions}" itemValue="codeValue" itemLabel="codeValueName"/>
                                 </form:select>
                             </div>
-                            <div class="form-group">
-                                <label>Level:</label>
-                                <form:select path="levelCode" class="form-control">
+                            <div class="mb-3">
+                                <label for="levelCode" class="form-label">Level:</label>
+                                <form:select path="levelCode" class="form-control" id="levelCode">
                                     <form:options items="${levels}" itemValue="codeValue" itemLabel="codeValueName"/>
                                 </form:select>
                             </div>
-                            <div class="form-group">
-                                <label>Max Capacity:</label>
-                                <form:input path="maxCapacity" class="form-control" type="number" required="required"/>
+                            <div class="mb-3">
+                                <label for="maxCapacity" class="form-label">Max Capacity:</label>
+                                <form:input path="maxCapacity" class="form-control" type="number" required="required" id="maxCapacity"/>
                             </div>
-                            <div class="form-group">
-                                <label>Instructor No:</label>
-                                <form:input path="instructorNo" class="form-control" type="number" required="required"/>
+                            <div class="mb-3">
+                                <label for="instructorName" class="form-label">Instructor Name:</label>
+                                <div class="input-group">
+                                    <form:input path="instructorName" class="form-control" id="instructorName" readonly="readonly"/>
+                                    <form:hidden path="instructorNo" id="instructorNo"/>
+                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#instructorModal">Find Instructor</button>
+                                </div>
                             </div>
                             <button type="submit" class="btn btn-primary">Save</button>
                         </form:form>
@@ -121,10 +123,40 @@
                 </div>
             </div>
         </div>
+
+        <!-- Instructor Modal -->
+        <div class="modal fade" id="instructorModal" tabindex="-1" aria-labelledby="instructorModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="instructorModalLabel">Find Instructor</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="instructorSearch" class="form-label">Search Instructor by Name:</label>
+                            <input type="text" class="form-control" id="instructorSearch" placeholder="Enter instructor name">
+                        </div>
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Instructor No</th>
+                                    <th>Name</th>
+                                    <th>Expertise</th>
+                                    <th>Select</th>
+                                </tr>
+                            </thead>
+                            <tbody id="instructorTableBody">
+                                <!-- Dynamic content goes here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
 
-    <!-- AJAX to handle form submission and editing -->
     <script>
         $(document).ready(function() {
             $('#classForm').on('submit', function(event) {
@@ -142,27 +174,61 @@
                     }
                 });
             });
+
+            $('#instructorSearch').on('input', function() {
+                const query = $(this).val();
+                if (query.length > 0) {
+                    $.ajax({
+                        url: '${pageContext.request.contextPath}/instructors/search',
+                        method: 'GET',
+                        data: { query: query },
+                        success: function(data) {
+                            const instructorTableBody = $('#instructorTableBody');
+                            instructorTableBody.empty();
+                            data.forEach(function(instructor) {
+                                const row = '<tr>' +
+                                            '<td>' + instructor.instructorNo + '</td>' +
+                                            '<td>' + instructor.name + '</td>' +
+                                            '<td>' + instructor.expertise + '</td>' +
+                                            '<td><button class="btn btn-primary" onclick="selectInstructor(\'' + instructor.instructorNo + '\', \'' + instructor.name + '\')">Select</button></td>' +
+                                         '</tr>';
+                                instructorTableBody.append(row);
+                            });
+                        },
+                        error: function(error) {
+                            alert('Error occurred while searching for instructors');
+                        }
+                    });
+                }
+            });
         });
 
         function openModal() {
             $('#classForm')[0].reset();
             $('#classModalLabel').text('Add Class');
-            $('input[name=classNo]').val(0); // 신규 추가 시 classNo를 0으로 설정
+            $('#classNo').val(0); // 신규 추가 시 classNo를 0으로 설정
         }
 
         function editClass(classNo) {
             $.get('${pageContext.request.contextPath}/classes/edit/' + classNo, function(data) {
-                $('input[name=classNo]').val(data.classNo);
-                $('input[name=className]').val(data.className);
-                $('textarea[name=description]').val(data.description);
-                $('select[name=fieldCode]').val(data.fieldCode);
-                $('select[name=divisionCode]').val(data.divisionCode);
-                $('select[name=levelCode]').val(data.levelCode);
-                $('input[name=maxCapacity]').val(data.maxCapacity);
-                $('input[name=instructorNo]').val(data.instructorNo);
+                $('#classNo').val(data.classNo);
+                $('#className').val(data.className);
+                $('#description').val(data.description);
+                $('#fieldCode').val(data.fieldCode);
+                $('#divisionCode').val(data.divisionCode);
+                $('#levelCode').val(data.levelCode);
+                $('#maxCapacity').val(data.maxCapacity);
+                $('#instructorNo').val(data.instructorNo);
+                $('#instructorName').val(data.instructorName);
                 $('#classModalLabel').text('Edit Class');
                 $('#classModal').modal('show');
             });
+        }
+
+        function selectInstructor(instructorNo, instructorName) {
+            $('#instructorNo').val(instructorNo);
+            $('#instructorName').val(instructorName);
+            $('#instructorModal').modal('hide');
         }
     </script>
 </body>

@@ -2,6 +2,8 @@ package com.itwillbs.web;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,6 +21,8 @@ import com.itwillbs.service.CommonCodeService;
 @Controller
 @RequestMapping("/classes/*")
 public class ClassController {
+	
+	private static final Logger logger = LoggerFactory.getLogger(ClassController.class);
 
     @Autowired
     private ClassService classService;
@@ -50,7 +54,11 @@ public class ClassController {
     @GetMapping("/edit/{id}")
     @ResponseBody
     public ClassVO getClassById(@PathVariable("id") int classNo) {
-        return classService.getClassById(classNo);
+    	
+    	ClassVO vo = classService.getClassById(classNo);
+    	
+    	logger.info(vo.toString());
+        return vo;
     }
 
     @PostMapping("/delete/{id}")

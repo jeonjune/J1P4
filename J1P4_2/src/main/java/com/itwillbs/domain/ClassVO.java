@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class ClassVO {
-    private int classNo;
+	private int classNo;
     private String className;
     private String description;
     private String fieldCode;
@@ -12,5 +12,6 @@ public class ClassVO {
     private String levelCode;
     private int maxCapacity;
     private int instructorNo;
+    private String instructorName; // Add this line
 
 }
