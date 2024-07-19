@@ -69,7 +69,8 @@
 </div>
 
 
-<form action="" method="post" id="fm1">
+<form action="" method="post" id="fm1" name="fm1">
+ <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 	<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight"
 		aria-labelledby="offcanvasRightLabel">
 		<div class="offcanvas-header">
@@ -83,14 +84,10 @@
             <section class="content">
                 <div class="container-fluid">
                   
-<!--                         <div class="form-group"> -->
-<!--                             <label>시설번호</label> -->
-<%--                             <input type="text" name="facility_no" value="${vo.facility_no}" class="form-control" required /> --%>
-<!--                         </div> -->
-                        
                         <div class="form-group">
                             <label>아이디</label>
                             <input type="text" name="user_id" class="form-control" id="user_id">
+                            <span id="check" style="font-size: 14px;"></span>
                         </div>
                         
                         <div class="form-group">
@@ -109,10 +106,6 @@
                         </div>
                         <span id="checkpass" style="font-size: 14px;"></span>
                        
-<!--                         <div class="form-group"> -->
-<!--                             <label>직무</label> -->
-<!--                             <input type="text" name="job" class="form-control"> -->
-<!--                         </div> -->
                         <div class="form-group">
                             <label>직무</label>
                             <form:select path="job" class="form-control" name="job">
@@ -127,13 +120,6 @@
                             </form:select>
                         </div>
                      
-<!--                         <div class="form-group"> -->
-<!--                             <label>직급</label> -->
-<!--                             <input type="text" name="job_rank" class="form-control"> -->
-<!--                         </div> -->
-                      <!-- user_id,user_pw,job_rank,job,name,birth_date,gender,phone_no,email,zip_code,addr1,addr2 -->
-                      
-
 						<div class="form-group">
 							<label>입사일</label> <input type="date" name="emp_date"
 								class="form-control" />
@@ -144,10 +130,6 @@
 								class="form-control" />
 						</div>
                       
-<!--                         <div class="form-group"> -->
-<!--                             <label>성별(임시 0,1)</label> -->
-<!--                             <input type="text" name="gender"  class="form-control" > -->
-<!--                         </div> -->
                         <div class="form-group">
                             <label>성별</label><br>
                             <input type="radio" name="gender" value="0" >남 
@@ -201,14 +183,9 @@ $(function() {
 			data : $("#fm1").serialize(),
 			success : function(data) {
 				alert("직원이 등록 되었습니다.");
-//					console.log(data);
 				
 				history.go(0);
-//					$.each(data,function(){
-					
-//						$("#facility_name").value(data.ddd.ddd);
-					
-//					});
+
 				
 			},
 			error : function() {
@@ -257,61 +234,62 @@ $(function() {
 			.ready(
 					function() {
 
-// 						$('#user_id')
-// 								.keyup(
-// 										function() {
-// 											var user_id = $('#user_id').val();
-// 											//alert("아이디");
-// 											$
-// 													.ajax({
-// 														url : "/member/idcheck",
-// 														type : "get",
-// 														data : {
-// 															user_id : user_id
-// 														},
-// 														success : function(res) {
+						$('#user_id')
+								.keyup(
+										function() {
+											var user_id = $('#user_id').val();
+											//alert(user_id);
+											$
+													.ajax({
+														url : "/employee/idcheck",
+														type : "get",
+														data : {
+															user_id : user_id
+														},
+														success : function(res) {
 
-// 															let input_id = document.form_join.user_id.value; //name=user_id값
+															let input_id = document.fm1.user_id.value; //name=user_id값
+															console.log(input_id);
 
-// 															//아이디 유효성검사
-// 															let check_id = /^[a-z0-9_-]{6,12}$/;
-// 															let memberid = $(
-// 																	'#user_id')
-// 																	.val();
+															//아이디 유효성검사
+															let check_id = /^[a-z0-9_-]{5,12}$/;
+															let memberid = $(
+																	'#user_id')
+																	.val();
 
-// 															if (input_id.length == 0) { //아무것도 입력안한상태
-// 																$('#check')
-// 																		.html(
-// 																				'아이디는 6~12자리 영어,숫자만 사용 가능합니다.')
-// 																		.css(
-// 																				'color',
-// 																				'black')
-// 															} else if ((res == 1)
-// 																	|| (!check_id
-// 																			.test(memberid))) { // 사용불가
-// 																$('#check')
-// 																		.html(
-// 																				'중복된 아이디거나, 조건에 맞지 않습니다.')
-// 																		.css(
-// 																				'color',
-// 																				'red')
-// 															} else if (res != 1) {//사용가능
-// 																$('#check')
-// 																		.html(
-// 																				'사용 가능한 아이디입니다.')
-// 																		.css(
-// 																				'color',
-// 																				'green')
-// 															}
+															if (input_id.length == 0) { //아무것도 입력안한상태
+																$('#check')
+																		.html(
+																				'아이디는 6~12자리 영어,숫자만 사용 가능합니다.')
+																		.css(
+																				'color',
+																				'black')
+															} else if ((res == 1)
+																	|| (!check_id
+																			.test(memberid))) { // 사용불가
+																$('#check')
+																		.html(
+																				'중복된 아이디거나, 조건에 맞지 않습니다.')
+																		.css(
+																				'color',
+																				'red')
+															} else if (res != 1) {//사용가능
+																$('#check')
+																		.html(
+																				'사용 가능한 아이디입니다.')
+																		.css(
+																				'color',
+																				'green')
+															}
 
-// 														},
-// 														error : function(
-// 																request, error) {
-// 															alert("에러");
-// 														}
-// 													});
+														},
+														error : function(
+																request, error) {
+															alert("에러");
+														}
+													});
 
-// 										});
+										});
 
 						//비밀번호 유효성검사 , 비밀번호 재확인
 						$('.pass')
@@ -357,7 +335,6 @@ $(function() {
 												}
 											}
 
-											let input_id = document.form_join.user_id.value; //name=user_id값
 
 										});
 

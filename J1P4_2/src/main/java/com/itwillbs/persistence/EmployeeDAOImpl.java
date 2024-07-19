@@ -37,7 +37,14 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 		sqlSession.insert(NAMESPACE+"empAuth", avo);
 	}
 	
-	
+	//아이디 중복체크
+	@Override
+	public int idCheck(String user_id) throws Exception {
+		int res = sqlSession.selectOne(NAMESPACE+"selectId", user_id);
+		logger.debug("res :"+res);
+
+		return res;
+	}
 	
 
 }
