@@ -1,12 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-</head>
-<body>
+<%@ include file="../views/include/header.jsp"%>
+<%@ include file="../views/include/sidemenu.jsp"%>
+<div class="content-wrapper" style="min-height: 831px;">
 	<h1>customLogin.jsp</h1>
 	
 	<h1> 아이티윌 로그인 </h1>
@@ -22,6 +18,4 @@
 		</form>
 	</fieldset>
 <%-- 	${_csrf } --%>
-	
-</body>
-</html>
+</div>

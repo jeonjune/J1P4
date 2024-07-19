@@ -18,7 +18,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 	private EmployeeDAO edao;
 	
 	@Inject
-//	private PasswordEncoder pwEncoder;
+	private PasswordEncoder pwEncoder;
 
 	@Override
 	public List<EmployeeVO> empList() throws Exception {
@@ -28,8 +28,10 @@ public class EmployeeServiceImpl implements EmployeeService {
 
 	@Override
 	public void empJoin(EmployeeVO vo) throws Exception {
-		//encode(pw)
-		// setUser_pw();
+		//비밀번호 암호화
+		String pw = pwEncoder.encode(vo.getUser_pw());
+		vo.setUser_pw(pw);
+		
 		edao.empJoin(vo);
 	}
 

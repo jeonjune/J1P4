@@ -29,14 +29,7 @@ public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler {
 		// 사용자의 권한 정보를 저장하는 리스트
 		List<String> roleNames = new ArrayList<String>();
 		
-		// 익명 클래스를 블럭 잡아서 ctrl + 1 사용하여 람다 표현식 <-> 익명클래스(함수)
-//		authentication.getAuthorities().forEach(new Consumer<GrantedAuthority>() {
-//			@Override
-//			public void accept(GrantedAuthority authority) {
-//				roleNames.add(authority.getAuthority());
-//			}
-//		});
-		
+
 		authentication.getAuthorities().forEach(
 				authority -> roleNames.add(authority.getAuthority())
 				);
@@ -48,20 +41,20 @@ public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler {
 		// 관리자 - ROLE_ADMIN
 		if(roleNames.contains("ROLE_ADMIN")) {
 			logger.info(" ROLE_ADMIN 권한 -> admin 페이지로 이동 ");
-			response.sendRedirect("/admin");
+			response.sendRedirect("/main/home");
 			return;
 		}
 		
 		// 사용자 - ROLE_MEMBER
 		if(roleNames.contains("ROLE_MEMBER")) {
 			logger.info(" ROLE_MEMBER 권한 -> member 페이지로 이동 ");
-			response.sendRedirect("/member");
+			response.sendRedirect("/main/home");
 			return;
 		}
 		
 		
 		// 전체   - ALL
-		response.sendRedirect("/all");
+		response.sendRedirect("/main/home");
 		
 	}
 

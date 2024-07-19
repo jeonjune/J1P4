@@ -11,7 +11,12 @@
 
 
 <h1>empList </h1>
-	
+<a href="/customLogin" class="nav-link">
+              <i class="nav-icon fas fa-user"></i>
+              <p>
+                로그인
+              </p>
+</a>
 
 		
 		<button class="btn btn-primary" type="button"
