@@ -13,14 +13,40 @@
         <result property="levelCode" column="level_code"/>
         <result property="maxCapacity" column="max_capacity"/>
         <result property="instructorNo" column="instructor_no"/>
+        <result property="instructorName" column="instructor_name"/> <!-- 추가 -->
     </resultMap>
 
     <select id="getAllClasses" resultMap="classResultMap">
-        SELECT * FROM class
+        SELECT 
+            c.class_no,
+            c.class_name,
+            c.description,
+            c.field_code,
+            c.division_code,
+            c.level_code,
+            c.max_capacity,
+            c.instructor_no,
+            e.name AS instructor_name
+        FROM class c
+        LEFT JOIN instructor i ON c.instructor_no = i.instructor_no
+        LEFT JOIN employee e ON i.user_no = e.user_no
     </select>
 
     <select id="getClassById" parameterType="int" resultMap="classResultMap">
-        SELECT * FROM class WHERE class_no = #{classNo}
+        SELECT 
+            c.class_no,
+            c.class_name,
+            c.description,
+            c.field_code,
+            c.division_code,
+            c.level_code,
+            c.max_capacity,
+            c.instructor_no,
+            e.name AS instructor_name
+        FROM class c
+        LEFT JOIN instructor i ON c.instructor_no = i.instructor_no
+        LEFT JOIN employee e ON i.user_no = e.user_no
+        WHERE c.class_no = #{classNo}
     </select>
 
     <insert id="addClass" parameterType="com.itwillbs.domain.ClassVO">
