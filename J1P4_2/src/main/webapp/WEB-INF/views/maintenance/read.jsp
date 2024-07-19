@@ -83,9 +83,10 @@
 					</div>
 
 					<div class="form-group">
-						<label>특이사항</label>
-						<textarea class="form-control" name="repair_status" rows="3"
-							placeholder="Enter ..."></textarea>
+						<label>특이사항</label><br>
+						<textarea id="comment" name="repair_status" rows="3"
+							placeholder="20자이내입력" onkeyup="up()"></textarea>
+						<p>글자수 <span id="length">0</span><p>
 					</div>
 
 					<div class="form-group">
@@ -120,14 +121,6 @@
 				success : function(data) {
 					history.go(0); //새로고침
 					alert("입력완료!");
-					// 					console.log(data);
-
-					// 					$.each(data,function(){
-
-					// 						$("#facility_name").value(data.ddd.ddd);
-
-					// 					});
-
 				},
 				error : function() {
 					alert("오류발생");
@@ -135,6 +128,26 @@
 			});
 		});
 	});
+ 	
+
+ 	//시설상세페이지 - 특이사항 글자수 제한(20자)
+ 	function up(){
+ 		var com = document.getElementById("comment");
+ 		var len = document.getElementById("length");
+ 		var val = com.value;
+ 		
+ 		//글자수 세기
+ 		len.textContent = val.length;
+ 		//글자수 제한
+ 		if(val.length>20){
+ 			com.value = val.substring(0,20);
+ 			len.textContent = 20; //제한 후 글자수 업데이트
+ 		}
+ 	}
+ 	
+ 	
+ 	
+ 	
 </script>
 
 

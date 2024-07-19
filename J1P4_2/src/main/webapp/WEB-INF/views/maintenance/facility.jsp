@@ -11,7 +11,6 @@
 	<%-- ${facList} <br> --%>
 
 
-
 	<button class="btn btn-primary" type="button"
 		data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight"
 		aria-controls="offcanvasRight">등록하기</button>
@@ -65,12 +64,6 @@
 			<section class="content">
 				<div class="container-fluid">
 
-					<!--                         <div class="form-group"> -->
-					<!--                             <label>시설번호</label> -->
-					<%--                             <input type="text" name="facility_no" value="${vo.facility_no}" class="form-control" required /> --%>
-					<!--                         </div> -->
-
-
 					<div class="form-group">
 						<label>시설이름</label> <input type="text" name="facility_name"
 							class="form-control" id="facility_name">
@@ -102,15 +95,8 @@
 				data : $("#fm1").serialize(),
 				success : function(data) {
 					alert("시설이 등록 되었습니다.");
-					// 					console.log(data);
 
 					history.go(0); //새로고침
-					// 					$.each(data,function(){
-
-					// 						$("#facility_name").value(data.ddd.ddd);
-
-					// 					});
-
 				},
 				error : function() {
 					alert("오류발생");
