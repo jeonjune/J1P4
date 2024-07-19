@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequestMapping(value="/maintenance/*")
-public class Equipment {
+public class EquipmentController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(CommonController.class);
 	
@@ -22,7 +22,7 @@ public class Equipment {
 	//장비신청내역 페이지
 	//http://localhost:8088/maintenance/request
 	@GetMapping(value = "/request")
-	public void registGET() {
+	public void requestGET() {
 		
 	}
 	
@@ -33,6 +33,11 @@ public class Equipment {
 		
 	}
 	
-	
+	//장비신청하는 페이지
+	//http://localhost:8088/maintenance/regist
+	@GetMapping(value = "/regist")
+	public void registGET() {
+		
+	}
 	
 }

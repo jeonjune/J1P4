@@ -51,6 +51,7 @@
 
 <!-- 시설등록 모달 -->
 <form action="" method="post" id="fm1">
+<input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
 	<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight"
 		aria-labelledby="offcanvasRightLabel">
 		<div class="offcanvas-header">
