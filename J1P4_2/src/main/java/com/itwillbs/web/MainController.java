@@ -21,4 +21,9 @@ public class MainController {
 		
 	}
 	
+	@GetMapping(value="/login")
+	public void login() {
+		
+	}
+	
 }

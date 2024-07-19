@@ -71,7 +71,7 @@
 	</select>
 
 	<div class="col-sm-12">
-		<table id="example1" class="table table-bordered table-striped"
+		<table id="example1" class="table table-bordered table-hover" style="background: #fff"
 			aria-describedby="example1_info">
 			<thead>
 				<tr>
@@ -90,7 +90,7 @@
 			</thead>
 			<tbody>
 				<c:forEach var="vo" items="${memberList }">
-					<tr class="odd">
+					<tr class="tr:hover">
 						<td class="dtr-control" tabindex="0"><input type="checkbox"
 							class="chkGrp"></td>
 						<td class="dtr-control" tabindex="0">${vo.mem_no }</td>
