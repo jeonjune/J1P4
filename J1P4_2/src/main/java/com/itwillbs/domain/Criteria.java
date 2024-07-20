@@ -5,6 +5,7 @@ public class Criteria {
 	private int page;
 	private int pageSize;
 	private String keyword;
+	private String sort;
 	
 	public Criteria() {
 		this.page = 1;
@@ -14,6 +15,10 @@ public class Criteria {
 	public String getKeyword() {
         return keyword;
     }
+	
+	public String getSort() {
+		return sort;
+	}
     
     public void setKeyword(String keyword) {
         this.keyword = keyword;

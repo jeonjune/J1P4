@@ -47,6 +47,7 @@
 <!-- overlayScrollbars -->
 <script src="${pageContext.request.contextPath }/resources/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
 <!-- AdminLTE App -->
+<%-- <script src="${pageContext.request.contextPath }/resources/dist/js/adminlte.min.js"></script> --%>
 <script src="${pageContext.request.contextPath }/resources/dist/js/adminlte.js"></script>
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 
