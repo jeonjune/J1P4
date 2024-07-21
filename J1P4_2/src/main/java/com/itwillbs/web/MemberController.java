@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.itwillbs.domain.Criteria;
@@ -35,6 +36,7 @@ public class MemberController {
 		// 서비스 -> DB의 정보를 가져오기 (페이징처리)
 		List<MemberVO> memberList = mService.listPage(cri);
 		logger.debug(" size : "+memberList.size());
+		logger.debug(" pageStart : "+cri.getPageStart());
 		
 		// 하단 페이징처리 정보
 		PageVO pageVO = new PageVO();
@@ -44,9 +46,7 @@ public class MemberController {
 		// 연결된 뷰페이지로 정보 전달
 		model.addAttribute("memberList", memberList);
 		model.addAttribute("pageVO",pageVO);
-		
-		logger.debug(" @@@@@@ 매핑 완료 @@@@@@@@@@@@ ");
-		
+				
 	}
 	
 	@GetMapping(value = "/read")
@@ -76,6 +76,27 @@ public class MemberController {
 	public void documentGET(Criteria cri,Model model) throws Exception{
 		logger.debug(" documentGET() 실행 ");
 		
+		
+	}
+	
+	@GetMapping
+	@ResponseBody
+	public void selectPost(Criteria cri,Model model) throws Exception {
+		
+		// 서비스 -> DB의 정보를 가져오기 (페이징처리)
+				List<MemberVO> memberList = mService.listPage(cri);
+				logger.debug(" 에이작스 size : "+memberList.size());
+				logger.debug(" 에이작스 pageSize : "+cri.getPageSize());
+				logger.debug(" 에이작스 pageStart : "+cri.getPageStart());
+				
+				// 하단 페이징처리 정보
+				PageVO pageVO = new PageVO();
+				pageVO.setCri(cri);
+				pageVO.setTotalCount(mService.getTotalCount());
+				
+				// 연결된 뷰페이지로 정보 전달
+				model.addAttribute("memberList", memberList);
+				model.addAttribute("pageVO",pageVO);
 		
 	}
 }

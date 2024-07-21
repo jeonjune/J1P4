@@ -34,11 +34,12 @@ public class SearchController {
 		logger.debug(" size : "+memberList.size());
 		logger.debug(" ヾ(•ω•`)o memberList = "+memberList);
 		logger.debug(" @@@@@@@@@@@@@@@@@@@@@@@@@@@@@ " + cri);
-		logger.debug(" @@@@@@@@@@@@@@@@@@@@@@@@@@@@@ " + sService.getTotalCount(cri));
+		logger.debug(" @@@@@@@@@@@@@@@@@@@@@@@@@@@@@ totalCount" + sService.getTotalCount(cri));
 		// 하단 페이징처리 정보
 		PageVO pageVO = new PageVO();
 		pageVO.setCri(cri);
 		pageVO.setTotalCount(sService.getTotalCount(cri));
+		logger.debug(" @@@@@@@@@@@@@@@@@@@@@@@@@@@@@ " + pageVO);
 		
 		// 연결된 뷰페이지로 정보 전달
 		model.addAttribute("memberList", memberList);

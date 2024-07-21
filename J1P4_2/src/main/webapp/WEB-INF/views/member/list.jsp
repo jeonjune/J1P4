@@ -6,10 +6,10 @@
 <%@ include file="../include/sidemenu.jsp"%>
 
 <div class="content-wrapper" style="min-height: 831px;">
-	
+
 	<!-- 검색 / 필터 / 정렬 데이터 전송 -->
 	<form action="/member/listSearch" method="get">
-	
+
 		<div class="form-inline">
 			<div class="input-group">
 				<input class="form-control" type="search" name="keyword"
@@ -18,20 +18,21 @@
 					<button class="btn" type="submit" class="submitBtn">
 						<i class="fas fa-search fa-fw"></i>
 					</button>
+					<!-- 필터 모달창 버튼 -->
+					<button type="button" class="btn btn-primary"
+						data-bs-toggle="modal" data-bs-target="#exampleModal">
+						<i class="fas fa-filter fa-fw"></i>
+					</button>
 				</div>
 			</div>
 		</div>
-		<div class="filter1"></div>
-		<div class="filter2"></div>
+		<div class="filter1" style="display: inline-block;"></div>
+		<div class="filter2" style="display: inline-block;"></div>
 
 	</form>
-	
-	<!-- 필터 모달창 버튼 -->
-	<button type="button" class="btn btn-primary" data-bs-toggle="modal"
-		data-bs-target="#exampleModal">
-		<i class="fas fa-filter fa-fw"></i>
-	</button>
-	
+
+
+
 	<!-- Modal -->
 	<div class="modal fade" id="exampleModal" tabindex="-1"
 		aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -46,14 +47,14 @@
 
 					<h5>회원등급</h5>
 					<div class="content">
-						<input type="radio" value="신규회원" class="btn-check"
-							name="work_field" id="radioWf1"> <label
+						<input type="radio" value="신규회원" class="btn-check" name="sort"
+							id="radioWf1"> <label
 							class="btn btn-outline-dark radioField" for="radioWf1">신규회원</label>
-						<input type="radio" value="일반회원" class="btn-check"
-							name="work_field" id="radioWf2"> <label
+						<input type="radio" value="일반회원" class="btn-check" name="sort"
+							id="radioWf2"> <label
 							class="btn btn-outline-dark radioField" for="radioWf2">일반회원</label>
-						<input type="radio" value="장기회원" class="btn-check"
-							name="work_field" id="radioWf3"> <label
+						<input type="radio" value="장기회원" class="btn-check" name="sort"
+							id="radioWf3"> <label
 							class="btn btn-outline-dark radioField" for="radioWf3">장기회원</label>
 					</div>
 					<hr>
@@ -70,6 +71,17 @@
 		</div>
 	</div>
 
+	<form action="/member/select" method="get" id="fm1">
+
+		<div style="text-align: right;">
+			<select name="pageSize" id="selectPage">
+				<option value="10">10개씩 보기</option>
+				<option value="50">50개씩 보기</option>
+				<option value="100">100개씩 보기</option>
+			</select>
+		</div>
+
+	</form>
 	<!-- 회원 리스트 출력 -->
 	<div class="col-sm-12">
 		<table id="example1" class="table table-bordered table-hover"
@@ -89,7 +101,7 @@
 					<th class="sorting sorting_asc">현재 수강상태</th>
 				</tr>
 			</thead>
-			<tbody>
+			<tbody class="test">
 				<c:forEach var="vo" items="${memberList }">
 					<tr class="tr:hover">
 						<td class="dtr-control" tabindex="0"><input type="checkbox"
@@ -97,13 +109,7 @@
 						<td class="dtr-control" tabindex="0">${vo.mem_no }</td>
 						<td class=""><a
 							href="/member/read?mem_no=${vo.mem_no }&page=${param.page==null? 1:param.page}">${vo.mem_name }</a></td>
-						<td><c:if test="${vo.mem_rank == 0}">
-						신규회원
-						</c:if> <c:if test="${vo.mem_rank == 1}">
-						일반회원
-						</c:if> <c:if test="${vo.mem_rank == 2}">
-						장기회원
-						</c:if></td>
+						<td>${vo.mem_rank }</td>
 						<td>${vo.reg_date }</td>
 						<td class="sorting_1">${vo.class_time }</td>
 						<td>${vo.class_status }</td>
@@ -142,7 +148,7 @@
 		</div>
 	</div>
 
-	<button class="btn btn-primary" type="button" onclick="deleteMem()">삭제하기</button>
+	<button class="btn btn-primary" type="button">삭제하기</button>
 
 </div>
 <script>
@@ -152,26 +158,25 @@
 				.click(
 						function() {
 							$(".filter").empty();
-							let work_field = $('input[name=work_field]:checked')
-									.val();
+							let sort = $('input[name=sort]:checked').val();
 							let memYear = $('#monthInput').val();
 
-							if (work_field != undefined) {
+							if (sort != undefined) {
 								$('.filter1')
 										.html(
-												'<p><div class="border border-1 rounded-3 p-2" role="group" style="width: 700px; margin-bottom: 20px;">'
-														+ '<button class="removeLi btn-close" aria-label="Close" style="width: 1px; position: absolute; right:78px;"></button>'
-														+ '<input type="hidden" name="work_field" value="'+work_field+'">'
-														+ '<span style="padding-left: 20px;font-size: 18px; font-weight: bold;">'
-														+ work_field
+												'<div class="border border-1 rounded-3 p-2" role="group" style="width: 120px; margin-bottom: 20px; background-color:#fff;">'
+														+ '<button class="removeLi btn-close" aria-label="Close" style="width: 1px; position: absolute;"></button>'
+														+ '<input type="hidden" name="sort" value="'+sort+'">'
+														+ '<span style="padding-left: 20px;font-size: 16px; font-weight: bold;">'
+														+ sort
 														+ '</span></div></p>');
 							}
 
 							if (memYear != "") {
 								$('.filter2')
 										.html(
-												'<p><div class="border border-1 rounded-3 p-2" role="group" style="width: 700px; margin-bottom: 20px;">'
-														+ '<button class="removeLi btn-close" aria-label="Close" style="width: 1px; position: absolute; right:78px;"></button>'
+												'<div class="border border-1 rounded-3 p-2" role="group" style="width: 120px; margin-bottom: 20px; background-color:#fff;">'
+														+ '<button class="removeLi btn-close" aria-label="Close" style="width: 1px; position: absolute;"></button>'
 														+ '<input type="hidden" name="memYear" value="'+memYear+'">'
 														+ '<span style="padding-left: 20px;font-size: 18px; font-weight: bold;">'
 														+ memYear
@@ -182,17 +187,10 @@
 
 	});
 
-// 	document.addEventListener("DOMContentLoaded", function() {
-// 		var removeBtn = document.querySelector(".removeLi");
-
-// 		removeBtn.addEventListener("click", function() {
-// 			// 클릭 시 부모 요소인 div 태그를 삭제합니다.
-// 			var parentDiv = removeBtn.closest(".border");
-// 			if (parentDiv) {
-// 				parentDiv.remove();
-// 			}
-// 		});
-// 	});
+	/* 리스트에 추가된 자격증 삭제 */
+	$(document).on('click', '.removeLi', function() {
+		$(this).parent().remove()
+	});
 
 	// 최상위 체크박스 클릭 시 전체 체크박스 선택
 	$(function() {
@@ -218,22 +216,6 @@
 		});
 
 	});
-
-	function deleteMem() {
-
-		let groupList = "";
-
-		$(".chkGrp:checked").each(function(idx, item) {
-			if (idx == 0) {
-				groupList += item.value;
-			} else {
-				groupList += "," + item.value;
-			}
-
-		});
-		alert(grouplist);
-	}
-
 </script>
 
 <%@ include file="../include/footer.jsp"%>
