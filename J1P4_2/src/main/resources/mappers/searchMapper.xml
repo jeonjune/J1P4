@@ -11,7 +11,7 @@
     <![CDATA[
 		select * from member
 	    where (mem_name like '%${keyword}%' or mem_phone like '%${keyword}%' or mem_email like '%${keyword}%')
-	    and reg_date like '${memYear}%' and mem_rank like '${sort}%'
+	    and reg_date like '${memYear}%' and mem_rank like '${filter}%'
 	    order by mem_no desc 
 		limit ${pageStart},${pageSize}
     ]]>
@@ -21,7 +21,7 @@
 	<select id="totalCount" resultType="int">
 		select count(mem_no) from member
 		where (mem_name like '%${keyword}%' or mem_phone like '%${keyword}%' or mem_email like '%${keyword}%')
-	    and reg_date like '${memYear}%' and mem_rank like '${sort}%'
+	    and reg_date like '${memYear}%' and mem_rank like '${filter}%'
 	</select>
 
 </mapper>

@@ -8,16 +8,7 @@
 
 <div class="content-wrapper" style="min-height: 831px;">
 
-회원등급 : 
-<c:if test="${readMem.mem_rank == 0}">
-신규회원<br>
-</c:if>
-<c:if test="${readMem.mem_rank == 1}">
-일반회원<br>
-</c:if>
-<c:if test="${readMem.mem_rank == 2}">
-장기회원<br>
-</c:if>
+회원등급 :${readMem.mem_rank}<br>
 회원번호 : ${readMem.mem_no }<br>
 이름 : ${readMem.mem_name }<br>
 생년월일 : ${readMem.mem_birth }<br>
