@@ -16,5 +16,8 @@ public interface MemberDAO {
 	// 회원 기본페이지
 	public MemberVO readMem(int mem_no) throws Exception;
 	
+	// 회원 등록
+	public void memJoin(MemberVO vo) throws Exception;
+	
 	
 }

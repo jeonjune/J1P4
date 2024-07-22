@@ -39,6 +39,12 @@ public class MemberDAOImpl implements MemberDAO {
 		logger.debug(" (⌐■_■) DAO : readMem(int mem_no) 실행 ");
 		return sqlSession.selectOne(NAMESPACE+"readMem",mem_no);
 	}
+
+	@Override
+	public void memJoin(MemberVO vo) throws Exception {
+		sqlSession.insert(NAMESPACE+"memJoin", vo);
+		
+	}
 	
 	
 	

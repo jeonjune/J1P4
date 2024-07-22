@@ -35,5 +35,11 @@
 		select * from member
 		where mem_no = #{mem_no};
 	</select>
+	
+	 <!-- 회원등록 -->
+  	 <insert id="memJoin" >
+  	 	insert into member (mem_name, mem_birth, mem_gender, mem_phone, sms_opt, mem_email, email_opt, mem_note, mem_addr1, mem_addr2) 
+ 		values(#{mem_name}, #{mem_birth}, #{mem_gender}, #{mem_phone}, #{sms_opt}, #{mem_email}, #{email_opt}, #{mem_note}, #{mem_addr1}, #{mem_addr2})
+  	 </insert>
 
   </mapper>

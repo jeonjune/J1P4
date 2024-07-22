@@ -37,6 +37,12 @@ public class MemberServiceImpl implements MemberService {
 		return mDao.readMem(mem_no);
 	}
 
+	@Override
+	public void memJoin(MemberVO vo) throws Exception {
+		mDao.memJoin(vo);
+		
+	}
+
 	
 	
 }
