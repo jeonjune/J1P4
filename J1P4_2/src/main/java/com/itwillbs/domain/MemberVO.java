@@ -15,7 +15,7 @@ public class MemberVO {
 	private String mem_email;
 	private Integer email_opt;
 	private Date reg_date;
-	private Integer mem_rank;
+	private String mem_rank;
 	private String mem_note;
 	private Integer class_status;
 	private Integer class_time;

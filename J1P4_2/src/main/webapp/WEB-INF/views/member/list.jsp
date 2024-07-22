@@ -7,25 +7,31 @@
 
 <div class="content-wrapper" style="min-height: 831px;">
 
-	<form action="/member/listSearch" type="get">
+	<!-- 검색 / 필터 / 정렬 데이터 전송 -->
+	<form action="/member/listSearch" method="get">
+
 		<div class="form-inline">
 			<div class="input-group">
 				<input class="form-control" type="search" name="keyword"
-					placeholder="Search" aria-label="Search">
+					value="${param.keyword }" placeholder="Search" aria-label="Search">
 				<div class="input-group-append">
-					<button class="btn" type="submit">
+					<button class="btn" type="submit" class="submitBtn">
 						<i class="fas fa-search fa-fw"></i>
+					</button>
+					<!-- 필터 모달창 버튼 -->
+					<button type="button" class="btn btn-primary"
+						data-bs-toggle="modal" data-bs-target="#exampleModal">
+						<i class="fas fa-filter fa-fw"></i>
 					</button>
 				</div>
 			</div>
 		</div>
+		<div class="filter1" style="display: inline-block;"></div>
+		<div class="filter2" style="display: inline-block;"></div>
+
 	</form>
 
-	<!-- Button trigger modal -->
-	<button type="button" class="btn btn-primary" data-bs-toggle="modal"
-		data-bs-target="#exampleModal">
-		<i class="fas fa-filter fa-fw"></i>
-	</button>
+
 
 	<!-- Modal -->
 	<div class="modal fade" id="exampleModal" tabindex="-1"
@@ -33,7 +39,7 @@
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+					<h5 class="modal-title" id="exampleModalLabel">필터하기</h5>
 					<button type="button" class="btn-close" data-bs-dismiss="modal"
 						aria-label="Close"></button>
 				</div>
@@ -41,38 +47,45 @@
 
 					<h5>회원등급</h5>
 					<div class="content">
-						<input type="radio" value="신규회원" class="btn-check"
-							name="work_field" id="radioWf1"> <label
+						<input type="radio" value="신규회원" class="btn-check" name="sort"
+							id="radioWf1"> <label
 							class="btn btn-outline-dark radioField" for="radioWf1">신규회원</label>
-						<input type="radio" value="일반회원" class="btn-check"
-							name="work_field" id="radioWf2"> <label
+						<input type="radio" value="일반회원" class="btn-check" name="sort"
+							id="radioWf2"> <label
 							class="btn btn-outline-dark radioField" for="radioWf2">일반회원</label>
-						<input type="radio" value="장기회원" class="btn-check"
-							name="work_field" id="radioWf3"> <label
+						<input type="radio" value="장기회원" class="btn-check" name="sort"
+							id="radioWf3"> <label
 							class="btn btn-outline-dark radioField" for="radioWf3">장기회원</label>
 					</div>
 					<hr>
 					<h5>연도별</h5>
-					<input type="month">년
+					<input type="month" id="monthInput">년
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary"
-						data-bs-dismiss="modal">Close</button>
-					<button type="button" class="btn btn-primary">Save changes</button>
+						data-bs-dismiss="modal">취소</button>
+					<button type="button" class="btn btn-primary filterBtn"
+						data-bs-dismiss="modal">필터 적용</button>
 				</div>
 			</div>
 		</div>
 	</div>
 
-	<select>
-		<option>등록순</option>
-		<option>이름순</option>
-		<option></option>
-	</select>
+	<form action="/member/select" method="get" id="fm1">
 
+		<div style="text-align: right;">
+			<select name="pageSize" id="selectPage">
+				<option value="10">10개씩 보기</option>
+				<option value="50">50개씩 보기</option>
+				<option value="100">100개씩 보기</option>
+			</select>
+		</div>
+
+	</form>
+	<!-- 회원 리스트 출력 -->
 	<div class="col-sm-12">
-		<table id="example1" class="table table-bordered table-striped"
-			aria-describedby="example1_info">
+		<table id="example1" class="table table-bordered table-hover"
+			style="background: #fff" aria-describedby="example1_info">
 			<thead>
 				<tr>
 					<th class="sorting" width="20px"><input type="checkbox"
@@ -80,7 +93,7 @@
 					<th class="sorting">NO<i
 						class="fas fa-sort fa-fw left-align-icon" onclick="sortMem()"></i></th>
 					<th class="sorting">회원이름<i
-						class="fas fa-sort fa-fw left-align-icon" onclick="sortMem()"></i></th>
+						class="fas fa-sort fa-fw left-align-icon1" onclick="sortMem()"></i></th>
 					<th class="sorting">회원등급</th>
 					<th class="sorting">등록일<i
 						class="fas fa-sort fa-fw left-align-icon" onclick="sortMem()"></i></th>
@@ -88,21 +101,15 @@
 					<th class="sorting sorting_asc">현재 수강상태</th>
 				</tr>
 			</thead>
-			<tbody>
+			<tbody class="test">
 				<c:forEach var="vo" items="${memberList }">
-					<tr class="odd">
+					<tr class="tr:hover">
 						<td class="dtr-control" tabindex="0"><input type="checkbox"
 							class="chkGrp"></td>
 						<td class="dtr-control" tabindex="0">${vo.mem_no }</td>
 						<td class=""><a
 							href="/member/read?mem_no=${vo.mem_no }&page=${param.page==null? 1:param.page}">${vo.mem_name }</a></td>
-						<td><c:if test="${vo.mem_rank == 0}">
-						신규회원
-						</c:if> <c:if test="${vo.mem_rank == 1}">
-						일반회원
-						</c:if> <c:if test="${vo.mem_rank == 2}">
-						장기회원
-						</c:if></td>
+						<td>${vo.mem_rank }</td>
 						<td>${vo.reg_date }</td>
 						<td class="sorting_1">${vo.class_time }</td>
 						<td>${vo.class_status }</td>
@@ -112,9 +119,7 @@
 		</table>
 	</div>
 
-
-
-	<!-- 페이징 처리 (현재 쌓인 데이터가 얼마 없어 Criteria.pageSize는 2, PageVO.pageBlock은 3 처리해둠) -->
+	<!-- 페이징 처리 -->
 	<div class="col-sm-12 col-md-7">
 		<div class="dataTables_paginate paging_simple_numbers"
 			id="example1_paginate">
@@ -143,54 +148,74 @@
 		</div>
 	</div>
 
-	<button class="btn btn-primary" type="button" onclick="deleteMem()">삭제하기</button>
+	<button class="btn btn-primary" type="button">삭제하기</button>
 
 </div>
-
-
-
 <script>
-	// 	$('.dataTables_paginate.paging_simple_numbers').click(function() {
-	// 		alert('test');
+	// 선택한 필터 출력
+	$(function() {
+		$('.filterBtn')
+				.click(
+						function() {
+							$(".filter").empty();
+							let sort = $('input[name=sort]:checked').val();
+							let memYear = $('#monthInput').val();
 
-	// 		$('body').addClass('sidebar-collapse');
+							if (sort != undefined) {
+								$('.filter1')
+										.html(
+												'<div class="border border-1 rounded-3 p-2" role="group" style="width: 120px; margin-bottom: 20px; background-color:#fff;">'
+														+ '<button class="removeLi btn-close" aria-label="Close" style="width: 1px; position: absolute;"></button>'
+														+ '<input type="hidden" name="sort" value="'+sort+'">'
+														+ '<span style="padding-left: 20px;font-size: 16px; font-weight: bold;">'
+														+ sort
+														+ '</span></div></p>');
+							}
 
-	// 	});
+							if (memYear != "") {
+								$('.filter2')
+										.html(
+												'<div class="border border-1 rounded-3 p-2" role="group" style="width: 120px; margin-bottom: 20px; background-color:#fff;">'
+														+ '<button class="removeLi btn-close" aria-label="Close" style="width: 1px; position: absolute;"></button>'
+														+ '<input type="hidden" name="memYear" value="'+memYear+'">'
+														+ '<span style="padding-left: 20px;font-size: 18px; font-weight: bold;">'
+														+ memYear
+														+ '</span></div></p>');
+							}
 
-	//스크립트 영역
+						});
 
+	});
+
+	/* 리스트에 추가된 자격증 삭제 */
+	$(document).on('click', '.removeLi', function() {
+		$(this).parent().remove()
+	});
+
+	// 최상위 체크박스 클릭 시 전체 체크박스 선택
 	$(function() {
 		$("#chkAll").click(function() {
 			$(".chkGrp").attr("checked", this.checked);
 		});
 
 	});
-	
+
 	$(function() {
-		$(".left-align-icon").click(function() {
-			alert('wwwwwwwww');
+		$(".left-align-icon1").click(function() {
+			if ($(".left-align-icon1").hasClass("fa-sort")) {
+				$(".left-align-icon1").removeClass("fa-sort");
+				$(".left-align-icon1").addClass("fa-sort-up");
+
+			} else if ($(".left-align-icon1").hasClass("fa-sort-up")) {
+				$(".left-align-icon1").removeClass("fa-sort-up");
+				$(".left-align-icon1").addClass("fa-sort-down");
+			} else {
+				$(".left-align-icon1").removeClass("fa-sort-down");
+				$(".left-align-icon1").addClass("fa-sort");
+			}
 		});
 
 	});
-
-	function deleteMem() {
-
-		let groupList = "";
-
-		$(".chkGrp:checked").each(function(idx, item) {
-			if (idx == 0) {
-				groupList += item.value;
-			} else {
-				groupList += "," + item.value;
-			}
-
-		});
-		alert(grouplist);
-	}
-	
-	function sortMem() {
-		alert("정렬기능!");	
-	}
 </script>
 
 <%@ include file="../include/footer.jsp"%>
