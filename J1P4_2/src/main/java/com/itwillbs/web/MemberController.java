@@ -116,18 +116,18 @@ public class MemberController {
 		
 	}
 	
-	// 회원등록버튼 임시페이지
-	@GetMapping(value = "/memJoin")
-	public void memJoinGET() throws Exception{
-		logger.debug(" memJoinGET() 실행 ");
-		
-		
-	}
+//	// 회원등록버튼 임시페이지
+//	@GetMapping(value = "/memJoin")
+//	public void memJoinGET() throws Exception{
+//		logger.debug(" memJoinGET() 실행 ");
+//		
+//		
+//	}
 	
 	// 회원등록 후 리스트 이동
 	@ResponseBody
 	@PostMapping(value = "/memJoin")
-	public String memListPOST(MemberVO vo) throws Exception {
+	public void memListPOST(MemberVO vo) throws Exception {
 		logger.info("모달창으로 회원 등록(컨트롤러)");
 		
 		logger.info("vo :"+vo);
@@ -139,7 +139,6 @@ public class MemberController {
 		}
 		mService.memJoin(vo);
 		
-		return "redirect:/member/list";
 	}
 	
 }
