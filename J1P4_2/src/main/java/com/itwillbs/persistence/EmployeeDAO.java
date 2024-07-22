@@ -16,5 +16,7 @@ public interface EmployeeDAO {
 	// 직원 권한등록
 	public void empAuth(AuthVO avo) throws Exception;
 	
+	//아이디 중복 체크
+	public int idCheck(String user_id) throws Exception;
 
 }

@@ -52,7 +52,10 @@
   	 	values(#{user_id},#{auth})
   	 </insert>
   	 
-  	 
+  	<!-- 중복된 아이디가 있는지 조회 -->
+  	<select id="selectId" parameterType="string" resultType="int" >
+  		select count(user_id) from employee where user_id=#{user_id}
+  	</select>
 	 
 	 
 	 <!-- 회원정보와 인증정보를 한번에 조회(Join) -->

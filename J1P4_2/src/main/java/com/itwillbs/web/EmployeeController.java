@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.itwillbs.domain.AuthVO;
@@ -70,10 +71,17 @@ public class EmployeeController {
 		return "/employee/empList";
 	}
 
-	// 로그인
-//	@GetMapping(value = "/login")
-//	public void loginGET() throws Exception {
-//		
-//	}
+	//아이디 중복 체크
+	//ajax로 처리할때는 @ResponseBody를 써야 응답이 가능.
+	@GetMapping(value = "/idcheck")
+	public @ResponseBody int idCheck(@RequestParam("user_id") String id) throws Exception {
+	
+		logger.debug("id :"+id);
+	
+		int res = eService.idCheck(id);
+		
+		return res;
+		
+	}
 
 }
