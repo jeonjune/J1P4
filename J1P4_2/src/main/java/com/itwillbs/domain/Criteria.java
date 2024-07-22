@@ -6,6 +6,7 @@ public class Criteria {
 	private int pageSize;
 	private String keyword;
 	private String memYear;
+	private String filter;
 	private String sort;
 	
 	public Criteria() {
@@ -21,7 +22,6 @@ public class Criteria {
 		return memYear;
 	}
 	
-	
     
     public String getSort() {
 		return sort;
@@ -29,6 +29,14 @@ public class Criteria {
 
 	public void setSort(String sort) {
 		this.sort = sort;
+	}
+
+	public String getFilter() {
+		return filter;
+	}
+
+	public void setFilter(String filter) {
+		this.filter = filter;
 	}
 
 	public void setKeyword(String keyword) {

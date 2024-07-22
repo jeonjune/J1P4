@@ -27,13 +27,13 @@
 			</div>
 		</div>
 		<div class="filter1" style="display: inline-block;">
-			<c:if test="${not empty param.sort }">
+			<c:if test="${not empty param.filter }">
 				<div class="border border-1 rounded-3 p-2" role="group" style="width: 120px; margin-bottom: 20px; background-color:#fff;">
 					<button class="removeLi btn-close" aria-label="Close"
 						style="width: 1px; position: absolute;"></button>
-					<input type="hidden" value="${param.sort }" name="sort">
+					<input type="hidden" value="${param.filter }" name="filter">
 					<span
-						style="padding-left: 20px; font-size: 16px; font-weight: bold;">${param.sort }</span>
+						style="padding-left: 20px; font-size: 16px; font-weight: bold;">${param.filter }</span>
 				</div>
 			</c:if>
 		</div>
@@ -68,13 +68,13 @@
 					<h5>회원등급</h5>
 					<div class="content">
 						<input type="radio" value="신규회원" class="btn-check"
-							name="sort" id="radioWf1"> <label
+							name="filter" id="radioWf1"> <label
 							class="btn btn-outline-dark radioField" for="radioWf1">신규회원</label>
 						<input type="radio" value="일반회원" class="btn-check"
-							name="sort" id="radioWf2"> <label
+							name="filter" id="radioWf2"> <label
 							class="btn btn-outline-dark radioField" for="radioWf2">일반회원</label>
 						<input type="radio" value="장기회원" class="btn-check"
-							name="sort" id="radioWf3"> <label
+							name="filter" id="radioWf3"> <label
 							class="btn btn-outline-dark radioField" for="radioWf3">장기회원</label>
 					</div>
 					<hr>
@@ -102,12 +102,14 @@
 					<th class="sorting">NO<i
 						class="fas fa-sort fa-fw left-align-icon" onclick="sortMem()"></i></th>
 					<th class="sorting">회원이름<i
-						class="fas fa-sort fa-fw left-align-icon" onclick="sortMem()"></i></th>
+						class="fas fa-sort fa-fw left-align-icon1" onclick="sortMem()"></i></th>
+					<th class="sorting">연락처</th>
 					<th class="sorting">회원등급</th>
 					<th class="sorting">등록일<i
 						class="fas fa-sort fa-fw left-align-icon" onclick="sortMem()"></i></th>
 					<th class="sorting">강의 누적 기간</th>
-					<th class="sorting sorting_asc">현재 수강상태</th>
+					<th class="sorting">현재 수강상태</th>
+					<th class="sorting">메모</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -118,10 +120,12 @@
 						<td class="dtr-control" tabindex="0">${vo.mem_no }</td>
 						<td class=""><a
 							href="/member/read?mem_no=${vo.mem_no }&page=${param.page==null? 1:param.page}">${vo.mem_name }</a></td>
+						<td>${vo.mem_phone }</td>
 						<td>${vo.mem_rank }</td>
 						<td>${vo.reg_date }</td>
 						<td class="sorting_1">${vo.class_time }</td>
 						<td>${vo.class_status }</td>
+						<td>${vo.mem_note }</td>
 					</tr>
 				</c:forEach>
 			</tbody>
@@ -137,7 +141,7 @@
 					<li class="paginate_button page-item previous"
 						id="example1_previous"><a
 						href="/member/listSearch?keyword=${pageVO.cri.keyword }
-						&memYear=${pageVO.cri.memYear }&sort=${pageVO.cri.sort }&page=${pageVO.startPage-1 }"
+						&memYear=${pageVO.cri.memYear }&filter=${pageVO.cri.filter }&page=${pageVO.startPage-1 }"
 						aria-controls="example1" data-dt-idx="0" tabindex="0"
 						class="page-link">«</a></li>
 				</c:if>
@@ -146,14 +150,14 @@
 					<li
 						class="paginate_button page-item ${pageVO.cri.page == i ? 'active':'' }"><a
 						href="/member/listSearch?keyword=${pageVO.cri.keyword }
-						&memYear=${pageVO.cri.memYear }&sort=${pageVO.cri.sort }&page=${i }"
+						&memYear=${pageVO.cri.memYear }&filter=${pageVO.cri.filter }&page=${i }"
 						aria-controls="example1" data-dt-idx="1" tabindex="0"
 						class="page-link">${i }</a></li>
 				</c:forEach>
 				<c:if test="${pageVO.next && pageVO.endPage > 0 }">
 					<li class="paginate_button page-item next" id="example1_next"><a
 						href="/member/listSearch?keyword=${pageVO.cri.keyword }
-						&memYear=${pageVO.cri.memYear }&sort=${pageVO.cri.sort }&page=${pageVO.endPage+1 }"
+						&memYear=${pageVO.cri.memYear }&filter=${pageVO.cri.filter }&page=${pageVO.endPage+1 }"
 						aria-controls="example1" data-dt-idx="7" tabindex="0"
 						class="page-link">»</a></li>
 				</c:if>
@@ -166,7 +170,7 @@
 </div>
 <script>
 	// 이전 페이지에서 선택한 필터(회원등급) 값 들고오기
-	$(":radio[name='sort'][value='${param.sort }']").attr('checked', true);
+	$(":radio[name='filter'][value='${param.filter }']").attr('checked', true);
 
 	// 선택한 필터 출력
 	$(function() {
@@ -174,18 +178,18 @@
 				.click(
 						function() {
 							$(".filter").empty();
-							let sort = $('input[name=sort]:checked')
+							let filter = $('input[name=filter]:checked')
 									.val();
 							let memYear = $('#monthInput').val();
 
-							if (sort != undefined) {
+							if (filter != undefined) {
 								$('.filter1')
 										.html(
 												'<div class="border border-1 rounded-3 p-2" role="group" style="width: 120px; margin-bottom: 20px; background-color:#fff;">'
 														+ '<button class="removeLi btn-close" aria-label="Close" style="width: 1px; position: absolute;"></button>'
-														+ '<input type="hidden" name="sort" value="'+sort+'">'
+														+ '<input type="hidden" name="filter" value="'+filter+'">'
 														+ '<span style="padding-left: 20px;font-size: 16px; font-weight: bold;">'
-														+ sort
+														+ filter
 														+ '</span></div>');
 							}
 
