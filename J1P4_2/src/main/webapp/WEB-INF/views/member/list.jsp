@@ -10,7 +10,7 @@
 <div class="content-wrapper" style="min-height: 831px;">
 
 	<!-- 검색 / 필터 / 정렬 데이터 전송 -->
-	<form action="" method="get">
+	<form action="" method="get" id='actionForm'>
 
 		<div class="form-inline">
 			<!-- 검색 키워드 입력창 -->
@@ -58,14 +58,23 @@
 				</div>
 			</c:if>
 		</div>
-
+		<div class="content" style="text-align: right;">
+		<div style="display: inline-block;">
+			<input type="radio" value="mem_name" class="btn-check" name="filter2"
+				id="radioName1"> <label class="btn" for="radioName1">이름순(오름차순)</label>
+			<input type="radio" value="mem_name" class="btn-check" name="filter2"
+				id="radioName2"> <label class="btn" for="radioName2">이름순(내림차순)</label>
+			<input type="radio" value="reg_date" class="btn-check" name="filter2"
+				id="radioReg"> <label class="btn" for="radioReg">등록순</label>
+		</div>
 		<!-- 행 개수 선택 -->
-		<div style="text-align: right;">
-			<select name="pageSize" id="selectPage">
+		<div style="display: inline-block;">
+			<select name="pageSize" id="selectPage" class="form-control">
 				<option value="10">10개씩 보기</option>
-				<option value="50">50개씩 보기</option>
-				<option value="100">100개씩 보기</option>
+				<option value="20">50개씩 보기</option>
+				<option value="30">100개씩 보기</option>
 			</select>
+		</div>
 		</div>
 
 	</form>
@@ -89,34 +98,34 @@
 					<h5>회원등급</h5>
 					<div class="content">
 						<input type="radio" value="신규회원" class="btn-check" name="filter"
-							id="radioWf1"> <label
-							class="btn btn-outline-dark radioField" for="radioWf1">신규회원</label>
+							id="radioRank1"> <label
+							class="btn btn-outline-dark radioField" for="radioRank1">신규회원</label>
 						<input type="radio" value="일반회원" class="btn-check" name="filter"
-							id="radioWf2"> <label
-							class="btn btn-outline-dark radioField" for="radioWf2">일반회원</label>
+							id="radioRank2"> <label
+							class="btn btn-outline-dark radioField" for="radioRank2">일반회원</label>
 						<input type="radio" value="장기회원" class="btn-check" name="filter"
-							id="radioWf3"> <label
-							class="btn btn-outline-dark radioField" for="radioWf3">장기회원</label>
+							id="radioRank3"> <label
+							class="btn btn-outline-dark radioField" for="radioRank3">장기회원</label>
 					</div>
 					<hr>
 					<h5>성별</h5>
 					<div class="content">
-						<input type="radio" value="신규회원" class="btn-check" name="filter2"
-							id="radioWf4"> <label
-							class="btn btn-outline-dark radioField" for="radioWf4">남자</label>
-						<input type="radio" value="일반회원" class="btn-check" name="filter2"
-							id="radioWf5"> <label
-							class="btn btn-outline-dark radioField" for="radioWf5">여자</label>
+						<input type="radio" value=0 class="btn-check" name="filter2"
+							id="radioGen1"> <label
+							class="btn btn-outline-dark radioField" for="radioGen1">남자</label>
+						<input type="radio" value=1 class="btn-check" name="filter2"
+							id="radioGen2"> <label
+							class="btn btn-outline-dark radioField" for="radioGen2">여자</label>
 					</div>
 					<hr>
-					<h5>수신동의여부</h5>
+					<h5>메세지 수신동의여부</h5>
 					<div class="content">
-						<input type="radio" value="신규회원" class="btn-check" name="filter3"
-							id="radioWf6"> <label
-							class="btn btn-outline-dark radioField" for="radioWf6">동의</label>
-						<input type="radio" value="일반회원" class="btn-check" name="filter3"
-							id="radioWf7"> <label
-							class="btn btn-outline-dark radioField" for="radioWf7">미동의</label>
+						<input type="radio" value=1 class="btn-check" name="filter3"
+							id="radioMsg1"> <label
+							class="btn btn-outline-dark radioField" for="radioMsg1">동의</label>
+						<input type="radio" value=0 class="btn-check" name="filter3"
+							id="radioMsg2"> <label
+							class="btn btn-outline-dark radioField" for="radioMsg2">미동의</label>
 					</div>
 					<hr>
 					<h5>연도별</h5>
@@ -176,72 +185,60 @@
 	</div>
 
 	<!-- 페이징 처리 (기존 페이지) -->
-	<c:if
-		test="${empty param.keyword and empty param.memYear and empty param.filter }">
 		<div class="col-sm-12 col-md-7">
 			<div class="dataTables_paginate paging_simple_numbers"
 				id="example1_paginate">
 				<ul class="pagination">
 					<c:if test="${pageVO.prev }">
-						<li class="paginate_button page-item previous"
-							id="example1_previous"><a
-							href="/member/list?page=${pageVO.startPage-1 }"
-							aria-controls="example1" data-dt-idx="0" tabindex="0"
-							class="page-link">«</a></li>
+						<li class="paginate_button page-item previous" id="example1_previous">
+							<c:if test="${empty param.keyword and empty param.memYear and empty param.filter }">
+								<a href="/member/list?page=${pageVO.startPage-1 }&pageSize=${pageVO.cri.pageSize}"
+								aria-controls="example1" data-dt-idx="0" tabindex="0"
+								class="page-link">«</a>
+							</c:if>
+							<c:if test="${not empty param.keyword or not empty param.memYear or not empty param.filter }">
+								<a href="/member/list?keyword=${pageVO.cri.keyword }&memYear=${pageVO.cri.memYear }&filter=${pageVO.cri.filter }
+								&page=${pageVO.startPage-1 }&pageSize=${pageVO.cri.pageSize}"
+								aria-controls="example1" data-dt-idx="0" tabindex="0"
+								class="page-link">«</a>
+							</c:if>
+						</li>
 					</c:if>
 					<c:forEach var="i" begin="${pageVO.startPage }"
 						end="${pageVO.endPage }" step="1">
-						<li
-							class="paginate_button page-item ${pageVO.cri.page == i ? 'active':'' }"><a
-							href="/member/list?page=${i }" aria-controls="example1"
-							data-dt-idx="1" tabindex="0" class="page-link">${i }</a></li>
+						<li class="paginate_button page-item ${pageVO.cri.page == i ? 'active':'' }">
+							<c:if test="${empty param.keyword and empty param.memYear and empty param.filter }">
+								<a href="/member/list?page=${i }&pageSize=${pageVO.cri.pageSize}" aria-controls="example1"
+								data-dt-idx="1" tabindex="0" class="page-link">${i }</a>
+							</c:if>
+							<c:if test="${not empty param.keyword or not empty param.memYear or not empty param.filter }">
+								<a href="/member/list?keyword=${pageVO.cri.keyword }&memYear=${pageVO.cri.memYear }&filter=${pageVO.cri.filter }
+								&page=${i }&pageSize=${pageVO.cri.pageSize}"
+								aria-controls="example1" data-dt-idx="1" tabindex="0"
+								class="page-link">${i }</a>
+							</c:if>
+						</li>
 					</c:forEach>
 					<c:if test="${pageVO.next && pageVO.endPage > 0 }">
-						<li class="paginate_button page-item next" id="example1_next"><a
-							href="/member/list?page=${pageVO.endPage+1 }"
+						<li class="paginate_button page-item next" id="example1_next">
+						<c:if test="${empty param.keyword and empty param.memYear and empty param.filter }">
+							<a href="/member/list?page=${pageVO.endPage+1 }&pageSize=${pageVO.cri.pageSize}"
 							aria-controls="example1" data-dt-idx="7" tabindex="0"
-							class="page-link">»</a></li>
+							class="page-link">»</a>
+						</c:if>
+						<c:if test="${not empty param.keyword or not empty param.memYear or not empty param.filter }">
+							<a href="/member/list?keyword=${pageVO.cri.keyword }&memYear=${pageVO.cri.memYear }&filter=${pageVO.cri.filter }
+							&page=${pageVO.endPage+1 }&pageSize=${pageVO.cri.pageSize}"
+							aria-controls="example1" data-dt-idx="7" tabindex="0"
+							class="page-link">»</a>
+						</c:if>
+						</li>
 					</c:if>
 				</ul>
 			</div>
 		</div>
-	</c:if>
 
-	<!-- 페이징 처리 (검색 후 페이지) -->
-	<c:if
-		test="${not empty param.keyword or not empty param.memYear or not empty param.filter }">
-		<div class="col-sm-12 col-md-7">
-			<div class="dataTables_paginate paging_simple_numbers"
-				id="example1_paginate">
-				<ul class="pagination">
-					<c:if test="${pageVO.prev }">
-						<li class="paginate_button page-item previous"
-							id="example1_previous"><a
-							href="/member/list?keyword=${pageVO.cri.keyword }
-						&memYear=${pageVO.cri.memYear }&filter=${pageVO.cri.filter }&page=${pageVO.startPage-1 }"
-							aria-controls="example1" data-dt-idx="0" tabindex="0"
-							class="page-link">«</a></li>
-					</c:if>
-					<c:forEach var="i" begin="${pageVO.startPage }"
-						end="${pageVO.endPage }" step="1">
-						<li
-							class="paginate_button page-item ${pageVO.cri.page == i ? 'active':'' }"><a
-							href="/member/list?keyword=${pageVO.cri.keyword }
-						&memYear=${pageVO.cri.memYear }&filter=${pageVO.cri.filter }&page=${i }"
-							aria-controls="example1" data-dt-idx="1" tabindex="0"
-							class="page-link">${i }</a></li>
-					</c:forEach>
-					<c:if test="${pageVO.next && pageVO.endPage > 0 }">
-						<li class="paginate_button page-item next" id="example1_next"><a
-							href="/member/list?keyword=${pageVO.cri.keyword }
-						&memYear=${pageVO.cri.memYear }&filter=${pageVO.cri.filter }&page=${pageVO.endPage+1 }"
-							aria-controls="example1" data-dt-idx="7" tabindex="0"
-							class="page-link">»</a></li>
-					</c:if>
-				</ul>
-			</div>
-		</div>
-	</c:if>
+	
 
 	<button class="btn btn-primary" type="button">삭제하기</button>
 	<!-- 회원 등록 버튼 -->
@@ -328,7 +325,6 @@
 		$('.filterBtn')
 				.click(
 						function() {
-							// 							$(".filter").empty();
 
 							let filter = $('input[name=filter]:checked').val();
 							let memYear = $('#monthInput').val();
@@ -415,6 +411,13 @@
 			}
 		}).open();
 	}
+	
+	 $("#selectPage").change(function(){
+			
+		 $("#actionForm").submit();
+	  });
+	
+	 $("#selectPage").val("${pageVO.cri.pageSize }");
 </script>
 
 <%@ include file="../include/footer.jsp"%>

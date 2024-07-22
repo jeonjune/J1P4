@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.itwillbs.domain.BaseVO;
 import com.itwillbs.domain.Criteria;
 import com.itwillbs.domain.MemberVO;
 import com.itwillbs.domain.PageVO;
@@ -34,7 +35,7 @@ public class MemberController {
 	
 	
 	@GetMapping(value="/list")
-	public void listPageGET(Criteria cri,Model model) throws Exception {
+	public void listPageGET(Model model,Criteria cri) throws Exception {
 		
 		if(cri.getFilter() == null && cri.getKeyword() == null && cri.getMemYear() == null) {
 			// 서비스 -> DB의 정보를 가져오기 (페이징처리)

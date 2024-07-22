@@ -19,7 +19,18 @@ public class PageVO {
 	// private int pageSize;	// 페이지당 출력 개수
 	
 	private Criteria cri;
+	private BaseVO bVO;
 	
+	
+	
+	public BaseVO getbVO() {
+		return bVO;
+	}
+
+	public void setbVO(BaseVO bVO) {
+		this.bVO = bVO;
+	}
+
 	// 겟셋
 	public void setCri(Criteria cri) {
 		this.cri = cri;

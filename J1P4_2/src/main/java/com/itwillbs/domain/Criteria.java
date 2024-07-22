@@ -1,6 +1,9 @@
 package com.itwillbs.domain;
 
-public class Criteria {
+import lombok.Data;
+
+@Data
+public class Criteria  {
 
 	private int page;
 	private int pageSize;
@@ -8,44 +11,11 @@ public class Criteria {
 	private String memYear;
 	private String filter;
 	private String sort;
-	
+
 	public Criteria() {
 		this.page = 1;
 		this.pageSize = 10;
 	}
-	
-	public String getKeyword() {
-        return keyword;
-    }
-	
-	public String getMemYear() {
-		return memYear;
-	}
-	
-    
-    public String getSort() {
-		return sort;
-	}
-
-	public void setSort(String sort) {
-		this.sort = sort;
-	}
-
-	public String getFilter() {
-		return filter;
-	}
-
-	public void setFilter(String filter) {
-		this.filter = filter;
-	}
-
-	public void setKeyword(String keyword) {
-        this.keyword = keyword;
-    }
-    
-    public void setMemYear(String memYear) {
-    	this.memYear = memYear;
-    }
 	
 	public int getPage() {
 		return page;
