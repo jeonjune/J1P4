@@ -15,4 +15,7 @@ public interface MemberService {
 	// 회원 기본페이지
 	public MemberVO readMem(int mem_no) throws Exception;
 	
+	// 직원등록
+	public void memJoin(MemberVO vo) throws Exception;
+	
 }
