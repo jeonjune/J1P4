@@ -50,4 +50,18 @@ public class EmployeeServiceImpl implements EmployeeService {
 		
 	}
 
+	@Override
+	public int user_no(String user_id) throws Exception {
+		int user_no = edao.user_no(user_id);
+		return user_no;
+	}
+
+	@Override
+	public void workStart(int user_no) throws Exception {
+		edao.workStart(user_no);
+		
+	}
+	
+	
+
 }

@@ -3,29 +3,46 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
 <%@ include file="../include/header.jsp"%>
 <%@ include file="../include/sidemenu.jsp"%>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <!-- 카카오 우편번호 -->
 	<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <div class="content-wrapper" style="min-height: 831px;">
 
 
 <h1>empList </h1>
-<a href="/customLogin" class="nav-link">
+<a href="/main/login" class="nav-link">
               <i class="nav-icon fas fa-user"></i>
               <p>
                 로그인
               </p>
 </a>
+<sec:authorize access="isAuthenticated()">
+	<sec:authentication property="principal" var="principal"/>
+    <!-- principal property가 UserDetails임-->
+</sec:authorize>
+${principal} <br>
+${principal.username}<br>
+${principal.authorities}<br>
 
+<%-- ${author } --%>
+<div class="dropdown" id="commute-div">
+  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+    출근하기
+  </button>
+  <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+    <li><a class="dropdown-item" href="#" id="start_work">출근하기</a></li>
+  </ul>
+</div>
 		
 		<button class="btn btn-primary" type="button"
 		data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight"
 		aria-controls="offcanvasRight">등록하기</button>
 	<div class="col-sm-12">
-		<table id="example1"
-			class="table table-bordered table-striped dataTable dtr-inline"
-			aria-describedby="example1_info">
+		<table id="example1" class="table table-bordered table-hover"
+			style="background: #fff" aria-describedby="example1_info">
 			<thead>
 				<tr>
 					<th class="sorting" tabindex="0" aria-controls="example1"
@@ -372,6 +389,195 @@ $(function() {
 		location.href = '/member/insert';
 
 	});
+</script>
+<script type="text/javascript">
+
+	let distance = 0;
+
+
+	$(document).ready(function(){
+		
+		
+		// 출근하기 버튼 클릭이벤트 시작
+		
+		$(document).on("click","#start_work",function(){
+			//alert('asd')
+			Swal.fire({
+				   title: '출근하시겠습니까?',
+				   icon: 'warning',
+				   
+				   showCancelButton: true, // cancel버튼 보이기. 기본은 원래 없음
+				   confirmButtonColor: '#3085d6', // confrim 버튼 색깔 지정
+				   cancelButtonColor: '#d33', // cancel 버튼 색깔 지정
+				   confirmButtonText: '승인', // confirm 버튼 텍스트 지정
+				   cancelButtonText: '취소', // cancel 버튼 텍스트 지정
+				   
+				   reverseButtons: true, // 버튼 순서 거꾸로
+				   
+				}).then(result => {
+				   // 만약 Promise리턴을 받으면,
+				   if (result.isConfirmed) { // 만약 모달창에서 confirm 버튼을 눌렀다면
+					   
+					   let html = "";
+				   
+					   $.ajax({
+						   url:"/employee/workStart",
+						   type:"POST",
+						   data:{"user_id":"${principal.username}",
+							   "${_csrf.parameterName}":"${_csrf.token}"},
+						   success:function(data){
+							   if(data == 1) {
+								   Swal.fire('출근처리가 완료되었습니다.','출근완료','success');
+								   
+								   const hour = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+								   const minute = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+								    
+								   const time = hour +"시간 "+ minute +"분";
+								   
+								   html += "<button class='btn btn-secondary dropdown-toggle' type='button' id='dropdownMenuButton1' data-bs-toggle='dropdown' aria-expanded='false'>"+
+								    		   "퇴근하기</button>"+
+									  	   "<ul class='dropdown-menu' aria-labelledby='dropdownMenuButton1'>"+
+									  	   "<li><a class='dropdown-item' href='#' id='endWork'>퇴근하기</a></li>"+
+									  	   "<li><a class='dropdown-item' href='#' id='restWork'>외출하기</a></li>"+
+									    	   "</ul>"+
+									  	   "</div>"
+
+									$("#commute-div").html(html);  	   
+							   }
+						   },
+						   error: function(request, status, error){
+					            alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+					       }
+					   })
+				   
+				   }
+				});
+		})
+		
+		// 출근하기 버튼 클릭이벤트 끝 ------------------------------------------------------------------------------------------
+		
+		
+		// 퇴근하기 버튼 클릭이벤트 
+		$(document).ready("click","#end_work", function(){
+			
+			Swal.fire({
+				   title: '퇴근하시겠습니까?',
+				   icon: 'warning',
+				   
+				   showCancelButton: true, // cancel버튼 보이기. 기본은 원래 없음
+				   confirmButtonColor: '#3085d6', // confrim 버튼 색깔 지정
+				   cancelButtonColor: '#d33', // cancel 버튼 색깔 지정
+				   confirmButtonText: '승인', // confirm 버튼 텍스트 지정
+				   cancelButtonText: '취소', // cancel 버튼 텍스트 지정
+				   
+				   reverseButtons: true, // 버튼 순서 거꾸로
+				   
+				}).then(result => {
+				   // 만약 Promise리턴을 받으면,
+				   if (result.isConfirmed) { // 만약 모달창에서 confirm 버튼을 눌렀다면
+					   
+					  $.ajax({
+						  
+					  }) 
+					   
+				      Swal.fire('공유자에서 삭제했습니다.',text+' 삭제완료','success');
+				   }
+				});
+			
+		});// end of $(document).ready("click","#end_work", function(){}) ------------------
+		
+	}); // end of ready
+	
+	// Function Declation
+	function getDateMinute() { // 현재날짜와 시간까지 가져오는 메소드
+		const date = new Date();
+		const year = date.getFullYear();
+		const month = ('0' + (date.getMonth() + 1)).slice(-2);
+		const day = ('0' + date.getDate()).slice(-2);
+		const time = date.toTimeString().split(' ')[0];
+		const today = year + '-' + month + '-' + day + " " + time; // 오늘 날짜를 가져옴
+		
+		return today;
+	}
+	
+	
+	function getDate() { // 현재날짜만 가져오는 메소드
+		const date = new Date();
+		const year = date.getFullYear();
+		const month = ('0' + (date.getMonth() + 1)).slice(-2);
+		const day = ('0' + date.getDate()).slice(-2);
+		const today = year + '-' + month + '-' + day; // 오늘 날짜를 가져옴
+		
+		return today;
+	}
+	
+	
+	
+	function check_commute() { // 오늘 출근을 했는지 확인하는 메소드
+		
+		$.ajax({
+			url:"/commute/checkCommute.yolo",
+			data:{"fk_empno":'${sessionScope.loginuser.empno}'},
+			dataType:"JSON",
+			success:function(json) {
+				
+				let html = "";
+				
+				if(json.isExist) {	// 오늘날짜로 출근한 데이터가 있다면
+					
+					//console.log("확인용 => " + json.start_work_time)
+				    //console.log("확인용 => " + getDateMinute())
+				    let start_work_time = json.start_work_time
+				    let sysdate = getDateMinute()
+				   
+				    start_work_time = new Date(start_work_time);
+				    sysdate = new Date(sysdate);
+				    
+				    //console.log("확인용 => " + start_work_time)
+				    //console.log("확인용 => " + sysdate)
+				   
+				    distance = sysdate - start_work_time;
+				   
+				    const hour = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+				    const minute = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+				    
+				    const time = hour +"시간 "+ minute +"분";
+					
+					html += "<a class='btn btn-outline-secondary dropdown-toggle' href='#' role='button' id='dropdownMenuLink' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' style='width: 90%;margin: auto 5%;'>"+
+				    		    "<small class='border rounded bg-success text-white text-sm mr-2'>근무중</small><span id='work-time'>"+time+"</span></a>"+
+					  	    "<div class='dropdown-menu' aria-labelledby='dropdownMenuLink' style='width: 90%;'>"+
+					  	    "<small class='text-muted ml-4'>근무 선택</small>"+
+					  	    "<a class='dropdown-item' data-value='' id='kind-commute'>근무<i class='fas fa-chevron-right' style='margin-left: 130px;'></i></a>"+
+					  	    "<div class='dropdown-divider'></div>"+
+					    	    "<div id='start_or_end'><a class='dropdown-item' id='end_work'>퇴근하기</a></div>"+
+					  	    "</div>"
+			
+				   $("#commute-div").html(html);
+					  	    
+				   
+				}
+				
+			},
+			error: function(request, status, error){
+	            alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+	        }
+		});// end of $.ajax -----------------------------
+		
+	}// end of function check_commute() {} --------------------------------
+	
+	
+    function plus_time() {
+		distance += 60000
+		
+		const hour = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+	    const minute = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+	    
+	    const time = hour +"시간 "+ minute +"분";
+	    
+	    $("#work-time").text(time);
+		
+	}  
+
 </script>
 
 

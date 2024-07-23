@@ -53,7 +53,7 @@
             </a>
           </li>
          <li class="nav-header">Management</li>
-          <li class="nav-item">
+          <li class="nav-item"> 
             <a href="/employee/empList" class="nav-link">
               <i class="nav-icon fas fa-user"></i>
               <p>

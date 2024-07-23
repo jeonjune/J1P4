@@ -56,8 +56,18 @@
   	<select id="selectId" parameterType="string" resultType="int" >
   		select count(user_id) from employee where user_id=#{user_id}
   	</select>
-	 
-	 
+	
+	<!-- user_no 구하기 -->
+	<select id="getUN" resultType="int" >
+		select user_no from employee where user_id=#{user_id}
+	</select>
+	<!-- 출근 --> 
+	<insert id="workStart" parameterType="int">
+		insert into empAttendance(user_no, commute_time,vacation_status)
+		values(#{user_no},now(),'정상출근')
+	</insert>
+	
+	
 	 <!-- 회원정보와 인증정보를 한번에 조회(Join) -->
 <!-- 	 <select id="readMemberAuth" resultMap="memberMap"> -->
 <!-- 	 	select  -->
