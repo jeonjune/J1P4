@@ -67,14 +67,14 @@ public class MemberController {
 	}
 	
 	@GetMapping(value = "/read")
-	public void readGET(Model model,@RequestParam int mem_no) throws Exception{
-//		public void readGET(Model model,@PathVariable int mem_no) throws Exception{
+	public void readGET(Model model,@RequestParam int mem_no,Criteria cri) throws Exception{
 		logger.debug(" readGET() 실행 ");
 		
 		logger.debug(" @@@@@@@@@@@ int mem_no = "+mem_no);
 		
 		
 		model.addAttribute("readMem",mService.readMem(mem_no));
+		model.addAttribute("pageInfo",cri);
 		
 	}
 	@GetMapping(value = "/details")
@@ -95,36 +95,17 @@ public class MemberController {
 		
 		
 	}
-	
-	@GetMapping
-	@ResponseBody
-	public void selectPost(Criteria cri,Model model) throws Exception {
+	@GetMapping(value = "/readModify")
+	public void readModifyGET(Criteria cri,Model model,@RequestParam int mem_no) throws Exception{
+		logger.debug(" readModifyGET() 실행 ");
 		
-		// 서비스 -> DB의 정보를 가져오기 (페이징처리)
-				List<MemberVO> memberList = mService.listPage(cri);
-				logger.debug(" 에이작스 size : "+memberList.size());
-				logger.debug(" 에이작스 pageSize : "+cri.getPageSize());
-				logger.debug(" 에이작스 pageStart : "+cri.getPageStart());
-				
-				// 하단 페이징처리 정보
-				PageVO pageVO = new PageVO();
-				pageVO.setCri(cri);
-				pageVO.setTotalCount(mService.getTotalCount());
-				
-				// 연결된 뷰페이지로 정보 전달
-				model.addAttribute("memberList", memberList);
-				model.addAttribute("pageVO",pageVO);
+		logger.debug(" @@@@@@@@@@@ int mem_no = "+mem_no);
+		
+		
+		model.addAttribute("readMem",mService.readMem(mem_no));
 		
 	}
-	
-//	// 회원등록버튼 임시페이지
-//	@GetMapping(value = "/memJoin")
-//	public void memJoinGET() throws Exception{
-//		logger.debug(" memJoinGET() 실행 ");
-//		
-//		
-//	}
-	
+		
 	// 회원등록 후 리스트 이동
 	@ResponseBody
 	@PostMapping(value = "/memJoin")
