@@ -93,7 +93,7 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a href="/maintenance/test" class="nav-link">
+                <a href="/analysis/totalMemAnalysis" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>분석</p>
                 </a>
