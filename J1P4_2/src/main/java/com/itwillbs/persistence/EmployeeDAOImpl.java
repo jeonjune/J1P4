@@ -46,5 +46,20 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 		return res;
 	}
 	
+	// user_id 로 user_no 구하기
+	@Override
+	public int user_no(String user_id) throws Exception {
+		int user_no = sqlSession.selectOne(NAMESPACE+"getUN", user_id);
+		return user_no;
+	}
+
+	// 출근
+	@Override
+	public void workStart(int user_no) throws Exception {
+		sqlSession.insert(NAMESPACE+"workStart", user_no);
+	}
+	
+	
+	
 
 }

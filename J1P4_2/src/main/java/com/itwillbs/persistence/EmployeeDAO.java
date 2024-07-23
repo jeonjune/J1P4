@@ -18,5 +18,11 @@ public interface EmployeeDAO {
 	
 	//아이디 중복 체크
 	public int idCheck(String user_id) throws Exception;
+	
+	// user_id 로 user_no 구하기
+	public int user_no(String user_id) throws Exception;
+	
+	// 직원 출근
+	public void workStart(int user_no) throws Exception;
 
 }
