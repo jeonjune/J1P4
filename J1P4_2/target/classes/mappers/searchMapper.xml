@@ -8,59 +8,78 @@
 
 	<!-- 검색 결과 리스트 목록 ( 페이징 처리 ) -->
 	<select id="searchMem" resultType="MemberVO">
-    SELECT * FROM member
-    <if test="searchType == 'searchAll'">
-    WHERE (mem_name LIKE CONCAT('%', #{keyword}, '%')
-        OR mem_phone LIKE CONCAT('%', #{keyword}, '%')
-        OR mem_email LIKE CONCAT('%', #{keyword}, '%'))
-    </if>
-    <if test="searchType == 'searchName'">
-    WHERE (mem_name LIKE CONCAT('%', #{keyword}, '%'))
-    </if>
-    <if test="searchType == 'searchPhoneNum'">
-    WHERE (mem_phone LIKE CONCAT('%', #{keyword}, '%'))
-    </if>
-    <if test="searchType == 'searchEmail'">
-    WHERE (mem_email LIKE CONCAT('%', #{keyword}, '%'))
-    </if>
-    <if test="memYear != null">
-        AND reg_date LIKE CONCAT(#{memYear}, '%')
-    </if>
-    <if test="filter != null and filter != ''">
-        AND mem_rank = #{filter}
-    </if>
-    <if test="mem_gender != null and mem_gender != ''">
-        AND mem_gender = #{mem_gender}
-    </if>
-    ORDER BY 
-    <choose>
-        <when test="sortVal != null and sortCri != null and sortCri != ''">
-            ${sortVal} ${sortCri}
-        </when>
-        <otherwise>
-            mem_no DESC
-        </otherwise>
-    </choose>
-    LIMIT #{pageStart}, #{pageSize}
-</select>
+		SELECT * FROM member
+		<if test="searchType == 'searchAll'">
+			WHERE (mem_name LIKE CONCAT('%', #{keyword}, '%')
+			OR mem_phone LIKE CONCAT('%', #{keyword}, '%')
+			OR mem_email LIKE CONCAT('%', #{keyword}, '%'))
+		</if>
+		<if test="searchType == 'searchName'">
+			WHERE (mem_name LIKE CONCAT('%', #{keyword}, '%'))
+		</if>
+		<if test="searchType == 'searchPhoneNum'">
+			WHERE (mem_phone LIKE CONCAT('%', #{keyword}, '%'))
+		</if>
+		<if test="searchType == 'searchEmail'">
+			WHERE (mem_email LIKE CONCAT('%', #{keyword}, '%'))
+		</if>
+		<if test="memYear != null">
+			AND reg_date LIKE CONCAT(#{memYear}, '%')
+		</if>
+		<if test="filter != null and filter != ''">
+			AND mem_rank = #{filter}
+		</if>
+		<if test="mem_gender != null and mem_gender != ''">
+			AND mem_gender = #{mem_gender}
+		</if>
+		ORDER BY
+		<choose>
+			<when
+				test="sortVal != null and sortCri != null and sortCri != ''">
+				${sortVal} ${sortCri}
+			</when>
+			<otherwise>
+				mem_no DESC
+			</otherwise>
+		</choose>
+		LIMIT #{pageStart}, #{pageSize}
+	</select>
 
 	<!-- 검색 결과 리스트 개수 ( 페이징 처리 ) -->
 	<select id="totalCount" resultType="int">
-		SELECT count(mem_no) FROM member
-    	WHERE (mem_name LIKE CONCAT('%', #{keyword}, '%')
-        OR mem_phone LIKE CONCAT('%', #{keyword}, '%')
-        OR mem_email LIKE CONCAT('%', #{keyword}, '%'))
-    <if test="memYear != null">
-        AND reg_date LIKE CONCAT(#{memYear}, '%')
-    </if>
-    <if test="filter != null and filter != ''">
-        AND mem_rank = #{filter}
-    </if>
-    <if test="mem_gender != null and mem_gender != ''">
-        AND mem_gender = #{mem_gender}
-    </if>
-	</select>
-	
-	
+    SELECT count(mem_no) FROM member
+    <where>
+        <choose>
+            <when test="searchType == 'searchAll'">
+                (mem_name LIKE CONCAT('%', #{keyword}, '%')
+                OR mem_phone LIKE CONCAT('%', #{keyword}, '%')
+                OR mem_email LIKE CONCAT('%', #{keyword}, '%'))
+            </when>
+            <when test="searchType == 'searchName'">
+                mem_name LIKE CONCAT('%', #{keyword}, '%')
+            </when>
+            <when test="searchType == 'searchPhoneNum'">
+                mem_phone LIKE CONCAT('%', #{keyword}, '%')
+            </when>
+            <when test="searchType == 'searchEmail'">
+                mem_email LIKE CONCAT('%', #{keyword}, '%')
+            </when>
+            <otherwise>
+                1=1 <!-- 이 조건은 기본값으로 항상 참인 조건을 추가하여 기본 쿼리가 적용되도록 합니다. -->
+            </otherwise>
+        </choose>
+        <if test="memYear != null">
+            AND reg_date LIKE CONCAT(#{memYear}, '%')
+        </if>
+        <if test="filter != null and filter != ''">
+            AND mem_rank = #{filter}
+        </if>
+        <if test="mem_gender != null and mem_gender != ''">
+            AND mem_gender = #{mem_gender}
+        </if>
+    </where>
+</select>
+
+
 
 </mapper>
