@@ -56,9 +56,7 @@
                                     <td>${classItem.instructorName}</td>
                                     <td>
                                         <button class="btn btn-warning" onclick="editClass(${classItem.classNo})">Edit</button>
-                                        <form:form action="${pageContext.request.contextPath}/classes/delete/${classItem.classNo}" method="post" style="display:inline;">
-                                            <button type="submit" class="btn btn-danger">Delete</button>
-                                        </form:form>
+                                        <button class="btn btn-danger" onclick="deleteClass(${classItem.classNo})">Delete</button>
                                     </td>
                                 </tr>
                             </c:forEach>
@@ -156,6 +154,7 @@
         </div>
     </div>
 
+    <!-- Include jQuery and Bootstrap if not already included -->
 
     <script>
         $(document).ready(function() {
@@ -229,6 +228,21 @@
             $('#instructorNo').val(instructorNo);
             $('#instructorName').val(instructorName);
             $('#instructorModal').modal('hide');
+        }
+
+        function deleteClass(classNo) {
+            if (confirm('Are you sure you want to delete this class?')) {
+                $.ajax({
+                    url: '${pageContext.request.contextPath}/classes/delete/' + classNo,
+                    method: 'POST',
+                    success: function(response) {
+                        location.reload();
+                    },
+                    error: function(error) {
+                        alert('Error occurred while deleting the class');
+                    }
+                });
+            }
         }
     </script>
 </body>
