@@ -16,6 +16,7 @@ public class Criteria  {
 	private String mem_gender;
 	private int sms_opt;
 	private int email_opt;
+	private String searchType;
 
 
 	public Criteria() {
