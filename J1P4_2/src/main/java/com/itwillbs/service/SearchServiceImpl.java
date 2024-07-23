@@ -7,8 +7,11 @@ import javax.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 
+import com.itwillbs.domain.BaseVO;
 import com.itwillbs.domain.Criteria;
+import com.itwillbs.domain.Filter;
 import com.itwillbs.domain.MemberVO;
 import com.itwillbs.persistence.MemberDAO;
 import com.itwillbs.persistence.SearchDAO;
@@ -30,6 +33,11 @@ public class SearchServiceImpl implements SearchService {
 	@Override
 	public int getTotalCount(Criteria cri) throws Exception {
 		logger.debug(" (●'◡'●) Service : getTotalCount() 실행 ");
+//		if(ObjectUtils.isEmpty( cri.getFilter())) {
+//			for(Filter f:cri.getFilter()) {
+//				f.getKey().equals("memYear");
+//			}
+//		}
 		return sDao.getTotalCount(cri);
 	}
 	

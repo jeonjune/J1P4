@@ -8,20 +8,41 @@
 
 	<!-- 검색 결과 리스트 목록 ( 페이징 처리 ) -->
 	<select id="searchMem" resultType="MemberVO">
-    <![CDATA[
-		select * from member
-	    where (mem_name like '%${keyword}%' or mem_phone like '%${keyword}%' or mem_email like '%${keyword}%')
-	    and reg_date like '${memYear}%' and mem_rank like '${filter}%'
-	    order by mem_no desc 
-		limit ${pageStart},${pageSize}
-    ]]>
+		SELECT * FROM member
+    	WHERE (mem_name LIKE CONCAT('%', #{keyword}, '%')
+        OR mem_phone LIKE CONCAT('%', #{keyword}, '%')
+        OR mem_email LIKE CONCAT('%', #{keyword}, '%'))
+    <if test="memYear != null">
+        AND reg_date LIKE CONCAT(#{memYear}, '%')
+    </if>
+    <if test="filter != null and filter != ''">
+        AND mem_rank = #{filter}
+    </if>
+    <if test="mem_gender != null and mem_gender != ''">
+        AND mem_gender = #{mem_gender}
+    </if>
+    
+    ORDER BY mem_no DESC
+    LIMIT #{pageStart}, #{pageSize}
 	</select>
 
 	<!-- 검색 결과 리스트 개수 ( 페이징 처리 ) -->
 	<select id="totalCount" resultType="int">
-		select count(mem_no) from member
-		where (mem_name like '%${keyword}%' or mem_phone like '%${keyword}%' or mem_email like '%${keyword}%')
-	    and reg_date like '${memYear}%' and mem_rank like '${filter}%'
+		SELECT count(mem_no) FROM member
+    	WHERE (mem_name LIKE CONCAT('%', #{keyword}, '%')
+        OR mem_phone LIKE CONCAT('%', #{keyword}, '%')
+        OR mem_email LIKE CONCAT('%', #{keyword}, '%'))
+    <if test="memYear != null">
+        AND reg_date LIKE CONCAT(#{memYear}, '%')
+    </if>
+    <if test="filter != null and filter != ''">
+        AND mem_rank = #{filter}
+    </if>
+    <if test="mem_gender != null and mem_gender != ''">
+        AND mem_gender = #{mem_gender}
+    </if>
 	</select>
+	
+	
 
 </mapper>

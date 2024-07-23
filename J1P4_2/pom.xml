@@ -256,11 +256,30 @@
 		    <version>3.12.0</version>
 		</dependency>
 		 
-   <dependency>
+<!--    <dependency> -->
+<!-- 		    <groupId>com.fasterxml.jackson.core</groupId> -->
+<!-- 		    <artifactId>jackson-databind</artifactId> -->
+<!-- 		    <version>2.12.3</version> -->
+<!-- 		</dependency> -->
+
+		<!-- Jackson 라이브러리 -->
+		<dependency>
 		    <groupId>com.fasterxml.jackson.core</groupId>
-		    <artifactId>jackson-databind</artifactId>
-		    <version>2.12.3</version>
+		    <artifactId>jackson-core</artifactId>
+		    <version>2.13.1</version>
 		</dependency>
+		<dependency>
+		    <groupId>com.fasterxml.jackson.core</groupId>
+		    <artifactId>jackson-annotations</artifactId>
+		    <version>2.13.1</version>
+		</dependency>
+				
+		<dependency>
+    		<groupId>com.fasterxml.jackson.core</groupId>
+    		<artifactId>jackson-databind</artifactId>
+    		<version>2.13.1</version>
+		</dependency>
+		<!-- Jackson 라이브러리 -->
 		
 				
 		<!-- 외부 라이브러리 -->
