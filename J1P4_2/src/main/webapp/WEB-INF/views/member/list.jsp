@@ -15,10 +15,16 @@
 		<div class="form-inline">
 			<!-- 검색 키워드 입력창 -->
 			<div class="input-group">
+				<select name="searchType" id="selectType" class="form-control">
+					<option value="searchAll" selected="selected">전체</option>
+					<option value="searchName">이름</option>
+					<option value="searchPhoneNum">연락처</option>
+					<option value="searchEmail">이메일</option>
+				</select>
 				<input class="form-control" type="search" name="keyword"
 					value="${param.keyword }" placeholder="Search" aria-label="Search">
 				<div class="input-group-append">
-					<button class="btn" type="submit" class="submitBtn">
+					<button class="btn" type="submit" id="submitBtn">
 						<i class="fas fa-search fa-fw"></i>
 					</button>
 				</div>
@@ -229,7 +235,7 @@
 	</table>
 </div>
 
-<!-- 페이징 처리 (기존 페이지) -->
+<!-- 페이징 처리 -->
 <div class="col-sm-12 col-md-7">
 	<div class="dataTables_paginate paging_simple_numbers"
 		id="example1_paginate">
@@ -247,7 +253,7 @@
 						test="${not empty param.keyword or not empty param.memYear or not empty param.filter or not empty param.mem_gender
 						or not empty param.sortCri or not empty param.sortVal}">
 						<a
-							href="/member/list?keyword=${pageVO.cri.keyword }&memYear=${pageVO.cri.memYear }&filter=${pageVO.cri.filter }
+							href="/member/list?searchType=${pageVO.cri.searchType }&keyword=${pageVO.cri.keyword }&memYear=${pageVO.cri.memYear }&filter=${pageVO.cri.filter }
 								&mem_gender=${pageVO.cri.mem_gender }&sortCri=${pageVO.cri.sortCri }&sortVal=${pageVO.cri.sortVal }&page=${pageVO.startPage-1 }&pageSize=${pageVO.cri.pageSize}"
 							aria-controls="example1" data-dt-idx="0" tabindex="0"
 							class="page-link">«</a>
@@ -267,7 +273,7 @@
 						test="${not empty param.keyword or not empty param.memYear or not empty param.filter or not empty param.mem_gender
 						or not empty param.sortCri or not empty param.sortVal}">
 						<a
-							href="/member/list?keyword=${pageVO.cri.keyword }&memYear=${pageVO.cri.memYear }&filter=${pageVO.cri.filter }
+							href="/member/list?searchType=${pageVO.cri.searchType }&keyword=${pageVO.cri.keyword }&memYear=${pageVO.cri.memYear }&filter=${pageVO.cri.filter }
 								&mem_gender=${pageVO.cri.mem_gender }&sortCri=${pageVO.cri.sortCri }&sortVal=${pageVO.cri.sortVal }&page=${i }&pageSize=${pageVO.cri.pageSize}"
 							aria-controls="example1" data-dt-idx="1" tabindex="0"
 							class="page-link">${i }</a>
@@ -287,7 +293,7 @@
 						test="${not empty param.keyword or not empty param.memYear or not empty param.filter or not empty param.mem_gender
 						or not empty param.sortCri or not empty param.sortVal }">
 						<a
-							href="/member/list?keyword=${pageVO.cri.keyword }&memYear=${pageVO.cri.memYear }&filter=${pageVO.cri.filter }
+							href="/member/list?searchType=${pageVO.cri.searchType }&keyword=${pageVO.cri.keyword }&memYear=${pageVO.cri.memYear }&filter=${pageVO.cri.filter }
 							&mem_gender=${pageVO.cri.mem_gender }&sortCri=${pageVO.cri.sortCri }&sortVal=${pageVO.cri.sortVal }&page=${pageVO.endPage+1 }&pageSize=${pageVO.cri.pageSize}"
 							aria-controls="example1" data-dt-idx="7" tabindex="0"
 							class="page-link">»</a>
@@ -445,6 +451,11 @@
 		});
 
 	});
+	
+	if('${param.searchType}'=='${pageVO.cri.searchType}' && '${pageVO.cri.searchType}' != ''){
+		$("#selectType").val("${param.searchType}");
+	}
+	$("#selectPage").val("${pageVO.cri.pageSize }");
 
 	$(function() {
 		$("#submitButt").click(function() {
@@ -497,7 +508,8 @@
 		$(".actionForm").submit();
 	});
 
-	$("#selectPage").val("${pageVO.cri.pageSize }");
+
+	
 
 	$(document).ready(function() {
 		$('#resetFilters').click(function() {
@@ -520,7 +532,7 @@
                 sortCriValue = 'asc'; // 등록순
             }
 
-            // sortCri를 업데이트
+            // sortCri, sortVal 업데이트
             $('input[name="sortVal"]').val(selectedVal);
             $('input[name="sortCri"]').val(sortCriValue);
 
@@ -531,6 +543,7 @@
             
         });
     });
+	
 </script>
 
 <%@ include file="../include/footer.jsp"%>
