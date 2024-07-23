@@ -21,8 +21,28 @@
     <if test="mem_gender != null and mem_gender != ''">
         AND mem_gender = #{mem_gender}
     </if>
-    
-    ORDER BY mem_no DESC
+    <choose>
+        <when test="sortVal == 'mem_name'">
+            <if test="sortCri != null and sortCri != ''">
+                ORDER BY mem_name ${sortCri}
+            </if>
+        </when>
+        <when test="sortVal == 'mem_phone'">
+            <if test="sortCri != null and sortCri != ''">
+                ORDER BY mem_phone ${sortCri}
+            </if>
+        </when>
+        <when test="sortVal == 'mem_email'">
+            <if test="sortCri != null and sortCri != ''">
+                ORDER BY mem_email ${sortCri}
+            </if>
+        </when>
+        <otherwise>
+            <if test="sortCri != null and sortCri != ''">
+                ORDER BY mem_no DESC
+            </if>
+        </otherwise>
+    </choose>
     LIMIT #{pageStart}, #{pageSize}
 	</select>
 
