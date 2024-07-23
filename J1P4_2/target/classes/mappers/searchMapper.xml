@@ -18,6 +18,10 @@
     <if test="filter != null and filter != ''">
         AND mem_rank = #{filter}
     </if>
+    <if test="mem_gender != null and mem_gender != ''">
+        AND mem_gender = #{mem_gender}
+    </if>
+    
     ORDER BY mem_no DESC
     LIMIT #{pageStart}, #{pageSize}
 	</select>
@@ -33,6 +37,9 @@
     </if>
     <if test="filter != null and filter != ''">
         AND mem_rank = #{filter}
+    </if>
+    <if test="mem_gender != null and mem_gender != ''">
+        AND mem_gender = #{mem_gender}
     </if>
 	</select>
 	

@@ -11,6 +11,10 @@ public class Criteria  {
 	private String memYear;
 	private String filter;
 	private String sort;
+	private String mem_gender;
+	private int sms_opt;
+	private int email_opt;
+
 
 	public Criteria() {
 		this.page = 1;
