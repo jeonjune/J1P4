@@ -99,11 +99,13 @@
 
 <div class="content" style="text-align: right;">
 	<div style="display: inline-block;">
-		<input type="radio" value="mem_name" class="btn-check" name="filter2"
+	<input type="hidden" name="sortCri">
+	<input type="hidden" name="sortVal">
+		<input type="radio" value="mem_name" class="btn-check chkSort" 
 			id="radioName1"> <label class="btn" for="radioName1">이름순(오름차순)</label>
-		<input type="radio" value="mem_name" class="btn-check" name="filter2"
+		<input type="radio" value="mem_name" class="btn-check chkSort" 
 			id="radioName2"> <label class="btn" for="radioName2">이름순(내림차순)</label>
-		<input type="radio" value="reg_date" class="btn-check" name="filter2"
+		<input type="radio" value="reg_date" class="btn-check chkSort"
 			id="radioReg"> <label class="btn" for="radioReg">등록순</label>
 	</div>
 	<!-- 행 개수 선택 -->
@@ -235,16 +237,18 @@
 			<c:if test="${pageVO.prev }">
 				<li class="paginate_button page-item previous"
 					id="example1_previous"><c:if
-						test="${empty param.keyword and empty param.memYear and empty param.filter and empty param.mem_gender}">
+						test="${empty param.keyword and empty param.memYear and empty param.filter and empty param.mem_gender
+						and empty param.sortCri and empty param.sortVal}">
 						<a
 							href="/member/list?page=${pageVO.startPage-1 }&pageSize=${pageVO.cri.pageSize}"
 							aria-controls="example1" data-dt-idx="0" tabindex="0"
 							class="page-link">«</a>
 					</c:if> <c:if
-						test="${not empty param.keyword or not empty param.memYear or not empty param.filter or not empty param.mem_gender}">
+						test="${not empty param.keyword or not empty param.memYear or not empty param.filter or not empty param.mem_gender
+						or not empty param.sortCri or not empty param.sortVal}">
 						<a
 							href="/member/list?keyword=${pageVO.cri.keyword }&memYear=${pageVO.cri.memYear }&filter=${pageVO.cri.filter }
-								&mem_gender=${pageVO.cri.mem_gender }&page=${pageVO.startPage-1 }&pageSize=${pageVO.cri.pageSize}"
+								&mem_gender=${pageVO.cri.mem_gender }&sortCri=${pageVO.cri.sortCri }&sortVal=${pageVO.cri.sortVal }&page=${pageVO.startPage-1 }&pageSize=${pageVO.cri.pageSize}"
 							aria-controls="example1" data-dt-idx="0" tabindex="0"
 							class="page-link">«</a>
 					</c:if></li>
@@ -254,33 +258,37 @@
 				<li
 					class="paginate_button page-item ${pageVO.cri.page == i ? 'active':'' }">
 					<c:if
-						test="${empty param.keyword and empty param.memYear and empty param.filter and empty param.mem_gender}">
+						test="${empty param.keyword and empty param.memYear and empty param.filter and empty param.mem_gender
+						and empty param.sortCri and empty param.sortVal}">
 						<a href="/member/list?page=${i }&pageSize=${pageVO.cri.pageSize}"
 							aria-controls="example1" data-dt-idx="1" tabindex="0"
 							class="page-link">${i }</a>
 					</c:if> <c:if
-						test="${not empty param.keyword or not empty param.memYear or not empty param.filter or not empty param.mem_gender}">
+						test="${not empty param.keyword or not empty param.memYear or not empty param.filter or not empty param.mem_gender
+						or not empty param.sortCri or not empty param.sortVal}">
 						<a
 							href="/member/list?keyword=${pageVO.cri.keyword }&memYear=${pageVO.cri.memYear }&filter=${pageVO.cri.filter }
-								&mem_gender=${pageVO.cri.mem_gender }&page=${i }&pageSize=${pageVO.cri.pageSize}"
+								&mem_gender=${pageVO.cri.mem_gender }&sortCri=${pageVO.cri.sortCri }&sortVal=${pageVO.cri.sortVal }&page=${i }&pageSize=${pageVO.cri.pageSize}"
 							aria-controls="example1" data-dt-idx="1" tabindex="0"
-							class="page-link">${i }?</a>
+							class="page-link">${i }</a>
 					</c:if>
 				</li>
 			</c:forEach>
 			<c:if test="${pageVO.next && pageVO.endPage > 0 }">
 				<li class="paginate_button page-item next" id="example1_next">
 					<c:if
-						test="${empty param.keyword and empty param.memYear and empty param.filter and empty param.mem_gender}">
+						test="${empty param.keyword and empty param.memYear and empty param.filter and empty param.mem_gender
+						and empty param.sortCri and empty param.sortVal}">
 						<a
 							href="/member/list?page=${pageVO.endPage+1 }&pageSize=${pageVO.cri.pageSize}"
 							aria-controls="example1" data-dt-idx="7" tabindex="0"
 							class="page-link">»</a>
 					</c:if> <c:if
-						test="${not empty param.keyword or not empty param.memYear or not empty param.filter or not empty param.mem_gender }">
+						test="${not empty param.keyword or not empty param.memYear or not empty param.filter or not empty param.mem_gender
+						or not empty param.sortCri or not empty param.sortVal }">
 						<a
 							href="/member/list?keyword=${pageVO.cri.keyword }&memYear=${pageVO.cri.memYear }&filter=${pageVO.cri.filter }
-							&mem_gender=${pageVO.cri.mem_gender }&page=${pageVO.endPage+1 }&pageSize=${pageVO.cri.pageSize}"
+							&mem_gender=${pageVO.cri.mem_gender }&sortCri=${pageVO.cri.sortCri }&sortVal=${pageVO.cri.sortVal }&page=${pageVO.endPage+1 }&pageSize=${pageVO.cri.pageSize}"
 							aria-controls="example1" data-dt-idx="7" tabindex="0"
 							class="page-link">»</a>
 					</c:if>
@@ -483,7 +491,9 @@
 	}
 
 	$("#selectPage").change(function() {
-
+		
+		 $('input[name="sortVal"]').val('${param.sortVal}');
+         $('input[name="sortCri"]').val('${param.sortCri}');
 		$(".actionForm").submit();
 	});
 
@@ -496,6 +506,31 @@
 			}
 		});
 	});
+	
+	$(document).ready(function() {
+        $('.chkSort').on('change', function() {
+            var selectedVal = $(this).val();
+            var sortCriValue;
+
+            if ($(this).attr('id') === 'radioName1') {
+                sortCriValue = 'asc'; // 오름차순
+            } else if ($(this).attr('id') === 'radioName2') {
+                sortCriValue = 'desc'; // 내림차순
+            } else if ($(this).attr('id') === 'radioReg') {
+                sortCriValue = 'asc'; // 등록순
+            }
+
+            // sortCri를 업데이트
+            $('input[name="sortVal"]').val(selectedVal);
+            $('input[name="sortCri"]').val(sortCriValue);
+
+            // 확인을 위해 콘솔에 출력
+            console.log('Selected sortCri:', sortCriValue);
+            
+            $(".actionForm").submit();
+            
+        });
+    });
 </script>
 
 <%@ include file="../include/footer.jsp"%>
