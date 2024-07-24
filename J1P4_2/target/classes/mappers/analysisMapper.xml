@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.itwillbs.mapper.analysisMapper">
+
+	<!-- 총 회원 수 -->
+	<select id="totalMemCount" resultType="int">
+		select count(mem_no) from member
+	</select>
+	
+	<!-- 이번 달 신규 회원 수 -->
+	<select id="newMemCount" resultType="int">
+		SELECT count(mem_no)
+		FROM member
+		WHERE MONTH(reg_date) = MONTH(CURRENT_DATE)
+		  AND YEAR(reg_date) = YEAR(CURRENT_DATE);
+	</select>
+	
+	<!-- 이번 달 등록 회원 수 -->
+	<select id="regMemCount" resultType="int">
+		select count(registration_no)
+		from registration
+		where month(registration_date) = month(current_date)
+		and  year(registration_date) = year(current_date);
+	</select>
+
+	<!-- 이번 달 등록 회원 수 / 총 회원 수 -->
+	<select id="rmcTmc" resultType="double">
+		select round(
+		    (select count(registration_no) 
+		     from registration 
+		     where month(registration_date) = month(current_date)
+		       and year(registration_date) = year(current_date)) / 
+		    (select count(mem_no) 
+		     from member) * 100, 1) as rmcTmc
+	</select>		
+	
+</mapper>

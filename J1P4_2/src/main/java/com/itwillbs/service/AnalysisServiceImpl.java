@@ -15,4 +15,38 @@ public class AnalysisServiceImpl implements AnalysisService {
 	
 	@Inject
 	private AnalysisDAO adao;
+
+	// 총 회원 수
+	@Override
+	public int totalMemCount() throws Exception {
+		logger.info("totalMemCount() 실행");
+		
+		return adao.totalMemCount();
+	}
+
+	// 이번 달 신규 회원 수
+	@Override
+	public int newMemCount() throws Exception {
+		logger.info("newMemCount() 실행");
+		
+		return adao.newMemCount();
+	}
+
+	// 이번 달 등록 회원 수
+	@Override
+	public int regMemCount() throws Exception {
+		logger.info("regMemCount() 실행");
+		
+		return adao.regMemCount();
+	}
+
+	// 이번 달 등록 회원 수 / 총 회원 수
+	@Override
+	public double rmcTmc() throws Exception {
+		logger.info("rmcTmc() 실행");
+		
+		return adao.rmcTmc();
+	}
+	
+	
 }

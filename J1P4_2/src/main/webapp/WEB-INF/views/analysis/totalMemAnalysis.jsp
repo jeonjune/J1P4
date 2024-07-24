@@ -29,8 +29,6 @@
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="/main/home">Home</a></li>
-              <li class="breadcrumb-item active">센터 관리</li>
-              <li class="breadcrumb-item active">분석</li>
               <li class="breadcrumb-item active">전체 회원분석</li>
             </ol>
           </div><!-- /.col -->
@@ -48,14 +46,14 @@
             <!-- small box -->
             <div class="small-box bg-info">
               <div class="inner">
-                <h3>150</h3>
+                <h3>${tmc }</h3>
 
                 <p>총 회원수 </p>
               </div>
               <div class="icon">
                 <i class="ion ion-bag"></i>
               </div>
-              <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+              <a href="/member/list" class="small-box-footer">회원 리스트 <i class="fas fa-arrow-circle-right"></i></a>
             </div>
           </div>
           <!-- ./col -->
@@ -63,7 +61,7 @@
             <!-- small box -->
             <div class="small-box bg-warning">
               <div class="inner">
-                <h3>53</sup></h3>
+                <h3>${nmc }</sup></h3>
 
                 <p>이번달 신규 회원</p>
               </div>
@@ -78,7 +76,7 @@
             <!-- small box -->
             <div class="small-box bg-success">
               <div class="inner">
-                <h3>44</h3>
+                <h3>${rmc }</h3>
 
                 <p>이번달 등록 회원</p>
               </div>
@@ -93,7 +91,7 @@
             <!-- small box -->
             <div class="small-box bg-danger">
               <div class="inner">
-                <h3>65<sup style="font-size: 20px">%</h3>
+                <h3>${rmcTmc }<sup style="font-size: 20px">%</sup></h3>
 
                 <p>이번달 등록 회원 / 총 회원</p>
               </div>
