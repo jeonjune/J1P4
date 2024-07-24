@@ -51,15 +51,9 @@ public class AnalysisDAOImpl implements AnalysisDAO {
 
 	// 6개월간 월 별 신규 회원 수
 	@Override
-	public Map<String, Integer> new6MemCount() throws Exception {
-		List<Map<String, Object>> result = sqlSession.selectList(NAMESPACE + "new6MemCount");
-		Map<String, Integer> new6MemCount = new HashMap<>(); 
-        for (Map<String, Object> row : result) {
-            String month = (String) row.get("month");
-            Integer newMembers = ((Long) row.get("new_members")).intValue();
-            new6MemCount.put(month, newMembers);
-        }
-        return new6MemCount;
+	public List<Map<String, Integer>> new6MemCount() throws Exception {
+		
+        return sqlSession.selectList(NAMESPACE + "new6MemCount");
 	}
 	
 }

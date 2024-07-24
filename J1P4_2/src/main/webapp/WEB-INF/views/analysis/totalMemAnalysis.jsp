@@ -228,12 +228,23 @@
         }
         return labels;
     }    	
+    
+ 	// 서버에서 전달된 JSON 문자열을 `new6MemCountJson` 변수에 저장
+    var new6MemCountJson = '<c:out value="${new6MemCount}" escapeXml="false"/>';
+    console.log("(❁´◡`❁)(❁´◡`❁)(❁´◡`❁)(❁´◡`❁)(❁´◡`❁)(❁´◡`❁)(❁´◡`❁)(❁´◡`❁)(❁´◡`❁)Raw JSON: ", new6MemCountJson);
 
+ 	// JSON 문자열을 JavaScript 객체로 변환하고`new6MemCount` 변수에 파싱된 데이터를 저장
+    var new6MemCount = JSON.parse(new6MemCountJson);
+ 	
+	 // `new6MemCount` 배열의 각 요소에서 속성 값을 추출하여 새로운 배열을 만들고 변수에 추출된 월 데이터를 저장
+    var yearMonth = new6MemCount.map(function(item) { return item.month; });
+    var new_members = new6MemCount.map(function(item) { return item.new_members; });
+    
         var ctx = document.getElementById('revenue-chart-canvas').getContext('2d');
         var revenueChart = new Chart(ctx, {
             type: 'line',
             data: {
-                labels: getMonthLabels(),
+                labels: yearMonth,
                 datasets: [{
                     label: '이번달 신규 회원',
                     backgroundColor: 'rgba(60,141,188,0.9)',
@@ -243,7 +254,7 @@
                     pointStrokeColor: 'rgba(60,141,188,1)',
                     pointHighlightFill: '#fff',
                     pointHighlightStroke: 'rgba(60,141,188,1)',
-                    data: [80, 56, 55, 40, 65, 59]
+                    data: new_members
                 },
                 {
                   label: '이번달 등록 회원',

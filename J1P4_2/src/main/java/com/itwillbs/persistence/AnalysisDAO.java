@@ -1,5 +1,6 @@
 package com.itwillbs.persistence;
 
+import java.util.List;
 import java.util.Map;
 
 public interface AnalysisDAO {
@@ -17,5 +18,5 @@ public interface AnalysisDAO {
 	public double rmcTmc() throws Exception;
 	
 	// 6개월간 월 별 신규 회원 수
-	public Map<String, Integer> new6MemCount() throws Exception;
+	public List<Map<String, Integer>> new6MemCount() throws Exception;
 }

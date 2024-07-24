@@ -1,5 +1,6 @@
 package com.itwillbs.service;
 
+import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
@@ -52,7 +53,7 @@ public class AnalysisServiceImpl implements AnalysisService {
 
 	// 6개월간 월 별 신규 회원 수
 	@Override
-	public Map<String, Integer> new6MemCount() throws Exception {
+	public List<Map<String, Integer>> new6MemCount() throws Exception {
 		logger.info("new6MemCount() 실행");
 		
 		return adao.new6MemCount();
