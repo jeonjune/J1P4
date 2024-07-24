@@ -9,6 +9,7 @@
 <head>
     <title>Class List</title>
 </head>
+
 <body>
     <div class="wrapper">
         <div class="content-wrapper">
