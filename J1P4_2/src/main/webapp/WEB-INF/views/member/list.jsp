@@ -6,9 +6,13 @@
 <%@ include file="../include/sidemenu.jsp"%>
 <script
 	src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+	
 
 <div class="content-wrapper" style="min-height: 831px;">
 
+    <div class="spinner-border text-primary d-none" id="spinner" role="status" aria-hidden="true">
+      <span class="visually-hidden">Loading...</span>
+    </div>
 	<!-- 검색 / 필터 / 정렬 데이터 전송 -->
 	<form action="" method="get" class='actionForm'>
 
@@ -24,7 +28,7 @@
 				<input class="form-control" type="search" name="keyword"
 					value="${param.keyword }" placeholder="Search" aria-label="Search">
 				<div class="input-group-append">
-					<button class="btn" type="submit" id="submitBtn">
+					<button class="btn" type="submit" id="submitBtn" onclick="toggleSpinner()">
 						<i class="fas fa-search fa-fw"></i>
 					</button>
 				</div>
@@ -204,7 +208,7 @@
 		<thead>
 			<tr>
 				<th class="sorting"><input type="checkbox" class="chkGrp"
-					id="chkAll"></th>
+					id="chkAll" style="accent-color: #cdb4db;"></th>
 				<th class="sorting">NO</th>
 				<th class="sorting">회원이름</th>
 				<th class="sorting">연락처</th>
@@ -219,7 +223,7 @@
 			<c:forEach var="vo" items="${memberList }">
 				<tr class="tr:hover">
 					<td class="dtr-control" tabindex="0"><input type="checkbox"
-						class="chkGrp"></td>
+						class="chkGrp" style="accent-color: #a2d2ff;"></td>
 					<td class="dtr-control" tabindex="0">${vo.mem_no }</td>
 					<td class=""><a
 						href="/member/read?mem_no=${vo.mem_no }&page=${param.page==null? 1:param.page}">${vo.mem_name }</a></td>
@@ -543,6 +547,24 @@
             
         });
     });
+	  
+	  function toggleSpinner() {
+	    var spinner = document.getElementById('spinner');
+	    // 스피너가 현재 보이는지 확인
+	    var isVisible = spinner.classList.contains('d-block');
+
+	    if (!isVisible) {
+	      // 로딩 시작: 스피너 활성화
+	      spinner.classList.add('d-block');
+	      spinner.classList.remove('d-none');
+	      spinner.setAttribute('aria-hidden', 'false');
+	    } else {
+	      // 로딩 중지: 스피너 비활성화
+	      spinner.classList.remove('d-block');
+	      spinner.classList.add('d-none');
+	      spinner.setAttribute('aria-hidden', 'true');
+	    }
+	  }
 	
 </script>
 
