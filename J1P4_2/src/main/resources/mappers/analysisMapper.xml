@@ -37,4 +37,16 @@
 		     from member) * 100, 1) as rmcTmc
 	</select>		
 	
+	<!-- 6개월간 월 별 신규 회원 수 -->
+	<select id="new6MemCount" resultType="map">
+	<![CDATA[
+		select date_format(reg_date, '%y-%m') as month,
+		       coalesce(count(mem_no), 0) as new_members
+		from member
+		where reg_date >= date_sub(current_date, interval 6 month)
+		  and reg_date < date_add(current_date, interval 1 month)
+		group by month
+		order by month
+	]]>		
+	</select>
 </mapper>

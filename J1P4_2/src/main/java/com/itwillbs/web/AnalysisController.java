@@ -1,5 +1,7 @@
 package com.itwillbs.web;
 
+import java.util.Map;
+
 import javax.inject.Inject;
 
 import org.slf4j.Logger;
@@ -27,11 +29,13 @@ public class AnalysisController {
 		int nmc = anService.newMemCount();
 		int rmc = anService.regMemCount();
 		double rmcTmc = anService.rmcTmc();
+		Map<String, Integer> new6MemCount = anService.new6MemCount();
 		
 		model.addAttribute("tmc", tmc);		
 		model.addAttribute("nmc", nmc);		
 		model.addAttribute("rmc", rmc);		
-		model.addAttribute("rmcTmc", rmcTmc);		
+		model.addAttribute("rmcTmc", rmcTmc);
+		model.addAttribute("new6MemCount", new6MemCount);
 	}
 	
 	@RequestMapping(value = "/writeReport",method = RequestMethod.GET)

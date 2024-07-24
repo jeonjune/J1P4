@@ -2,7 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ include file="../include/mainHeader.jsp" %>
 <%@ include file="../include/sidemenu.jsp" %>
-
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!-- Navbar -->
 <nav class="main-header navbar navbar-expand navbar-white navbar-light">
 	<!--     Left navbar links -->
@@ -16,7 +16,6 @@
 	</ul>
 
 </nav>
-
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper" style="min-height: 831px;">
     <!-- Content Header (Page header) -->
@@ -207,19 +206,34 @@
         </div>
         <!-- /.row (main row) -->
       </div><!-- /.container-fluid -->
+      ${new6MemCount}
     </section>
     <!-- /.content -->
   </div>
   <!-- /.content-wrapper -->
-  
+
       <!-- Include Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
+    
+    // 현재 날짜를 기준으로 달 레이블 생성
+    function getMonthLabels() {
+//         var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+        var months2 = ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'];
+        var currentMonth = new Date().getMonth();
+        var labels = [];
+
+        for (var i = 5; i >= 0; i--) {
+            labels.push(months2[(currentMonth - i + 12) % 12]);
+        }
+        return labels;
+    }    	
+
         var ctx = document.getElementById('revenue-chart-canvas').getContext('2d');
         var revenueChart = new Chart(ctx, {
             type: 'line',
             data: {
-                labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+                labels: getMonthLabels(),
                 datasets: [{
                     label: '이번달 신규 회원',
                     backgroundColor: 'rgba(60,141,188,0.9)',
@@ -229,7 +243,7 @@
                     pointStrokeColor: 'rgba(60,141,188,1)',
                     pointHighlightFill: '#fff',
                     pointHighlightStroke: 'rgba(60,141,188,1)',
-                    data: [28, 48, 40, 19, 86, 27, 90]
+                    data: [80, 56, 55, 40, 65, 59]
                 },
                 {
                   label: '이번달 등록 회원',
@@ -240,7 +254,7 @@
                   pointStrokeColor: '#c1c7d1',
                   pointHighlightFill: '#fff',
                   pointHighlightStroke: 'rgba(220,220,220,1)',
-                  data: [65, 59, 80, 81, 56, 55, 40]
+                  data: [65, 59, 80, 56, 55, 40]
                 }
                 ]
             },
