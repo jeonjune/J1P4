@@ -1,5 +1,26 @@
 @charset "UTF-8";
 
-.left-align-icon {
-            float: right;
-        }
+.cardCustom {
+	padding-bottom: 50px;
+}
+
+.cardMx {
+	margin-bottom: 15px;
+}
+
+.cardMy {
+	margin-left: 5px;
+}
+
+.badgeCustom {
+	color: #000;
+	margin-left: 7px;
+	"
+}
+
+.chkboxCustom {
+	font-weight: normal !important;
+	margin-top: 5px;
+	display: flex;
+	justify-content: flex-end;
+}

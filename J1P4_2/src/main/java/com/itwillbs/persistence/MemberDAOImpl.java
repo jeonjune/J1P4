@@ -45,6 +45,12 @@ public class MemberDAOImpl implements MemberDAO {
 		sqlSession.insert(NAMESPACE+"memJoin", vo);
 		
 	}
+
+	@Override
+	public void memUpdate(MemberVO vo) throws Exception {
+		sqlSession.insert(NAMESPACE+"memUpdate", vo);
+		
+	}
 	
 	
 	

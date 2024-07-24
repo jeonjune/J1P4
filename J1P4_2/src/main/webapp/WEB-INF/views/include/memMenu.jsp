@@ -18,10 +18,6 @@
 			role="button">회원문서</a></li>
 	</ul>
 	
-	<div style="position:absolute; right: 0; padding-right: 10px;">	
-	<a href="/member/readModify?mem_no=${param.mem_no }&page=${param.page==null? 1:param.page}"><button type="button" class="btn btn-info">수정하기</button></a>
-	<a href="/member/list">
-	<button type="button" class="btn btn-light">뒤로가기</button></a>
-	</div>
+	
 
 </nav>

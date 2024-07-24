@@ -43,6 +43,12 @@ public class MemberServiceImpl implements MemberService {
 		
 	}
 
+	@Override
+	public void memUpdate(MemberVO vo) throws Exception {
+		mDao.memUpdate(vo);
+		
+	}
+
 	
 	
 }

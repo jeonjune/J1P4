@@ -7,8 +7,13 @@
 <script
 	src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 
+
 <div class="content-wrapper" style="min-height: 831px;">
 
+	<div class="spinner-border text-primary d-none" id="spinner"
+		role="status" aria-hidden="true">
+		<span class="visually-hidden">Loading...</span>
+	</div>
 	<!-- 검색 / 필터 / 정렬 데이터 전송 -->
 	<form action="" method="get" class='actionForm'>
 
@@ -20,11 +25,11 @@
 					<option value="searchName">이름</option>
 					<option value="searchPhoneNum">연락처</option>
 					<option value="searchEmail">이메일</option>
-				</select>
-				<input class="form-control" type="search" name="keyword"
+				</select> <input class="form-control" type="search" name="keyword"
 					value="${param.keyword }" placeholder="Search" aria-label="Search">
 				<div class="input-group-append">
-					<button class="btn" type="submit" id="submitBtn">
+					<button class="btn" type="submit" id="submitBtn"
+						onclick="toggleSpinner()">
 						<i class="fas fa-search fa-fw"></i>
 					</button>
 				</div>
@@ -103,284 +108,292 @@
 
 
 
-<div class="content" style="text-align: right;">
-	<div style="display: inline-block;">
-	<input type="hidden" name="sortCri">
-	<input type="hidden" name="sortVal">
-		<input type="radio" value="mem_name" class="btn-check chkSort" 
-			id="radioName1"> <label class="btn" for="radioName1">이름순(오름차순)</label>
-		<input type="radio" value="mem_name" class="btn-check chkSort" 
-			id="radioName2"> <label class="btn" for="radioName2">이름순(내림차순)</label>
-		<input type="radio" value="reg_date" class="btn-check chkSort"
-			id="radioReg"> <label class="btn" for="radioReg">등록순</label>
-	</div>
-	<!-- 행 개수 선택 -->
-	<div style="display: inline-block;">
-		<select name="pageSize" id="selectPage" class="form-control">
-			<option value="10">10개씩 보기</option>
-			<option value="20">50개씩 보기</option>
-			<option value="30">100개씩 보기</option>
-		</select>
-	</div>
-</div>
-
-</form>
-
-<!-- 모달창 시작 -->
-<div class="modal fade" id="exampleModal" tabindex="-1"
-	aria-labelledby="exampleModalLabel" aria-hidden="true">
-	<div class="modal-dialog">
-		<div class="modal-content">
-
-			<!-- 모달창 헤더 -->
-			<div class="modal-header">
-				<h5 class="modal-title" id="exampleModalLabel">필터하기</h5>
-				<button type="button" class="btn-close" data-bs-dismiss="modal"
-					aria-label="Close"></button>
+		<div class="content" style="text-align: right;">
+			<div style="display: inline-block;">
+				<input type="hidden" name="sortCri"> <input type="hidden"
+					name="sortVal"> <input type="radio" value="mem_name"
+					class="btn-check chkSort" id="radioName1"> <label
+					class="btn" for="radioName1">이름순(오름차순)</label> <input type="radio"
+					value="mem_name" class="btn-check chkSort" id="radioName2">
+				<label class="btn" for="radioName2">이름순(내림차순)</label> <input
+					type="radio" value="reg_date" class="btn-check chkSort"
+					id="radioReg"> <label class="btn" for="radioReg">등록순</label>
 			</div>
+			<!-- 행 개수 선택 -->
+			<div style="display: inline-block;">
+				<select name="pageSize" id="selectPage" class="form-control">
+					<option value="10">10개씩 보기</option>
+					<option value="20">50개씩 보기</option>
+					<option value="30">100개씩 보기</option>
+				</select>
+			</div>
+		</div>
 
-			<!-- 모달창 바디(본문) -->
-			<div class="modal-body">
+	</form>
 
-				<h5>회원등급</h5>
-				<div class="content">
-					<input type="radio" value="신규회원" class="btn-check" name="filter"
-						id="radioRank1"> <label
-						class="btn btn-outline-dark radioField" for="radioRank1">신규회원</label>
-					<input type="radio" value="일반회원" class="btn-check" name="filter"
-						id="radioRank2"> <label
-						class="btn btn-outline-dark radioField" for="radioRank2">일반회원</label>
-					<input type="radio" value="장기회원" class="btn-check" name="filter"
-						id="radioRank3"> <label
-						class="btn btn-outline-dark radioField" for="radioRank3">장기회원</label>
+	<!-- 모달창 시작 -->
+	<div class="modal fade" id="exampleModal" tabindex="-1"
+		aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+
+				<!-- 모달창 헤더 -->
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">필터하기</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal"
+						aria-label="Close"></button>
 				</div>
-				<hr>
-				<h5>성별</h5>
-				<div class="content">
-					<input type="radio" value=0 class="btn-check" name="mem_gender"
-						id="radioGen1"> <label
-						class="btn btn-outline-dark radioField" for="radioGen1">남자</label>
-					<input type="radio" value=1 class="btn-check" name="mem_gender"
-						id="radioGen2"> <label
-						class="btn btn-outline-dark radioField" for="radioGen2">여자</label>
+
+				<!-- 모달창 바디(본문) -->
+				<div class="modal-body">
+
+					<h5>회원등급</h5>
+					<div class="content">
+						<input type="radio" value="신규회원" class="btn-check" name="filter"
+							id="radioRank1"> <label
+							class="btn btn-outline-dark radioField" for="radioRank1">신규회원</label>
+						<input type="radio" value="일반회원" class="btn-check" name="filter"
+							id="radioRank2"> <label
+							class="btn btn-outline-dark radioField" for="radioRank2">일반회원</label>
+						<input type="radio" value="장기회원" class="btn-check" name="filter"
+							id="radioRank3"> <label
+							class="btn btn-outline-dark radioField" for="radioRank3">장기회원</label>
+					</div>
+					<hr>
+					<h5>성별</h5>
+					<div class="content">
+						<input type="radio" value=0 class="btn-check" name="mem_gender"
+							id="radioGen1"> <label
+							class="btn btn-outline-dark radioField" for="radioGen1">남자</label>
+						<input type="radio" value=1 class="btn-check" name="mem_gender"
+							id="radioGen2"> <label
+							class="btn btn-outline-dark radioField" for="radioGen2">여자</label>
+					</div>
+					<hr>
+					<h5>수신 동의 여부</h5>
+					<div class="content">
+						<input type="radio" value="chk" class="btn-check" name="msg_opt"
+							id="radioMsg1"> <label
+							class="btn btn-outline-dark radioField" for="radioMsg1">메시지만
+							동의</label> <input type="radio" value="chk" class="btn-check"
+							name="email_opt" id="radioMsg2"> <label
+							class="btn btn-outline-dark radioField" for="radioMsg2">이메일만
+							동의</label> <input type="radio" value="chk" class="btn-check"
+							name="double_opt" id="radioMsg3"> <label
+							class="btn btn-outline-dark radioField" for="radioMsg3">모두
+							동의</label>
+					</div>
+					<hr>
+					<h5>연도별</h5>
+					<input type="month" id="monthInput">년
+
 				</div>
-				<hr>
-				<h5>수신 동의 여부</h5>
-				<div class="content">
-					<input type="radio" value="chk" class="btn-check" name="msg_opt"
-						id="radioMsg1"> <label
-						class="btn btn-outline-dark radioField" for="radioMsg1">메시지만
-						동의</label> <input type="radio" value="chk" class="btn-check"
-						name="email_opt" id="radioMsg2"> <label
-						class="btn btn-outline-dark radioField" for="radioMsg2">이메일만
-						동의</label> <input type="radio" value="chk" class="btn-check"
-						name="double_opt" id="radioMsg3"> <label
-						class="btn btn-outline-dark radioField" for="radioMsg3">모두
-						동의</label>
+
+				<!-- 모달창 푸터 -->
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary"
+						data-bs-dismiss="modal">취소</button>
+					<button type="button" class="btn btn-primary filterBtn"
+						data-bs-dismiss="modal">필터 추가</button>
 				</div>
-				<hr>
-				<h5>연도별</h5>
-				<input type="month" id="monthInput">년
 
 			</div>
-
-			<!-- 모달창 푸터 -->
-			<div class="modal-footer">
-				<button type="button" class="btn btn-secondary"
-					data-bs-dismiss="modal">취소</button>
-				<button type="button" class="btn btn-primary filterBtn"
-					data-bs-dismiss="modal">필터 추가</button>
-			</div>
-
 		</div>
 	</div>
-</div>
-<!-- 모달창 끝 -->
+	<!-- 모달창 끝 -->
 
-<!-- 회원 리스트 출력 -->
-<div class="col-sm-12">
-	<table id="example1" class="table table-bordered table-hover"
-		style="background: #fff" aria-describedby="example1_info">
-		<thead>
-			<tr>
-				<th class="sorting"><input type="checkbox" class="chkGrp"
-					id="chkAll"></th>
-				<th class="sorting">NO</th>
-				<th class="sorting">회원이름</th>
-				<th class="sorting">연락처</th>
-				<th class="sorting">회원등급</th>
-				<th class="sorting">등록일</th>
-				<th class="sorting">강의 누적 기간</th>
-				<th class="sorting">현재 수강상태</th>
-				<th class="sorting">메모</th>
-			</tr>
-		</thead>
-		<tbody class="test">
-			<c:forEach var="vo" items="${memberList }">
-				<tr class="tr:hover">
-					<td class="dtr-control" tabindex="0"><input type="checkbox"
-						class="chkGrp"></td>
-					<td class="dtr-control" tabindex="0">${vo.mem_no }</td>
-					<td class=""><a
-						href="/member/read?mem_no=${vo.mem_no }&page=${param.page==null? 1:param.page}">${vo.mem_name }</a></td>
-					<td>${vo.mem_phone }</td>
-					<td>${vo.mem_rank }</td>
-					<td>${vo.reg_date }</td>
-					<td class="sorting_1">${vo.class_time }</td>
-					<td>${vo.class_status }</td>
-					<td>${vo.mem_note }</td>
+	<!-- 회원 리스트 출력 -->
+	<div class="col-sm-12">
+		<table id="example1" class="table table-bordered table-hover"
+			style="background: #fff" aria-describedby="example1_info">
+			<thead>
+				<tr>
+					<th class="sorting"><input type="checkbox" class="chkGrp"
+						id="chkAll" style="accent-color: #cdb4db;"></th>
+					<th class="sorting">NO</th>
+					<th class="sorting">회원이름</th>
+					<th class="sorting">연락처</th>
+					<th class="sorting">회원등급</th>
+					<th class="sorting">등록일</th>
+					<th class="sorting">강의 누적 기간</th>
+					<th class="sorting">현재 수강상태</th>
+					<th class="sorting">메모</th>
 				</tr>
-			</c:forEach>
-		</tbody>
-	</table>
-</div>
+			</thead>
+			<tbody class="test">
+				<c:forEach var="vo" items="${memberList }">
+					<tr class="tr:hover">
+						<td class="dtr-control" tabindex="0"><input type="checkbox"
+							class="chkGrp" style="accent-color: #a2d2ff;"></td>
+						<td class="dtr-control" tabindex="0">${vo.mem_no }</td>
+						<td class=""><a
+							href="/member/read?mem_no=${vo.mem_no }&page=${param.page==null? 1:param.page}">${vo.mem_name }</a></td>
+						<td>${vo.mem_phone }</td>
+						<td>${vo.mem_rank }</td>
+						<td>${vo.reg_date }</td>
+						<td class="sorting_1">${vo.class_time }</td>
+						<td>${vo.class_status }</td>
+						<td>${vo.mem_note }</td>
+					</tr>
+				</c:forEach>
+			</tbody>
+		</table>
+	</div>
 
-<!-- 페이징 처리 -->
-<div class="col-sm-12 col-md-7">
-	<div class="dataTables_paginate paging_simple_numbers"
-		id="example1_paginate">
-		<ul class="pagination">
-			<c:if test="${pageVO.prev }">
-				<li class="paginate_button page-item previous"
-					id="example1_previous"><c:if
-						test="${empty param.keyword and empty param.memYear and empty param.filter and empty param.mem_gender
+	<!-- 페이징 처리 -->
+	<div class="col-sm-12 col-md-7">
+		<div class="dataTables_paginate paging_simple_numbers"
+			id="example1_paginate">
+			<ul class="pagination">
+				<c:if test="${pageVO.prev }">
+					<li class="paginate_button page-item previous"
+						id="example1_previous"><c:if
+							test="${empty param.keyword and empty param.memYear and empty param.filter and empty param.mem_gender
 						and empty param.sortCri and empty param.sortVal}">
-						<a
-							href="/member/list?page=${pageVO.startPage-1 }&pageSize=${pageVO.cri.pageSize}"
-							aria-controls="example1" data-dt-idx="0" tabindex="0"
-							class="page-link">«</a>
-					</c:if> <c:if
-						test="${not empty param.keyword or not empty param.memYear or not empty param.filter or not empty param.mem_gender
+							<a
+								href="/member/list?page=${pageVO.startPage-1 }&pageSize=${pageVO.cri.pageSize}"
+								aria-controls="example1" data-dt-idx="0" tabindex="0"
+								class="page-link">«</a>
+						</c:if> <c:if
+							test="${not empty param.keyword or not empty param.memYear or not empty param.filter or not empty param.mem_gender
 						or not empty param.sortCri or not empty param.sortVal}">
-						<a
-							href="/member/list?searchType=${pageVO.cri.searchType }&keyword=${pageVO.cri.keyword }&memYear=${pageVO.cri.memYear }&filter=${pageVO.cri.filter }
+							<a
+								href="/member/list?searchType=${pageVO.cri.searchType }&keyword=${pageVO.cri.keyword }&memYear=${pageVO.cri.memYear }&filter=${pageVO.cri.filter }
 								&mem_gender=${pageVO.cri.mem_gender }&sortCri=${pageVO.cri.sortCri }&sortVal=${pageVO.cri.sortVal }&page=${pageVO.startPage-1 }&pageSize=${pageVO.cri.pageSize}"
-							aria-controls="example1" data-dt-idx="0" tabindex="0"
-							class="page-link">«</a>
-					</c:if></li>
-			</c:if>
-			<c:forEach var="i" begin="${pageVO.startPage }"
-				end="${pageVO.endPage }" step="1">
-				<li
-					class="paginate_button page-item ${pageVO.cri.page == i ? 'active':'' }">
-					<c:if
-						test="${empty param.keyword and empty param.memYear and empty param.filter and empty param.mem_gender
+								aria-controls="example1" data-dt-idx="0" tabindex="0"
+								class="page-link">«</a>
+						</c:if></li>
+				</c:if>
+				<c:forEach var="i" begin="${pageVO.startPage }"
+					end="${pageVO.endPage }" step="1">
+					<li
+						class="paginate_button page-item ${pageVO.cri.page == i ? 'active':'' }">
+						<c:if
+							test="${empty param.keyword and empty param.memYear and empty param.filter and empty param.mem_gender
 						and empty param.sortCri and empty param.sortVal}">
-						<a href="/member/list?page=${i }&pageSize=${pageVO.cri.pageSize}"
-							aria-controls="example1" data-dt-idx="1" tabindex="0"
-							class="page-link">${i }</a>
-					</c:if> <c:if
-						test="${not empty param.keyword or not empty param.memYear or not empty param.filter or not empty param.mem_gender
+							<a href="/member/list?page=${i }&pageSize=${pageVO.cri.pageSize}"
+								aria-controls="example1" data-dt-idx="1" tabindex="0"
+								class="page-link">${i }</a>
+						</c:if> <c:if
+							test="${not empty param.keyword or not empty param.memYear or not empty param.filter or not empty param.mem_gender
 						or not empty param.sortCri or not empty param.sortVal}">
-						<a
-							href="/member/list?searchType=${pageVO.cri.searchType }&keyword=${pageVO.cri.keyword }&memYear=${pageVO.cri.memYear }&filter=${pageVO.cri.filter }
+							<a
+								href="/member/list?searchType=${pageVO.cri.searchType }&keyword=${pageVO.cri.keyword }&memYear=${pageVO.cri.memYear }&filter=${pageVO.cri.filter }
 								&mem_gender=${pageVO.cri.mem_gender }&sortCri=${pageVO.cri.sortCri }&sortVal=${pageVO.cri.sortVal }&page=${i }&pageSize=${pageVO.cri.pageSize}"
-							aria-controls="example1" data-dt-idx="1" tabindex="0"
-							class="page-link">${i }</a>
-					</c:if>
-				</li>
-			</c:forEach>
-			<c:if test="${pageVO.next && pageVO.endPage > 0 }">
-				<li class="paginate_button page-item next" id="example1_next">
-					<c:if
-						test="${empty param.keyword and empty param.memYear and empty param.filter and empty param.mem_gender
+								aria-controls="example1" data-dt-idx="1" tabindex="0"
+								class="page-link">${i }</a>
+						</c:if>
+					</li>
+				</c:forEach>
+				<c:if test="${pageVO.next && pageVO.endPage > 0 }">
+					<li class="paginate_button page-item next" id="example1_next">
+						<c:if
+							test="${empty param.keyword and empty param.memYear and empty param.filter and empty param.mem_gender
 						and empty param.sortCri and empty param.sortVal}">
-						<a
-							href="/member/list?page=${pageVO.endPage+1 }&pageSize=${pageVO.cri.pageSize}"
-							aria-controls="example1" data-dt-idx="7" tabindex="0"
-							class="page-link">»</a>
-					</c:if> <c:if
-						test="${not empty param.keyword or not empty param.memYear or not empty param.filter or not empty param.mem_gender
+							<a
+								href="/member/list?page=${pageVO.endPage+1 }&pageSize=${pageVO.cri.pageSize}"
+								aria-controls="example1" data-dt-idx="7" tabindex="0"
+								class="page-link">»</a>
+						</c:if> <c:if
+							test="${not empty param.keyword or not empty param.memYear or not empty param.filter or not empty param.mem_gender
 						or not empty param.sortCri or not empty param.sortVal }">
-						<a
-							href="/member/list?searchType=${pageVO.cri.searchType }&keyword=${pageVO.cri.keyword }&memYear=${pageVO.cri.memYear }&filter=${pageVO.cri.filter }
+							<a
+								href="/member/list?searchType=${pageVO.cri.searchType }&keyword=${pageVO.cri.keyword }&memYear=${pageVO.cri.memYear }&filter=${pageVO.cri.filter }
 							&mem_gender=${pageVO.cri.mem_gender }&sortCri=${pageVO.cri.sortCri }&sortVal=${pageVO.cri.sortVal }&page=${pageVO.endPage+1 }&pageSize=${pageVO.cri.pageSize}"
-							aria-controls="example1" data-dt-idx="7" tabindex="0"
-							class="page-link">»</a>
-					</c:if>
-				</li>
-			</c:if>
-		</ul>
-	</div>
-</div>
-
-
-
-<button class="btn btn-primary" type="button">삭제하기</button>
-<!-- 회원 등록 버튼 -->
-<button class="btn btn-primary" type="button" data-bs-toggle="offcanvas"
-	data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">등록하기</button>
-
-<!-- 회원 등록창 (모달) -->
-<form action="" method="post" id="fm1" name="fm1">
-	<input type="hidden" name="${_csrf.parameterName}"
-		value="${_csrf.token}" />
-	<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight"
-		aria-labelledby="offcanvasRightLabel">
-		<div class="offcanvas-header">
-			<h5 id="offcanvasRightLabel">회원등록</h5>
-			<button type="button" class="btn-close text-reset"
-				data-bs-dismiss="offcanvas" aria-label="Close"></button>
-		</div>
-		<div class="offcanvas-body">
-
-
-			<section class="content">
-				<div class="container-fluid">
-					<!-- mem_name, mem_birth, mem_gender, mem_phone, sms_opt, mem_email, email_opt, mem_note, mem_addr1, mem_addr2
-                   -->
-					<div class="form-group">
-						<label>이름</label> <input type="text" name="mem_name"
-							class="form-control">
-					</div>
-
-					<div class="form-group">
-						<label>생일</label> <input type="date" name="mem_birth"
-							class="form-control" />
-					</div>
-
-					<div class="form-group">
-						<label>성별</label><br> <input type="radio" name="mem_gender"
-							value="0">남 <input type="radio" name="mem_gender"
-							value="1">여
-					</div>
-
-					<div class="form-group">
-						<label>전화번호</label> sms 수신동의<input type="radio" name="sms_opt"
-							value="1"> <input type="text" name="mem_phone"
-							class="form-control">
-					</div>
-
-					<div class="form-group">
-						<label>이메일</label> 이메일 수신동의<input type="radio" name="email_opt"
-							value="1"> <input type="text" name="mem_email"
-							class="form-control">
-					</div>
-					<div class="form-group">
-						<label>메모</label> <input type="text" name="mem_note"
-							class="form-control" />
-					</div>
-					<div class="form-group">
-						<label>주소</label> <input type="button"
-							onclick="sample6_execDaumPostcode()" value="주소 찾기"
-							class="btn btn-dark btn-sm"> <input type="text"
-							id="sample6_address" placeholder="주소" name="mem_addr1"
-							class="form-control">
-					</div>
-					<div class="form-group">
-						<label>상세주소</label> <input type="text" id="sample6_detailAddress"
-							placeholder="상세주소" name="mem_addr2" class="form-control">
-					</div>
-
-
-					<button type="button" class="btn btn-primary" id="submitButt">등록</button>
-
-				</div>
-			</section>
+								aria-controls="example1" data-dt-idx="7" tabindex="0"
+								class="page-link">»</a>
+						</c:if>
+					</li>
+				</c:if>
+			</ul>
 		</div>
 	</div>
 
-</form>
+
+
+	<button class="btn btn-primary" type="button">삭제하기</button>
+	<!-- 회원 등록 버튼 -->
+	<button class="btn btn-primary" type="button"
+		data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight"
+		aria-controls="offcanvasRight">등록하기</button>
+
+	<!-- 회원 등록창 (모달) -->
+	<form action="" method="post" id="fm1" name="fm1">
+		<input type="hidden" name="${_csrf.parameterName}"
+			value="${_csrf.token}" />
+		<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight"
+			aria-labelledby="offcanvasRightLabel">
+			<div class="offcanvas-header">
+				<h5 id="offcanvasRightLabel">회원등록</h5>
+				<button type="button" class="btn-close text-reset"
+					data-bs-dismiss="offcanvas" aria-label="Close"></button>
+			</div>
+			<div class="offcanvas-body">
+
+
+				<section class="content">
+					<div class="container-fluid">
+						<div class="form-group">
+							<label>이름</label> <input type="text" name="mem_name"
+								class="form-control">
+						</div>
+						<div class="form-group">
+							<label>생일</label> <input type="date" name="mem_birth"
+								class="form-control" /> 
+						</div>
+
+						<div class="form-group">
+							<label>성별</label><br> <label style="font-weight: normal !important;"><input type="radio"
+								name="mem_gender"
+								style="accent-color: #cdb4db;"
+								value="0">&nbsp; 남자</label>&nbsp;&nbsp; <label style="font-weight: normal !important;"><input
+								type="radio" name="mem_gender"
+								style="accent-color: #cdb4db;"
+								value="1">&nbsp; 여자</label>
+						</div>
+
+						<div class="form-group">
+							<label>전화번호</label> <input type="text" name="mem_phone"
+								class="form-control"> <label class="chkboxCustom">
+								<input type="checkbox" name="sms_opt"
+								style="accent-color: #cdb4db;" value="1">&nbsp;sms 수신 동의
+							</label>
+						</div>
+
+						<div class="form-group">
+							<label>이메일</label> <input type="text" name="mem_email"
+								class="form-control"> <label class="chkboxCustom">
+								<input type="checkbox" style="accent-color: #cdb4db;"
+								name="email_opt" value="1">&nbsp;이메일 수신 동의
+							</label>
+						</div>
+						<div class="form-group">
+							<label>메모</label> <br>
+							<textarea class="form-control" name="mem_note" rows="5" cols="38"></textarea>
+						</div>
+						<div class="form-group">
+							<label>주소</label>
+							<div class="input-group">
+								<input type="button" onclick="sample6_execDaumPostcode()"
+									value="주소 찾기" class="btn btn-dark btn-sm"> <input
+									type="text" id="sample6_address" placeholder="주소"
+									name="mem_addr1" class="form-control">
+							</div>
+						</div>
+						<div class="form-group">
+							<label>상세주소</label> <input type="text" id="sample6_detailAddress"
+								placeholder="상세주소" name="mem_addr2" class="form-control">
+						</div>
+
+
+						<button type="button" class="btn btn-primary" id="submitButt">등록하기</button>
+
+					</div>
+				</section>
+			</div>
+		</div>
+
+	</form>
 
 </div>
 
@@ -451,8 +464,9 @@
 		});
 
 	});
-	
-	if('${param.searchType}'=='${pageVO.cri.searchType}' && '${pageVO.cri.searchType}' != ''){
+
+	if ('${param.searchType}' == '${pageVO.cri.searchType}'
+			&& '${pageVO.cri.searchType}' != '') {
 		$("#selectType").val("${param.searchType}");
 	}
 	$("#selectPage").val("${pageVO.cri.pageSize }");
@@ -502,14 +516,11 @@
 	}
 
 	$("#selectPage").change(function() {
-		
-		 $('input[name="sortVal"]').val('${param.sortVal}');
-         $('input[name="sortCri"]').val('${param.sortCri}');
+
+		$('input[name="sortVal"]').val('${param.sortVal}');
+		$('input[name="sortCri"]').val('${param.sortCri}');
 		$(".actionForm").submit();
 	});
-
-
-	
 
 	$(document).ready(function() {
 		$('#resetFilters').click(function() {
@@ -518,32 +529,49 @@
 			}
 		});
 	});
-	
+
 	$(document).ready(function() {
-        $('.chkSort').on('change', function() {
-            var selectedVal = $(this).val();
-            var sortCriValue;
+		$('.chkSort').on('change', function() {
+			var selectedVal = $(this).val();
+			var sortCriValue;
 
-            if ($(this).attr('id') === 'radioName1') {
-                sortCriValue = 'asc'; // 오름차순
-            } else if ($(this).attr('id') === 'radioName2') {
-                sortCriValue = 'desc'; // 내림차순
-            } else if ($(this).attr('id') === 'radioReg') {
-                sortCriValue = 'asc'; // 등록순
-            }
+			if ($(this).attr('id') === 'radioName1') {
+				sortCriValue = 'asc'; // 오름차순
+			} else if ($(this).attr('id') === 'radioName2') {
+				sortCriValue = 'desc'; // 내림차순
+			} else if ($(this).attr('id') === 'radioReg') {
+				sortCriValue = 'asc'; // 등록순
+			}
 
-            // sortCri, sortVal 업데이트
-            $('input[name="sortVal"]').val(selectedVal);
-            $('input[name="sortCri"]').val(sortCriValue);
+			// sortCri, sortVal 업데이트
+			$('input[name="sortVal"]').val(selectedVal);
+			$('input[name="sortCri"]').val(sortCriValue);
 
-            // 확인을 위해 콘솔에 출력
-            console.log('Selected sortCri:', sortCriValue);
-            
-            $(".actionForm").submit();
-            
-        });
-    });
-	
+			// 확인을 위해 콘솔에 출력
+			console.log('Selected sortCri:', sortCriValue);
+
+			$(".actionForm").submit();
+
+		});
+	});
+
+	function toggleSpinner() {
+		var spinner = document.getElementById('spinner');
+		// 스피너가 현재 보이는지 확인
+		var isVisible = spinner.classList.contains('d-block');
+
+		if (!isVisible) {
+			// 로딩 시작: 스피너 활성화
+			spinner.classList.add('d-block');
+			spinner.classList.remove('d-none');
+			spinner.setAttribute('aria-hidden', 'false');
+		} else {
+			// 로딩 중지: 스피너 비활성화
+			spinner.classList.remove('d-block');
+			spinner.classList.add('d-none');
+			spinner.setAttribute('aria-hidden', 'true');
+		}
+	}
 </script>
 
 <%@ include file="../include/footer.jsp"%>

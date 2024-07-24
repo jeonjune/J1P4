@@ -41,5 +41,13 @@
   	 	insert into member (mem_name, mem_birth, mem_gender, mem_phone, sms_opt, mem_email, email_opt, mem_note, mem_addr1, mem_addr2) 
  		values(#{mem_name}, #{mem_birth}, #{mem_gender}, #{mem_phone}, #{sms_opt}, #{mem_email}, #{email_opt}, #{mem_note}, #{mem_addr1}, #{mem_addr2})
   	 </insert>
+  	 
+  	 <!-- 회원 수정 -->
+  	 <update id="memUpdate">
+  	 	update member set mem_name = #{mem_name}, mem_birth=#{mem_birth}, mem_phone=#{mem_phone},
+		sms_opt=#{sms_opt}, mem_email=#{mem_email}, email_opt=#{email_opt}, mem_note=#{mem_note},
+		mem_addr1=#{mem_addr1}, mem_addr2=#{mem_addr2}
+		where mem_no = #{mem_no};
+  	 </update>
 
   </mapper>
