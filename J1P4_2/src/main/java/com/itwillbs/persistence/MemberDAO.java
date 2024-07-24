@@ -18,6 +18,9 @@ public interface MemberDAO {
 	
 	// 회원 등록
 	public void memJoin(MemberVO vo) throws Exception;
+
+	// 회원 수정
+	public void memUpdate(MemberVO vo) throws Exception;
 	
 	
 }

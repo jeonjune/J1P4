@@ -123,4 +123,21 @@ public class MemberController {
 		
 	}
 	
+	// 회원수정
+	@ResponseBody
+	@PostMapping(value = "/memUpdate")
+	public void memUpdatePOST(MemberVO vo) throws Exception {
+		logger.info("@@@@@@@@@@@@@@모달창으로 회원 수정(컨트롤러)");
+		
+		logger.info("vo :"+vo);
+		if(vo.getSms_opt()==null) {
+			vo.setSms_opt(0);
+		}
+		if(vo.getEmail_opt()==null) {
+			vo.setEmail_opt(0);
+		}
+		mService.memUpdate(vo);
+		
+	}
+	
 }
