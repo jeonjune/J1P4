@@ -56,9 +56,8 @@
                                     <td>${classItem.instructorName}</td>
                                     <td>
                                         <button class="btn btn-warning" onclick="editClass(${classItem.classNo})">Edit</button>
-                                        <form:form action="${pageContext.request.contextPath}/classes/delete/${classItem.classNo}" method="post" style="display:inline;">
-                                            <button type="submit" class="btn btn-danger">Delete</button>
-                                        </form:form>
+                                        <button class="btn btn-danger" onclick="deleteClass(${classItem.classNo})">Delete</button>
+                                        <button class="btn btn-info" onclick="openScheduleModal(${classItem.classNo})">Add Schedule</button>
                                     </td>
                                 </tr>
                             </c:forEach>
@@ -124,6 +123,58 @@
             </div>
         </div>
 
+        <!-- Schedule Modal -->
+        <div class="modal fade" id="scheduleModal" tabindex="-1" aria-labelledby="scheduleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="scheduleModalLabel">Add Schedule</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form:form id="scheduleForm" method="post" action="${pageContext.request.contextPath}/schedules/save" modelAttribute="scheduleVO">
+                            <form:hidden path="classNo" id="scheduleClassNo"/>
+                            <div class="mb-3">
+                                <label for="startDate" class="form-label">Start Date:</label>
+                                <form:input path="startDate" class="form-control" type="date" id="startDate"/>
+                            </div>
+                            <div class="mb-3">
+                                <label for="endDate" class="form-label">End Date:</label>
+                                <form:input path="endDate" class="form-control" type="date" id="endDate"/>
+                            </div>
+                            <div class="mb-3">
+                                <label for="startTime" class="form-label">Start Time:</label>
+                                <form:select path="startTimeCode" id="startTime" class="form-control">
+                                    <form:options items="${times}" itemValue="codeValue" itemLabel="codeValueName"/>
+                                </form:select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="endTime" class="form-label">End Time:</label>
+                                <form:select path="endTimeCode" id="endTime" class="form-control">
+                                    <form:options items="${times}" itemValue="codeValue" itemLabel="codeValueName"/>
+                                </form:select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="recurrencePattern" class="form-label">Recurrence Pattern:</label>
+                                <form:input path="recurrencePattern" class="form-control" id="recurrencePattern"/>
+                            </div>
+                            <div class="mb-3">
+                                <label for="recurrenceDays" class="form-label">Recurrence Days:</label>
+                                <form:select path="recurrenceDays" multiple="multiple" class="form-control" id="recurrenceDays">
+                                    <option value="Tue">화요일</option>
+                                    <option value="Wed">수요일</option>
+                                    <option value="Thu">목요일</option>
+                                    <option value="Fri">금요일</option>
+                                    <option value="Sat">토요일</option>
+                                </form:select>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Save Schedule</button>
+                        </form:form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- Instructor Modal -->
         <div class="modal fade" id="instructorModal" tabindex="-1" aria-labelledby="instructorModalLabel" aria-hidden="true">
             <div class="modal-dialog">
@@ -156,6 +207,7 @@
         </div>
     </div>
 
+    <!-- Include jQuery and Bootstrap if not already included -->
 
     <script>
         $(document).ready(function() {
@@ -171,6 +223,22 @@
                     },
                     error: function(error) {
                         alert('Error occurred while saving the class');
+                    }
+                });
+            });
+
+            $('#scheduleForm').on('submit', function(event) {
+                event.preventDefault();
+                $.ajax({
+                    url: '${pageContext.request.contextPath}/schedules/save',
+                    method: 'POST',
+                    data: $(this).serialize(),
+                    success: function(response) {
+                        $('#scheduleModal').modal('hide');
+                        location.reload();
+                    },
+                    error: function(error) {
+                        alert('Error occurred while saving the schedule');
                     }
                 });
             });
@@ -225,10 +293,31 @@
             });
         }
 
+        function openScheduleModal(classNo) {
+            $('#scheduleForm')[0].reset();
+            $('#scheduleClassNo').val(classNo);
+            $('#scheduleModal').modal('show');
+        }
+
         function selectInstructor(instructorNo, instructorName) {
             $('#instructorNo').val(instructorNo);
             $('#instructorName').val(instructorName);
             $('#instructorModal').modal('hide');
+        }
+
+        function deleteClass(classNo) {
+            if (confirm('Are you sure you want to delete this class?')) {
+                $.ajax({
+                    url: '${pageContext.request.contextPath}/classes/delete/' + classNo,
+                    method: 'POST',
+                    success: function(response) {
+                        location.reload();
+                    },
+                    error: function(error) {
+                        alert('Error occurred while deleting the class');
+                    }
+                });
+            }
         }
     </script>
 </body>

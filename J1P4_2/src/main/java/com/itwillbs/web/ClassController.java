@@ -2,8 +2,6 @@ package com.itwillbs.web;
 
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,17 +13,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.itwillbs.domain.ClassVO;
+import com.itwillbs.domain.ClassScheduleVO;
 import com.itwillbs.service.ClassService;
+import com.itwillbs.service.ClassScheduleService;
 import com.itwillbs.service.CommonCodeService;
 
 @Controller
 @RequestMapping("/classes/*")
 public class ClassController {
-	
-	private static final Logger logger = LoggerFactory.getLogger(ClassController.class);
 
     @Autowired
     private ClassService classService;
+
+    @Autowired
+    private ClassScheduleService classScheduleService;
 
     @Autowired
     private CommonCodeService commonCodeService;
@@ -35,14 +36,16 @@ public class ClassController {
         List<ClassVO> classList = classService.getAllClasses();
         model.addAttribute("classList", classList);
         model.addAttribute("classVO", new ClassVO());
+        model.addAttribute("scheduleVO", new ClassScheduleVO());
         model.addAttribute("fields", commonCodeService.getCommonCodeDetailsByCodeId("FIELD"));
         model.addAttribute("divisions", commonCodeService.getCommonCodeDetailsByCodeId("DIVISION"));
         model.addAttribute("levels", commonCodeService.getCommonCodeDetailsByCodeId("LEVEL"));
+        model.addAttribute("times", commonCodeService.getCommonCodeDetailsByCodeId("TIME"));
         return "class/classList"; // JSP 파일 경로
     }
 
     @PostMapping("/save")
-    public String saveClass(@ModelAttribute("classVO") ClassVO classVO, Model model) {
+    public String saveClass(@ModelAttribute("classVO") ClassVO classVO) {
         if (classVO.getClassNo() == 0) {
             classService.addClass(classVO);
         } else {
@@ -54,11 +57,7 @@ public class ClassController {
     @GetMapping("/edit/{id}")
     @ResponseBody
     public ClassVO getClassById(@PathVariable("id") int classNo) {
-    	
-    	ClassVO vo = classService.getClassById(classNo);
-    	
-    	logger.info(vo.toString());
-        return vo;
+        return classService.getClassById(classNo);
     }
 
     @PostMapping("/delete/{id}")
@@ -67,4 +66,6 @@ public class ClassController {
         classService.deleteClass(classNo);
         return "redirect:/classes/list";
     }
+
+    
 }
