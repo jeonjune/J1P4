@@ -16,7 +16,6 @@
 	</div>
 	
 	
-	
 	<!-- 검색 / 필터 / 정렬 데이터 전송 -->
 	<form action="" method="get" class='actionForm'>
 
@@ -213,8 +212,9 @@
 			<tbody class="test">
 				<c:forEach var="vo" items="${memberList }">
 					<tr class="tr:hover">
-						<td class="dtr-control" tabindex="0"><input type="checkbox"
-							class="chkGrp" style="accent-color: #a2d2ff;"></td>
+<%-- 					<c:if test="${not empty vo.mem_delete }"> --%>
+						<td class="dtr-control" tabindex="0"><input type="checkbox" name="mem_no"
+							class="chkGrp" value="${vo.mem_no }" style="accent-color: #a2d2ff;"></td>
 						<td class="dtr-control" tabindex="0">${vo.mem_no }</td>
 						<td class=""><a
 							href="/member/read?mem_no=${vo.mem_no }&page=${param.page==null? 1:param.page}">${vo.mem_name }</a></td>
@@ -224,6 +224,7 @@
 						<td class="sorting_1">${vo.class_time }</td>
 						<td>${vo.class_status }</td>
 						<td>${vo.mem_note }</td>
+<%-- 					</c:if> --%>
 					</tr>
 				</c:forEach>
 			</tbody>
@@ -305,7 +306,7 @@
 	<button class="btn btn-primary" type="button">메시지 전송</button>
 
 	<!-- 회원 삭제 버튼 -->
-	<button class="btn btn-primary" type="button">삭제하기</button>
+	<button class="btn btn-primary deleteMem" type="button">삭제하기</button>
 
 	<!-- 회원 등록 버튼 -->
 	<button class="btn btn-primary" type="button"
@@ -527,6 +528,7 @@
 
 		$('input[name="sortVal"]').val('${param.sortVal}');
 		$('input[name="sortCri"]').val('${param.sortCri}');
+			
 		$(".actionForm").submit();
 	});
 
@@ -574,6 +576,39 @@
 			spinner.setAttribute('aria-hidden', 'true');
 		}
 	}
+	
+	$(document).ready(function() {
+		$('.deleteMem').click(function() {
+		
+        var selectedOptions = [];
+        const token = $("meta[name='_csrf']").attr("content")
+        const header = $("meta[name='_csrf_header']").attr("content");
+        
+        $('input[name="mem_no"]:checked').each(function() {
+            selectedOptions.push(this.value);
+        });
+        
+        console.log(selectedOptions);
+        console.log(JSON.stringify({ mem_no: selectedOptions }));
+        
+        $.ajax({
+            url: '/member/memDelete',
+            method: 'POST',
+            contentType: 'application/json; charset=UTF-8',
+            data: JSON.stringify({ mem_no: selectedOptions }),
+            beforeSend: function(xhr) {
+                xhr.setRequestHeader(header, token);
+             },
+            success: function(response) {
+				alert("회원이 성공적으로 삭제되었습니다");
+            },
+            error: function(error) {
+				alert("오류 발생");
+            }
+        });
+        
+        });
+       });
 </script>
 
 <%@ include file="../include/footer.jsp"%>

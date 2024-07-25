@@ -21,5 +21,6 @@ public class MemberVO {
 	private Integer class_time;
 	private String mem_addr1;
 	private String mem_addr2;
+	private Date mem_delete;
 	
 }

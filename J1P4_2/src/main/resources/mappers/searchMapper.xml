@@ -13,16 +13,16 @@
 		<if test="searchType == 'searchAll'">
 			WHERE (mem_name LIKE CONCAT('%', #{keyword}, '%')
 			OR mem_phone LIKE CONCAT('%', #{keyword}, '%')
-			OR mem_email LIKE CONCAT('%', #{keyword}, '%'))
+			OR mem_email LIKE CONCAT('%', #{keyword}, '%')) AND mem_delete is null
 		</if>
 		<if test="searchType == 'searchName'">
-			WHERE (mem_name LIKE CONCAT('%', #{keyword}, '%'))
+			WHERE (mem_name LIKE CONCAT('%', #{keyword}, '%')) AND mem_delete is null
 		</if>
 		<if test="searchType == 'searchPhoneNum'">
-			WHERE (mem_phone LIKE CONCAT('%', #{keyword}, '%'))
+			WHERE (mem_phone LIKE CONCAT('%', #{keyword}, '%')) AND mem_delete is null
 		</if>
 		<if test="searchType == 'searchEmail'">
-			WHERE (mem_email LIKE CONCAT('%', #{keyword}, '%'))
+			WHERE (mem_email LIKE CONCAT('%', #{keyword}, '%')) AND mem_delete is null
 		</if>
 		<if test="memYear != null">
 			AND reg_date LIKE CONCAT(#{memYear}, '%')
@@ -36,11 +36,30 @@
 		ORDER BY
 		<choose>
 			<when
-				test="sortVal != null and sortCri != null and sortCri != ''">
-				${sortVal} ${sortCri}
+				test="sortVal != null and sortVal != ''">
+				<if test="sortVal == 'mem_name'">
+					mem_name
+				</if>
+				<if test="sortVal == 'reg_date'">
+					reg_date
+				</if>
 			</when>
 			<otherwise>
-				mem_no DESC
+				mem_no
+			</otherwise>
+		</choose>
+		<choose>	
+			<when
+				test ="sortCri != null and sortCri != ''">	
+				<if test="sortCri == 'asc'">
+					ASC
+				</if>
+				<if test="sortCri == 'desc'">
+					DESC
+				</if>
+			</when>
+			<otherwise>
+				DESC
 			</otherwise>
 		</choose>
 		LIMIT #{pageStart}, #{pageSize}
@@ -54,19 +73,19 @@
             <when test="searchType == 'searchAll'">
                 (mem_name LIKE CONCAT('%', #{keyword}, '%')
                 OR mem_phone LIKE CONCAT('%', #{keyword}, '%')
-                OR mem_email LIKE CONCAT('%', #{keyword}, '%'))
+                OR mem_email LIKE CONCAT('%', #{keyword}, '%')) AND mem_delete is null
             </when>
             <when test="searchType == 'searchName'">
-                mem_name LIKE CONCAT('%', #{keyword}, '%')
+                mem_name LIKE CONCAT('%', #{keyword}, '%') AND mem_delete is null
             </when>
             <when test="searchType == 'searchPhoneNum'">
-                mem_phone LIKE CONCAT('%', #{keyword}, '%')
+                mem_phone LIKE CONCAT('%', #{keyword}, '%') AND mem_delete is null
             </when>
             <when test="searchType == 'searchEmail'">
-                mem_email LIKE CONCAT('%', #{keyword}, '%')
+                mem_email LIKE CONCAT('%', #{keyword}, '%') AND mem_delete is null
             </when>
             <otherwise>
-                1=1 <!-- 이 조건은 기본값으로 항상 참인 조건을 추가하여 기본 쿼리가 적용되도록 합니다. -->
+                1=1 AND mem_delete is null
             </otherwise>
         </choose>
         <if test="memYear != null">

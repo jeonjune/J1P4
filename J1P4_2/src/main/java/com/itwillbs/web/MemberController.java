@@ -1,6 +1,8 @@
 package com.itwillbs.web;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -11,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -36,6 +39,7 @@ public class MemberController {
 	
 	@GetMapping(value="/list")
 	public void listPageGET(Model model,Criteria cri) throws Exception {
+		logger.debug(" @@@@@@@@@@@@@@@@@@@@@@@ : "+cri);
 		
 		if(cri.getFilter() == null && cri.getKeyword() == null && cri.getMemYear() == null) {
 			// 서비스 -> DB의 정보를 가져오기 (페이징처리)
@@ -127,6 +131,18 @@ public class MemberController {
 			vo.setEmail_opt(0);
 		}
 		mService.memUpdate(vo);
+		
+	}
+	
+	// 회원삭제
+	@ResponseBody
+	@PostMapping(value = "/memDelete")
+	public void memDeletePOST(@RequestBody Map<String, List> mem_no) throws Exception {
+		logger.info("@@@@@@@@@@@@@@모달창으로 회원 삭제(컨트롤러)");
+		logger.info("@@@@@@@@@@@@@@ mem_no"+mem_no);
+		
+		
+		mService.memDelete(mem_no);
 		
 	}
 	
