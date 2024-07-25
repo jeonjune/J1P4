@@ -58,6 +58,29 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 	public void workStart(int user_no) throws Exception {
 		sqlSession.insert(NAMESPACE+"workStart", user_no);
 	}
+
+	@Override
+	public String checkWork(int user_no) throws Exception {
+		return sqlSession.selectOne(NAMESPACE+"checkWork", user_no);
+	}
+
+	@Override
+	public void endWork(int user_no) throws Exception {
+		sqlSession.update(NAMESPACE+"endWork", user_no);
+		
+	}
+
+	@Override
+	public void outWork(int user_no) throws Exception {
+		sqlSession.update(NAMESPACE+"outWork", user_no);
+		
+	}
+
+	@Override
+	public void inWork(int user_no) throws Exception {
+		sqlSession.update(NAMESPACE+"inWork", user_no);
+		
+	}
 	
 	
 	

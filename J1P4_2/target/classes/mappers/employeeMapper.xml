@@ -64,8 +64,36 @@
 	<!-- 출근 --> 
 	<insert id="workStart" parameterType="int">
 		insert into empAttendance(user_no, commute_time,vacation_status)
-		values(#{user_no},now(),'정상출근')
+		values(#{user_no},now(),'출근')
 	</insert>
+	
+	<!-- 출근상태 확인 -->
+	<select id="checkWork" resultType="string">
+		select vacation_status from empAttendance where user_no=#{user_no} and attend_date=DATE(now())
+	</select>
+	
+	<!-- 퇴근하기 -->
+	<update id="endWork">
+		update empAttendance
+		set vacation_status='퇴근',quitting_time=now()
+		where user_no=#{user_no} and attend_date=DATE(now())
+	</update>
+
+	<!-- 외출하기 -->
+	<update id="outWork">
+		update empAttendance
+		set vacation_status='외출'
+		where user_no=#{user_no}
+	</update>
+
+	<!-- 복귀하기 -->
+	<update id="inWork">
+		update empAttendance
+		set vacation_status='출근'
+		where user_no=#{user_no}
+	</update>
+	
+	
 	
 	
 	 <!-- 회원정보와 인증정보를 한번에 조회(Join) -->
