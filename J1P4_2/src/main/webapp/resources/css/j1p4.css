@@ -24,3 +24,23 @@
 	display: flex;
 	justify-content: flex-end;
 }
+
+.memListSort {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.textRight {
+	text-align: right;
+}
+
+#sortRight {
+	display: flex;
+	margin-left: auto;
+	align-items: center;
+}
+
+#selectType {
+	width: 90px;
+}

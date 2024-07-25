@@ -57,7 +57,7 @@ public class MemberController {
 			PageVO pageVO = new PageVO();
 			pageVO.setCri(cri);
 			pageVO.setTotalCount(sService.getTotalCount(cri));
-			
+			logger.debug(" @@@@@@@@@@@@@@@@@ 글 개수 : "+sService.getTotalCount(cri));
 			// 연결된 뷰페이지로 정보 전달
 			model.addAttribute("memberList", memberList);
 			model.addAttribute("pageVO",pageVO);
@@ -93,16 +93,6 @@ public class MemberController {
 	public void documentGET(Criteria cri,Model model) throws Exception{
 		logger.debug(" documentGET() 실행 ");
 		
-		
-	}
-	@GetMapping(value = "/readModify")
-	public void readModifyGET(Criteria cri,Model model,@RequestParam int mem_no) throws Exception{
-		logger.debug(" readModifyGET() 실행 ");
-		
-		logger.debug(" @@@@@@@@@@@ int mem_no = "+mem_no);
-		
-		
-		model.addAttribute("readMem",mService.readMem(mem_no));
 		
 	}
 		
