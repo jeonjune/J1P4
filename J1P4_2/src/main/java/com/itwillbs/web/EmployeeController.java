@@ -94,22 +94,22 @@ public class EmployeeController {
 	
 	// 출근 메소드
 	@ResponseBody
-	@RequestMapping(value="/workStart", method = {RequestMethod.POST})
-	public int commuteStart(@RequestParam("user_id") String user_id,HttpServletRequest request) {
+	@RequestMapping(value="/workStart", method = RequestMethod.POST)
+	public int commuteStart(@RequestParam("user_id") String user_id) {
 
-		logger.info("@@@@@@@@@@@@@@user_id@@@@@@@@@@@ :"+user_id);
+		logger.info("@@@@@@@@@@@@@@startuser_id@@@@@@@@@@@ :"+user_id);
 		// user_id로 user_no 구하기
 		int user_no = 0;
 		try {
 			user_no = eService.user_no(user_id);
-			logger.info("@@@@@@@@@@@@@@user_no@@@@@@@@@@@ :"+user_no);
+			logger.info("@@@@@@@@@@@@@start@user_no@@@@@@@@@@@ :"+user_no);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
 		try {
 			eService.workStart(user_no);
-			logger.info("@@@@@@@@@@@@@@출근성공@@@@@@@@@@@ :");
+			logger.info("@@@@@@@@@@@@@@start출근성공@@@@@@@@@@@ :");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -118,34 +118,121 @@ public class EmployeeController {
 	}
 	
 	// 출근했는지 확인하는 메소드
-		@ResponseBody
-		@RequestMapping(value="/", method = RequestMethod.GET)
-		public void checkCommute(HttpServletRequest request) {
-			// 리턴 string
-			boolean isExist = false;
-			
-			//JSONObject jsonObj = new JSONObject();
-			
-			String user_id = request.getParameter("user_id");
-			//user id로 user_no 구하기
-			
-			//EmpAttendanceVO evo = service.checkCommute(user_no);
-			
-//			if(evo != null) {
-//				isExist = true;
-//				
-//				jsonObj.put("commuteno", evo.getCommuteno());
-//				jsonObj.put("user_no", evo.getUserno());
-//				jsonObj.put("start_work_time", evo.getStart_work_time());
-//				jsonObj.put("end_work_time", evo.getEnd_work_time());
-//				jsonObj.put("overtime", evo.getOvertime());
-//				jsonObj.put("worktime", commutevo.getWorktime());
-//			}
-			
-			//jsonObj.put("isExist", isExist);
-			
-			
-			//return jsonObj.toString();
+	@ResponseBody
+	@RequestMapping(value="/checkWork", method = RequestMethod.GET)
+	public int checkCommute(@RequestParam("user_id") String user_id) {
+		// 리턴 string
+		//boolean isExist = false;
+		
+		// user_id로 user_no 구하기
+		Integer user_no = 0;
+		String check = null;
+		int checkW = 0;
+		try {
+			user_no = eService.user_no(user_id);
+			logger.info("@@@@@@@@@@@@@checkuser_no@@@@@@@@@@@ :"+user_no);
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
+		
+		try {
+			check = eService.checkWork(user_no);
+			logger.info("@@@@@@@@@@@@@@check출근상태11111@@@@@@@@@@@ :"+check);
+			//String check = eService.checkWork(user_no);
+			if(check != null) {
+				logger.info("@@@@@@@@@@@@@@check출근상태222222@@@@@@@@@@@ :"+check);
+				
+				if(check.equals("출근")){
+					//isExist = true;
+					checkW = 1;
+				}else if(check.equals("퇴근")) {
+					checkW = 2;
+				}else if(check.equals("외출")){
+					checkW = 3;
+				}
+				
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		logger.info("@@@@@@@@@@@@@@check출근상태@@@@@@@@@@@ :"+check);
+		
+		//return isExist;
+		return checkW;
+	}
+		
+	// 퇴근하기
+	@ResponseBody
+	@RequestMapping(value = "/endWork",method = RequestMethod.POST)
+	public int endWork(@RequestParam("user_id") String user_id) {
+		logger.info("@@@@@@@@@@@@@@enduser_id@@@@@@@@@@@ :"+user_id);
+		// user_id로 user_no 구하기
+		int user_no = 0;
+		try {
+			user_no = eService.user_no(user_id);
+			logger.info("@@@@@@@@@@@@@@enduser_no@@@@@@@@@@@ :"+user_no);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		try {
+			eService.endWork(user_no);
+			logger.info("@@@@@@@@@@@@@@end퇴근성공@@@@@@@@@@@ :");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return 1;
+		
+	}
+	// 외출하기
+	@ResponseBody
+	@RequestMapping(value = "/outWork",method = RequestMethod.POST)
+	public int outWork(@RequestParam("user_id") String user_id) {
+		logger.info("@@@@@@@@@@@@@@outuser_id@@@@@@@@@@@ :"+user_id);
+		// user_id로 user_no 구하기
+		int user_no = 0;
+		try {
+			user_no = eService.user_no(user_id);
+			logger.info("@@@@@@@@@@@@@@outuser_no@@@@@@@@@@@ :"+user_no);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		try {
+			eService.outWork(user_no);
+			logger.info("@@@@@@@@@@@@@@out외출성공@@@@@@@@@@@ :");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return 1;
+		
+	}
+	// 복귀하기
+	@ResponseBody
+	@RequestMapping(value = "/inWork",method = RequestMethod.POST)
+	public int inWork(@RequestParam("user_id") String user_id) {
+		logger.info("@@@@@@@@@@@@@@inuser_id@@@@@@@@@@@ :"+user_id);
+		// user_id로 user_no 구하기
+		int user_no = 0;
+		try {
+			user_no = eService.user_no(user_id);
+			logger.info("@@@@@@@@@@@@@@inuser_no@@@@@@@@@@@ :"+user_no);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		try {
+			eService.inWork(user_no);
+			logger.info("@@@@@@@@@@@@@@복귀성공@@@@@@@@@@@ :");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return 1;
+		
+	}
+	
 
 }

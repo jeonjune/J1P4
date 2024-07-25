@@ -24,5 +24,17 @@ public interface EmployeeService {
 	
 	// 직원 출근
 	public void workStart(int user_no) throws Exception;
+	
+	// 출근상태 확인
+	public String checkWork(int user_no) throws Exception;
+	
+	//퇴근하기
+	public void endWork(int user_no)throws Exception;
+	
+	//외출하기
+	public void outWork(int user_no)throws Exception;
+	
+	//복귀하기
+	public void inWork(int user_no)throws Exception;
 
 }

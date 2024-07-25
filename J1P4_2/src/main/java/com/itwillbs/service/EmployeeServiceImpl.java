@@ -61,6 +61,28 @@ public class EmployeeServiceImpl implements EmployeeService {
 		edao.workStart(user_no);
 		
 	}
+
+	@Override
+	public String checkWork(int user_no) throws Exception {
+		return edao.checkWork(user_no);
+	}
+
+	@Override
+	public void endWork(int user_no) throws Exception {
+		edao.endWork(user_no);
+	}
+
+	@Override
+	public void outWork(int user_no) throws Exception {
+		edao.outWork(user_no);
+		
+	}
+
+	@Override
+	public void inWork(int user_no) throws Exception {
+		edao.inWork(user_no);
+		
+	}
 	
 	
 

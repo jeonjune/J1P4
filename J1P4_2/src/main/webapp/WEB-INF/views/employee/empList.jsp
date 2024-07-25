@@ -23,7 +23,7 @@
 	<sec:authentication property="principal" var="principal"/>
     <!-- principal property가 UserDetails임-->
 </sec:authorize>
-${principal} <br>
+<%-- ${principal} <br> --%>
 ${principal.username}<br>
 ${principal.authorities}<br>
 
@@ -33,7 +33,7 @@ ${principal.authorities}<br>
     출근하기
   </button>
   <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-    <li><a class="dropdown-item" href="#" id="start_work">출근하기</a></li>
+    <li><a class="dropdown-item" id="start_work">출근하기</a></li>
   </ul>
 </div>
 		
@@ -392,11 +392,10 @@ $(function() {
 </script>
 <script type="text/javascript">
 
-	let distance = 0;
-
 
 	$(document).ready(function(){
 		
+		check_commute()
 		
 		// 출근하기 버튼 클릭이벤트 시작
 		
@@ -429,16 +428,12 @@ $(function() {
 							   if(data == 1) {
 								   Swal.fire('출근처리가 완료되었습니다.','출근완료','success');
 								   
-								   const hour = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-								   const minute = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-								    
-								   const time = hour +"시간 "+ minute +"분";
 								   
 								   html += "<button class='btn btn-secondary dropdown-toggle' type='button' id='dropdownMenuButton1' data-bs-toggle='dropdown' aria-expanded='false'>"+
 								    		   "퇴근하기</button>"+
 									  	   "<ul class='dropdown-menu' aria-labelledby='dropdownMenuButton1'>"+
-									  	   "<li><a class='dropdown-item' href='#' id='endWork'>퇴근하기</a></li>"+
-									  	   "<li><a class='dropdown-item' href='#' id='restWork'>외출하기</a></li>"+
+									  	   "<li><a class='dropdown-item' id='endWork' value='퇴근'>퇴근하기</a></li>"+
+									  	   "<li><a class='dropdown-item' id='outWork' value='외출'>외출하기</a></li>"+
 									    	   "</ul>"+
 									  	   "</div>"
 
@@ -458,7 +453,7 @@ $(function() {
 		
 		
 		// 퇴근하기 버튼 클릭이벤트 
-		$(document).ready("click","#end_work", function(){
+		$(document).on("click","#endWork", function(){
 			
 			Swal.fire({
 				   title: '퇴근하시겠습니까?',
@@ -476,85 +471,187 @@ $(function() {
 				   // 만약 Promise리턴을 받으면,
 				   if (result.isConfirmed) { // 만약 모달창에서 confirm 버튼을 눌렀다면
 					   
+					   let html = "";
+					   
+				   
 					  $.ajax({
-						  
+						   url:"/employee/endWork",
+						   type:"POST",
+						   data:{"user_id":"${principal.username}",
+							   "${_csrf.parameterName}":"${_csrf.token}"},
+						   success:function(data){
+							   console.log("퇴근완료");
+							   if(data == 1) {
+								   html += "<button class='btn btn-secondary' type='button' id='dropdownMenuButton1' aria-expanded='false'>"+
+					    		   "퇴근했어요</button>"+
+						  	   
+						  	   "</div>"
+					
+								$("#commute-div").html(html);	   
+							   }
+						   },
+						   error: function(request, status, error){
+					            alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+					       }
 					  }) 
 					   
-				      Swal.fire('공유자에서 삭제했습니다.',text+' 삭제완료','success');
+				      Swal.fire('다음에 또 만나요.',' 퇴근완료','success');
 				   }
 				});
 			
-		});// end of $(document).ready("click","#end_work", function(){}) ------------------
+		});
+		
+		// 외출하기 버튼 클릭이벤트 
+		$(document).on("click","#outWork", function(){
+			
+			Swal.fire({
+				   title: '외출하시겠습니까?',
+				   icon: 'warning',
+				   
+				   showCancelButton: true, // cancel버튼 보이기. 기본은 원래 없음
+				   confirmButtonColor: '#3085d6', // confrim 버튼 색깔 지정
+				   cancelButtonColor: '#d33', // cancel 버튼 색깔 지정
+				   confirmButtonText: '승인', // confirm 버튼 텍스트 지정
+				   cancelButtonText: '취소', // cancel 버튼 텍스트 지정
+				   
+				   reverseButtons: true, // 버튼 순서 거꾸로
+				   
+				}).then(result => {
+				   // 만약 Promise리턴을 받으면,
+				   if (result.isConfirmed) { // 만약 모달창에서 confirm 버튼을 눌렀다면
+					   
+					   let html = "";
+					   
+				   
+					  $.ajax({
+						   url:"/employee/outWork",
+						   type:"POST",
+						   data:{"user_id":"${principal.username}",
+							   "${_csrf.parameterName}":"${_csrf.token}"},
+						   success:function(data){
+							   console.log("외출중");
+							   if(data == 1) {
+								html += "<button class='btn btn-secondary dropdown-toggle' type='button' id='dropdownMenuButton1' data-bs-toggle='dropdown' aria-expanded='false'>"+
+					    		"복귀하기</button>"+
+						  	   "<ul class='dropdown-menu' aria-labelledby='dropdownMenuButton1'>"+
+						  	   "<li><a class='dropdown-item' id='inWork' value='복귀'>복귀하기</a></li>"+
+						    	   "</ul>"+
+						  	   "</div>"
+
+						$("#commute-div").html(html);  	  
+							   }
+						   },
+						   error: function(request, status, error){
+					            alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+					       }
+					  }) 
+					   
+				      Swal.fire('복귀시 복귀버튼 필수!.',' 외출완료','success');
+				   }
+				});
+			
+		});// 외출끝----------------------------------------------------------
+		
+		// 복귀하기 버튼 클릭이벤트 
+		$(document).on("click","#inWork", function(){
+			
+			Swal.fire({
+				   title: '복귀하시겠습니까?',
+				   icon: 'warning',
+				   
+				   showCancelButton: true, // cancel버튼 보이기. 기본은 원래 없음
+				   confirmButtonColor: '#3085d6', // confrim 버튼 색깔 지정
+				   cancelButtonColor: '#d33', // cancel 버튼 색깔 지정
+				   confirmButtonText: '승인', // confirm 버튼 텍스트 지정
+				   cancelButtonText: '취소', // cancel 버튼 텍스트 지정
+				   
+				   reverseButtons: true, // 버튼 순서 거꾸로
+				   
+				}).then(result => {
+				   // 만약 Promise리턴을 받으면,
+				   if (result.isConfirmed) { // 만약 모달창에서 confirm 버튼을 눌렀다면
+					   
+					   let html = "";
+					   
+				   
+					  $.ajax({
+						   url:"/employee/inWork",
+						   type:"POST",
+						   data:{"user_id":"${principal.username}",
+							   "${_csrf.parameterName}":"${_csrf.token}"},
+						   success:function(data){
+							   console.log("복귀");
+							   if(data == 1) {
+								   html += "<button class='btn btn-secondary dropdown-toggle' type='button' id='dropdownMenuButton1' data-bs-toggle='dropdown' aria-expanded='false'>"+
+					    		   "퇴근하기</button>"+
+						  	   "<ul class='dropdown-menu' aria-labelledby='dropdownMenuButton1'>"+
+						  	   "<li><a class='dropdown-item' id='endWork' value='퇴근'>퇴근하기</a></li>"+
+						  	   "<li><a class='dropdown-item' id='outWork' value='외출'>외출하기</a></li>"+
+						    	   "</ul>"+
+						  	   "</div>"
+
+						$("#commute-div").html(html);  		  
+							   }
+						   },
+						   error: function(request, status, error){
+					            alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+					       }
+					  }) 
+					   
+				      Swal.fire('다시 일합시다!.',' 복귀완료','success');
+				   }
+				});
+			
+		});
 		
 	}); // end of ready
 	
-	// Function Declation
-	function getDateMinute() { // 현재날짜와 시간까지 가져오는 메소드
-		const date = new Date();
-		const year = date.getFullYear();
-		const month = ('0' + (date.getMonth() + 1)).slice(-2);
-		const day = ('0' + date.getDate()).slice(-2);
-		const time = date.toTimeString().split(' ')[0];
-		const today = year + '-' + month + '-' + day + " " + time; // 오늘 날짜를 가져옴
-		
-		return today;
-	}
-	
-	
-	function getDate() { // 현재날짜만 가져오는 메소드
-		const date = new Date();
-		const year = date.getFullYear();
-		const month = ('0' + (date.getMonth() + 1)).slice(-2);
-		const day = ('0' + date.getDate()).slice(-2);
-		const today = year + '-' + month + '-' + day; // 오늘 날짜를 가져옴
-		
-		return today;
-	}
+
 	
 	
 	
 	function check_commute() { // 오늘 출근을 했는지 확인하는 메소드
 		
 		$.ajax({
-			url:"/commute/checkCommute.yolo",
-			data:{"fk_empno":'${sessionScope.loginuser.empno}'},
-			dataType:"JSON",
-			success:function(json) {
+			url:"/employee/checkWork",
+			data:{"user_id":"${principal.username}",
+				   "${_csrf.parameterName}":"${_csrf.token}"},
+			success:function(data) {
 				
 				let html = "";
-				
-				if(json.isExist) {	// 오늘날짜로 출근한 데이터가 있다면
+				console.log("data"+data);
+				if(data == 1) {	// 오늘날짜로 출근한 데이터가 있다면
 					
-					//console.log("확인용 => " + json.start_work_time)
-				    //console.log("확인용 => " + getDateMinute())
-				    let start_work_time = json.start_work_time
-				    let sysdate = getDateMinute()
-				   
-				    start_work_time = new Date(start_work_time);
-				    sysdate = new Date(sysdate);
-				    
-				    //console.log("확인용 => " + start_work_time)
-				    //console.log("확인용 => " + sysdate)
-				   
-				    distance = sysdate - start_work_time;
-				   
-				    const hour = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-				    const minute = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-				    
-				    const time = hour +"시간 "+ minute +"분";
 					
-					html += "<a class='btn btn-outline-secondary dropdown-toggle' href='#' role='button' id='dropdownMenuLink' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' style='width: 90%;margin: auto 5%;'>"+
-				    		    "<small class='border rounded bg-success text-white text-sm mr-2'>근무중</small><span id='work-time'>"+time+"</span></a>"+
-					  	    "<div class='dropdown-menu' aria-labelledby='dropdownMenuLink' style='width: 90%;'>"+
-					  	    "<small class='text-muted ml-4'>근무 선택</small>"+
-					  	    "<a class='dropdown-item' data-value='' id='kind-commute'>근무<i class='fas fa-chevron-right' style='margin-left: 130px;'></i></a>"+
-					  	    "<div class='dropdown-divider'></div>"+
-					    	    "<div id='start_or_end'><a class='dropdown-item' id='end_work'>퇴근하기</a></div>"+
-					  	    "</div>"
+				html += "<button class='btn btn-secondary dropdown-toggle' type='button' id='dropdownMenuButton1' data-bs-toggle='dropdown' aria-expanded='false'>"+
+			    		   "퇴근하기</button>"+
+				  	   "<ul class='dropdown-menu' aria-labelledby='dropdownMenuButton1'>"+
+				  	   "<li><a class='dropdown-item' id='endWork' value='퇴근'>퇴근하기</a></li>"+
+				  	   "<li><a class='dropdown-item' id='outWork' value='외출'>외출하기</a></li>"+
+				    	   "</ul>"+
+				  	   "</div>"
 			
-				   $("#commute-div").html(html);
+				$("#commute-div").html(html);
 					  	    
 				   
+				}else if(data==2){
+					
+					html += "<button class='btn btn-secondary' type='button' id='dropdownMenuButton1' aria-expanded='false'>"+
+		    		   "퇴근했어요</button>"+
+			  	   
+			  	   "</div>"
+		
+					$("#commute-div").html(html);
+				}else if(data==3){
+					
+					html += "<button class='btn btn-secondary dropdown-toggle' type='button' id='dropdownMenuButton1' data-bs-toggle='dropdown' aria-expanded='false'>"+
+		    		"복귀하기</button>"+
+			  	   "<ul class='dropdown-menu' aria-labelledby='dropdownMenuButton1'>"+
+			  	   "<li><a class='dropdown-item' id='inWork' value='복귀'>복귀하기</a></li>"+
+			    	   "</ul>"+
+			  	   "</div>"
+
+			$("#commute-div").html(html);  	  
 				}
 				
 			},
@@ -565,18 +662,7 @@ $(function() {
 		
 	}// end of function check_commute() {} --------------------------------
 	
-	
-    function plus_time() {
-		distance += 60000
-		
-		const hour = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-	    const minute = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-	    
-	    const time = hour +"시간 "+ minute +"분";
-	    
-	    $("#work-time").text(time);
-		
-	}  
+
 
 </script>
 
