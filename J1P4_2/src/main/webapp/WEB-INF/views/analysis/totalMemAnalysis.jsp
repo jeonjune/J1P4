@@ -2,7 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ include file="../include/mainHeader.jsp" %>
 <%@ include file="../include/sidemenu.jsp" %>
-
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!-- Navbar -->
 <nav class="main-header navbar navbar-expand navbar-white navbar-light">
 	<!--     Left navbar links -->
@@ -16,7 +16,6 @@
 	</ul>
 
 </nav>
-
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper" style="min-height: 831px;">
     <!-- Content Header (Page header) -->
@@ -29,8 +28,6 @@
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="/main/home">Home</a></li>
-              <li class="breadcrumb-item active">센터 관리</li>
-              <li class="breadcrumb-item active">분석</li>
               <li class="breadcrumb-item active">전체 회원분석</li>
             </ol>
           </div><!-- /.col -->
@@ -48,14 +45,14 @@
             <!-- small box -->
             <div class="small-box bg-info">
               <div class="inner">
-                <h3>150</h3>
+                <h3>${tmc }</h3>
 
                 <p>총 회원수 </p>
               </div>
               <div class="icon">
                 <i class="ion ion-bag"></i>
               </div>
-              <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+              <a href="/member/list" class="small-box-footer">회원 리스트 <i class="fas fa-arrow-circle-right"></i></a>
             </div>
           </div>
           <!-- ./col -->
@@ -63,7 +60,7 @@
             <!-- small box -->
             <div class="small-box bg-warning">
               <div class="inner">
-                <h3>53</sup></h3>
+                <h3>${nmc }</sup></h3>
 
                 <p>이번달 신규 회원</p>
               </div>
@@ -78,7 +75,7 @@
             <!-- small box -->
             <div class="small-box bg-success">
               <div class="inner">
-                <h3>44</h3>
+                <h3>${rmc }</h3>
 
                 <p>이번달 등록 회원</p>
               </div>
@@ -93,7 +90,7 @@
             <!-- small box -->
             <div class="small-box bg-danger">
               <div class="inner">
-                <h3>65<sup style="font-size: 20px">%</h3>
+                <h3>${rmcTmc }<sup style="font-size: 20px">%</sup></h3>
 
                 <p>이번달 등록 회원 / 총 회원</p>
               </div>
@@ -209,19 +206,45 @@
         </div>
         <!-- /.row (main row) -->
       </div><!-- /.container-fluid -->
+      ${new6MemCount}
     </section>
     <!-- /.content -->
   </div>
   <!-- /.content-wrapper -->
-  
+
       <!-- Include Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
+    
+    // 현재 날짜를 기준으로 달 레이블 생성
+    function getMonthLabels() {
+//         var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+        var months2 = ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'];
+        var currentMonth = new Date().getMonth();
+        var labels = [];
+
+        for (var i = 5; i >= 0; i--) {
+            labels.push(months2[(currentMonth - i + 12) % 12]);
+        }
+        return labels;
+    }    	
+    
+ 	// 서버에서 전달된 JSON 문자열을 `new6MemCountJson` 변수에 저장
+    var new6MemCountJson = '<c:out value="${new6MemCount}" escapeXml="false"/>';
+    console.log("(❁´◡`❁)(❁´◡`❁)(❁´◡`❁)(❁´◡`❁)(❁´◡`❁)(❁´◡`❁)(❁´◡`❁)(❁´◡`❁)(❁´◡`❁)Raw JSON: ", new6MemCountJson);
+
+ 	// JSON 문자열을 JavaScript 객체로 변환하고`new6MemCount` 변수에 파싱된 데이터를 저장
+    var new6MemCount = JSON.parse(new6MemCountJson);
+ 	
+	 // `new6MemCount` 배열의 각 요소에서 속성 값을 추출하여 새로운 배열을 만들고 변수에 추출된 월 데이터를 저장
+    var yearMonth = new6MemCount.map(function(item) { return item.month; });
+    var new_members = new6MemCount.map(function(item) { return item.new_members; });
+    
         var ctx = document.getElementById('revenue-chart-canvas').getContext('2d');
         var revenueChart = new Chart(ctx, {
             type: 'line',
             data: {
-                labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+                labels: yearMonth,
                 datasets: [{
                     label: '이번달 신규 회원',
                     backgroundColor: 'rgba(60,141,188,0.9)',
@@ -231,7 +254,7 @@
                     pointStrokeColor: 'rgba(60,141,188,1)',
                     pointHighlightFill: '#fff',
                     pointHighlightStroke: 'rgba(60,141,188,1)',
-                    data: [28, 48, 40, 19, 86, 27, 90]
+                    data: new_members
                 },
                 {
                   label: '이번달 등록 회원',
@@ -242,7 +265,7 @@
                   pointStrokeColor: '#c1c7d1',
                   pointHighlightFill: '#fff',
                   pointHighlightStroke: 'rgba(220,220,220,1)',
-                  data: [65, 59, 80, 81, 56, 55, 40]
+                  data: [65, 59, 80, 56, 55, 40]
                 }
                 ]
             },
