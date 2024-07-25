@@ -28,6 +28,14 @@ public class EquipManageServiceImpl implements EquipManageService {
 		return edao.equipList();
 		
 	}
+
+	//특정 장비신청 상세페이지 조회
+	@Override
+	public EquipManageVO equipDetail(int eno) throws Exception {
+		return edao.equipDetail(eno);
+	}
+	
+	
 	
 	
 }

@@ -11,6 +11,8 @@ public interface EquipManageDAO {
 		
 	//장비신청내역리스트
 	public List<EquipManageVO> equipList() throws Exception;
-
+	
+	//특정 장비신청 상세페이지 조회
+	public EquipManageVO equipDetail(int eno) throws Exception;
 	
 }

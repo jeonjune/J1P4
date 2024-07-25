@@ -85,7 +85,6 @@
 <!-- 					</div> -->
 
 					<button type="button" class="btn btn-primary" id="submitButt">등록</button>
-<!-- 					<input type="submit" class="btn btn-primary" id="submitButt" value="등록"/> -->
 
 
 		</div>

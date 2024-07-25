@@ -31,6 +31,14 @@ public class EquipManageDAOImpl implements EquipManageDAO {
 		return sqlSession.selectList(NAMESPACE+"equipList");
 		
 	}
+
+	//특정 장비신청 상세페이지 조회
+	@Override
+	public EquipManageVO equipDetail(int eno) throws Exception {
+		return sqlSession.selectOne(NAMESPACE+"equipDetail", eno);
+	}
+	
+	
 	
 	
 

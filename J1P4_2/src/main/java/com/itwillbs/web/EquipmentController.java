@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.itwillbs.domain.EquipManageVO;
@@ -48,7 +49,7 @@ public class EquipmentController {
 		List<EquipManageVO> list = eService.equipList();
 		
 		model.addAttribute("list",list);
-		  logger.info("list :"+ list);
+		  //logger.info("list :"+ list);
 
 		return "/maintenance/list";
 		
@@ -83,7 +84,28 @@ public class EquipmentController {
 	
 	
 	
+	//반려내역
+	//http://localhost:8088/maintenance/reject
+	@GetMapping(value = "/reject")
+	public void rejectGET() {
+				
+	}
 	
+	//장비신청 상세페이지
+	//http://localhost:8088/maintenance/detail
+	@GetMapping(value = "/detail")
+	public void detailGET(Model model, @RequestParam("equipment_no") int eno) throws Exception {
+		//전달정보 저장 
+		logger.info("####eno##### :"+ eno);
+		
+		//DAO 저장된 정보 가져오기
+		EquipManageVO resultVO = eService.equipDetail(eno);
+		logger.info("resultVO :"+ resultVO);
+		
+		//전달할 정보 저장
+		model.addAttribute("resultVO", resultVO);
+		
+	}
 	
 	
 	
