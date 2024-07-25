@@ -8,7 +8,7 @@
 			href="/maintenance/equipment"
 			role="button"><i class="fas">장비내역</i></a></li>
 		<li class="nav-item"><a class="nav-link"
-			href="/maintenance/request"
+			href="/maintenance/list"
 			role="button"><i class="fas"> 장비신청내역</i></a></li>
 		<li class="nav-item"><a class="nav-link"
 			href="/maintenance/reject"

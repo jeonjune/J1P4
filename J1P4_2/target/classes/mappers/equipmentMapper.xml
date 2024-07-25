@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+  <mapper namespace="com.itwillbs.mapper.equipmentMapper">
+	
+	<!-- 장비신청 -->
+   	<insert id="equipAdd">
+   	insert into equipmentManagement(name,report_date,e_repair_type,field,equipment_name, manufacturer,count,cost,total,repair_reason,manager_no)
+   	values(#{name},#{report_date},#{e_repair_type},#{field},#{equipment_name},#{manufacturer},#{count},#{cost},#{total},#{repair_reason},#{manager_no})
+   	</insert>
+	
+	<!-- 장비신청내역 -->
+	<select id="equipList" resultType="EquipManageVO">
+	select * from equipmentManagement
+	
+	</select>
+	
+	<!-- 특정 장비신청 내역 상세페이지 조회 -->
+	<select id="equipDetail" resultType="EquipManageVO">
+	select * from equipmentManagement
+	where equipment_no=#{equipment_no}
+	</select>
+
+  </mapper>

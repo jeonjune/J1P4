@@ -59,6 +59,7 @@
 
 <!-- 상세내역 모달창 -->
 <form action="" method="post" id="fm1">
+<input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
 <input type="hidden" name="facility_no" value="${param.facility_no }">
 	<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight"
 		aria-labelledby="offcanvasRightLabel">
