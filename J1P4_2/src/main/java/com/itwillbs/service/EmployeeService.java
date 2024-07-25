@@ -36,5 +36,12 @@ public interface EmployeeService {
 	
 	//복귀하기
 	public void inWork(int user_no)throws Exception;
+	
+	// 직원 상세페이지
+	public EmployeeVO empDetail(int user_no) throws Exception;
+	
+	
+	
+	
 
 }

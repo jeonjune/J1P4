@@ -83,6 +83,12 @@ public class EmployeeServiceImpl implements EmployeeService {
 		edao.inWork(user_no);
 		
 	}
+
+	@Override
+	public EmployeeVO empDetail(int user_no) throws Exception {
+		
+		return edao.empDetail(user_no);
+	}
 	
 	
 

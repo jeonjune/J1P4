@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.itwillbs.domain.AuthVO;
+import com.itwillbs.domain.Criteria;
 import com.itwillbs.domain.EmployeeVO;
 import com.itwillbs.service.CommonCodeService;
 import com.itwillbs.service.EmployeeService;
@@ -231,6 +232,19 @@ public class EmployeeController {
 		}
 		
 		return 1;
+		
+	}
+	
+	// 직원 상세페이지
+	@GetMapping(value = "/empDetail")
+	public void empDetailGET(Model model,@RequestParam int user_no,Criteria cri) throws Exception{
+		logger.debug(" empDetailGET() 실행 ");
+		
+		logger.debug(" @@@@@@@@@@@ int user_no = "+user_no);
+		
+		
+		model.addAttribute("empDt",eService.empDetail(user_no));
+		//model.addAttribute("pageInfo",cri);
 		
 	}
 	
