@@ -12,7 +12,7 @@
 
 	<div class="card cardCustom">
 		<div class="card-header" style="margin-bottom: 30px">
-			<h2 class="card-title">회원 기본정보</h2>
+			<h2 class="card-title" style="margin-left: 150px;">회원 기본정보</h2>
 		</div>
 
 		<div class="col-md-10" style="margin-left: 150px;">

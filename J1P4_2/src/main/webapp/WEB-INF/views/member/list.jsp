@@ -14,18 +14,24 @@
 		role="status" aria-hidden="true">
 		<span class="visually-hidden">Loading...</span>
 	</div>
+	
+	
+	
 	<!-- 검색 / 필터 / 정렬 데이터 전송 -->
 	<form action="" method="get" class='actionForm'>
 
 		<div class="form-inline">
 			<!-- 검색 키워드 입력창 -->
-			<div class="input-group">
-				<select name="searchType" id="selectType" class="form-control">
-					<option value="searchAll" selected="selected">전체</option>
-					<option value="searchName">이름</option>
-					<option value="searchPhoneNum">연락처</option>
-					<option value="searchEmail">이메일</option>
-				</select> <input class="form-control" type="search" name="keyword"
+			<div class="input-group mb-3">
+				<div class="input-group-prepend">
+					<select name="searchType" id="selectType" class="form-control">
+						<option value="searchAll" selected="selected">전체</option>
+						<option value="searchName">이름</option>
+						<option value="searchPhoneNum">연락처</option>
+						<option value="searchEmail">이메일</option>
+					</select>
+				</div>
+				<input class="form-control" type="search" name="keyword"
 					value="${param.keyword }" placeholder="Search" aria-label="Search">
 				<div class="input-group-append">
 					<button class="btn" type="submit" id="submitBtn"
@@ -48,47 +54,32 @@
 			<div class="deleteFilter">
 				<!-- 사용자가 필터를 사용하여 검색했을 때 선택한 필터를 보여주는 공간 -->
 				<c:if test="${not empty param.filter }">
-					<div class="border border-1 rounded-3 p-2" role="group"
-						style="width: 120px; margin-bottom: 20px; background-color: #fff;">
-						<!-- 선택한 필터 삭제 버튼 -->
-						<button class="removeFi btn-close" aria-label="Close"
-							style="width: 1px; position: absolute;"></button>
-						<!-- hidden으로 숨겨서 필터 정보를 전달 -->
-						<input type="hidden" value="${param.filter }" name="filter">
-						<span
-							style="padding-left: 20px; font-size: 16px; font-weight: bold;">${param.filter }</span>
-					</div>
+					<h5><span class="badge badge-warning p-2" style="color: #000;">
+					<input type="hidden" name="filter" value="${param.filter }">${param.filter }
+					<button class="removeFi btn-close btn-xs" aria-label="Close" style="margin-left: 7px;">
+					</button></span></h5>
 				</c:if>
 			</div>
 		</div>
 		<div class="filter2" style="display: inline-block;">
 			<div class="deleteFilter">
 				<c:if test="${not empty param.memYear }">
-					<div class="border border-1 rounded-3 p-2" role="group"
-						style="width: 120px; margin-bottom: 20px; background-color: #fff;">
-						<button class="removeFi btn-close" aria-label="Close"
-							style="width: 1px; position: absolute;"></button>
-						<input type="hidden" value="${param.memYear }" name="memYear">
-						<span
-							style="padding-left: 20px; font-size: 18px; font-weight: bold;">${param.memYear }</span>
-					</div>
+					<h5><span class="badge badge-warning p-2" style="color: #000;">
+					<input type="hidden" name="memYear" value="${param.memYear }">${param.memYear }
+					<button class="removeFi btn-close btn-xs" aria-label="Close" style="margin-left: 7px;">
+					</button></span></h5>
 				</c:if>
 			</div>
 		</div>
 		<div class="filter3" style="display: inline-block;">
 			<div class="deleteFilter">
 				<c:if test="${not empty param.mem_gender }">
-					<div class="border border-1 rounded-3 p-2" role="group"
-						style="width: 120px; margin-bottom: 20px; background-color: #fff;">
-						<button class="removeFi btn-close" aria-label="Close"
-							style="width: 1px; position: absolute;"></button>
-						<input type="hidden" value="${param.mem_gender }"
-							name="mem_gender"> <span
-							style="padding-left: 20px; font-size: 18px; font-weight: bold;">
+					<h5><span class="badge badge-warning p-2" style="color: #000;">
+					<input type="hidden" name="mem_gender" value="${param.mem_gender }">
 							<c:if test="${param.mem_gender == 0}">남자</c:if> <c:if
-								test="${param.mem_gender == 1}">여자</c:if>
-						</span>
-					</div>
+								test="${param.mem_gender == 1}">여자</c:if>					
+					<button class="removeFi btn-close btn-xs" aria-label="Close" style="margin-left: 7px;">
+					</button></span></h5>
 				</c:if>
 			</div>
 		</div>
@@ -107,9 +98,9 @@
 		</div>
 
 
-
-		<div class="content" style="text-align: right;">
-			<div style="display: inline-block;">
+		<div class="content memListSort">
+			<div>검색결과 : ${pageVO.totalCount }명</div>
+			<div id="sortRight">
 				<input type="hidden" name="sortCri"> <input type="hidden"
 					name="sortVal"> <input type="radio" value="mem_name"
 					class="btn-check chkSort" id="radioName1"> <label
@@ -119,8 +110,7 @@
 					type="radio" value="reg_date" class="btn-check chkSort"
 					id="radioReg"> <label class="btn" for="radioReg">등록순</label>
 			</div>
-			<!-- 행 개수 선택 -->
-			<div style="display: inline-block;">
+			<div class="textRight">
 				<select name="pageSize" id="selectPage" class="form-control">
 					<option value="10">10개씩 보기</option>
 					<option value="20">50개씩 보기</option>
@@ -247,14 +237,15 @@
 			<ul class="pagination">
 				<c:if test="${pageVO.prev }">
 					<li class="paginate_button page-item previous"
-						id="example1_previous"><c:if
+						id="example1_previous">
+						<!-- 검색을 하지 않았을 때 페이징 처리 --> <c:if
 							test="${empty param.keyword and empty param.memYear and empty param.filter and empty param.mem_gender
 						and empty param.sortCri and empty param.sortVal}">
 							<a
 								href="/member/list?page=${pageVO.startPage-1 }&pageSize=${pageVO.cri.pageSize}"
 								aria-controls="example1" data-dt-idx="0" tabindex="0"
 								class="page-link">«</a>
-						</c:if> <c:if
+						</c:if> <!-- 검색을 했을 때 페이징 처리 --> <c:if
 							test="${not empty param.keyword or not empty param.memYear or not empty param.filter or not empty param.mem_gender
 						or not empty param.sortCri or not empty param.sortVal}">
 							<a
@@ -262,19 +253,20 @@
 								&mem_gender=${pageVO.cri.mem_gender }&sortCri=${pageVO.cri.sortCri }&sortVal=${pageVO.cri.sortVal }&page=${pageVO.startPage-1 }&pageSize=${pageVO.cri.pageSize}"
 								aria-controls="example1" data-dt-idx="0" tabindex="0"
 								class="page-link">«</a>
-						</c:if></li>
+						</c:if>
+					</li>
 				</c:if>
 				<c:forEach var="i" begin="${pageVO.startPage }"
 					end="${pageVO.endPage }" step="1">
 					<li
 						class="paginate_button page-item ${pageVO.cri.page == i ? 'active':'' }">
-						<c:if
+						<!-- 검색을 하지 않았을 때 페이징 처리 --> <c:if
 							test="${empty param.keyword and empty param.memYear and empty param.filter and empty param.mem_gender
 						and empty param.sortCri and empty param.sortVal}">
 							<a href="/member/list?page=${i }&pageSize=${pageVO.cri.pageSize}"
 								aria-controls="example1" data-dt-idx="1" tabindex="0"
 								class="page-link">${i }</a>
-						</c:if> <c:if
+						</c:if> <!-- 검색을 했을 때 페이징 처리 --> <c:if
 							test="${not empty param.keyword or not empty param.memYear or not empty param.filter or not empty param.mem_gender
 						or not empty param.sortCri or not empty param.sortVal}">
 							<a
@@ -287,14 +279,14 @@
 				</c:forEach>
 				<c:if test="${pageVO.next && pageVO.endPage > 0 }">
 					<li class="paginate_button page-item next" id="example1_next">
-						<c:if
+						<!-- 검색을 하지 않았을 때 페이징 처리 --> <c:if
 							test="${empty param.keyword and empty param.memYear and empty param.filter and empty param.mem_gender
 						and empty param.sortCri and empty param.sortVal}">
 							<a
 								href="/member/list?page=${pageVO.endPage+1 }&pageSize=${pageVO.cri.pageSize}"
 								aria-controls="example1" data-dt-idx="7" tabindex="0"
 								class="page-link">»</a>
-						</c:if> <c:if
+						</c:if> <!-- 검색을 했을 때 페이징 처리 --> <c:if
 							test="${not empty param.keyword or not empty param.memYear or not empty param.filter or not empty param.mem_gender
 						or not empty param.sortCri or not empty param.sortVal }">
 							<a
@@ -309,9 +301,12 @@
 		</div>
 	</div>
 
+	<!-- 메시지 보내기 버튼 -->
+	<button class="btn btn-primary" type="button">메시지 전송</button>
 
-
+	<!-- 회원 삭제 버튼 -->
 	<button class="btn btn-primary" type="button">삭제하기</button>
+
 	<!-- 회원 등록 버튼 -->
 	<button class="btn btn-primary" type="button"
 		data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight"
@@ -339,16 +334,16 @@
 						</div>
 						<div class="form-group">
 							<label>생일</label> <input type="date" name="mem_birth"
-								class="form-control" /> 
+								class="form-control" />
 						</div>
 
 						<div class="form-group">
-							<label>성별</label><br> <label style="font-weight: normal !important;"><input type="radio"
-								name="mem_gender"
-								style="accent-color: #cdb4db;"
-								value="0">&nbsp; 남자</label>&nbsp;&nbsp; <label style="font-weight: normal !important;"><input
-								type="radio" name="mem_gender"
-								style="accent-color: #cdb4db;"
+							<label>성별</label><br> <label
+								style="font-weight: normal !important;"><input
+								type="radio" name="mem_gender" style="accent-color: #cdb4db;"
+								value="0">&nbsp; 남자</label>&nbsp;&nbsp; <label
+								style="font-weight: normal !important;"><input
+								type="radio" name="mem_gender" style="accent-color: #cdb4db;"
 								value="1">&nbsp; 여자</label>
 						</div>
 
@@ -409,52 +404,62 @@
 							let mem_gender = $('input[name=mem_gender]:checked')
 									.val();
 
+							/* 회원유형 필터를 선택했을 때 */
 							if (filter != undefined) {
 								$('.filter1')
 										.html(
-												'<div class="border border-1 rounded-3 p-2" role="group" style="width: 120px; margin-bottom: 20px; background-color:#fff;">'
-														+ '<button class="removeFi btn-close" aria-label="Close" style="width: 1px; position: absolute;"></button>'
-														+ '<input type="hidden" name="filter" value="'+filter+'">'
-														+ '<span style="padding-left: 20px;font-size: 16px; font-weight: bold;">'
-														+ filter
-														+ '</span></div></p>');
+												'<h5><span class="badge badge-warning p-2" style="color: #000;">'+
+												'<input type="hidden" name="filter" value="'+filter+'">'+filter+
+												'<button class="removeFi btn-close btn-xs" aria-label="Close" style="margin-left: 7px;">'+
+												'</button></span></h5>');
 							}
 
+							/* 연도별을 선택했을 때 */
 							if (memYear != "") {
 								$('.filter2')
 										.html(
-												'<div class="border border-1 rounded-3 p-2" role="group" style="width: 120px; margin-bottom: 20px; background-color:#fff;">'
-														+ '<button class="removeFi btn-close" aria-label="Close" style="width: 1px; position: absolute;"></button>'
-														+ '<input type="hidden" name="memYear" value="'+memYear+'">'
-														+ '<span style="padding-left: 20px;font-size: 18px; font-weight: bold;">'
-														+ memYear
-														+ '</span></div></p>');
+												'<h5><span class="badge badge-warning p-2" style="color: #000;">'+
+												'<input type="hidden" name="memYear" value="'+memYear+'">'+memYear+
+												'<button class="removeFi btn-close btn-xs" aria-label="Close" style="margin-left: 7px;">'+
+												'</button></span></h5>');
 							}
+
+							/* 성별을 선택했을 때 */
 							if (mem_gender != null) {
+
 								var displayGender = '';
+
 								if (mem_gender == 0) {
 									displayGender = '남자';
 								}
 								if (mem_gender == 1) {
 									displayGender = '여자';
 								}
+
 								$('.filter3')
 										.html(
-												'<div class="border border-1 rounded-3 p-2" role="group" style="width: 120px; margin-bottom: 20px; background-color:#fff;">'
-														+ '<button class="removeFi btn-close" aria-label="Close" style="width: 1px; position: absolute;"></button>'
-														+ '<input type="hidden" name="mem_gender" value="'+mem_gender+'">'
-														+ '<span style="padding-left: 20px;font-size: 18px; font-weight: bold;">'
-														+ displayGender
-														+ '</span></div></p>');
+												'<h5><span class="badge badge-warning p-2" style="color: #000;">'+
+												'<input type="hidden" name="mem_gender" value="'+mem_gender+'">'+displayGender+
+												'<button class="removeFi btn-close btn-xs" aria-label="Close" style="margin-left: 7px;">'+
+												'</button></span></h5>');
 							}
 
 						});
 
 	});
 
-	/* 선택한 필터 삭제 */
+	/* 선택한 필터 개별 삭제 */
 	$(document).on('click', '.removeFi', function() {
 		$(this).parent().remove()
+	});
+
+	/* 선택한 필터 전체 삭제 */
+	$(document).ready(function() {
+		$('#resetFilters').click(function() {
+			if (confirm("필터를 삭제하시겠습니까?")) {
+				$('.deleteFilter').empty();
+			}
+		});
 	});
 
 	/* 최상위 체크박스 클릭 시 전체 체크박스 선택 */
@@ -469,8 +474,10 @@
 			&& '${pageVO.cri.searchType}' != '') {
 		$("#selectType").val("${param.searchType}");
 	}
+
 	$("#selectPage").val("${pageVO.cri.pageSize }");
 
+	/* 회원등록 Ajax */
 	$(function() {
 		$("#submitButt").click(function() {
 			$.ajax({
@@ -490,6 +497,7 @@
 		});
 	});
 
+	/* 우편번호 API */
 	function sample6_execDaumPostcode() {
 		new daum.Postcode({
 			oncomplete : function(data) {
@@ -523,14 +531,6 @@
 	});
 
 	$(document).ready(function() {
-		$('#resetFilters').click(function() {
-			if (confirm("필터를 삭제하시겠습니까?")) {
-				$('.deleteFilter').empty();
-			}
-		});
-	});
-
-	$(document).ready(function() {
 		$('.chkSort').on('change', function() {
 			var selectedVal = $(this).val();
 			var sortCriValue;
@@ -555,7 +555,9 @@
 		});
 	});
 
+	// 검색 시 스피너 작동
 	function toggleSpinner() {
+
 		var spinner = document.getElementById('spinner');
 		// 스피너가 현재 보이는지 확인
 		var isVisible = spinner.classList.contains('d-block');
