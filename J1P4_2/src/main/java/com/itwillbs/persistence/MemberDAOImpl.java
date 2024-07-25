@@ -1,6 +1,8 @@
 package com.itwillbs.persistence;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -51,6 +53,12 @@ public class MemberDAOImpl implements MemberDAO {
 		sqlSession.insert(NAMESPACE+"memUpdate", vo);
 		
 	}
+
+	@Override
+	public void memDelete(Map<String, List> mem_no) throws Exception {
+		sqlSession.update(NAMESPACE+"memDelete", mem_no);
+	}
+	
 	
 	
 	

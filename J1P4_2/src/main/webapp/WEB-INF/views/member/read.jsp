@@ -50,7 +50,7 @@
 					<div class="card" style="margin-top: 20px;">
 						<div class="card-body">
 							<strong><i class="far fa-file-alt mr-1 cardMy"></i> 메모 </strong>
-							<br> <br>${readMem.mem_note}
+							<br> <br><div style="white-space:pre;"><c:out value="${readMem.mem_note}"/></div>
 						</div>
 					</div>
 				</div>
@@ -196,7 +196,7 @@
 						</div>
 						<div class="form-group">
 							<label>메모</label> <br>
-							<textarea class="form-control" name="mem_note" rows="5" cols="38">${readMem.mem_note }</textarea>
+							<textarea class="form-control" name="mem_note" rows="5" cols="38"><c:out value="${readMem.mem_note }" /></textarea>
 						</div>
 						<div class="form-group">
 							<label>주소</label>

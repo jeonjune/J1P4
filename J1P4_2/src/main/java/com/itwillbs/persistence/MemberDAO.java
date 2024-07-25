@@ -1,6 +1,8 @@
 package com.itwillbs.persistence;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import com.itwillbs.domain.Criteria;
 import com.itwillbs.domain.MemberVO;
@@ -21,6 +23,9 @@ public interface MemberDAO {
 
 	// 회원 수정
 	public void memUpdate(MemberVO vo) throws Exception;
+	
+	// 회원 삭제
+	public void memDelete(Map<String, List> mem_no) throws Exception;
 	
 	
 }
