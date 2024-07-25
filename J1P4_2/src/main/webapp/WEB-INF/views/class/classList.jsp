@@ -58,6 +58,7 @@
                                         <button class="btn btn-warning" onclick="editClass(${classItem.classNo})">Edit</button>
                                         <button class="btn btn-danger" onclick="deleteClass(${classItem.classNo})">Delete</button>
                                         <button class="btn btn-info" onclick="openScheduleModal(${classItem.classNo})">Add Schedule</button>
+                                        <button class="btn btn-secondary" onclick="viewSchedules(${classItem.classNo})">View Schedules</button>
                                     </td>
                                 </tr>
                             </c:forEach>
@@ -161,15 +162,46 @@
                             <div class="mb-3">
                                 <label for="recurrenceDays" class="form-label">Recurrence Days:</label>
                                 <form:select path="recurrenceDays" multiple="multiple" class="form-control" id="recurrenceDays">
-                                    <option value="Tue">화요일</option>
-                                    <option value="Wed">수요일</option>
-                                    <option value="Thu">목요일</option>
-                                    <option value="Fri">금요일</option>
-                                    <option value="Sat">토요일</option>
+                                    <option value="Mon">Monday</option>
+                                    <option value="Tue">Tuesday</option>
+                                    <option value="Wed">Wednesday</option>
+                                    <option value="Thu">Thursday</option>
+                                    <option value="Fri">Friday</option>
+                                    <option value="Sat">Saturday</option>
                                 </form:select>
                             </div>
                             <button type="submit" class="btn btn-primary">Save Schedule</button>
                         </form:form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- View Schedule Modal -->
+        <div class="modal fade" id="viewScheduleModal" tabindex="-1" aria-labelledby="viewScheduleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="viewScheduleModalLabel">View Schedules</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Start Date</th>
+                                    <th>End Date</th>
+                                    <th>Start Time</th>
+                                    <th>End Time</th>
+                                    <th>Recurrence Pattern</th>
+                                    <th>Recurrence Days</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="scheduleTableBody">
+                                <!-- Dynamic content goes here -->
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
@@ -209,117 +241,170 @@
 
     <!-- Include jQuery and Bootstrap if not already included -->
 
-    <script>
-        $(document).ready(function() {
-            $('#classForm').on('submit', function(event) {
-                event.preventDefault();
-                $.ajax({
-                    url: '${pageContext.request.contextPath}/classes/save',
-                    method: 'POST',
-                    data: $(this).serialize(),
-                    success: function(response) {
-                        $('#classModal').modal('hide');
-                        location.reload();
-                    },
-                    error: function(error) {
-                        alert('Error occurred while saving the class');
-                    }
-                });
-            });
-
-            $('#scheduleForm').on('submit', function(event) {
-                event.preventDefault();
-                $.ajax({
-                    url: '${pageContext.request.contextPath}/schedules/save',
-                    method: 'POST',
-                    data: $(this).serialize(),
-                    success: function(response) {
-                        $('#scheduleModal').modal('hide');
-                        location.reload();
-                    },
-                    error: function(error) {
-                        alert('Error occurred while saving the schedule');
-                    }
-                });
-            });
-
-            $('#instructorSearch').on('input', function() {
-                const query = $(this).val();
-                if (query.length > 0) {
-                    $.ajax({
-                        url: '${pageContext.request.contextPath}/instructors/search',
-                        method: 'GET',
-                        data: { query: query },
-                        success: function(data) {
-                            const instructorTableBody = $('#instructorTableBody');
-                            instructorTableBody.empty();
-                            data.forEach(function(instructor) {
-                                const row = '<tr>' +
-                                            '<td>' + instructor.instructorNo + '</td>' +
-                                            '<td>' + instructor.name + '</td>' +
-                                            '<td>' + instructor.expertise + '</td>' +
-                                            '<td><button class="btn btn-primary" onclick="selectInstructor(\'' + instructor.instructorNo + '\', \'' + instructor.name + '\')">Select</button></td>' +
-                                         '</tr>';
-                                instructorTableBody.append(row);
-                            });
-                        },
-                        error: function(error) {
-                            alert('Error occurred while searching for instructors');
-                        }
-                    });
+<script>
+    $(document).ready(function() {
+        $('#classForm').on('submit', function(event) {
+            event.preventDefault();
+            $.ajax({
+                url: '${pageContext.request.contextPath}/classes/save',
+                method: 'POST',
+                data: $(this).serialize(),
+                success: function(response) {
+                    $('#classModal').modal('hide');
+                    location.reload();
+                },
+                error: function(error) {
+                    alert('Error occurred while saving the class');
                 }
             });
         });
 
-        function openModal() {
-            $('#classForm')[0].reset();
-            $('#classModalLabel').text('Add Class');
-            $('#classNo').val(0); // 신규 추가 시 classNo를 0으로 설정
-        }
-
-        function editClass(classNo) {
-            $.get('${pageContext.request.contextPath}/classes/edit/' + classNo, function(data) {
-                $('#classNo').val(data.classNo);
-                $('#className').val(data.className);
-                $('#description').val(data.description);
-                $('#fieldCode').val(data.fieldCode);
-                $('#divisionCode').val(data.divisionCode);
-                $('#levelCode').val(data.levelCode);
-                $('#maxCapacity').val(data.maxCapacity);
-                $('#instructorNo').val(data.instructorNo);
-                $('#instructorName').val(data.instructorName);
-                $('#classModalLabel').text('Edit Class');
-                $('#classModal').modal('show');
+        $('#scheduleForm').on('submit', function(event) {
+            event.preventDefault();
+            $.ajax({
+                url: '${pageContext.request.contextPath}/schedules/save',
+                method: 'POST',
+                data: $(this).serialize(),
+                success: function(response) {
+                    $('#scheduleModal').modal('hide');
+                    location.reload();
+                },
+                error: function(error) {
+                    alert('Error occurred while saving the schedule');
+                }
             });
-        }
+        });
 
-        function openScheduleModal(classNo) {
-            $('#scheduleForm')[0].reset();
-            $('#scheduleClassNo').val(classNo);
-            $('#scheduleModal').modal('show');
-        }
-
-        function selectInstructor(instructorNo, instructorName) {
-            $('#instructorNo').val(instructorNo);
-            $('#instructorName').val(instructorName);
-            $('#instructorModal').modal('hide');
-        }
-
-        function deleteClass(classNo) {
-            if (confirm('Are you sure you want to delete this class?')) {
+        $('#instructorSearch').on('input', function() {
+            const query = $(this).val();
+            if (query.length > 0) {
                 $.ajax({
-                    url: '${pageContext.request.contextPath}/classes/delete/' + classNo,
-                    method: 'POST',
-                    success: function(response) {
-                        location.reload();
+                    url: '${pageContext.request.contextPath}/instructors/search',
+                    method: 'GET',
+                    data: { query: query },
+                    success: function(data) {
+                        const instructorTableBody = $('#instructorTableBody');
+                        instructorTableBody.empty();
+                        data.forEach(function(instructor) {
+                            const row = '<tr>' +
+                                        '<td>' + instructor.instructorNo + '</td>' +
+                                        '<td>' + instructor.name + '</td>' +
+                                        '<td>' + instructor.expertise + '</td>' +
+                                        '<td><button class="btn btn-primary" onclick="selectInstructor(\'' + instructor.instructorNo + '\', \'' + instructor.name + '\')">Select</button></td>' +
+                                     '</tr>';
+                            instructorTableBody.append(row);
+                        });
                     },
                     error: function(error) {
-                        alert('Error occurred while deleting the class');
+                        alert('Error occurred while searching for instructors');
                     }
                 });
             }
+        });
+    });
+
+    function openModal() {
+        $('#classForm')[0].reset();
+        $('#classModalLabel').text('Add Class');
+        $('#classNo').val(0); // 신규 추가 시 classNo를 0으로 설정
+    }
+
+    function editClass(classNo) {
+        $.get('${pageContext.request.contextPath}/classes/edit/' + classNo, function(data) {
+            $('#classNo').val(data.classNo);
+            $('#className').val(data.className);
+            $('#description').val(data.description);
+            $('#fieldCode').val(data.fieldCode);
+            $('#divisionCode').val(data.divisionCode);
+            $('#levelCode').val(data.levelCode);
+            $('#maxCapacity').val(data.maxCapacity);
+            $('#instructorNo').val(data.instructorNo);
+            $('#instructorName').val(data.instructorName);
+            $('#classModalLabel').text('Edit Class');
+            $('#classModal').modal('show');
+        });
+    }
+
+    function openScheduleModal(classNo) {
+        $('#scheduleForm')[0].reset();
+        $('#scheduleClassNo').val(classNo);
+        $('#scheduleModal').modal('show');
+    }
+
+    function viewSchedules(classNo) {
+        $.get('${pageContext.request.contextPath}/schedules/list/' + classNo, function(data) {
+            const scheduleTableBody = $('#scheduleTableBody');
+            scheduleTableBody.empty();
+            data.forEach(function(schedule) {
+                const startDate = new Date(schedule.startDate).toLocaleDateString();
+                const endDate = new Date(schedule.endDate).toLocaleDateString();
+                const row = '<tr>' +
+                            '<td>' + startDate + '</td>' +
+                            '<td>' + endDate + '</td>' +
+                            '<td>' + schedule.startTimeCode + '</td>' +
+                            '<td>' + schedule.endTimeCode + '</td>' +
+                            '<td>' + schedule.recurrencePattern + '</td>' +
+                            '<td>' + schedule.recurrenceDays + '</td>' +
+                            '<td><button class="btn btn-warning" onclick="editSchedule(' + schedule.scheduleId + ')">Edit</button>' +
+                            '<button class="btn btn-danger" onclick="deleteSchedule(' + schedule.scheduleId + ')">Delete</button></td>' +
+                         '</tr>';
+                scheduleTableBody.append(row);
+            });
+            $('#viewScheduleModal').modal('show');
+        });
+    }
+
+    function selectInstructor(instructorNo, instructorName) {
+        $('#instructorNo').val(instructorNo);
+        $('#instructorName').val(instructorName);
+        $('#instructorModal').modal('hide');
+    }
+
+    function deleteClass(classNo) {
+        if (confirm('Are you sure you want to delete this class?')) {
+            $.ajax({
+                url: '${pageContext.request.contextPath}/classes/delete/' + classNo,
+                method: 'POST',
+                success: function(response) {
+                    location.reload();
+                },
+                error: function(error) {
+                    alert('Error occurred while deleting the class');
+                }
+            });
         }
-    </script>
+    }
+
+    function editSchedule(scheduleId) {
+        $.get('${pageContext.request.contextPath}/schedules/edit/' + scheduleId, function(data) {
+            $('#scheduleId').val(data.scheduleId);
+            $('#scheduleClassNo').val(data.classNo);
+            $('#startDate').val(data.startDate);
+            $('#endDate').val(data.endDate);
+            $('#startTime').val(data.startTimeCode);
+            $('#endTime').val(data.endTimeCode);
+            $('#recurrencePattern').val(data.recurrencePattern);
+            $('#recurrenceDays').val(data.recurrenceDays);
+            $('#scheduleModal').modal('show');
+        });
+    }
+
+    function deleteSchedule(scheduleId) {
+        if (confirm('Are you sure you want to delete this schedule?')) {
+            $.ajax({
+                url: '${pageContext.request.contextPath}/schedules/delete/' + scheduleId,
+                method: 'POST',
+                success: function(response) {
+                    location.reload();
+                },
+                error: function(error) {
+                    alert('Error occurred while deleting the schedule');
+                }
+            });
+        }
+    }
+</script>
+
 </body>
 </html>
 <%@ include file="/WEB-INF/views/include/footer.jsp" %>

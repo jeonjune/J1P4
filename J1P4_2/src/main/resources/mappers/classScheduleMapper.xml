@@ -23,4 +23,12 @@
     <select id="getSchedulesByClassId" parameterType="int" resultMap="scheduleResultMap">
         SELECT * FROM classSchedule WHERE class_no = #{classNo}
     </select>
+
+    <select id="getScheduleById" parameterType="int" resultMap="scheduleResultMap">
+        SELECT * FROM classSchedule WHERE schedule_id = #{scheduleId}
+    </select>
+
+    <delete id="deleteSchedule" parameterType="int">
+        DELETE FROM classSchedule WHERE schedule_id = #{scheduleId}
+    </delete>
 </mapper>

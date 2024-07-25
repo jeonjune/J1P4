@@ -22,4 +22,12 @@ public class ClassScheduleDAO {
     public List<ClassScheduleVO> getSchedulesByClassId(int classNo) {
         return sqlSession.selectList(NAMESPACE + ".getSchedulesByClassId", classNo);
     }
+
+    public ClassScheduleVO getScheduleById(int scheduleId) {
+        return sqlSession.selectOne(NAMESPACE + ".getScheduleById", scheduleId);
+    }
+
+    public void deleteSchedule(int scheduleId) {
+        sqlSession.delete(NAMESPACE + ".deleteSchedule", scheduleId);
+    }
 }
