@@ -113,17 +113,16 @@
               <div class="card-header ui-sortable-handle" style="cursor: move;">
                 <h3 class="card-title">
                   <i class="fas fa-chart-pie mr-1"></i>
-                  월 별 회원수 변화
+                  월 별 회원수 변화-2
                 </h3>
+                
                 <div class="card-tools">
-                  <ul class="nav nav-pills ml-auto">
-                    <li class="nav-item">
-                      <a class="nav-link active" href="#revenue-chart" data-toggle="tab">Area</a>
-                    </li>
-                    <li class="nav-item">
-                      <a class="nav-link" href="#sales-chart" data-toggle="tab">Donut</a>
-                    </li>
-                  </ul>
+                  <button type="button" class="btn bg-info btn-sm" data-card-widget="collapse">
+                    <i class="fas fa-minus"></i>
+                  </button>
+                  <button type="button" class="btn bg-info btn-sm" data-card-widget="remove">
+                    <i class="fas fa-times"></i>
+                  </button>
                 </div>
               </div><!-- /.card-header -->
               <div class="card-body">
@@ -140,28 +139,21 @@
                   			</div>
                   		</div>
                   	</div>
-                      <canvas id="revenue-chart-canvas" height="300" style="height: 300px; display: block; width: 900px;" width="900" class="chartjs-render-monitor"></canvas>
+                      <canvas id="revenue2-chart-canvas" height="300" style="height: 300px; display: block; width: 900px;" width="900" class="chartjs-render-monitor"></canvas>
                    </div>
-                  <div class="chart tab-pane" id="sales-chart" style="position: relative; height: 300px;">
-                    <canvas id="sales-chart-canvas" height="0" style="height: 0px; display: block; width: 0px;" class="chartjs-render-monitor" width="0"></canvas>
-                  </div>
                 </div>
               </div><!-- /.card-body -->
             </div>
             <!-- /.card -->
-          </section>
-          <!-- /.Left col -->
-          <!-- right col (We are only adding the ID to make the widgets sortable)-->
-          <section class="col-lg-5 connectedSortable ui-sortable">
-
-            <!-- solid sales graph -->
-            <div class="card bg-gradient-info">
-              <div class="card-header border-0 ui-sortable-handle" style="cursor: move;">
+            
+            <!-- Custom tabs (Charts with tabs)-->
+            <div class="card">
+              <div class="card-header ui-sortable-handle" style="cursor: move;">
                 <h3 class="card-title">
-                  <i class="fas fa-th mr-1"></i>
-                  Sales Graph
+                  <i class="fas fa-chart-pie mr-1"></i>
+                  월 별 등록 회원 분류
                 </h3>
-
+                
                 <div class="card-tools">
                   <button type="button" class="btn bg-info btn-sm" data-card-widget="collapse">
                     <i class="fas fa-minus"></i>
@@ -170,37 +162,109 @@
                     <i class="fas fa-times"></i>
                   </button>
                 </div>
-              </div>
-              <div class="card-body"><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
-                <canvas class="chart chartjs-render-monitor" id="line-chart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%; display: block; width: 627px;" width="627" height="250"></canvas>
-              </div>
-              <!-- /.card-body -->
-              <div class="card-footer bg-transparent">
-                <div class="row">
-                  <div class="col-4 text-center">
-                    <div style="display:inline;width:60px;height:60px;"><canvas width="60" height="60"></canvas><input type="text" class="knob" data-readonly="true" value="20" data-width="60" data-height="60" data-fgcolor="#39CCCC" readonly="readonly" style="width: 34px; height: 20px; position: absolute; vertical-align: middle; margin-top: 20px; margin-left: -47px; border: 0px; background: none; font: bold 12px Arial; text-align: center; color: rgb(57, 204, 204); padding: 0px; appearance: none;"></div>
-
-                    <div class="text-white">Mail-Orders</div>
-                  </div>
-                  <!-- ./col -->
-                  <div class="col-4 text-center">
-                    <div style="display:inline;width:60px;height:60px;"><canvas width="60" height="60"></canvas><input type="text" class="knob" data-readonly="true" value="50" data-width="60" data-height="60" data-fgcolor="#39CCCC" readonly="readonly" style="width: 34px; height: 20px; position: absolute; vertical-align: middle; margin-top: 20px; margin-left: -47px; border: 0px; background: none; font: bold 12px Arial; text-align: center; color: rgb(57, 204, 204); padding: 0px; appearance: none;"></div>
-
-                    <div class="text-white">Online</div>
-                  </div>
-                  <!-- ./col -->
-                  <div class="col-4 text-center">
-                    <div style="display:inline;width:60px;height:60px;"><canvas width="60" height="60"></canvas><input type="text" class="knob" data-readonly="true" value="30" data-width="60" data-height="60" data-fgcolor="#39CCCC" readonly="readonly" style="width: 34px; height: 20px; position: absolute; vertical-align: middle; margin-top: 20px; margin-left: -47px; border: 0px; background: none; font: bold 12px Arial; text-align: center; color: rgb(57, 204, 204); padding: 0px; appearance: none;"></div>
-
-                    <div class="text-white">In-Store</div>
-                  </div>
-                  <!-- ./col -->
+              </div><!-- /.card-header -->
+              <div class="card-body">
+                <div class="tab-content p-0">
+                  <!-- Morris chart - Sales -->
+                  <div class="chart" id="revenue-chart" style="position: relative; height: 400px;">
+                  	<div class="chartjs-size-monitor">
+                  		<div class="chartjs-size-monitor-expand">
+                  			<div class="">
+                  			</div>
+                  		</div>
+                  		<div class="chartjs-size-monitor-shrink">
+                  			<div class="">
+                  			</div>
+                  		</div>
+                  	</div>
+                      <canvas id="revenue3-chart-canvas" height="400" style="height: 300px; display: block; width: 900px;" width="900" class="chartjs-render-monitor"></canvas>
+                   </div>
                 </div>
-                <!-- /.row -->
-              </div>
-              <!-- /.card-footer -->
+              </div><!-- /.card-body -->
             </div>
             <!-- /.card -->
+          </section>
+          <!-- /.Left col -->
+ <!-- ---------------------------------------------------------------------------------------------------------- -->         
+          <!-- right col (We are only adding the ID to make the widgets sortable)-->
+          <section class="col-lg-5 connectedSortable ui-sortable">
+           <!-- solid sales graph -->
+            <div class="card">
+              <div class="card-header border-0 ui-sortable-handle" style="cursor: move;">
+                <h3 class="card-title">
+                  <i class="fas fa-th mr-1"></i>
+                  종목별 회원수 
+                </h3>
+                <div class="card-tools">
+                  <ul class="nav nav-pills ml-auto">
+                    <li class="nav-item">
+                      <a class="nav-link active" href="#b-chart" data-toggle="tab">Bar</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="#d-chart" data-toggle="tab">Donut</a>
+                    </li>
+                  </ul>
+                </div>
+
+              </div>
+              <div class="card-body">
+              <div class="tab-content p-0">
+              	<div class="chart tab-pane active" id="b-chart" style="position: relative; height: 400px;">
+              		<div class="chartjs-size-monitor">
+              			<div class="chartjs-size-monitor-expand">
+              				<div class=""></div>
+              			</div>
+              			<div class="chartjs-size-monitor-shrink">
+              				<div class=""></div>
+              			</div>
+              		</div>
+                <canvas id="num-mem-sport-bar-chart" height="400" style="height: 400px; display: block; width: 900px;" width="900" class="chartjs-render-monitor"></canvas>
+              </div>
+              <div class="chart tab-pane" id="d-chart" style="position: relative; height: 400px;">
+                <canvas id="num-mem-sport-doughnut-chart" height="0" style="height: 0px; display: block; width: 0px;" class="chartjs-render-monitor" width="0"></canvas>
+              </div>
+            </div>
+         </div>              
+       <!-- /.card-body -->
+     </div>
+     <!-- /.card -->
+     
+           <!-- solid sales graph -->
+            <div class="card">
+              <div class="card-header border-0 ui-sortable-handle" style="cursor: move;">
+                <h3 class="card-title">
+                  <i class="fas fa-th mr-1"></i>
+                  연령별 회원 분포 
+                </h3>
+	                <div class="card-tools">
+	                  <button type="button" class="btn bg-info btn-sm" data-card-widget="collapse">
+	                    <i class="fas fa-minus"></i>
+	                  </button>
+	                  <button type="button" class="btn bg-info btn-sm" data-card-widget="remove">
+	                    <i class="fas fa-times"></i>
+	                  </button>
+	                </div>
+              </div>
+              <div class="card-body">
+              <div class="tab-content p-0">
+              	<div class="chart"  style="position: relative; height: 400px;">
+              		<div class="chartjs-size-monitor">
+              			<div class="chartjs-size-monitor-expand">
+              				<div class=""></div>
+              			</div>
+              			<div class="chartjs-size-monitor-shrink">
+              				<div class=""></div>
+              			</div>
+              		</div>
+                <canvas id="age-chart" height="400" style="height: 400px; display: block; width: 900px;" width="900" class="chartjs-render-monitor"></canvas>
+              </div>
+            </div>
+         </div>              
+       <!-- /.card-body -->
+     </div>
+     <!-- /.card -->     
+<!-- ----------------------------------------------------------------------------------------------------------------------------------------- -->
+            
           </section>
           <!-- right col -->
         </div>
@@ -239,33 +303,35 @@
 	 // `new6MemCount` 배열의 각 요소에서 속성 값을 추출하여 새로운 배열을 만들고 변수에 추출된 월 데이터를 저장
     var yearMonth = new6MemCount.map(function(item) { return item.month; });
     var new_members = new6MemCount.map(function(item) { return item.new_members; });
-    
-        var ctx = document.getElementById('revenue-chart-canvas').getContext('2d');
+        
+        var ctx = document.getElementById('revenue2-chart-canvas').getContext('2d');
         var revenueChart = new Chart(ctx, {
             type: 'line',
             data: {
                 labels: yearMonth,
                 datasets: [{
                     label: '이번달 신규 회원',
-                    backgroundColor: 'rgba(60,141,188,0.9)',
-                    borderColor: 'rgba(60,141,188,0.8)',
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
                     pointRadius: false,
-                    pointColor: '#3b8bba',
+                    pointColor: 'rgba(54, 162, 235, 1)',
                     pointStrokeColor: 'rgba(60,141,188,1)',
                     pointHighlightFill: '#fff',
                     pointHighlightStroke: 'rgba(60,141,188,1)',
-                    data: new_members
+                    data: new_members,
+                    fill: true
                 },
                 {
                   label: '이번달 등록 회원',
-                  backgroundColor: 'rgba(210, 214, 222, 1)',
-                  borderColor: 'rgba(210, 214, 222, 1)',
+                  backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                  borderColor: 'rgba(255, 99, 132, 1)',
                   pointRadius: false,
-                  pointColor: 'rgba(210, 214, 222, 1)',
+                  pointColor: 'rgba(255, 99, 132, 1)',
                   pointStrokeColor: '#c1c7d1',
                   pointHighlightFill: '#fff',
                   pointHighlightStroke: 'rgba(220,220,220,1)',
-                  data: [65, 59, 80, 56, 55, 40]
+                  data: [65, 70, 80, 75, 80, 90],
+                  fill: true
                 }
                 ]
             },
@@ -273,7 +339,12 @@
                 maintainAspectRatio: false,
                 responsive: true,
                 legend: {
-                    display: false
+                    display: true
+                },
+                elements: {
+                    point: {
+                        hitRadius: 40
+                    }
                 },
                 scales: {
                     xAxes: [{
@@ -290,14 +361,86 @@
             }
         });
 
-        var salesCtx = document.getElementById('sales-chart-canvas').getContext('2d');
-        var salesChart = new Chart(salesCtx, {
-            type: 'doughnut',
+        var ctx = document.getElementById('revenue3-chart-canvas').getContext('2d');
+        var revenueChart = new Chart(ctx, {
+            type: 'bar', // 'line' 대신 'bar'를 사용하여 바 차트를 만듭니다.
             data: {
-                labels: ['Download Sales', 'In-Store Sales', 'Mail-Order Sales'],
+                labels: yearMonth,
                 datasets: [{
-                    data: [30, 20, 50],
-                    backgroundColor: ['#f56954', '#00a65a', '#f39c12']
+                    label: '신규회원',
+                    backgroundColor: 'rgba(60,141,188,0.9)',
+                    borderColor: 'rgba(60,141,188,1)',
+                    borderWidth: 1,
+                    data: new_members
+                },
+                {
+                    label: '일반회원',
+                    backgroundColor: 'rgba(210, 214, 222, 0.9)',
+                    borderColor: 'rgba(210, 214, 222,1)',
+                    borderWidth: 1,
+                    data: [85, 79, 100, 76, 75, 60]
+                },
+                {
+                    label: '장기회원',
+                    backgroundColor: 'rgba(255, 99, 132, 0.9)',
+                    borderColor: 'rgba(255, 99, 132, 1)',
+                    borderWidth: 1,
+                    data: [55, 49, 70, 46, 45, 30]                	
+                }]
+            },
+            options: {
+                maintainAspectRatio: false,
+                responsive: true,
+                legend: {
+                    display: true
+                },
+                scales: {
+                    x: {
+                        stacked: true, // 막대가 쌓이도록 설정합니다.
+                        grid: {
+                            display: false
+                        }
+                    },
+                    y: {
+                        stacked: true, // 막대가 쌓이도록 설정합니다.
+                        grid: {
+                            display: false
+                        }
+                    }
+                }
+            }
+        });       
+        
+
+        var nmsbCtx = document.getElementById('num-mem-sport-bar-chart').getContext('2d');
+        var nmsbChart = new Chart(nmsbCtx, {
+            type: 'bar',
+            data: {
+                labels: ['에어로빅', '배드민턴', '피트니스', '필라테스', '수영', '탁구', '배구', '요가'],
+                datasets: [{
+                	label: "종목별 등록 회원 수",
+                    data: [30, 20, 50, 40, 25, 35, 45, 28],  // labels에 맞게 data 값을 추가
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',  // 에어로빅 - 파스텔 레드
+                        'rgba(75, 192, 192, 0.2)',  // 배드민턴 - 파스텔 청록색
+                        'rgba(255, 206, 86, 0.2)',  // 피트니스 - 파스텔 노랑
+                        'rgba(54, 162, 235, 0.2)',  // 필라테스 - 파스텔 파랑
+                        'rgba(153, 102, 255, 0.2)', // 수영 - 파스텔 보라
+                        'rgba(201, 203, 207, 0.2)', // 탁구 - 파스텔 회색
+                        'rgba(255, 159, 64, 0.2)',  // 배구 - 파스텔 주황
+                        'rgba(144, 238, 144, 0.2)'  // 요가 - 파스텔 연두
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',    // 에어로빅 - 진한 레드
+                        'rgba(75, 192, 192, 1)',    // 배드민턴 - 진한 청록색
+                        'rgba(255, 206, 86, 1)',    // 피트니스 - 진한 노랑
+                        'rgba(54, 162, 235, 1)',    // 필라테스 - 진한 파랑
+                        'rgba(153, 102, 255, 1)',   // 수영 - 진한 보라
+                        'rgba(201, 203, 207, 1)',   // 탁구 - 진한 회색
+                        'rgba(255, 159, 64, 1)',    // 배구 - 진한 주황
+                        'rgba(144, 238, 144, 1)'    // 요가 - 진한 연두
+                    ],
+                    borderWidth: 2
                 }]
             },
             options: {
@@ -307,6 +450,73 @@
                     display: false
                 }
             }
-        });
+        });     
+        
+        var nmsdCtx = document.getElementById('num-mem-sport-doughnut-chart').getContext('2d');
+        var nmsdChart = new Chart(nmsdCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['에어로빅', '배드민턴', '피트니스', '필라테스', '수영', '탁구', '배구', '요가'],
+                datasets: [{
+                    data: [30, 20, 50, 40, 25, 35, 45, 28],  
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',  // 에어로빅 - 파스텔 레드
+                        'rgba(75, 192, 192, 0.2)',  // 배드민턴 - 파스텔 청록색
+                        'rgba(255, 206, 86, 0.2)',  // 피트니스 - 파스텔 노랑
+                        'rgba(54, 162, 235, 0.2)',  // 필라테스 - 파스텔 파랑
+                        'rgba(153, 102, 255, 0.2)', // 수영 - 파스텔 보라
+                        'rgba(201, 203, 207, 0.2)', // 탁구 - 파스텔 회색
+                        'rgba(255, 159, 64, 0.2)',  // 배구 - 파스텔 주황
+                        'rgba(144, 238, 144, 0.2)'  // 요가 - 파스텔 연두
+                    ]
+                }]
+            },
+            options: {
+                maintainAspectRatio: false,
+                responsive: true,
+                legend: {
+                    display: false
+                }
+            }
+        });       
+
+        var ageCtx = document.getElementById('age-chart').getContext('2d');
+        var ageChart = new Chart(ageCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['10대', '20대', '30대', '40대', '50대', '60대 이상'],
+                datasets: [{
+                    data: [10, 20, 30, 25, 15, 5],  // 연령대별 회원 수를 실제 데이터로 변경
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.6)',
+                        'rgba(54, 162, 235, 0.6)',
+                        'rgba(255, 206, 86, 0.6)',
+                        'rgba(75, 192, 192, 0.6)',
+                        'rgba(153, 102, 255, 0.6)',
+                        'rgba(255, 159, 64, 0.6)'
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(255, 159, 64, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                maintainAspectRatio: false,
+                responsive: true,
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: 'top'
+                    }
+                }
+            }
+        });            
     </script>
+
 <%@ include file="../include/mainFooter.jsp" %>
