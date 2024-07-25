@@ -47,6 +47,9 @@ ${principal.authorities}<br>
 				<tr>
 					<th class="sorting" tabindex="0" aria-controls="example1"
 						rowspan="1" colspan="1"
+						aria-label="Rendering engine: activate to sort column ascending">직원번호</th>
+					<th class="sorting" tabindex="0" aria-controls="example1"
+						rowspan="1" colspan="1"
 						aria-label="Rendering engine: activate to sort column ascending">아이디</th>
 					<th class="sorting" tabindex="0" aria-controls="example1"
 						rowspan="1" colspan="1"
@@ -69,9 +72,10 @@ ${principal.authorities}<br>
 			<tbody>
 				<c:forEach var="emp" items="${empList }">
 					<tr class="odd">
+						<td class="dtr-control" tabindex="0">${emp.user_no }</td>
 						<td class="dtr-control" tabindex="0">${emp.user_id }</td>
 						<td class=""><a
-							href="#">${emp.name }</a></td>
+							href="/employee/empDetail?user_no=${emp.user_no }">${emp.name }</a></td>
 						<td>${emp.job }</td>
 						<td>${emp.job_rank }</td>
 						<td>${emp.phone_no }</td>
@@ -546,7 +550,7 @@ $(function() {
 					       }
 					  }) 
 					   
-				      Swal.fire('복귀시 복귀버튼 필수!.',' 외출완료','success');
+				      Swal.fire('복귀시 복귀버튼 필수!',' 외출완료','success');
 				   }
 				});
 			
@@ -598,7 +602,7 @@ $(function() {
 					       }
 					  }) 
 					   
-				      Swal.fire('다시 일합시다!.',' 복귀완료','success');
+				      Swal.fire('다시 일합시다!',' 복귀완료','success');
 				   }
 				});
 			

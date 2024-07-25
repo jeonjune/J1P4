@@ -93,6 +93,10 @@
 		where user_no=#{user_no}
 	</update>
 	
+	<select id="empDetail" resultType="EmployeeVO">
+		select * from employee
+		where user_no = #{user_no};
+	</select>
 	
 	
 	

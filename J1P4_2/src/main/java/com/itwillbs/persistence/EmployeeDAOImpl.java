@@ -81,6 +81,11 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 		sqlSession.update(NAMESPACE+"inWork", user_no);
 		
 	}
+
+	@Override
+	public EmployeeVO empDetail(int user_no) throws Exception {
+		return sqlSession.selectOne(NAMESPACE+"empDetail",user_no);
+	}
 	
 	
 	
