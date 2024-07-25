@@ -601,6 +601,7 @@
              },
             success: function(response) {
 				alert("회원이 성공적으로 삭제되었습니다");
+				history.go(0);
             },
             error: function(error) {
 				alert("오류 발생");
