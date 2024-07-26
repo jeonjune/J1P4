@@ -19,8 +19,10 @@
 
 </nav>
 
+
 <div class="content-wrapper" style="min-height: 831px;">
 writeReport.jsp
 </div>
+
 
 <%@ include file="../include/footer.jsp"%>
