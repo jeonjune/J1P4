@@ -1,5 +1,6 @@
 package com.itwillbs.web;
 
+import java.security.Principal;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -38,8 +39,15 @@ public class EmployeeController {
 	
 	// http://localhost:8088/employee/empList
 	@GetMapping(value = "/empList")
-	public void empListGET(Model model, EmployeeVO vo) throws Exception {
+	public void empListGET(Model model, EmployeeVO vo, Principal principal) throws Exception {
 		logger.info("empListGET() 실행!"); 
+		if (principal != null) {
+			logger.info("@@@@@@@@@@@@@@principal.getName()@@@@@@@@@@@ :"+principal.getName());
+			int user_no = eService.user_no(principal.getName());
+			String checkW = eService.checkWork(user_no);
+			model.addAttribute("checkW", checkW);
+			logger.info("@@@@@@@@@@@@@@checkW@@@@@@@@@@@ :"+checkW);
+		}
 		
 		List<EmployeeVO> empList = eService.empList();
 		model.addAttribute("empList", empList);
@@ -121,7 +129,7 @@ public class EmployeeController {
 	// 출근했는지 확인하는 메소드
 	@ResponseBody
 	@RequestMapping(value="/checkWork", method = RequestMethod.GET)
-	public int checkCommute(@RequestParam("user_id") String user_id) {
+	public int checkCommute(@RequestParam("user_id") String user_id, Principal principal) {
 		// 리턴 string
 		//boolean isExist = false;
 		
@@ -129,32 +137,35 @@ public class EmployeeController {
 		Integer user_no = 0;
 		String check = null;
 		int checkW = 0;
-		try {
-			user_no = eService.user_no(user_id);
-			logger.info("@@@@@@@@@@@@@checkuser_no@@@@@@@@@@@ :"+user_no);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
-		try {
-			check = eService.checkWork(user_no);
-			logger.info("@@@@@@@@@@@@@@check출근상태11111@@@@@@@@@@@ :"+check);
-			//String check = eService.checkWork(user_no);
-			if(check != null) {
-				logger.info("@@@@@@@@@@@@@@check출근상태222222@@@@@@@@@@@ :"+check);
-				
-				if(check.equals("출근")){
-					//isExist = true;
-					checkW = 1;
-				}else if(check.equals("퇴근")) {
-					checkW = 2;
-				}else if(check.equals("외출")){
-					checkW = 3;
-				}
-				
+		if (principal != null) {
+			try {
+				user_no = eService.user_no(user_id);
+				logger.info("@@@@@@@@@@@@@checkuser_no@@@@@@@@@@@ :"+user_no);
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
+			
+			try {
+				check = eService.checkWork(user_no);
+				logger.info("@@@@@@@@@@@@@@check출근상태11111@@@@@@@@@@@ :"+check);
+				//String check = eService.checkWork(user_no);
+				if(check != null) {
+					logger.info("@@@@@@@@@@@@@@check출근상태222222@@@@@@@@@@@ :"+check);
+					
+					if(check.equals("출근")){
+						//isExist = true;
+						checkW = 1;
+					}else if(check.equals("퇴근")) {
+						checkW = 2;
+					}else if(check.equals("외출")){
+						checkW = 3;
+					}
+					
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
 		}
 		logger.info("@@@@@@@@@@@@@@check출근상태@@@@@@@@@@@ :"+check);
 		
@@ -241,11 +252,42 @@ public class EmployeeController {
 		logger.debug(" empDetailGET() 실행 ");
 		
 		logger.debug(" @@@@@@@@@@@ int user_no = "+user_no);
-		
+		model.addAttribute("job", commonCodeService.getCommonCodeDetailsByCodeId("JOB"));
+	    model.addAttribute("job_rank", commonCodeService.getCommonCodeDetailsByCodeId("JOB_RANK"));
 		
 		model.addAttribute("empDt",eService.empDetail(user_no));
 		//model.addAttribute("pageInfo",cri);
 		
+	}
+	
+	// 직원수정
+	@ResponseBody
+	@PostMapping(value = "/empUpdate")
+	public void empUpdatePOST(EmployeeVO vo, AuthVO avo) throws Exception {
+		logger.info("@@@@@@@@@@@@@@모달창으로 직원 수정(컨트롤러)");
+		
+		logger.info("vo :"+vo);
+		eService.empUpdate(vo);
+		// 직원 권한부여
+		avo.setUser_id(vo.getUser_id());
+		if(vo.getJob_rank().equals("관리자")) {
+			avo.setAuth("ROLE_ADMIN");
+		}else if(vo.getJob_rank().equals("팀장")) {
+			avo.setAuth("ROLE_MANAGER");			
+		}else if(vo.getJob_rank().equals("사원")) {
+			avo.setAuth("ROLE_MEMBER");						
+		}
+		eService.authUpdate(avo);
+		
+	}
+	
+	// 직원 삭제(퇴사)
+	@GetMapping(value = "/reEmp")
+	public String reEmp(@RequestParam("user_id") String user_id) throws Exception{
+		
+		logger.info("직원삭제@@@@@@@ :"+user_id);
+		eService.reEmp(user_id);
+		return "redirect:/employee/empList";
 	}
 	
 

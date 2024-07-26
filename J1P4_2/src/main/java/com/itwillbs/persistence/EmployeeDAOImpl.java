@@ -87,6 +87,23 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 		return sqlSession.selectOne(NAMESPACE+"empDetail",user_no);
 	}
 	
+	// 직원 수정
+	@Override
+	public void empUpdate(EmployeeVO vo) throws Exception {
+		sqlSession.update(NAMESPACE+"empUpdate", vo);
+	}
+	// 직원 권한 수정
+	@Override
+	public void authUpdate(AuthVO vo) throws Exception {
+		sqlSession.update(NAMESPACE+"authUpdate", vo);
+		
+	}
+
+	@Override
+	public void reEmp(String user_id) throws Exception {
+		sqlSession.update(NAMESPACE+"reEmp", user_id);
+	}
+	
 	
 	
 
