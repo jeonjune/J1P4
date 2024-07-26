@@ -12,6 +12,7 @@
 <div class="content-wrapper" style="min-height: 831px;">
 
 <h1>장비신청상세페이지 - detail</h1>
+
 <form action=""  method="post" id="detailForm"  accept-charset="UTF-8" >
 <input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
 <input type="hidden" name="equipment_no" value="${param.equipment_no }">
@@ -25,7 +26,7 @@
 					
 					<div class="form-group">
 						<label>담당자</label> <input type="text" name="name"
-							class="form-control" value="${resultVO.name}"/>
+							class="form-control" value="${resultVO.name}" readonly="readonly"/>
 					</div>
 					
 					<div class="form-group">
@@ -43,6 +44,7 @@
 						<label>분야</label> <input type="text" name="field"
 							class="form-control" value="${resultVO.field }" />
 					</div>
+					
 					
 					<div class="form-group">
 						<label>신청장비이름</label> <input type="text" name="equipment_name"
@@ -75,13 +77,24 @@
 							placeholder="입력하세요.">${resultVO.repair_reason }</textarea>
 					</div>
 
-<!-- 					<div class="form-group"> -->
-<!-- 						<label>첨부파일</label> <input type="file" name="file" -->
-<!-- 							class="form-control" /> -->
-<!-- 					</div> -->
+					<div class="form-group">
+						<label>첨부파일</label>
+						${fileList} 
+					
+					<c:forEach var="fileVO" items="${fileList}" varStatus="i">
+						<c:set var="tmp" value="${fileVO.file_name.substring(fileVO.file_name.lastIndexOf('.')) }" />
+						
+						파일 : ${i.count } : <a href="/maintenance/download?fileName=${fileVO.file_name }">${fileVO.file_name }</a><hr>
+						
+						<c:if test="${tmp =='.png' }">
+							<img src="/maintenance/download?fileName=${fileVO.file_name }"><hr>
+						</c:if>
+					</c:forEach>
 
-					<button type="button" class="btn btn-primary" id="submitButt">수정</button>
-					<button type="button" class="btn btn-primary" id="submitButt">삭제</button>
+					</div>
+
+					<button type="button" class="btn btn-primary" id="submitButt">승인</button>
+					<button type="button" class="btn btn-primary" id="submitButt">반려</button>
 
 
 		</div>

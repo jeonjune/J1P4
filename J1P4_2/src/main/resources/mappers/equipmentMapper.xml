@@ -23,5 +23,25 @@
 	select * from equipmentManagement
 	where equipment_no=#{equipment_no}
 	</select>
+	
+	<!--특정 장비신청내역 상세페이지 수정 -->
+<!-- 	<update id=""> -->
+<!-- 	update equipmentManagement -->
+<!-- 	set report_date=#{report_date},field=#{field },equipment_name=#{equipment_name},manufacturer=#{manufacturer}, -->
+<!-- 	count=#{count},cost=#{cost},total=#{total},repair_reason=#{repair_reason}   -->
+<!-- 	</update> -->
 
+	<!-- 첨부파일 업로드 -->
+	<insert id="fileAdd">
+	insert into file(file_no,equipment_no,cvt_name,file_date,file_name)
+	values(#{file_no},#{equipment_no},#{cvt_name},#{file_date},#{file_name})
+	</insert>
+	
+	<!--첨부파일 조회  -->
+	<select id="selectFile" resultType="fileVO">
+	select * from file
+	where equipment_no=#{equipment_no}
+	</select>	
+		
+		
   </mapper>

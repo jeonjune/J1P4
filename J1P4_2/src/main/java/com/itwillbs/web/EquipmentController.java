@@ -1,8 +1,19 @@
 package com.itwillbs.web;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.OutputStream;
+import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,16 +25,22 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.itwillbs.domain.EquipManageVO;
+import com.itwillbs.domain.fileVO;
 import com.itwillbs.service.CommonCodeService;
 import com.itwillbs.service.EquipManageService;
+
+import net.coobird.thumbnailator.Thumbnails;
 
 @Controller
 @RequestMapping(value = "/maintenance/*")
 public class EquipmentController {
 
 	private static final Logger logger = LoggerFactory.getLogger(CommonController.class);
+	private final String FAKE_PATH = "/upload";
 
 	@Inject
 	private EquipManageService eService;
@@ -70,17 +87,97 @@ public class EquipmentController {
 	
 	@ResponseBody
 	@PostMapping(value = "/regist")
-	public String registPOST(EquipManageVO vo) throws Exception {
-		logger.info("22222222 vo 2222222222222 :"+ vo);
-		vo.setManager_no(12); //로그인 기능 들고올때까지 임시로 설정(user_no) 나중에 세션에 담아서 사용
+	 public String registPOST(MultipartHttpServletRequest multiRequest, EquipManageVO vo, fileVO fvo, Model model) throws Exception {
+        logger.info("22222222 vo 2222222222222 : " + vo);
+        vo.setManager_no(12); // 로그인 기능 들고올때까지 임시로 설정(user_no) 나중에 세션에 담아서 사용
+
+        // 폼 데이터 처리
+        multiRequest.setCharacterEncoding("UTF-8");
+        Map<String, String> paramMap = new HashMap();
+        Enumeration<String> enu = multiRequest.getParameterNames();
+        while (enu.hasMoreElements()) {
+            String name = enu.nextElement();
+            String value = multiRequest.getParameter(name);
+            paramMap.put(name, value);
+        }
+        logger.debug("paramMap :{} ", paramMap);
+
+        // 파일 업로드 처리
+        List<String> fileNameList = fileProcess(multiRequest);
+        paramMap.put("fileNameList", String.join(",", fileNameList));
+        logger.debug("paramMap :{} ", paramMap);
+
+        model.addAttribute("paramMap", paramMap);
+
+        eService.equipAdd(vo);
+        for (String fileName : fileNameList) {
+            fvo.setFile_name(fileName);
+            eService.fileAdd(fvo);
+        }
+
+        return "redirect:/maintenance/list";
+    }
+
+    public List<String> fileProcess(MultipartHttpServletRequest multiRequest) throws Exception {
+        logger.debug("fileProcess : 파일 업로드 처리 시작!");
+
+        List<String> fileNameList = new ArrayList();
+        Iterator<String> fileNames = multiRequest.getFileNames();
+        while (fileNames.hasNext()) {
+            String fileName = fileNames.next();
+            MultipartFile mFile = multiRequest.getFile(fileName);
+            String oFileName = mFile.getOriginalFilename();
+            fileNameList.add(oFileName);
+
+            File file = new File(multiRequest.getRealPath(FAKE_PATH) + "\\" + oFileName);
+            if (mFile.getSize() != 0) {
+                if (!file.exists()) {
+                    if (file.getParentFile().mkdirs()) {
+                        file.createNewFile();
+                    }
+                }
+                mFile.transferTo(file);
+            }
+        }
+        logger.debug("fileNameList : {}", fileNameList);
+        logger.debug("파일 업로드 완료!!, 파일 이름 저장 완료!");
+
+        return fileNameList;
+    }
+
+    @GetMapping("/download")
+    public void downloadGET(@RequestParam("file_name") String fileName, HttpServletResponse resp, HttpServletRequest req) 
+    		throws Exception {
+        logger.debug("downloadGET() 실행");
+
+        OutputStream out = resp.getOutputStream();
+        String downFile = req.getRealPath(FAKE_PATH) + "\\" + fileName;
+        File file = new File(downFile);
+        
+        int lastIdx = fileName.lastIndexOf(".");
+		String thumbName = fileName.substring(0,lastIdx);
 		
-		eService.equipAdd(vo);
-		
-		//logger.info();
-		
-		return"/maintenance/list";
-		
-	}
+		File thumbnail = new File(req.getRealPath(FAKE_PATH)+"\\"+"thumbnail"+"\\"+thumbName+".png");
+        
+        if (file.exists()) {
+        	//썸네일을 출력 
+			Thumbnails.of(file).size(100, 100).outputFormat("png").toOutputStream(out);
+        }
+            
+        	//다운로드에 필요한 설정
+        	resp.setHeader("Cache-Control", "no-cache");
+            resp.addHeader("Content-disposition", "attachment; fileName=" + URLEncoder.encode(fileName, "UTF-8"));
+
+            FileInputStream fis = new FileInputStream(file);
+            byte[] buffer = new byte[1024 * 8];
+            while (true) {
+                int data = fis.read(buffer);
+                if (data == -1) break;
+                out.write(buffer, 0, data);
+            }
+            fis.close();
+            out.close();
+    }
 	
 	
 	
@@ -99,12 +196,14 @@ public class EquipmentController {
 		logger.info("####eno##### :"+ eno);
 		
 		//DAO 저장된 정보 가져오기
-		EquipManageVO resultVO = eService.equipDetail(eno);
+		Map<String, Object> resultVO = eService.equipDetail(eno);
 		logger.info("resultVO :"+ resultVO);
 		
 		//전달할 정보 저장
-		model.addAttribute("resultVO", resultVO);
+		model.addAttribute("resultVO", resultVO.get("EquipManageVO"));
+		model.addAttribute("fileList", resultVO.get("fileVO"));
 		
+		model.addAttribute("fields", commonCodeService.getCommonCodeDetailsByCodeId("FIELD"));
 	}
 	
 	

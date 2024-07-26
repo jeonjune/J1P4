@@ -13,7 +13,7 @@
 <div class="content-wrapper" style="min-height: 831px;">
 
 <h1>장비신청페이지 - regist</h1>
-<form action=""  method="post" id="registForm"  accept-charset="UTF-8" >
+<form action=""  method="post" id="registForm"  accept-charset="UTF-8" enctype="multipart/form-data">
 <input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
 	<div>
 
@@ -79,10 +79,10 @@
 							placeholder="입력하세요."></textarea>
 					</div>
 
-<!-- 					<div class="form-group"> -->
-<!-- 						<label>첨부파일</label> <input type="file" name="file" -->
-<!-- 							class="form-control" /> -->
-<!-- 					</div> -->
+					<div class="form-group fileDiv">
+						<label for="exampleInputFile">첨부파일</label> <input type="file" name="file"
+						 class="form-control" />
+					</div>
 
 					<button type="button" class="btn btn-primary" id="submitButt">등록</button>
 
@@ -96,25 +96,49 @@
 
 
 <script>
-    $(document).ready(function() {
-        $('#submitButt').on('click', function() {
-            $.ajax({
-                url: '/maintenance/regist',
-                type: 'POST',
-                data: $('#registForm').serialize(),
-                success: function(response) {
-                    //$('#result').html(response);
-                    alert("등록성공!");
-                    window.location.href = '/maintenance/list';
-           
-                },
-                error: function(xhr, status, error) {
-                    alert('데이터 전송에 실패했습니다: ' + error);
-                }
-            });
+$(document).ready(function() {
+    $('#submitButt').on('click', function() {
+        var formData = new FormData($('#registForm')[0]);
+        
+        // CSRF 토큰 값을 메타 태그에서 가져오기
+        var token = $("meta[name='_csrf']").attr("content");
+        var header = $("meta[name='_csrf_header']").attr("content");
+        
+        $.ajax({
+            url: '/maintenance/regist',
+            type: 'POST',
+            data: formData,
+            contentType: false, //필수
+            processData: false, //필수
+            beforeSend: function(xhr) { //header.jsp에 있는 토큰때문에 써주는 것
+                xhr.setRequestHeader(header, token);
+            },
+            success: function(response) {
+                alert("등록성공!");
+                window.location.href = '/maintenance/list';
+            },
+            error: function(xhr, status, error) {
+                alert('등록실패 ' + error);
+            }
         });
     });
+});
+    
+    
+    //파일추가버튼 클릭시 함수
+//     var cnt = 1; //파일 수
+//     function addFile(){
+//     	alert("파일추가버튼클릭!");
+//     	$('.fileDiv').append("<input type='file' name='file"+cnt+"' id='exampleInputFile'>");
+//     	cnt++;
+    	
+//     }
+    
+    
+    
+    
 </script>
+
 
 
 
