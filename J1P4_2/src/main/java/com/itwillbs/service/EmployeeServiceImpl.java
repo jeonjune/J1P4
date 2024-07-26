@@ -89,6 +89,21 @@ public class EmployeeServiceImpl implements EmployeeService {
 		
 		return edao.empDetail(user_no);
 	}
+
+	@Override
+	public void empUpdate(EmployeeVO vo) throws Exception {
+		edao.empUpdate(vo);
+	}
+
+	@Override
+	public void authUpdate(AuthVO vo) throws Exception {
+		edao.authUpdate(vo);
+	}
+
+	@Override
+	public void reEmp(String user_id) throws Exception {
+		edao.reEmp(user_id);
+	}
 	
 	
 

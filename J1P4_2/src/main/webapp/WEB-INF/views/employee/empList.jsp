@@ -24,14 +24,33 @@
     <!-- principal property가 UserDetails임-->
 </sec:authorize>
 <%-- ${principal} <br> --%>
-${principal.username}<br>
-${principal.authorities}<br>
-
+user_id : ${principal.username}<br>
+권한 : ${principal.authorities}<br>
+출근상태 : ${checkW }
 <%-- ${author } --%>
 <div class="dropdown" id="commute-div">
-  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-    출근하기
+    <c:choose>  
+	<c:when test="${checkW eq '출근'}"> 
+  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false" style="width:100px;">
+		퇴근하기
   </button>
+	</c:when> 
+	<c:when test="${checkW eq '퇴근'}"> 
+  <button class="btn btn-secondary" type="button" id="dropdownMenuButton1" aria-expanded="false" style="width:100px;">
+		퇴근했어요
+  </button>
+	</c:when> 
+	<c:when test="${checkW eq '외출'}"> 
+  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false" style="width:100px;">
+		복귀하기
+  </button>
+	</c:when> 
+	<c:otherwise> 
+  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false" style="width:100px;">
+		출근하기
+  </button>
+	</c:otherwise> 
+</c:choose>
   <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
     <li><a class="dropdown-item" id="start_work">출근하기</a></li>
   </ul>
@@ -628,7 +647,7 @@ $(function() {
 					
 					
 				html += "<button class='btn btn-secondary dropdown-toggle' type='button' id='dropdownMenuButton1' data-bs-toggle='dropdown' aria-expanded='false'>"+
-			    		   "퇴근하기</button>"+
+			    		   " 퇴근하기 </button>"+
 				  	   "<ul class='dropdown-menu' aria-labelledby='dropdownMenuButton1'>"+
 				  	   "<li><a class='dropdown-item' id='endWork' value='퇴근'>퇴근하기</a></li>"+
 				  	   "<li><a class='dropdown-item' id='outWork' value='외출'>외출하기</a></li>"+
@@ -641,7 +660,7 @@ $(function() {
 				}else if(data==2){
 					
 					html += "<button class='btn btn-secondary' type='button' id='dropdownMenuButton1' aria-expanded='false'>"+
-		    		   "퇴근했어요</button>"+
+		    		   " 퇴근했어요 </button>"+
 			  	   
 			  	   "</div>"
 		
@@ -649,7 +668,7 @@ $(function() {
 				}else if(data==3){
 					
 					html += "<button class='btn btn-secondary dropdown-toggle' type='button' id='dropdownMenuButton1' data-bs-toggle='dropdown' aria-expanded='false'>"+
-		    		"복귀하기</button>"+
+		    		" 복귀하기 </button>"+
 			  	   "<ul class='dropdown-menu' aria-labelledby='dropdownMenuButton1'>"+
 			  	   "<li><a class='dropdown-item' id='inWork' value='복귀'>복귀하기</a></li>"+
 			    	   "</ul>"+
