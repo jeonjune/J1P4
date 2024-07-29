@@ -8,6 +8,16 @@
 <html>
 <head>
     <title>Class List</title>
+    
+    <style>
+    #viewScheduleModal .modal-dialog {
+        z-index: 1050; /* Bootstrap 모달 기본 z-index */
+    }
+    #scheduleModal .modal-dialog {
+        z-index: 1060; /* viewScheduleModal 보다 높은 z-index 설정 */
+    }
+	</style>
+    
 </head>
 <body>
     <div class="wrapper">
@@ -199,7 +209,7 @@
                                 </tr>
                             </thead>
                             <tbody id="scheduleTableBody">
-                                <!-- Dynamic content goes here -->
+                               <!-- 강의 일정 데이터를 동적으로 삽입하기 위한 용도 -->
                             </tbody>
                         </table>
                     </div>
@@ -230,7 +240,7 @@
                                 </tr>
                             </thead>
                             <tbody id="instructorTableBody">
-                                <!-- Dynamic content goes here -->
+                                <!-- 강사 검색 시 동적으로 생성된 강사 목록을 표시하기 위함.(서버에서 데이터를 받아 이곳에 삽입) -->
                             </tbody>
                         </table>
                     </div>
@@ -239,22 +249,24 @@
         </div>
     </div>
 
-    <!-- Include jQuery and Bootstrap if not already included -->
 
 <script>
+        const csrfParameter = "${_csrf.parameterName}";
+        const csrfToken = "${_csrf.token}";
     $(document).ready(function() {
+
         $('#classForm').on('submit', function(event) {
             event.preventDefault();
             $.ajax({
                 url: '${pageContext.request.contextPath}/classes/save',
                 method: 'POST',
-                data: $(this).serialize(),
+                data: $(this).serialize() + '&' + csrfParameter + '=' + csrfToken,
                 success: function(response) {
                     $('#classModal').modal('hide');
                     location.reload();
                 },
                 error: function(error) {
-                    alert('Error occurred while saving the class');
+                    alert('강의를 등록하는 중 오류가 발생하였습니다.');
                 }
             });
         });
@@ -264,13 +276,13 @@
             $.ajax({
                 url: '${pageContext.request.contextPath}/schedules/save',
                 method: 'POST',
-                data: $(this).serialize(),
+                data: $(this).serialize() + '&' + csrfParameter + '=' + csrfToken,
                 success: function(response) {
                     $('#scheduleModal').modal('hide');
                     location.reload();
                 },
                 error: function(error) {
-                    alert('Error occurred while saving the schedule');
+                    alert('일정을 저장하는 중 오류가 발생하였습니다.');
                 }
             });
         });
@@ -296,7 +308,7 @@
                         });
                     },
                     error: function(error) {
-                        alert('Error occurred while searching for instructors');
+                        alert('강사를 검색하는 중 오류가 발생하였습니다.');
                     }
                 });
             }
@@ -365,11 +377,14 @@
             $.ajax({
                 url: '${pageContext.request.contextPath}/classes/delete/' + classNo,
                 method: 'POST',
+                data: {
+                    [csrfParameter]: csrfToken
+                },
                 success: function(response) {
                     location.reload();
                 },
                 error: function(error) {
-                    alert('Error occurred while deleting the class');
+                    alert('강의를 삭제하는 중 오류가 발생하였습니다.');
                 }
             });
         }
@@ -385,25 +400,31 @@
             $('#endTime').val(data.endTimeCode);
             $('#recurrencePattern').val(data.recurrencePattern);
             $('#recurrenceDays').val(data.recurrenceDays);
-            $('#scheduleModal').modal('show');
+            $('#scheduleModal').css('z-index', 1060).modal('show');
         });
     }
 
     function deleteSchedule(scheduleId) {
-        if (confirm('Are you sure you want to delete this schedule?')) {
+        if (confirm('일정을 삭제하시겠습니까?')) {
             $.ajax({
                 url: '${pageContext.request.contextPath}/schedules/delete/' + scheduleId,
                 method: 'POST',
+                data: {
+                    [csrfParameter]: csrfToken
+                },
                 success: function(response) {
                     location.reload();
                 },
                 error: function(error) {
-                    alert('Error occurred while deleting the schedule');
+                    alert('일정을 삭제하는 중 오류가 발생하였습니다.');
                 }
             });
         }
     }
 </script>
+
+
+
 
 </body>
 </html>
