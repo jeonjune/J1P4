@@ -16,7 +16,7 @@
     #scheduleModal .modal-dialog {
         z-index: 1060; /* viewScheduleModal 보다 높은 z-index 설정 */
     }
-	</style>
+    </style>
     
 </head>
 <body>
@@ -28,11 +28,6 @@
                         <div class="col-sm-6">
                             <h1>Class List</h1>
                         </div>
-                        <div class="col-sm-6">
-                            <button type="button" class="btn btn-primary float-end" data-bs-toggle="modal" data-bs-target="#classModal" onclick="openModal()">
-                                Add New Class
-                            </button>
-                        </div>
                     </div>
                 </div>
             </section>
@@ -42,6 +37,7 @@
                     <table class="table table-bordered">
                         <thead>
                             <tr>
+                                <th><input type="checkbox" id="selectAll" onclick="toggleSelectAll()"></th>
                                 <th>No</th>
                                 <th>Name</th>
                                 <th>Description</th>
@@ -50,30 +46,28 @@
                                 <th>Level</th>
                                 <th>Max Capacity</th>
                                 <th>Instructor</th>
-                                <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
                             <c:forEach var="classItem" items="${classList}">
                                 <tr>
+                                    <td><input type="checkbox" class="selectCheckbox" value="${classItem.classNo}"></td>
                                     <td>${classItem.classNo}</td>
-                                    <td>${classItem.className}</td>
+                                    <td><a href="${pageContext.request.contextPath}/classes/detail/${classItem.classNo}">${classItem.className}</a></td>
                                     <td>${classItem.description}</td>
                                     <td>${classItem.fieldCode}</td>
                                     <td>${classItem.divisionCode}</td>
                                     <td>${classItem.levelCode}</td>
                                     <td>${classItem.maxCapacity}</td>
                                     <td>${classItem.instructorName}</td>
-                                    <td>
-                                        <button class="btn btn-warning" onclick="editClass(${classItem.classNo})">Edit</button>
-                                        <button class="btn btn-danger" onclick="deleteClass(${classItem.classNo})">Delete</button>
-                                        <button class="btn btn-info" onclick="openScheduleModal(${classItem.classNo})">Add Schedule</button>
-                                        <button class="btn btn-secondary" onclick="viewSchedules(${classItem.classNo})">View Schedules</button>
-                                    </td>
                                 </tr>
                             </c:forEach>
                         </tbody>
                     </table>
+                    <div>
+                        <button type="button" class="btn btn-danger" onclick="deleteSelectedClasses()">Delete Selected Classes</button>
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#classModal" onclick="openModal()">Add New Class</button>
+                    </div>
                 </div>
             </section>
         </div>
@@ -134,89 +128,6 @@
             </div>
         </div>
 
-        <!-- Schedule Modal -->
-        <div class="modal fade" id="scheduleModal" tabindex="-1" aria-labelledby="scheduleModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="scheduleModalLabel">Add Schedule</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <form:form id="scheduleForm" method="post" action="${pageContext.request.contextPath}/schedules/save" modelAttribute="scheduleVO">
-                            <form:hidden path="classNo" id="scheduleClassNo"/>
-                            <div class="mb-3">
-                                <label for="startDate" class="form-label">Start Date:</label>
-                                <form:input path="startDate" class="form-control" type="date" id="startDate"/>
-                            </div>
-                            <div class="mb-3">
-                                <label for="endDate" class="form-label">End Date:</label>
-                                <form:input path="endDate" class="form-control" type="date" id="endDate"/>
-                            </div>
-                            <div class="mb-3">
-                                <label for="startTime" class="form-label">Start Time:</label>
-                                <form:select path="startTimeCode" id="startTime" class="form-control">
-                                    <form:options items="${times}" itemValue="codeValue" itemLabel="codeValueName"/>
-                                </form:select>
-                            </div>
-                            <div class="mb-3">
-                                <label for="endTime" class="form-label">End Time:</label>
-                                <form:select path="endTimeCode" id="endTime" class="form-control">
-                                    <form:options items="${times}" itemValue="codeValue" itemLabel="codeValueName"/>
-                                </form:select>
-                            </div>
-                            <div class="mb-3">
-                                <label for="recurrencePattern" class="form-label">Recurrence Pattern:</label>
-                                <form:input path="recurrencePattern" class="form-control" id="recurrencePattern"/>
-                            </div>
-                            <div class="mb-3">
-                                <label for="recurrenceDays" class="form-label">Recurrence Days:</label>
-                                <form:select path="recurrenceDays" multiple="multiple" class="form-control" id="recurrenceDays">
-                                    <option value="Mon">Monday</option>
-                                    <option value="Tue">Tuesday</option>
-                                    <option value="Wed">Wednesday</option>
-                                    <option value="Thu">Thursday</option>
-                                    <option value="Fri">Friday</option>
-                                    <option value="Sat">Saturday</option>
-                                </form:select>
-                            </div>
-                            <button type="submit" class="btn btn-primary">Save Schedule</button>
-                        </form:form>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- View Schedule Modal -->
-        <div class="modal fade" id="viewScheduleModal" tabindex="-1" aria-labelledby="viewScheduleModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="viewScheduleModalLabel">View Schedules</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <table class="table table-bordered">
-                            <thead>
-                                <tr>
-                                    <th>Start Date</th>
-                                    <th>End Date</th>
-                                    <th>Start Time</th>
-                                    <th>End Time</th>
-                                    <th>Recurrence Pattern</th>
-                                    <th>Recurrence Days</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody id="scheduleTableBody">
-                               <!-- 강의 일정 데이터를 동적으로 삽입하기 위한 용도 -->
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-
         <!-- Instructor Modal -->
         <div class="modal fade" id="instructorModal" tabindex="-1" aria-labelledby="instructorModalLabel" aria-hidden="true">
             <div class="modal-dialog">
@@ -249,12 +160,11 @@
         </div>
     </div>
 
-
 <script>
         const csrfParameter = "${_csrf.parameterName}";
         const csrfToken = "${_csrf.token}";
+        
     $(document).ready(function() {
-
         $('#classForm').on('submit', function(event) {
             event.preventDefault();
             $.ajax({
@@ -271,21 +181,6 @@
             });
         });
 
-        $('#scheduleForm').on('submit', function(event) {
-            event.preventDefault();
-            $.ajax({
-                url: '${pageContext.request.contextPath}/schedules/save',
-                method: 'POST',
-                data: $(this).serialize() + '&' + csrfParameter + '=' + csrfToken,
-                success: function(response) {
-                    $('#scheduleModal').modal('hide');
-                    location.reload();
-                },
-                error: function(error) {
-                    alert('일정을 저장하는 중 오류가 발생하였습니다.');
-                }
-            });
-        });
 
         $('#instructorSearch').on('input', function() {
             const query = $(this).val();
@@ -315,56 +210,17 @@
         });
     });
 
+    function toggleSelectAll() {
+        const selectAll = $('#selectAll').is(':checked');
+        $('.selectCheckbox').prop('checked', selectAll);
+    }
+
     function openModal() {
         $('#classForm')[0].reset();
         $('#classModalLabel').text('Add Class');
         $('#classNo').val(0); // 신규 추가 시 classNo를 0으로 설정
     }
 
-    function editClass(classNo) {
-        $.get('${pageContext.request.contextPath}/classes/edit/' + classNo, function(data) {
-            $('#classNo').val(data.classNo);
-            $('#className').val(data.className);
-            $('#description').val(data.description);
-            $('#fieldCode').val(data.fieldCode);
-            $('#divisionCode').val(data.divisionCode);
-            $('#levelCode').val(data.levelCode);
-            $('#maxCapacity').val(data.maxCapacity);
-            $('#instructorNo').val(data.instructorNo);
-            $('#instructorName').val(data.instructorName);
-            $('#classModalLabel').text('Edit Class');
-            $('#classModal').modal('show');
-        });
-    }
-
-    function openScheduleModal(classNo) {
-        $('#scheduleForm')[0].reset();
-        $('#scheduleClassNo').val(classNo);
-        $('#scheduleModal').modal('show');
-    }
-
-    function viewSchedules(classNo) {
-        $.get('${pageContext.request.contextPath}/schedules/list/' + classNo, function(data) {
-            const scheduleTableBody = $('#scheduleTableBody');
-            scheduleTableBody.empty();
-            data.forEach(function(schedule) {
-                const startDate = new Date(schedule.startDate).toLocaleDateString();
-                const endDate = new Date(schedule.endDate).toLocaleDateString();
-                const row = '<tr>' +
-                            '<td>' + startDate + '</td>' +
-                            '<td>' + endDate + '</td>' +
-                            '<td>' + schedule.startTimeCode + '</td>' +
-                            '<td>' + schedule.endTimeCode + '</td>' +
-                            '<td>' + schedule.recurrencePattern + '</td>' +
-                            '<td>' + schedule.recurrenceDays + '</td>' +
-                            '<td><button class="btn btn-warning" onclick="editSchedule(' + schedule.scheduleId + ')">Edit</button>' +
-                            '<button class="btn btn-danger" onclick="deleteSchedule(' + schedule.scheduleId + ')">Delete</button></td>' +
-                         '</tr>';
-                scheduleTableBody.append(row);
-            });
-            $('#viewScheduleModal').modal('show');
-        });
-    }
 
     function selectInstructor(instructorNo, instructorName) {
         $('#instructorNo').val(instructorNo);
@@ -372,12 +228,23 @@
         $('#instructorModal').modal('hide');
     }
 
-    function deleteClass(classNo) {
-        if (confirm('Are you sure you want to delete this class?')) {
+    function deleteSelectedClasses() {
+        const selected = [];
+        $('.selectCheckbox:checked').each(function() {
+            selected.push($(this).val());
+        });
+
+        if (selected.length === 0) {
+            alert('삭제할 강의를 선택해주세요.');
+            return;
+        }
+
+        if (confirm('선택한 강의를 삭제하시겠습니까?')) {
             $.ajax({
-                url: '${pageContext.request.contextPath}/classes/delete/' + classNo,
+                url: '${pageContext.request.contextPath}/classes/delete',
                 method: 'POST',
                 data: {
+                    classNos: selected,
                     [csrfParameter]: csrfToken
                 },
                 success: function(response) {
@@ -390,42 +257,8 @@
         }
     }
 
-    function editSchedule(scheduleId) {
-        $.get('${pageContext.request.contextPath}/schedules/edit/' + scheduleId, function(data) {
-            $('#scheduleId').val(data.scheduleId);
-            $('#scheduleClassNo').val(data.classNo);
-            $('#startDate').val(data.startDate);
-            $('#endDate').val(data.endDate);
-            $('#startTime').val(data.startTimeCode);
-            $('#endTime').val(data.endTimeCode);
-            $('#recurrencePattern').val(data.recurrencePattern);
-            $('#recurrenceDays').val(data.recurrenceDays);
-            $('#scheduleModal').css('z-index', 1060).modal('show');
-        });
-    }
-
-    function deleteSchedule(scheduleId) {
-        if (confirm('일정을 삭제하시겠습니까?')) {
-            $.ajax({
-                url: '${pageContext.request.contextPath}/schedules/delete/' + scheduleId,
-                method: 'POST',
-                data: {
-                    [csrfParameter]: csrfToken
-                },
-                success: function(response) {
-                    location.reload();
-                },
-                error: function(error) {
-                    alert('일정을 삭제하는 중 오류가 발생하였습니다.');
-                }
-            });
-        }
-    }
+    
 </script>
-
-
-
-
 </body>
 </html>
 <%@ include file="/WEB-INF/views/include/footer.jsp" %>

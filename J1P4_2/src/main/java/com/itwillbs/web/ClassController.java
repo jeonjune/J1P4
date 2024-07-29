@@ -41,7 +41,7 @@ public class ClassController {
         model.addAttribute("divisions", commonCodeService.getCommonCodeDetailsByCodeId("DIVISION"));
         model.addAttribute("levels", commonCodeService.getCommonCodeDetailsByCodeId("LEVEL"));
         model.addAttribute("times", commonCodeService.getCommonCodeDetailsByCodeId("TIME"));
-        return "class/classList"; // JSP 파일 경로
+        return "class/classList";
     }
 
     @PostMapping("/save")
@@ -65,5 +65,19 @@ public class ClassController {
     public String deleteClass(@PathVariable("id") int classNo) {
         classService.deleteClass(classNo);
         return "redirect:/classes/list";
+    }
+
+    @GetMapping("/detail/{id}")
+    public String classDetail(@PathVariable("id") int classNo, Model model) {
+        ClassVO classVO = classService.getClassById(classNo);
+        List<ClassScheduleVO> schedules = classScheduleService.getSchedulesByClassId(classNo);
+        model.addAttribute("classVO", classVO);
+        model.addAttribute("scheduleVO", new ClassScheduleVO());
+        model.addAttribute("schedules", schedules);
+        model.addAttribute("fields", commonCodeService.getCommonCodeDetailsByCodeId("FIELD"));
+        model.addAttribute("divisions", commonCodeService.getCommonCodeDetailsByCodeId("DIVISION"));
+        model.addAttribute("levels", commonCodeService.getCommonCodeDetailsByCodeId("LEVEL"));
+        model.addAttribute("times", commonCodeService.getCommonCodeDetailsByCodeId("TIME"));
+        return "class/classDetail"; // JSP 파일 경로
     }
 }

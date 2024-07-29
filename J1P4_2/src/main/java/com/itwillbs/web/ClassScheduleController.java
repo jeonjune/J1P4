@@ -35,7 +35,7 @@ public class ClassScheduleController {
     @PostMapping("/save")
     public String saveSchedule(@ModelAttribute("scheduleVO") ClassScheduleVO scheduleVO) {
         classScheduleService.saveSchedule(scheduleVO);
-        return "redirect:/classes/list";
+        return "redirect:/classes/detail/" + scheduleVO.getClassNo();
     }
 
     @GetMapping("/edit/{id}")
@@ -47,7 +47,8 @@ public class ClassScheduleController {
     @PostMapping("/delete/{id}")
     @ResponseBody
     public String deleteSchedule(@PathVariable("id") int scheduleId) {
+        ClassScheduleVO schedule = classScheduleService.getScheduleById(scheduleId);
         classScheduleService.deleteSchedule(scheduleId);
-        return "redirect:/classes/list";
+        return "redirect:/classes/detail/" + schedule.getClassNo();
     }
 }
