@@ -21,4 +21,12 @@ public class ClassScheduleService {
     public List<ClassScheduleVO> getSchedulesByClassId(int classNo) {
         return classScheduleDAO.getSchedulesByClassId(classNo);
     }
+
+    public ClassScheduleVO getScheduleById(int scheduleId) {
+        return classScheduleDAO.getScheduleById(scheduleId);
+    }
+
+    public void deleteSchedule(int scheduleId) {
+        classScheduleDAO.deleteSchedule(scheduleId);
+    }
 }
