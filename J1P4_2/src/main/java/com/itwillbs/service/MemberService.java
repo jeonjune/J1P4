@@ -24,5 +24,8 @@ public interface MemberService {
 	public void memUpdate(MemberVO vo) throws Exception;
 	
 	public void memDelete(Map<String, List> mem_no) throws Exception;
+	
+	// 회원 번호 조회
+	public List<MemberVO> memPhone(Map<String, List> mem_no) throws Exception;
 
 }

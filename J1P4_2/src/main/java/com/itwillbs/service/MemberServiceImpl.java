@@ -56,6 +56,11 @@ public class MemberServiceImpl implements MemberService {
 		mDao.memDelete(mem_no);
 	}
 
+	@Override
+	public List<MemberVO> memPhone(Map<String, List> mem_no) throws Exception {
+		return mDao.memPhone(mem_no);
+	}
+
 	
 	
 

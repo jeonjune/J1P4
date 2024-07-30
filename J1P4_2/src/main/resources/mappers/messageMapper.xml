@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+  <mapper namespace="com.itwillbs.mapper.MessageMapper">
+	
+	
+	<insert id="insertMemSMS">
+		insert into notification (sender_user,noti_type,message)
+		values (1,1,#{message})
+	</insert>
+	
+	<insert id="insertMemReceiver">
+		insert into recipient (noti_no,recipient_mem)
+		values ((select max(noti_no) from notification),#{recipient_mem})
+	</insert>
+  	 
+  </mapper>
