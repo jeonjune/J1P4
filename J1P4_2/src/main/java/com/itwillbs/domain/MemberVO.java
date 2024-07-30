@@ -11,6 +11,7 @@ public class MemberVO {
 	private String mem_birth;
 	private Integer mem_gender;
 	private String mem_phone;
+	private String formatted_mem_phone;
 	private Integer sms_opt;
 	private String mem_email;
 	private Integer email_opt;

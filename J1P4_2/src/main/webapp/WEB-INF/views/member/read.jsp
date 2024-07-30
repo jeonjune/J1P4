@@ -179,7 +179,7 @@
 
 						<div class="form-group">
 							<label>연락처</label> <input type="text" name="mem_phone"
-								value="${readMem.mem_phone }" class="form-control"> <label
+								value="${readMem.mem_phone }" class="form-control" maxlength="13" oninput="formatPhoneNumber(this)"> <label
 								class="chkboxCustom"> <input type="checkbox"
 								name="sms_opt" style="accent-color: #cdb4db;" value="1">&nbsp;sms
 								수신 동의
@@ -228,20 +228,27 @@
 <script>
 	$(function() {
 		$("#submitButt").click(function() {
-			$.ajax({
-				url : "/member/memUpdate",
-				type : "POST",
-				data : $("#fm1").serialize(),
-				success : function(data) {
-					alert("회원정보가 수정되었습니다.");
-
-					history.go(0);
-
-				},
-				error : function() {
-					alert("오류발생");
-				}
-			});
+			// 전화번호 필드에서 하이픈 제거
+	        $("input[name='mem_phone']").each(function() {
+	            var cleanedPhone = $(this).val().replace(/-/g, '');
+	            $(this).val(cleanedPhone);
+	        });
+				$.ajax({
+					
+					
+					url : "/member/memUpdate",
+					type : "POST",
+					data : $("#fm1").serialize(),
+					success : function(data) {
+						alert("회원정보가 수정되었습니다.");
+	
+						history.go(0);
+	
+					},
+					error : function() {
+						alert("오류발생");
+					}
+				});
 		});
 	});
 
@@ -272,6 +279,24 @@
 	
 	$(":checkbox[name='sms_opt'][value='${readMem.sms_opt}']").attr('checked', true);
 	$(":checkbox[name='email_opt'][value='${readMem.email_opt}']").attr('checked', true);
+	
+	// 연락처 입력 시 자동으로 하이픈 추가
+	function formatPhoneNumber(input) {
+		let value = input.value.replace(/\D/g, ''); // 숫자 이외의 문자 제거
+        let formattedValue = '';
+        
+        if (value.length <= 3) {
+            formattedValue = value;
+        } else if (value.length <= 7) {
+            formattedValue = value.replace(/(\d{3})(\d{0,4})/, '$1-$2');
+        } else {
+            formattedValue = value.replace(/(\d{3})(\d{4})(\d{0,4})/, '$1-$2-$3');
+        }
+        
+        input.value = formattedValue;
+    }
+	
+
 </script>
 
 

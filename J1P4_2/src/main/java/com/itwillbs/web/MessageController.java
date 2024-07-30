@@ -33,6 +33,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.itwillbs.domain.BaseVO;
 import com.itwillbs.domain.Criteria;
 import com.itwillbs.domain.MemberVO;
+import com.itwillbs.domain.NotificationVO;
 import com.itwillbs.domain.PageVO;
 import com.itwillbs.domain.RecipientVO;
 import com.itwillbs.service.MemberService;
@@ -59,6 +60,7 @@ public class MessageController {
 	@ResponseBody
     @PostMapping("/sendMem")
     public void sendMemPOST(@RequestBody RecipientVO vo) throws Exception {
+		logger.debug(" @@@@@@@@@@@@@@@@@@@@@@@ sendMem 실행 ");
 		
 		String api_key = "NCSD9O2CTBIE4GSB";
 		String api_secret = "JMEBX3LIRV6ABZBOECOBFSATC56Z5JYW";
@@ -69,8 +71,12 @@ public class MessageController {
 		String[] phoneNum = vo.getRecipient_mem().split(",");
 		String content = vo.getMessage();
 		
+		
+		logger.debug(" @@@@@@@@@@@@@@@@@@@@@@@ 내용 : "+content);
+		logger.debug(" @@@@@@@@@@@@@@@@@@@@@@@ 시간 : "+vo.getNoti_date());
+		
 		// 테이블에 전송내용 저장
-		mService.insertMemSMS(content);
+		mService.insertMemSMS(vo);
     	
     	ArrayList<Message> messageList = new ArrayList<>();
    
@@ -86,11 +92,11 @@ public class MessageController {
     	logger.debug(" @@@@@@@@@@@@@@@@@@@@@@@ : "+messageList);
     	try {
     		// 예약 시간 설정
-	    	LocalDateTime localDateTime = LocalDateTime.parse("2024-07-30 12:40:00", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+	    	LocalDateTime localDateTime = LocalDateTime.parse(vo.getNoti_date());
 	        ZoneOffset zoneOffset = ZoneId.systemDefault().getRules().getOffset(localDateTime);
 	        Instant instant = localDateTime.toInstant(zoneOffset);
+	        logger.debug(" @@@@@@@@@@@@@@@@@@@@@@@ : "+localDateTime);
 	        
-	    	// send 메소드로 ArrayList<Message> 객체를 넣어도 동작합니다!
 	//    	MultipleDetailMessageSentResponse response = messageService.send(messageList, false, true);
 	    	MultipleDetailMessageSentResponse response = messageService.send(messageList, instant, true);
     	
