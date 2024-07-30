@@ -1,6 +1,8 @@
 package com.itwillbs.service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -48,6 +50,19 @@ public class MemberServiceImpl implements MemberService {
 		mDao.memUpdate(vo);
 		
 	}
+
+	@Override
+	public void memDelete(Map<String, List> mem_no) throws Exception {
+		mDao.memDelete(mem_no);
+	}
+
+	@Override
+	public List<MemberVO> memPhone(Map<String, List> mem_no) throws Exception {
+		return mDao.memPhone(mem_no);
+	}
+
+	
+	
 
 	
 	

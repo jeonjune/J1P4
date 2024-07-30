@@ -55,7 +55,12 @@ public class Criteria  {
 
 	@Override
 	public String toString() {
-		return "Criteria [page=" + page + ", pageSize=" + pageSize + "]";
+		return "Criteria [page=" + page + ", pageSize=" + pageSize + ", keyword=" + keyword + ", memYear=" + memYear
+				+ ", filter=" + filter + ", sort=" + sort + ", sortCri=" + sortCri + ", sortVal=" + sortVal
+				+ ", mem_gender=" + mem_gender + ", sms_opt=" + sms_opt + ", email_opt=" + email_opt + ", searchType="
+				+ searchType + "]";
 	}
+
+	
 	
 }

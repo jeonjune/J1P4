@@ -12,7 +12,7 @@
 
 	<div class="card cardCustom">
 		<div class="card-header" style="margin-bottom: 30px">
-			<h2 class="card-title">회원 기본정보</h2>
+			<h2 class="card-title" style="margin-left: 150px;">회원 기본정보</h2>
 		</div>
 
 		<div class="col-md-10" style="margin-left: 150px;">
@@ -50,7 +50,7 @@
 					<div class="card" style="margin-top: 20px;">
 						<div class="card-body">
 							<strong><i class="far fa-file-alt mr-1 cardMy"></i> 메모 </strong>
-							<br> <br>${readMem.mem_note}
+							<br> <br><div style="white-space:pre;"><c:out value="${readMem.mem_note}"/></div>
 						</div>
 					</div>
 				</div>
@@ -196,7 +196,7 @@
 						</div>
 						<div class="form-group">
 							<label>메모</label> <br>
-							<textarea class="form-control" name="mem_note" rows="5" cols="38">${readMem.mem_note }</textarea>
+							<textarea class="form-control" name="mem_note" rows="5" cols="38"><c:out value="${readMem.mem_note }" /></textarea>
 						</div>
 						<div class="form-group">
 							<label>주소</label>

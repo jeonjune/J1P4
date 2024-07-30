@@ -1,6 +1,8 @@
 package com.itwillbs.service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import com.itwillbs.domain.Criteria;
 import com.itwillbs.domain.MemberVO;
@@ -21,4 +23,9 @@ public interface MemberService {
 	// 회원 수정
 	public void memUpdate(MemberVO vo) throws Exception;
 	
+	public void memDelete(Map<String, List> mem_no) throws Exception;
+	
+	// 회원 번호 조회
+	public List<MemberVO> memPhone(Map<String, List> mem_no) throws Exception;
+
 }

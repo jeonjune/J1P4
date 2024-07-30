@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!-- 알림 배지 -->
 <!-- <span class="badge badge-info right">2</span> -->
 
@@ -21,9 +21,39 @@
           <img src="${pageContext.request.contextPath }/resources/dist/img/해린2.jpg" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-          <a href="#" class="d-block">전지윤</a>
+          <a href="/employee/myPage" class="d-block">전지윤</a>
         </div>
+        
+			  <div class="dropdown" id="commute-div">
+			    <c:choose>  
+				<c:when test="${checkW eq '출근'}"> 
+			  <button class="btn btn-success dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false" style="width:100px;">
+					퇴근하기
+			  </button>
+				</c:when> 
+				<c:when test="${checkW eq '퇴근'}"> 
+			  <button class="btn btn-success" type="button" id="dropdownMenuButton1" aria-expanded="false" style="width:100px;">
+					퇴근했어요
+			  </button>
+				</c:when> 
+				<c:when test="${checkW eq '외출'}"> 
+			  <button class="btn btn-success dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false" style="width:100px;">
+					복귀하기
+			  </button>
+				</c:when> 
+				<c:otherwise> 
+			  <button class="btn btn-success dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false" style="width:100px;">
+					출근하기
+			  </button>
+				</c:otherwise> 
+			</c:choose>
+			  <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+			    <li><a class="dropdown-item" id="start_work">출근하기</a></li>
+			  </ul>
+			</div>
       </div>
+  
+  
 
 <!--       SidebarSearch Form -->
 <!--       <div class="form-inline"> -->

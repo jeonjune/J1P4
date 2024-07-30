@@ -66,6 +66,4 @@ public class ClassController {
         classService.deleteClass(classNo);
         return "redirect:/classes/list";
     }
-
-    
 }

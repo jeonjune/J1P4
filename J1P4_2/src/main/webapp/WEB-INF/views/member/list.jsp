@@ -7,91 +7,107 @@
 <script
 	src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 
-
+<!-- 바디 시작 -->
 <div class="content-wrapper" style="min-height: 831px;">
 
+	<!-- 스피너 (검색 시 돌아가는 로딩바) -->
 	<div class="spinner-border text-primary d-none" id="spinner"
 		role="status" aria-hidden="true">
 		<span class="visually-hidden">Loading...</span>
 	</div>
-	<!-- 검색 / 필터 / 정렬 데이터 전송 -->
+
+	<!-- 검색 / 필터 / 정렬 / 행 개수 데이터 전송 -->
 	<form action="" method="get" class='actionForm'>
 
 		<div class="form-inline">
-			<!-- 검색 키워드 입력창 -->
-			<div class="input-group">
-				<select name="searchType" id="selectType" class="form-control">
-					<option value="searchAll" selected="selected">전체</option>
-					<option value="searchName">이름</option>
-					<option value="searchPhoneNum">연락처</option>
-					<option value="searchEmail">이메일</option>
-				</select> <input class="form-control" type="search" name="keyword"
+		
+			<!-- 검색 -->
+			<div class="input-group mb-3">
+			
+				<!-- 검색 타입 선택 -->
+				<div class="input-group-prepend">
+					<select name="searchType" id="selectType" class="form-control">
+						<option value="searchAll" selected="selected">전체</option>
+						<option value="searchName">이름</option>
+						<option value="searchPhoneNum">연락처</option>
+						<option value="searchEmail">이메일</option>
+					</select>
+				</div>
+				
+				<!-- 검색 입력창 -->
+				<input class="form-control" type="search" name="keyword"
 					value="${param.keyword }" placeholder="Search" aria-label="Search">
+				
+				<!-- 검색 버튼 -->	
 				<div class="input-group-append">
 					<button class="btn" type="submit" id="submitBtn"
 						onclick="toggleSpinner()">
 						<i class="fas fa-search fa-fw"></i>
 					</button>
 				</div>
+				
 			</div>
+			
 			<!-- 필터 모달창 버튼 -->
 			<button type="button" class="btn btn-primary" data-bs-toggle="modal"
-				data-bs-target="#exampleModal">
+				data-bs-target="#filterModal">
 				<i class="fas fa-filter fa-fw"></i>
 			</button>
+
+			<!-- 필터 지우기 버튼 -->
 			<button type="button" class="btn btn-info" id="resetFilters">
 				<i class="fas fa-trash fa-fw"></i>
 			</button>
+			
 		</div>
+		
 		<!-- 사용자가 선택한 필터를 보여주는 공간 -->
 		<div class="filter1" style="display: inline-block;">
 			<div class="deleteFilter">
 				<!-- 사용자가 필터를 사용하여 검색했을 때 선택한 필터를 보여주는 공간 -->
 				<c:if test="${not empty param.filter }">
-					<div class="border border-1 rounded-3 p-2" role="group"
-						style="width: 120px; margin-bottom: 20px; background-color: #fff;">
-						<!-- 선택한 필터 삭제 버튼 -->
-						<button class="removeFi btn-close" aria-label="Close"
-							style="width: 1px; position: absolute;"></button>
-						<!-- hidden으로 숨겨서 필터 정보를 전달 -->
-						<input type="hidden" value="${param.filter }" name="filter">
-						<span
-							style="padding-left: 20px; font-size: 16px; font-weight: bold;">${param.filter }</span>
-					</div>
+					<h5>
+						<span class="badge badge-warning p-2" style="color: #000;">
+							<input type="hidden" name="filter" value="${param.filter }">${param.filter }
+							<button class="removeFi btn-close btn-xs" aria-label="Close"
+								style="margin-left: 7px;"></button>
+						</span>
+					</h5>
 				</c:if>
 			</div>
 		</div>
+		
 		<div class="filter2" style="display: inline-block;">
 			<div class="deleteFilter">
 				<c:if test="${not empty param.memYear }">
-					<div class="border border-1 rounded-3 p-2" role="group"
-						style="width: 120px; margin-bottom: 20px; background-color: #fff;">
-						<button class="removeFi btn-close" aria-label="Close"
-							style="width: 1px; position: absolute;"></button>
-						<input type="hidden" value="${param.memYear }" name="memYear">
-						<span
-							style="padding-left: 20px; font-size: 18px; font-weight: bold;">${param.memYear }</span>
-					</div>
+					<h5>
+						<span class="badge badge-warning p-2" style="color: #000;">
+							<input type="hidden" name="memYear" value="${param.memYear }">${param.memYear }
+							<button class="removeFi btn-close btn-xs" aria-label="Close"
+								style="margin-left: 7px;"></button>
+						</span>
+					</h5>
 				</c:if>
 			</div>
 		</div>
+		
 		<div class="filter3" style="display: inline-block;">
 			<div class="deleteFilter">
 				<c:if test="${not empty param.mem_gender }">
-					<div class="border border-1 rounded-3 p-2" role="group"
-						style="width: 120px; margin-bottom: 20px; background-color: #fff;">
-						<button class="removeFi btn-close" aria-label="Close"
-							style="width: 1px; position: absolute;"></button>
-						<input type="hidden" value="${param.mem_gender }"
-							name="mem_gender"> <span
-							style="padding-left: 20px; font-size: 18px; font-weight: bold;">
-							<c:if test="${param.mem_gender == 0}">남자</c:if> <c:if
+					<h5>
+						<span class="badge badge-warning p-2" style="color: #000;">
+							<input type="hidden" name="mem_gender"
+							value="${param.mem_gender }"> <c:if
+								test="${param.mem_gender == 0}">남자</c:if> <c:if
 								test="${param.mem_gender == 1}">여자</c:if>
+							<button class="removeFi btn-close btn-xs" aria-label="Close"
+								style="margin-left: 7px;"></button>
 						</span>
-					</div>
+					</h5>
 				</c:if>
 			</div>
 		</div>
+		
 		<div class="filter4" style="display: inline-block;">
 			<c:if test="${not empty param.msg_opt }">
 				<div class="border border-1 rounded-3 p-2" role="group"
@@ -106,10 +122,13 @@
 			</c:if>
 		</div>
 
-
-
-		<div class="content" style="text-align: right;">
-			<div style="display: inline-block;">
+		<!-- 테이블 커스텀 (정렬 / 행 개수) -->
+		<div class="content memListSort">
+		
+			<div>검색결과 : ${pageVO.totalCount }명</div>
+			
+			<!-- 정렬 기준 선택 -->
+			<div id="sortRight">
 				<input type="hidden" name="sortCri"> <input type="hidden"
 					name="sortVal"> <input type="radio" value="mem_name"
 					class="btn-check chkSort" id="radioName1"> <label
@@ -119,32 +138,35 @@
 					type="radio" value="reg_date" class="btn-check chkSort"
 					id="radioReg"> <label class="btn" for="radioReg">등록순</label>
 			</div>
+			
 			<!-- 행 개수 선택 -->
-			<div style="display: inline-block;">
+			<div class="textRight">
 				<select name="pageSize" id="selectPage" class="form-control">
 					<option value="10">10개씩 보기</option>
 					<option value="20">50개씩 보기</option>
 					<option value="30">100개씩 보기</option>
 				</select>
 			</div>
+			
 		</div>
 
 	</form>
+	<!-- 검색 / 필터 / 정렬 / 행 개수 데이터 전송 -->
 
-	<!-- 모달창 시작 -->
-	<div class="modal fade" id="exampleModal" tabindex="-1"
-		aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<!-- 필터 모달창 시작 -->
+	<div class="modal fade" id="filterModal" tabindex="-1"
+		aria-labelledby="filterModalLabel" aria-hidden="true">
 		<div class="modal-dialog">
 			<div class="modal-content">
 
-				<!-- 모달창 헤더 -->
+				<!-- 필터 모달창 헤더 -->
 				<div class="modal-header">
-					<h5 class="modal-title" id="exampleModalLabel">필터하기</h5>
+					<h5 class="modal-title" id="filterModalLabel">필터하기</h5>
 					<button type="button" class="btn-close" data-bs-dismiss="modal"
 						aria-label="Close"></button>
 				</div>
 
-				<!-- 모달창 바디(본문) -->
+				<!-- 필터 모달창 바디(본문) -->
 				<div class="modal-body">
 
 					<h5>회원등급</h5>
@@ -189,7 +211,7 @@
 
 				</div>
 
-				<!-- 모달창 푸터 -->
+				<!-- 필터 모달창 푸터 -->
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary"
 						data-bs-dismiss="modal">취소</button>
@@ -200,7 +222,58 @@
 			</div>
 		</div>
 	</div>
-	<!-- 모달창 끝 -->
+	<!-- 필터 모달창 끝 -->
+
+	<!-- 메시지 모달창 시작 -->
+	<div class="modal fade" id="smsModal" tabindex="-1"
+		aria-labelledby="smsModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+
+				<!-- 메시지 모달창 헤더 -->
+				<div class="modal-header">
+					<h5 class="modal-title" id="smsModalLabel">메시지 전송</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal"
+						aria-label="Close"></button>
+				</div>
+
+				<!-- 메시지 모달창 바디(본문) -->
+				<div class="modal-body">
+					예약전송:
+					<input type="datetime-local" name="sendDatetime" class="form-control">
+					<div class="accordion-item">
+					
+					    <h2 class="accordion-header" id="headingTwo">
+					      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+					        수신인
+					      </button>
+					    </h2>
+					    
+					    <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+					      <div class="accordion-body">
+							<div id="smsReceiver"></div>        
+					      </div>
+					    </div>
+					</div>
+					
+					<div id="smsReceiverHidden"></div>
+					전송내용:
+					<textarea rows="" cols="" name="message" class="form-control"></textarea>
+
+				</div>
+
+				<!-- 메시지 모달창 푸터 -->
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary"
+						data-bs-dismiss="modal">취소</button>
+					<button type="button" class="btn btn-primary smsSendBtn"
+						data-bs-dismiss="modal">전송하기</button>
+				</div>
+
+			</div>
+		</div>
+	</div>
+	<!-- 메시지 모달창 끝 -->
 
 	<!-- 회원 리스트 출력 -->
 	<div class="col-sm-12">
@@ -224,7 +297,8 @@
 				<c:forEach var="vo" items="${memberList }">
 					<tr class="tr:hover">
 						<td class="dtr-control" tabindex="0"><input type="checkbox"
-							class="chkGrp" style="accent-color: #a2d2ff;"></td>
+							name="mem_no" class="chkGrp" value="${vo.mem_no }"
+							style="accent-color: #a2d2ff;"></td>
 						<td class="dtr-control" tabindex="0">${vo.mem_no }</td>
 						<td class=""><a
 							href="/member/read?mem_no=${vo.mem_no }&page=${param.page==null? 1:param.page}">${vo.mem_name }</a></td>
@@ -247,14 +321,15 @@
 			<ul class="pagination">
 				<c:if test="${pageVO.prev }">
 					<li class="paginate_button page-item previous"
-						id="example1_previous"><c:if
+						id="example1_previous">
+						<!-- 검색을 하지 않았을 때 페이징 처리 --> <c:if
 							test="${empty param.keyword and empty param.memYear and empty param.filter and empty param.mem_gender
 						and empty param.sortCri and empty param.sortVal}">
 							<a
 								href="/member/list?page=${pageVO.startPage-1 }&pageSize=${pageVO.cri.pageSize}"
 								aria-controls="example1" data-dt-idx="0" tabindex="0"
 								class="page-link">«</a>
-						</c:if> <c:if
+						</c:if> <!-- 검색을 했을 때 페이징 처리 --> <c:if
 							test="${not empty param.keyword or not empty param.memYear or not empty param.filter or not empty param.mem_gender
 						or not empty param.sortCri or not empty param.sortVal}">
 							<a
@@ -262,19 +337,20 @@
 								&mem_gender=${pageVO.cri.mem_gender }&sortCri=${pageVO.cri.sortCri }&sortVal=${pageVO.cri.sortVal }&page=${pageVO.startPage-1 }&pageSize=${pageVO.cri.pageSize}"
 								aria-controls="example1" data-dt-idx="0" tabindex="0"
 								class="page-link">«</a>
-						</c:if></li>
+						</c:if>
+					</li>
 				</c:if>
 				<c:forEach var="i" begin="${pageVO.startPage }"
 					end="${pageVO.endPage }" step="1">
 					<li
 						class="paginate_button page-item ${pageVO.cri.page == i ? 'active':'' }">
-						<c:if
+						<!-- 검색을 하지 않았을 때 페이징 처리 --> <c:if
 							test="${empty param.keyword and empty param.memYear and empty param.filter and empty param.mem_gender
 						and empty param.sortCri and empty param.sortVal}">
 							<a href="/member/list?page=${i }&pageSize=${pageVO.cri.pageSize}"
 								aria-controls="example1" data-dt-idx="1" tabindex="0"
 								class="page-link">${i }</a>
-						</c:if> <c:if
+						</c:if> <!-- 검색을 했을 때 페이징 처리 --> <c:if
 							test="${not empty param.keyword or not empty param.memYear or not empty param.filter or not empty param.mem_gender
 						or not empty param.sortCri or not empty param.sortVal}">
 							<a
@@ -287,14 +363,14 @@
 				</c:forEach>
 				<c:if test="${pageVO.next && pageVO.endPage > 0 }">
 					<li class="paginate_button page-item next" id="example1_next">
-						<c:if
+						<!-- 검색을 하지 않았을 때 페이징 처리 --> <c:if
 							test="${empty param.keyword and empty param.memYear and empty param.filter and empty param.mem_gender
 						and empty param.sortCri and empty param.sortVal}">
 							<a
 								href="/member/list?page=${pageVO.endPage+1 }&pageSize=${pageVO.cri.pageSize}"
 								aria-controls="example1" data-dt-idx="7" tabindex="0"
 								class="page-link">»</a>
-						</c:if> <c:if
+						</c:if> <!-- 검색을 했을 때 페이징 처리 --> <c:if
 							test="${not empty param.keyword or not empty param.memYear or not empty param.filter or not empty param.mem_gender
 						or not empty param.sortCri or not empty param.sortVal }">
 							<a
@@ -309,27 +385,40 @@
 		</div>
 	</div>
 
+	<!-- 회원 삭제 버튼 -->
+	<button class="btn btn-primary deleteMem" type="button">삭제하기</button>
+	
+	<!-- 메시지 전송 버튼 -->
+	<button type="button" class="btn btn-danger smsBtn" data-bs-toggle="modal"
+		data-bs-target="#smsModal">
+		<i class="fas fa-envelope fa-fw" style="color: #fff"></i>
+	</button>
 
-
-	<button class="btn btn-primary" type="button">삭제하기</button>
 	<!-- 회원 등록 버튼 -->
 	<button class="btn btn-primary" type="button"
 		data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight"
 		aria-controls="offcanvasRight">등록하기</button>
 
-	<!-- 회원 등록창 (모달) -->
+	<!-- 회원 등록 오프캔버스 시작 -->
 	<form action="" method="post" id="fm1" name="fm1">
+
 		<input type="hidden" name="${_csrf.parameterName}"
 			value="${_csrf.token}" />
+
 		<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight"
 			aria-labelledby="offcanvasRightLabel">
+
+			<!-- 회원 등록 오프캔버스 헤더 시작 -->
 			<div class="offcanvas-header">
 				<h5 id="offcanvasRightLabel">회원등록</h5>
+
 				<button type="button" class="btn-close text-reset"
 					data-bs-dismiss="offcanvas" aria-label="Close"></button>
-			</div>
-			<div class="offcanvas-body">
 
+			</div>
+
+			<!-- 회원 등록 오프캔버스 바디 시작 -->
+			<div class="offcanvas-body">
 
 				<section class="content">
 					<div class="container-fluid">
@@ -339,29 +428,29 @@
 						</div>
 						<div class="form-group">
 							<label>생일</label> <input type="date" name="mem_birth"
-								class="form-control" /> 
+								class="form-control" />
 						</div>
 
 						<div class="form-group">
-							<label>성별</label><br> <label style="font-weight: normal !important;"><input type="radio"
-								name="mem_gender"
-								style="accent-color: #cdb4db;"
-								value="0">&nbsp; 남자</label>&nbsp;&nbsp; <label style="font-weight: normal !important;"><input
-								type="radio" name="mem_gender"
-								style="accent-color: #cdb4db;"
+							<label>성별</label><br> <label
+								style="font-weight: normal !important;"><input
+								type="radio" name="mem_gender" style="accent-color: #cdb4db;"
+								value="0">&nbsp; 남자</label>&nbsp;&nbsp; <label
+								style="font-weight: normal !important;"><input
+								type="radio" name="mem_gender" style="accent-color: #cdb4db;"
 								value="1">&nbsp; 여자</label>
 						</div>
 
 						<div class="form-group">
 							<label>전화번호</label> <input type="text" name="mem_phone"
-								class="form-control"> <label class="chkboxCustom">
+								class="form-control" maxlength="13" oninput="formatPhoneNumber(this)"> <label class="chkboxCustom">
 								<input type="checkbox" name="sms_opt"
 								style="accent-color: #cdb4db;" value="1">&nbsp;sms 수신 동의
 							</label>
 						</div>
 
 						<div class="form-group">
-							<label>이메일</label> <input type="text" name="mem_email"
+							<label>이메일</label> <input type="email" name="mem_email"
 								class="form-control"> <label class="chkboxCustom">
 								<input type="checkbox" style="accent-color: #cdb4db;"
 								name="email_opt" value="1">&nbsp;이메일 수신 동의
@@ -391,11 +480,14 @@
 					</div>
 				</section>
 			</div>
+
 		</div>
 
 	</form>
+	<!-- 회원 등록 오프캔버스 시작 -->
 
 </div>
+<!-- 바디 끝 -->
 
 <script>
 	/* 사용자가 선택한 필터 출력 */
@@ -409,52 +501,65 @@
 							let mem_gender = $('input[name=mem_gender]:checked')
 									.val();
 
+							/* 회원유형 필터를 선택했을 때 */
 							if (filter != undefined) {
 								$('.filter1')
 										.html(
-												'<div class="border border-1 rounded-3 p-2" role="group" style="width: 120px; margin-bottom: 20px; background-color:#fff;">'
-														+ '<button class="removeFi btn-close" aria-label="Close" style="width: 1px; position: absolute;"></button>'
+												'<h5><span class="badge badge-warning p-2" style="color: #000;">'
 														+ '<input type="hidden" name="filter" value="'+filter+'">'
-														+ '<span style="padding-left: 20px;font-size: 16px; font-weight: bold;">'
 														+ filter
-														+ '</span></div></p>');
+														+ '<button class="removeFi btn-close btn-xs" aria-label="Close" style="margin-left: 7px;">'
+														+ '</button></span></h5>');
 							}
 
+							/* 연도별을 선택했을 때 */
 							if (memYear != "") {
 								$('.filter2')
 										.html(
-												'<div class="border border-1 rounded-3 p-2" role="group" style="width: 120px; margin-bottom: 20px; background-color:#fff;">'
-														+ '<button class="removeFi btn-close" aria-label="Close" style="width: 1px; position: absolute;"></button>'
+												'<h5><span class="badge badge-warning p-2" style="color: #000;">'
 														+ '<input type="hidden" name="memYear" value="'+memYear+'">'
-														+ '<span style="padding-left: 20px;font-size: 18px; font-weight: bold;">'
 														+ memYear
-														+ '</span></div></p>');
+														+ '<button class="removeFi btn-close btn-xs" aria-label="Close" style="margin-left: 7px;">'
+														+ '</button></span></h5>');
 							}
+
+							/* 성별을 선택했을 때 */
 							if (mem_gender != null) {
+
 								var displayGender = '';
+
 								if (mem_gender == 0) {
 									displayGender = '남자';
 								}
 								if (mem_gender == 1) {
 									displayGender = '여자';
 								}
+
 								$('.filter3')
 										.html(
-												'<div class="border border-1 rounded-3 p-2" role="group" style="width: 120px; margin-bottom: 20px; background-color:#fff;">'
-														+ '<button class="removeFi btn-close" aria-label="Close" style="width: 1px; position: absolute;"></button>'
+												'<h5><span class="badge badge-warning p-2" style="color: #000;">'
 														+ '<input type="hidden" name="mem_gender" value="'+mem_gender+'">'
-														+ '<span style="padding-left: 20px;font-size: 18px; font-weight: bold;">'
 														+ displayGender
-														+ '</span></div></p>');
+														+ '<button class="removeFi btn-close btn-xs" aria-label="Close" style="margin-left: 7px;">'
+														+ '</button></span></h5>');
 							}
 
 						});
 
 	});
 
-	/* 선택한 필터 삭제 */
+	/* 선택한 필터 개별 삭제 */
 	$(document).on('click', '.removeFi', function() {
 		$(this).parent().remove()
+	});
+
+	/* 선택한 필터 전체 삭제 */
+	$(document).ready(function() {
+		$('#resetFilters').click(function() {
+			if (confirm("필터를 삭제하시겠습니까?")) {
+				$('.deleteFilter').empty();
+			}
+		});
 	});
 
 	/* 최상위 체크박스 클릭 시 전체 체크박스 선택 */
@@ -469,10 +574,19 @@
 			&& '${pageVO.cri.searchType}' != '') {
 		$("#selectType").val("${param.searchType}");
 	}
+
 	$("#selectPage").val("${pageVO.cri.pageSize }");
 
+	/* 회원등록 Ajax */
 	$(function() {
-		$("#submitButt").click(function() {
+		$("#submitButt").click(function(event) {
+
+	        // 전화번호 필드에서 하이픈 제거
+	        $("input[name='mem_phone']").each(function() {
+	            var cleanedPhone = $(this).val().replace(/-/g, '');
+	            $(this).val(cleanedPhone);
+	        });
+			
 			$.ajax({
 				url : "/member/memJoin",
 				type : "POST",
@@ -490,6 +604,7 @@
 		});
 	});
 
+	/* 우편번호 API */
 	function sample6_execDaumPostcode() {
 		new daum.Postcode({
 			oncomplete : function(data) {
@@ -519,15 +634,8 @@
 
 		$('input[name="sortVal"]').val('${param.sortVal}');
 		$('input[name="sortCri"]').val('${param.sortCri}');
-		$(".actionForm").submit();
-	});
 
-	$(document).ready(function() {
-		$('#resetFilters').click(function() {
-			if (confirm("필터를 삭제하시겠습니까?")) {
-				$('.deleteFilter').empty();
-			}
-		});
+		$(".actionForm").submit();
 	});
 
 	$(document).ready(function() {
@@ -555,7 +663,9 @@
 		});
 	});
 
+	// 검색 시 스피너 작동
 	function toggleSpinner() {
+
 		var spinner = document.getElementById('spinner');
 		// 스피너가 현재 보이는지 확인
 		var isVisible = spinner.classList.contains('d-block');
@@ -572,6 +682,164 @@
 			spinner.setAttribute('aria-hidden', 'true');
 		}
 	}
+
+	/* 회원 삭제 (회원 삭제날짜 업데이트) */
+	$(document).ready(function() {
+		$('.deleteMem').click(function() {
+
+			var delete_mems = [];
+			const token = $("meta[name='_csrf']").attr("content")
+			const header = $("meta[name='_csrf_header']").attr("content");
+
+			$('input[name="mem_no"]:checked').each(function() {
+				delete_mems.push(this.value);
+			});
+
+			$.ajax({
+				url : '/member/memDelete',
+				method : 'POST',
+				contentType : 'application/json; charset=UTF-8',
+				data : JSON.stringify({
+					mem_no : delete_mems
+				}),
+				beforeSend : function(xhr) {
+					xhr.setRequestHeader(header, token);
+				},
+				success : function(response) {
+					alert("회원이 성공적으로 삭제되었습니다");
+					history.go(0);
+				},
+				error : function(error) {
+					alert("오류 발생");
+				}
+			});
+
+		});
+	});
+	
+	/* 회원번호 선택 후 메시지 전송 클릭 시 메시지 모달창에 이름과 연락처 출력 */
+	$(document).ready(function() {
+		$('.smsBtn').click(function() {
+			
+			var selectedOptions = [];
+			const token = $("meta[name='_csrf']").attr("content")
+			const header = $("meta[name='_csrf_header']").attr("content");
+
+			$('input[name="mem_no"]:checked').each(function() {
+				selectedOptions.push(this.value);
+			});
+			
+			$.ajax({
+				url : '/member/memPhone',
+				method : 'POST',
+				contentType : 'application/json; charset=UTF-8',
+				data : JSON.stringify({
+					mem_no : selectedOptions
+				}),
+				beforeSend : function(xhr) {
+					xhr.setRequestHeader(header, token);
+				},
+				success : function(data) {
+					var selectedPhones = [];
+					$.each(data, function(index, member) {
+						$('#smsReceiver').append("<div class='memPhone"+index+"'>"+member.mem_name+
+						"("+member.mem_phone+")<button class='deletePhone"+index+" btn-close btn-xs'></button></div>");
+						selectedPhones.push(member.mem_phone);
+						
+						$('.deletePhone'+index).click(function() {
+							selectedPhones = selectedPhones.filter(function(phone) {
+					            return phone !== member.mem_phone;
+					        });
+
+					        $(this).parent().remove();
+
+					        $('#smsReceiverHidden').html("<input type='hidden' name='recipient_mem' value='" + selectedPhones + "'>");
+
+						    });
+					});
+					
+					$('#smsReceiverHidden').html("<input type='hidden' name='recipient_mem' value='"+selectedPhones+"'>");
+					
+				},
+				error : function(error) {
+					alert("선택이 되지 않았습니다.");
+					return;
+				}
+			});
+			
+			
+			
+		});
+	});
+	
+	/* 메시지 모달창이 닫혔을 때 출력된 회원이름과 연락처 초기화 */
+	$(document).ready(function () {
+        $('#smsModal').on('hidden.bs.modal', function () {
+            $('#smsReceiver').empty();
+        });
+    });
+	
+	$(document).ready(function() {
+		$('.smsSendBtn').click(function() {
+			var selectedOptions = "";
+			var selectedMessage = "";
+			const token = $("meta[name='_csrf']").attr("content")
+			const header = $("meta[name='_csrf_header']").attr("content");
+
+			$('input[name="recipient_mem"]').each(function() {
+				selectedOptions = this.value;
+			});
+			$('textarea[name="message"]').each(function() {
+				selectedMessage = this.value;
+			});
+			
+			alert(selectedOptions);
+			
+			
+			console.log({recipient_mem : selectedOptions,
+					message : selectedMessage});
+			
+			$.ajax({
+				url : '/message/sendMem',
+				method : 'POST',
+				contentType : 'application/json; charset=UTF-8',
+				data : JSON.stringify({
+					recipient_mem : selectedOptions,
+					message : selectedMessage
+				}),
+				beforeSend : function(xhr) {
+					xhr.setRequestHeader(header, token);
+				},
+				success : function(data) {
+
+					
+				},
+				error : function(error) {
+					alert("오류 발생");
+				}
+			});
+			
+			
+			
+		});
+	});
+	
+	// 연락처 입력 시 자동으로 하이픈 추가
+	function formatPhoneNumber(input) {
+		let value = input.value.replace(/\D/g, ''); // 숫자 이외의 문자 제거
+        let formattedValue = '';
+        
+        if (value.length <= 3) {
+            formattedValue = value;
+        } else if (value.length <= 7) {
+            formattedValue = value.replace(/(\d{3})(\d{0,4})/, '$1-$2');
+        } else {
+            formattedValue = value.replace(/(\d{3})(\d{4})(\d{0,4})/, '$1-$2-$3');
+        }
+        
+        input.value = formattedValue;
+    }
+	
 </script>
 
 <%@ include file="../include/footer.jsp"%>

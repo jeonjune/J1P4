@@ -10,7 +10,7 @@
 	<select id="listPage" resultType="MemberVO">
 		<![CDATA[
 			select * from member
-			where mem_no > 0
+			where mem_no > 0 and mem_delete is null
 			order by mem_no desc, reg_date desc
 			limit #{page},10
 		]]>		
@@ -20,7 +20,7 @@
 	<select id="listPage2" resultType="MemberVO">
 		<![CDATA[
 			select * from member
-			where mem_no > 0
+			where mem_no > 0 and mem_delete is null
 			order by mem_no desc, reg_date desc
 			limit #{pageStart},${pageSize}
 		]]>		
@@ -29,6 +29,7 @@
 	<!-- 게시판 총 글의 개수(페이징처리) -->
 	<select id="totalCount" resultType="int">
 		select count(mem_no) from member
+		where mem_delete is null
 	</select>
 	
 	<select id="readMem" resultType="MemberVO">
@@ -49,5 +50,23 @@
 		mem_addr1=#{mem_addr1}, mem_addr2=#{mem_addr2}
 		where mem_no = #{mem_no};
   	 </update>
-
+  	 
+  	 <!-- 회원 삭제 -->
+  	 <update id="memDelete" parameterType="list">
+  	 	update member set mem_delete = now()
+		WHERE mem_no IN
+	    <foreach item="mem_no" collection="mem_no" open="(" separator="," close=")">
+	        #{mem_no}
+	    </foreach>
+  	 </update>
+  	 
+  	 <!-- 회원 번호 조회 -->
+  	 <select id="memPhone" resultType="MemberVO">
+  	 	select mem_name, mem_phone from member
+		WHERE mem_no IN
+	    <foreach item="mem_no" collection="mem_no" open="(" separator="," close=")">
+	        #{mem_no}
+	    </foreach>
+  	 </select>
+  	 
   </mapper>

@@ -8,6 +8,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.itwillbs.domain.AuthVO;
+import com.itwillbs.domain.EmpAttendanceVO;
 import com.itwillbs.domain.EmployeeVO;
 import com.itwillbs.persistence.EmployeeDAO;
 
@@ -57,9 +58,55 @@ public class EmployeeServiceImpl implements EmployeeService {
 	}
 
 	@Override
-	public void workStart(int user_no) throws Exception {
-		edao.workStart(user_no);
+	public void workStart(EmpAttendanceVO vo) throws Exception {
+		edao.workStart(vo);
 		
+	}
+
+	@Override
+	public String checkWork(int user_no) throws Exception {
+		return edao.checkWork(user_no);
+	}
+
+	@Override
+	public void endWork(int user_no) throws Exception {
+		edao.endWork(user_no);
+	}
+
+	@Override
+	public void outWork(int user_no) throws Exception {
+		edao.outWork(user_no);
+		
+	}
+
+	@Override
+	public void inWork(int user_no) throws Exception {
+		edao.inWork(user_no);
+		
+	}
+
+	@Override
+	public EmployeeVO empDetail(int user_no) throws Exception {
+		
+		return edao.empDetail(user_no);
+	}
+
+	@Override
+	public void empUpdate(EmployeeVO vo) throws Exception {
+		//비밀번호 암호화
+		String pw = pwEncoder.encode(vo.getUser_pw());
+		vo.setUser_pw(pw);
+		edao.empUpdate(vo);
+	}
+
+	@Override
+	public void authUpdate(AuthVO vo) throws Exception {
+		edao.authUpdate(vo);
+	}
+
+	@Override
+	public void reEmp(String user_id) throws Exception {
+		edao.reEmp(user_id);
 	}
 	
 	

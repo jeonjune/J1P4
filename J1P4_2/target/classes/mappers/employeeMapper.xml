@@ -37,7 +37,8 @@
   	
   	<!-- 직원리스트 -->
 	<select id="empList" resultType="EmployeeVO">
-		select * from employee 
+		select * from employee
+		where retire_status = 0
 	</select>
   	 
   	 <!-- 직원등록 -->
@@ -62,12 +63,62 @@
 		select user_no from employee where user_id=#{user_id}
 	</select>
 	<!-- 출근 --> 
-	<insert id="workStart" parameterType="int">
-		insert into empAttendance(user_no, commute_time,vacation_status)
-		values(#{user_no},now(),'정상출근')
+	<insert id="workStart" parameterType="EmpAttendanceVO">
+		insert into empAttendance(user_no, commute_time,work_status,check_status)
+		values(#{user_no},now(),'출근',#{check_status})
 	</insert>
 	
+	<!-- 출근상태 확인 -->
+	<select id="checkWork" resultType="string">
+		select work_status from empAttendance where user_no=#{user_no} and attend_date=DATE(now())
+	</select>
 	
+	<!-- 퇴근하기 -->
+	<update id="endWork">
+		update empAttendance
+		set work_status='퇴근',quitting_time=now()
+		where user_no=#{user_no} and attend_date=DATE(now())
+	</update>
+
+	<!-- 외출하기 -->
+	<update id="outWork">
+		update empAttendance
+		set work_status='외출'
+		where user_no=#{user_no}
+	</update>
+
+	<!-- 복귀하기 -->
+	<update id="inWork">
+		update empAttendance
+		set work_status='출근'
+		where user_no=#{user_no}
+	</update>
+	
+	<!-- 직원 상세페이지 -->
+	<select id="empDetail" resultType="EmployeeVO">
+		select * from employee
+		where user_no = #{user_no}
+	</select>
+	
+	<!-- 직원 수정 -->
+  	<update id="empUpdate">
+  	 	update employee set job=#{job}, job_rank=#{job_rank}, phone_no=#{phone_no},
+  	 	 email=#{email}, zip_code=#{zip_code}, addr1=#{addr1}, addr2=#{addr2}
+  	 	 <if test="user_pw != null">
+			,user_pw = #{user_pw}
+		</if>
+		where user_id = #{user_id}
+  	</update>
+  	<!-- 직원 권한 수정  -->
+	<update id="authUpdate">
+		update employee_auth set auth=#{auth}
+		where user_id = #{user_id}
+	</update>
+	<!-- 직원 퇴사 -->
+	<update id="reEmp">
+		update employee set retire_status=1, retire_date=now()
+		where user_id = #{user_id}
+	</update>
 	 <!-- 회원정보와 인증정보를 한번에 조회(Join) -->
 <!-- 	 <select id="readMemberAuth" resultMap="memberMap"> -->
 <!-- 	 	select  -->
