@@ -6,7 +6,7 @@
 
 
   <!-- Main Sidebar Container -->
-  <aside class="main-sidebar sidebar-light-primary elevation-4">
+  <aside class="main-sidebar sidebar-light-primary elevation-4 sidebar-no-expand">
     <!-- Brand Logo -->
     <a href="/main/home" class="brand-link">
       <img src="${pageContext.request.contextPath }/resources/dist/img/j1p4.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-1" style="opacity: .8">

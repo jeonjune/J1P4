@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 
 import com.itwillbs.domain.Criteria;
 import com.itwillbs.domain.MemberVO;
+import com.itwillbs.domain.NotificationVO;
+import com.itwillbs.domain.RecipientVO;
 import com.itwillbs.persistence.MemberDAO;
 import com.itwillbs.persistence.MessageDAO;
 
@@ -24,8 +26,8 @@ public class MessageServiceImpl implements MessageService {
 	private MessageDAO smsDao;
 
 	@Override
-	public void insertMemSMS(String msg) throws Exception {
-		smsDao.insertMemSMS(msg);
+	public void insertMemSMS(RecipientVO rVO) throws Exception {
+		smsDao.insertMemSMS(rVO);
 	}
 
 	@Override

@@ -9,7 +9,11 @@
 	<!-- 검색 결과 리스트 목록 ( 페이징 처리 ) -->
 	<select id="searchMem" resultType="MemberVO">
 	
-		SELECT * FROM member
+		SELECT *, CONCAT(
+	        SUBSTRING(mem_phone, 1, 3), '-',
+	        SUBSTRING(mem_phone, 4, 4), '-',
+	        SUBSTRING(mem_phone, 8, 4)
+   		) AS formatted_mem_phone FROM member
 		<if test="searchType == 'searchAll'">
 			WHERE (mem_name LIKE CONCAT('%', #{keyword}, '%')
 			OR mem_phone LIKE CONCAT('%', #{keyword}, '%')

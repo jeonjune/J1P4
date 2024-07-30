@@ -13,6 +13,8 @@ import org.springframework.stereotype.Repository;
 
 import com.itwillbs.domain.Criteria;
 import com.itwillbs.domain.MemberVO;
+import com.itwillbs.domain.NotificationVO;
+import com.itwillbs.domain.RecipientVO;
 
 @Repository
 public class MessageDAOImpl implements MessageDAO {
@@ -25,8 +27,8 @@ public class MessageDAOImpl implements MessageDAO {
 	private static final String NAMESPACE = "com.itwillbs.mapper.MessageMapper.";
 
 	@Override
-	public void insertMemSMS(String msg) throws Exception {
-		sqlSession.insert(NAMESPACE+"insertMemSMS",msg);
+	public void insertMemSMS(RecipientVO rVO) throws Exception {
+		sqlSession.insert(NAMESPACE+"insertMemSMS",rVO);
 	}
 
 	@Override

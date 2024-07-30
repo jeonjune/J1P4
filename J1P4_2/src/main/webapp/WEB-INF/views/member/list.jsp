@@ -8,8 +8,8 @@
 	src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 
 <!-- 바디 시작 -->
-<div class="content-wrapper" style="min-height: 831px;">
-
+<div class="content-wrapper" style="min-height: 831px; padding-top:20px;">
+	<div class="col-sm-12">
 	<!-- 스피너 (검색 시 돌아가는 로딩바) -->
 	<div class="spinner-border text-primary d-none" id="spinner"
 		role="status" aria-hidden="true">
@@ -48,7 +48,9 @@
 				
 			</div>
 			
-			<!-- 필터 모달창 버튼 -->
+		</div>
+		<div style="display: inline-block;">
+		<!-- 필터 모달창 버튼 -->
 			<button type="button" class="btn btn-primary" data-bs-toggle="modal"
 				data-bs-target="#filterModal">
 				<i class="fas fa-filter fa-fw"></i>
@@ -58,10 +60,10 @@
 			<button type="button" class="btn btn-info" id="resetFilters">
 				<i class="fas fa-trash fa-fw"></i>
 			</button>
-			
 		</div>
 		
 		<!-- 사용자가 선택한 필터를 보여주는 공간 -->
+		<div style="padding-left: 10px; display: inline-block;">
 		<div class="filter1" style="display: inline-block;">
 			<div class="deleteFilter">
 				<!-- 사용자가 필터를 사용하여 검색했을 때 선택한 필터를 보여주는 공간 -->
@@ -120,6 +122,7 @@
 					</span>
 				</div>
 			</c:if>
+		</div>
 		</div>
 
 		<!-- 테이블 커스텀 (정렬 / 행 개수) -->
@@ -227,7 +230,7 @@
 	<!-- 메시지 모달창 시작 -->
 	<div class="modal fade" id="smsModal" tabindex="-1"
 		aria-labelledby="smsModalLabel" aria-hidden="true">
-		<div class="modal-dialog">
+		<div class="modal-dialog modal-lg">
 			<div class="modal-content">
 
 				<!-- 메시지 모달창 헤더 -->
@@ -239,13 +242,12 @@
 
 				<!-- 메시지 모달창 바디(본문) -->
 				<div class="modal-body">
-					예약전송:
-					<input type="datetime-local" name="sendDatetime" class="form-control">
+					
 					<div class="accordion-item">
 					
 					    <h2 class="accordion-header" id="headingTwo">
 					      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-					        수신인
+					        수신 번호
 					      </button>
 					    </h2>
 					    
@@ -257,8 +259,17 @@
 					</div>
 					
 					<div id="smsReceiverHidden"></div>
+					<label style="font-weight: normal;">
+					<input type="checkbox" id="chkSendType">
+					예약전송:
+					</label>
+					<div id="sendDate">
+					<input type="hidden" name="noti_date" id="currentDatetime">
+					<input type="hidden" name="noti_type" value="일반전송">
+					</div>
 					전송내용:
-					<textarea rows="" cols="" name="message" class="form-control"></textarea>
+					<textarea rows="20" cols="200" name="message" id="comment" class="form-control" onkeyup="up()"></textarea>
+					<p>글자수 <span id="length">0</span><p>
 
 				</div>
 
@@ -276,13 +287,13 @@
 	<!-- 메시지 모달창 끝 -->
 
 	<!-- 회원 리스트 출력 -->
-	<div class="col-sm-12">
+
 		<table id="example1" class="table table-bordered table-hover"
-			style="background: #fff" aria-describedby="example1_info">
+			style="background: #fff;" aria-describedby="example1_info">
 			<thead>
 				<tr>
 					<th class="sorting"><input type="checkbox" class="chkGrp"
-						id="chkAll" style="accent-color: #cdb4db;"></th>
+						id="chkAll" style="accent-color: #cdb4db;" ></th>
 					<th class="sorting">NO</th>
 					<th class="sorting">회원이름</th>
 					<th class="sorting">연락처</th>
@@ -302,7 +313,7 @@
 						<td class="dtr-control" tabindex="0">${vo.mem_no }</td>
 						<td class=""><a
 							href="/member/read?mem_no=${vo.mem_no }&page=${param.page==null? 1:param.page}">${vo.mem_name }</a></td>
-						<td>${vo.mem_phone }</td>
+						<td class="mem_phone">${vo.formatted_mem_phone}</td>
 						<td>${vo.mem_rank }</td>
 						<td>${vo.reg_date }</td>
 						<td class="sorting_1">${vo.class_time }</td>
@@ -312,13 +323,30 @@
 				</c:forEach>
 			</tbody>
 		</table>
-	</div>
+	
 
-	<!-- 페이징 처리 -->
-	<div class="col-sm-12 col-md-7">
-		<div class="dataTables_paginate paging_simple_numbers"
-			id="example1_paginate">
-			<ul class="pagination">
+
+	<div class="col-sm-12">
+		<div class="d-flex justify-content-between align-items-center">
+		
+	<!-- 하단 버튼 모음 -->	
+	<div>
+		<!-- 메시지 전송 버튼 -->
+		<button type="button" class="btn btn-danger smsBtn" data-bs-toggle="modal"
+			data-bs-target="#smsModal">
+			<i class="fas fa-envelope fa-fw" style="color: #fff"></i> 메시지 발송
+		</button>
+		
+		<!-- 회원 삭제 버튼 -->
+		<button class="btn btn-primary deleteMem" type="button" style="display: inline-block;">회원 삭제</button>
+	
+		<!-- 회원 등록 버튼 -->
+		<button class="btn btn-primary" type="button"
+			data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight"
+			aria-controls="offcanvasRight">회원 등록</button>
+	</div>
+			<!-- 페이징 처리 -->
+			<ul class="pagination" >
 				<c:if test="${pageVO.prev }">
 					<li class="paginate_button page-item previous"
 						id="example1_previous">
@@ -382,22 +410,15 @@
 					</li>
 				</c:if>
 			</ul>
+				
 		</div>
 	</div>
+		
+		
+		
+		
+	</div>
 
-	<!-- 회원 삭제 버튼 -->
-	<button class="btn btn-primary deleteMem" type="button">삭제하기</button>
-	
-	<!-- 메시지 전송 버튼 -->
-	<button type="button" class="btn btn-danger smsBtn" data-bs-toggle="modal"
-		data-bs-target="#smsModal">
-		<i class="fas fa-envelope fa-fw" style="color: #fff"></i>
-	</button>
-
-	<!-- 회원 등록 버튼 -->
-	<button class="btn btn-primary" type="button"
-		data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight"
-		aria-controls="offcanvasRight">등록하기</button>
 
 	<!-- 회원 등록 오프캔버스 시작 -->
 	<form action="" method="post" id="fm1" name="fm1">
@@ -743,7 +764,7 @@
 					var selectedPhones = [];
 					$.each(data, function(index, member) {
 						$('#smsReceiver').append("<div class='memPhone"+index+"'>"+member.mem_name+
-						"("+member.mem_phone+")<button class='deletePhone"+index+" btn-close btn-xs'></button></div>");
+						"("+member.formatted_mem_phone+")<button class='deletePhone"+index+" btn-close btn-xs'></button></div>");
 						selectedPhones.push(member.mem_phone);
 						
 						$('.deletePhone'+index).click(function() {
@@ -783,6 +804,9 @@
 		$('.smsSendBtn').click(function() {
 			var selectedOptions = "";
 			var selectedMessage = "";
+			var selectedNotiDate = "";
+			var selectedNotiType = "";
+			
 			const token = $("meta[name='_csrf']").attr("content")
 			const header = $("meta[name='_csrf_header']").attr("content");
 
@@ -792,27 +816,28 @@
 			$('textarea[name="message"]').each(function() {
 				selectedMessage = this.value;
 			});
-			
-			alert(selectedOptions);
-			
-			
-			console.log({recipient_mem : selectedOptions,
-					message : selectedMessage});
-			
+			$('input[name="noti_date"]').each(function() {
+				selectedNotiDate = this.value;
+			});
+			$('input[name="noti_type"]').each(function() {
+				selectedNotiType = this.value;
+			});
+						
 			$.ajax({
 				url : '/message/sendMem',
 				method : 'POST',
 				contentType : 'application/json; charset=UTF-8',
 				data : JSON.stringify({
 					recipient_mem : selectedOptions,
-					message : selectedMessage
+					message : selectedMessage,
+					noti_date : selectedNotiDate,
+					noti_type : selectedNotiType
 				}),
 				beforeSend : function(xhr) {
 					xhr.setRequestHeader(header, token);
 				},
 				success : function(data) {
-
-					
+					alert("메시지 전송 성공");
 				},
 				error : function(error) {
 					alert("오류 발생");
@@ -839,6 +864,40 @@
         
         input.value = formattedValue;
     }
+	
+	/* 예약전송 클릭 시 시간선택 추가 */
+	$(function() {
+		$("#chkSendType").change(function() {
+	        if ($(this).is(':checked')) {
+	            // 체크된 경우
+	            $("#sendDate").html('<input type="datetime-local" name="noti_date" class="form-control">'+
+	                                '<input type="hidden" name="noti_type" value="예약전송">');
+	        } else {
+	            // 체크 해제된 경우
+	            $("#sendDate").html('');
+	        }
+	    });
+
+	});
+	
+	/* 메시지 입력 내용 글자수 제한 */
+ 	function up(){
+ 		var com = document.getElementById("comment");
+ 		var len = document.getElementById("length");
+ 		var val = com.value;
+ 		
+ 		//글자수 세기
+ 		len.textContent = val.length;
+ 		
+ 		//글자수 제한
+ 		if(val.length>500){
+ 			com.value = val.substring(0,5000);
+ 			len.textContent = 500; //제한 후 글자수 업데이트
+ 		}
+ 	}
+	
+	/* 메시지 일반전송 시 현재 시간을 hidden에 담아서 전송 */
+ 	document.getElementById('currentDatetime').value= new Date().toISOString().slice(0, -1);
 	
 </script>
 

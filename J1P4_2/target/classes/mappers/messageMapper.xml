@@ -5,10 +5,9 @@
 
   <mapper namespace="com.itwillbs.mapper.MessageMapper">
 	
-	
 	<insert id="insertMemSMS">
-		insert into notification (sender_user,noti_type,message)
-		values (1,1,#{message})
+		insert into notification (sender_user,noti_type,message,noti_date)
+		values (1,#{noti_type},#{message},#{noti_date})
 	</insert>
 	
 	<insert id="insertMemReceiver">
