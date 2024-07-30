@@ -1,6 +1,7 @@
 package com.itwillbs.web;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -41,7 +43,7 @@ public class ClassController {
         model.addAttribute("divisions", commonCodeService.getCommonCodeDetailsByCodeId("DIVISION"));
         model.addAttribute("levels", commonCodeService.getCommonCodeDetailsByCodeId("LEVEL"));
         model.addAttribute("times", commonCodeService.getCommonCodeDetailsByCodeId("TIME"));
-        return "class/classList"; // JSP 파일 경로
+        return "class/classList";
     }
 
     @PostMapping("/save")
@@ -60,10 +62,27 @@ public class ClassController {
         return classService.getClassById(classNo);
     }
 
-    @PostMapping("/delete/{id}")
+    @PostMapping("/delete")
     @ResponseBody
-    public String deleteClass(@PathVariable("id") int classNo) {
-        classService.deleteClass(classNo);
+    public String deleteClasses(@RequestBody Map<String, List<Integer>> classNos) {
+        List<Integer> classNoList = classNos.get("classNos");
+        for (int classNo : classNoList) {
+            classService.deleteClass(classNo);
+        }
         return "redirect:/classes/list";
+    }
+
+    @GetMapping("/detail/{id}")
+    public String classDetail(@PathVariable("id") int classNo, Model model) {
+        ClassVO classVO = classService.getClassById(classNo);
+        List<ClassScheduleVO> schedules = classScheduleService.getSchedulesByClassId(classNo);
+        model.addAttribute("classVO", classVO);
+        model.addAttribute("scheduleVO", new ClassScheduleVO());
+        model.addAttribute("schedules", schedules);
+        model.addAttribute("fields", commonCodeService.getCommonCodeDetailsByCodeId("FIELD"));
+        model.addAttribute("divisions", commonCodeService.getCommonCodeDetailsByCodeId("DIVISION"));
+        model.addAttribute("levels", commonCodeService.getCommonCodeDetailsByCodeId("LEVEL"));
+        model.addAttribute("times", commonCodeService.getCommonCodeDetailsByCodeId("TIME"));
+        return "class/classDetail"; // JSP 파일 경로
     }
 }

@@ -16,7 +16,11 @@ public class ClassScheduleDAO {
     private SqlSession sqlSession;
 
     public void saveSchedule(ClassScheduleVO scheduleVO) {
-        sqlSession.insert(NAMESPACE + ".saveSchedule", scheduleVO);
+        if (scheduleVO.getScheduleId() == 0) {
+            sqlSession.insert(NAMESPACE + ".insertSchedule", scheduleVO);
+        } else {
+            sqlSession.update(NAMESPACE + ".updateSchedule", scheduleVO);
+        }
     }
 
     public List<ClassScheduleVO> getSchedulesByClassId(int classNo) {

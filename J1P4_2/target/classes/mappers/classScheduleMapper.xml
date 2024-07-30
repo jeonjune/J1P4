@@ -15,10 +15,21 @@
         <result property="recurrenceDays" column="recurrence_days"/>
     </resultMap>
 
-    <insert id="saveSchedule" parameterType="com.itwillbs.domain.ClassScheduleVO">
+    <insert id="insertSchedule" parameterType="com.itwillbs.domain.ClassScheduleVO">
         INSERT INTO classSchedule (class_no, start_date, end_date, start_time_code, end_time_code, recurrence_pattern, recurrence_days)
         VALUES (#{classNo}, #{startDate}, #{endDate}, #{startTimeCode}, #{endTimeCode}, #{recurrencePattern}, #{recurrenceDays})
     </insert>
+
+    <update id="updateSchedule" parameterType="com.itwillbs.domain.ClassScheduleVO">
+        UPDATE classSchedule
+        SET start_date = #{startDate},
+            end_date = #{endDate},
+            start_time_code = #{startTimeCode},
+            end_time_code = #{endTimeCode},
+            recurrence_pattern = #{recurrencePattern},
+            recurrence_days = #{recurrenceDays}
+        WHERE schedule_id = #{scheduleId}
+    </update>
 
     <select id="getSchedulesByClassId" parameterType="int" resultMap="scheduleResultMap">
         SELECT * FROM classSchedule WHERE class_no = #{classNo}

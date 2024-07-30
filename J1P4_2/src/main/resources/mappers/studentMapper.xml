@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.itwillbs.mapper.StudentMapper">
+    <select id="searchStudents" parameterType="string" resultType="com.itwillbs.domain.MemberVO">
+        SELECT * FROM member 
+        WHERE mem_name LIKE CONCAT('%', #{query}, '%') 
+        OR mem_phone LIKE CONCAT('%', #{query}, '%')
+    </select>
+    
+    <select id="getStudentById" parameterType="int" resultType="com.itwillbs.domain.MemberVO">
+        SELECT * FROM member WHERE mem_no = #{mem_no}
+    </select>
+</mapper>
