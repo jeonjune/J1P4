@@ -3,6 +3,7 @@ package com.itwillbs.service;
 import java.util.List;
 
 import com.itwillbs.domain.AuthVO;
+import com.itwillbs.domain.EmpAttendanceVO;
 import com.itwillbs.domain.EmployeeVO;
 
 public interface EmployeeService {
@@ -23,7 +24,7 @@ public interface EmployeeService {
 	public int user_no(String user_id) throws Exception;
 	
 	// 직원 출근
-	public void workStart(int user_no) throws Exception;
+	public void workStart(EmpAttendanceVO vo) throws Exception;
 	
 	// 출근상태 확인
 	public String checkWork(int user_no) throws Exception;

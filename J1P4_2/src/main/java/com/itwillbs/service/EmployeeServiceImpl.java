@@ -8,6 +8,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.itwillbs.domain.AuthVO;
+import com.itwillbs.domain.EmpAttendanceVO;
 import com.itwillbs.domain.EmployeeVO;
 import com.itwillbs.persistence.EmployeeDAO;
 
@@ -57,8 +58,8 @@ public class EmployeeServiceImpl implements EmployeeService {
 	}
 
 	@Override
-	public void workStart(int user_no) throws Exception {
-		edao.workStart(user_no);
+	public void workStart(EmpAttendanceVO vo) throws Exception {
+		edao.workStart(vo);
 		
 	}
 
@@ -92,6 +93,9 @@ public class EmployeeServiceImpl implements EmployeeService {
 
 	@Override
 	public void empUpdate(EmployeeVO vo) throws Exception {
+		//비밀번호 암호화
+		String pw = pwEncoder.encode(vo.getUser_pw());
+		vo.setUser_pw(pw);
 		edao.empUpdate(vo);
 	}
 
