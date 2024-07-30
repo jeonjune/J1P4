@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import com.itwillbs.domain.AuthVO;
+import com.itwillbs.domain.EmpAttendanceVO;
 import com.itwillbs.domain.EmployeeVO;
 
 @Repository
@@ -55,8 +56,8 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 
 	// 출근
 	@Override
-	public void workStart(int user_no) throws Exception {
-		sqlSession.insert(NAMESPACE+"workStart", user_no);
+	public void workStart(EmpAttendanceVO vo) throws Exception {
+		sqlSession.insert(NAMESPACE+"workStart", vo);
 	}
 
 	@Override

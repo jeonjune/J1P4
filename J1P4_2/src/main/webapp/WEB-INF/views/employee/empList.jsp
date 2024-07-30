@@ -28,33 +28,33 @@ user_id : ${principal.username}<br>
 권한 : ${principal.authorities}<br>
 출근상태 : ${checkW }
 <%-- ${author } --%>
-<div class="dropdown" id="commute-div">
-    <c:choose>  
-	<c:when test="${checkW eq '출근'}"> 
-  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false" style="width:100px;">
-		퇴근하기
-  </button>
-	</c:when> 
-	<c:when test="${checkW eq '퇴근'}"> 
-  <button class="btn btn-secondary" type="button" id="dropdownMenuButton1" aria-expanded="false" style="width:100px;">
-		퇴근했어요
-  </button>
-	</c:when> 
-	<c:when test="${checkW eq '외출'}"> 
-  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false" style="width:100px;">
-		복귀하기
-  </button>
-	</c:when> 
-	<c:otherwise> 
-  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false" style="width:100px;">
-		출근하기
-  </button>
-	</c:otherwise> 
-</c:choose>
-  <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-    <li><a class="dropdown-item" id="start_work">출근하기</a></li>
-  </ul>
-</div>
+<!-- <div class="dropdown" id="commute-div"> -->
+<%--     <c:choose>   --%>
+<%-- 	<c:when test="${checkW eq '출근'}">  --%>
+<!--   <button class="btn btn-success dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false" style="width:100px;"> -->
+<!-- 		퇴근하기 -->
+<!--   </button> -->
+<%-- 	</c:when>  --%>
+<%-- 	<c:when test="${checkW eq '퇴근'}">  --%>
+<!--   <button class="btn btn-success" type="button" id="dropdownMenuButton1" aria-expanded="false" style="width:100px;"> -->
+<!-- 		퇴근했어요 -->
+<!--   </button> -->
+<%-- 	</c:when>  --%>
+<%-- 	<c:when test="${checkW eq '외출'}">  --%>
+<!--   <button class="btn btn-success dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false" style="width:100px;"> -->
+<!-- 		복귀하기 -->
+<!--   </button> -->
+<%-- 	</c:when>  --%>
+<%-- 	<c:otherwise>  --%>
+<!--   <button class="btn btn-success dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false" style="width:100px;"> -->
+<!-- 		출근하기 -->
+<!--   </button> -->
+<%-- 	</c:otherwise>  --%>
+<%-- </c:choose> --%>
+<!--   <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1"> -->
+<!--     <li><a class="dropdown-item" id="start_work">출근하기</a></li> -->
+<!--   </ul> -->
+<!-- </div> -->
 		
 		<button class="btn btn-primary" type="button"
 		data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight"
@@ -452,7 +452,7 @@ $(function() {
 								   Swal.fire('출근처리가 완료되었습니다.','출근완료','success');
 								   
 								   
-								   html += "<button class='btn btn-secondary dropdown-toggle' type='button' id='dropdownMenuButton1' data-bs-toggle='dropdown' aria-expanded='false'>"+
+								   html += "<button class='btn btn-success dropdown-toggle' type='button' id='dropdownMenuButton1' data-bs-toggle='dropdown' aria-expanded='false'>"+
 								    		   "퇴근하기</button>"+
 									  	   "<ul class='dropdown-menu' aria-labelledby='dropdownMenuButton1'>"+
 									  	   "<li><a class='dropdown-item' id='endWork' value='퇴근'>퇴근하기</a></li>"+
@@ -505,7 +505,7 @@ $(function() {
 						   success:function(data){
 							   console.log("퇴근완료");
 							   if(data == 1) {
-								   html += "<button class='btn btn-secondary' type='button' id='dropdownMenuButton1' aria-expanded='false'>"+
+								   html += "<button class='btn btn-success' type='button' id='dropdownMenuButton1' aria-expanded='false'>"+
 					    		   "퇴근했어요</button>"+
 						  	   
 						  	   "</div>"
@@ -554,7 +554,7 @@ $(function() {
 						   success:function(data){
 							   console.log("외출중");
 							   if(data == 1) {
-								html += "<button class='btn btn-secondary dropdown-toggle' type='button' id='dropdownMenuButton1' data-bs-toggle='dropdown' aria-expanded='false'>"+
+								html += "<button class='btn btn-success dropdown-toggle' type='button' id='dropdownMenuButton1' data-bs-toggle='dropdown' aria-expanded='false'>"+
 					    		"복귀하기</button>"+
 						  	   "<ul class='dropdown-menu' aria-labelledby='dropdownMenuButton1'>"+
 						  	   "<li><a class='dropdown-item' id='inWork' value='복귀'>복귀하기</a></li>"+
@@ -605,7 +605,7 @@ $(function() {
 						   success:function(data){
 							   console.log("복귀");
 							   if(data == 1) {
-								   html += "<button class='btn btn-secondary dropdown-toggle' type='button' id='dropdownMenuButton1' data-bs-toggle='dropdown' aria-expanded='false'>"+
+								   html += "<button class='btn btn-success dropdown-toggle' type='button' id='dropdownMenuButton1' data-bs-toggle='dropdown' aria-expanded='false'>"+
 					    		   "퇴근하기</button>"+
 						  	   "<ul class='dropdown-menu' aria-labelledby='dropdownMenuButton1'>"+
 						  	   "<li><a class='dropdown-item' id='endWork' value='퇴근'>퇴근하기</a></li>"+
@@ -646,7 +646,7 @@ $(function() {
 				if(data == 1) {	// 오늘날짜로 출근한 데이터가 있다면
 					
 					
-				html += "<button class='btn btn-secondary dropdown-toggle' type='button' id='dropdownMenuButton1' data-bs-toggle='dropdown' aria-expanded='false'>"+
+				html += "<button class='btn btn-success dropdown-toggle' type='button' id='dropdownMenuButton1' data-bs-toggle='dropdown' aria-expanded='false'>"+
 			    		   " 퇴근하기 </button>"+
 				  	   "<ul class='dropdown-menu' aria-labelledby='dropdownMenuButton1'>"+
 				  	   "<li><a class='dropdown-item' id='endWork' value='퇴근'>퇴근하기</a></li>"+
@@ -659,7 +659,7 @@ $(function() {
 				   
 				}else if(data==2){
 					
-					html += "<button class='btn btn-secondary' type='button' id='dropdownMenuButton1' aria-expanded='false'>"+
+					html += "<button class='btn btn-success' type='button' id='dropdownMenuButton1' aria-expanded='false'>"+
 		    		   " 퇴근했어요 </button>"+
 			  	   
 			  	   "</div>"
@@ -667,7 +667,7 @@ $(function() {
 					$("#commute-div").html(html);
 				}else if(data==3){
 					
-					html += "<button class='btn btn-secondary dropdown-toggle' type='button' id='dropdownMenuButton1' data-bs-toggle='dropdown' aria-expanded='false'>"+
+					html += "<button class='btn btn-success dropdown-toggle' type='button' id='dropdownMenuButton1' data-bs-toggle='dropdown' aria-expanded='false'>"+
 		    		" 복귀하기 </button>"+
 			  	   "<ul class='dropdown-menu' aria-labelledby='dropdownMenuButton1'>"+
 			  	   "<li><a class='dropdown-item' id='inWork' value='복귀'>복귀하기</a></li>"+

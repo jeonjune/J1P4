@@ -1,6 +1,8 @@
 package com.itwillbs.web;
 
 import java.security.Principal;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -21,6 +23,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.itwillbs.domain.AuthVO;
 import com.itwillbs.domain.Criteria;
+import com.itwillbs.domain.EmpAttendanceVO;
 import com.itwillbs.domain.EmployeeVO;
 import com.itwillbs.service.CommonCodeService;
 import com.itwillbs.service.EmployeeService;
@@ -104,7 +107,7 @@ public class EmployeeController {
 	// 출근 메소드
 	@ResponseBody
 	@RequestMapping(value="/workStart", method = RequestMethod.POST)
-	public int commuteStart(@RequestParam("user_id") String user_id) {
+	public int commuteStart(@RequestParam("user_id") String user_id, EmpAttendanceVO vo) {
 
 		logger.info("@@@@@@@@@@@@@@startuser_id@@@@@@@@@@@ :"+user_id);
 		// user_id로 user_no 구하기
@@ -112,16 +115,39 @@ public class EmployeeController {
 		try {
 			user_no = eService.user_no(user_id);
 			logger.info("@@@@@@@@@@@@@start@user_no@@@@@@@@@@@ :"+user_no);
+			vo.setUser_no(user_no);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		 Date date = new Date();
+	        SimpleDateFormat sim = new SimpleDateFormat("HH시mm분ss초");
+	        String str = sim.format(date);
+	        int hour = Integer.parseInt(str.substring(0, 2));
+	        int minute = Integer.parseInt(str.substring(3, 5));
+	        // 출석, 지각, 결석 여부 : 기본값은 결석, 날짜 출력 포멧의 일부분을 가져와 int 자료형으로 형변환 한 뒤
+	        // 값을 비교하여 지각, 출석 여부를 판별한다.
+	        
+	        if (hour >= 9 ) { 
+	            vo.setCheck_status("지각");
+	        	logger.info("현재 시각 : "+str);
+	        	logger.info("지각입니다.");
+	            try {
+	    			eService.workStart(vo);
+	    			logger.info("@@@@@@@@@@@@@@start출근성공@@@@@@@@@@@ :");
+	    		} catch (Exception e) {
+	    			e.printStackTrace();
+	    		}
+	        } else {
+	        	vo.setCheck_status("출근");
+	        	try {
+	        		eService.workStart(vo);
+	        		logger.info("@@@@@@@@@@@@@@start출근성공@@@@@@@@@@@ :");
+	        	} catch (Exception e) {
+	        		e.printStackTrace();
+	        	}
+	           
+	        }
 		
-		try {
-			eService.workStart(user_no);
-			logger.info("@@@@@@@@@@@@@@start출근성공@@@@@@@@@@@ :");
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 		
 		return 1;
 	}
@@ -290,5 +316,40 @@ public class EmployeeController {
 		return "redirect:/employee/empList";
 	}
 	
+	// 직원 마이페이지
+	@GetMapping(value = "/myPage")
+	public void myPageGET(Model model,Principal principal) throws Exception{
+		logger.debug(" myPageGET() 실행 ");
+		// user_id로 user_no 구하기
+		int user_no = 0;
+
+		if (principal != null) {
+			logger.info("@@@@@@@@@@@@@@principal.getName()@@@@@@@@@@@ :"+principal.getName());
+			user_no = eService.user_no(principal.getName());
+		}
+
+		
+		model.addAttribute("myP",eService.empDetail(user_no));
+		
+		model.addAttribute("job", commonCodeService.getCommonCodeDetailsByCodeId("JOB"));
+	    model.addAttribute("job_rank", commonCodeService.getCommonCodeDetailsByCodeId("JOB_RANK"));
+		
+		
+	}
+	
+	// 출결확인 페이지
+	@GetMapping(value = "/attend")
+	public void attend(Model model,Principal principal) throws Exception{
+		// user_id로 user_no 구하기
+				int user_no = 0;
+
+				if (principal != null) {
+					logger.info("@@@@@@@@@@@@@@principal.getName()@@@@@@@@@@@ :"+principal.getName());
+					user_no = eService.user_no(principal.getName());
+				}
+
+				
+				model.addAttribute("myP",eService.empDetail(user_no));
+	}
 
 }
