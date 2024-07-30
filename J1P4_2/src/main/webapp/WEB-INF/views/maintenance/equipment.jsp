@@ -52,17 +52,21 @@
 
 				</tr>
 			</thead>
-<!-- 			<tbody> -->
-<%-- 				<c:forEach var="facDe" items="${facDe }"> --%>
-<!-- 					<tr class="odd"> -->
-<%-- 						<td class="dtr-control" tabindex="0">${facDe.facility_no }</td> --%>
-<%-- 						<td>${facDe.repair_type}</td> --%>
-<%-- 						<td>${facDe.repair_status}</td> --%>
-<%-- 						<td>${facDe.repair_date}</td> --%>
-<%-- 						<td>${facDe.name }</td> --%>
-<!-- 					</tr> -->
-<%-- 				</c:forEach> --%>
-<!-- 			</tbody> -->
+			<tbody>
+				<c:forEach var="eList" items="${eList }">
+					<tr class="odd">
+						<td class="dtr-control" tabindex="0">${eList.equipment_no}</td>
+						<td>${eList.field}</td>
+						<td>${eList.e_repair_type}</td>
+						<td>${eList.equipment_name}</td>
+						<td>${eList.manufacturer }</td>
+						<td>${eList.cost }</td>
+						<td>${eList.count }</td>
+						<td>${eList.name }</td>
+						<td>${eList.approval_date }</td>
+					</tr>
+				</c:forEach>
+			</tbody>
 
 		</table>
 	</div>

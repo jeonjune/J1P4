@@ -59,5 +59,14 @@
 	        #{mem_no}
 	    </foreach>
   	 </update>
-
+  	 
+  	 <!-- 회원 번호 조회 -->
+  	 <select id="memPhone" resultType="MemberVO">
+  	 	select mem_name, mem_phone from member
+		WHERE mem_no IN
+	    <foreach item="mem_no" collection="mem_no" open="(" separator="," close=")">
+	        #{mem_no}
+	    </foreach>
+  	 </select>
+  	 
   </mapper>

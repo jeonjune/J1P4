@@ -281,10 +281,15 @@
 		</dependency>
 		<!-- Jackson 라이브러리 -->
 		
+		<!-- coolsms -->
+		<dependency>
+	    <groupId>net.nurigo</groupId>
+	    <artifactId>sdk</artifactId>
+	    <version>4.3.0</version>
+		</dependency>
+		<!-- coolsms -->
 				
 		<!-- 외부 라이브러리 -->
-		
-		
 		   
 	</dependencies>
     <build>

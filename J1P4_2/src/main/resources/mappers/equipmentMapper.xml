@@ -15,13 +15,60 @@
 	<!-- 장비신청내역 -->
 	<select id="equipList" resultType="EquipManageVO">
 	select * from equipmentManagement
+	where status='대기'
 	
 	</select>
 	
 	<!-- 특정 장비신청 내역 상세페이지 조회 -->
 	<select id="equipDetail" resultType="EquipManageVO">
-	select * from equipmentManagement
+	select * from equipmentManagement 
 	where equipment_no=#{equipment_no}
+	and status='대기'
 	</select>
+	
+	<!--특정 장비신청내역 상세페이지 수정 -->
+<!-- 	<update id=""> -->
+<!-- 	update equipmentManagement -->
+<!-- 	set report_date=#{report_date},field=#{field },equipment_name=#{equipment_name},manufacturer=#{manufacturer}, -->
+<!-- 	count=#{count},cost=#{cost},total=#{total},repair_reason=#{repair_reason}   -->
+<!-- 	</update> -->
 
+	<!-- 첨부파일 업로드 -->
+	<insert id="fileAdd" parameterType="fileVO">
+	insert into file(file_no,equipment_no,cvt_name,file_date,file_name)
+	values(#{file_no},#{equipment_no},#{cvt_name},#{file_date},#{file_name})
+	</insert>
+	
+	<!--첨부파일 조회  -->
+	<select id="selectFile" resultType="fileVO">
+	select * from file
+	where equipment_no=#{equipment_no}
+	</select>	
+	
+	<!--(승인)장비내역 리스트 -->
+	<update id="updateType">
+	update equipmentManagement
+	set e_repair_type='정상',status='승인',approval_date=now()
+	where equipment_no=#{equipment_no}
+	</update>
+	
+	<!-- 장비내역 리스트 조회 -->
+	<select id="listEquip" resultType="EquipManageVO">
+	select * from equipmentManagement
+	where status='승인'
+	</select>
+	
+	<!-- (반려)장비내역 리스트 -->
+	<update id="updateReject">
+	update equipmentManagement
+	set status='반려',approval_date=now(),equipment_reject=#{equipment_reject}
+	where equipment_no=#{equipment_no}
+	</update>	
+	
+	<!-- 반려내역 리스트 조회 -->
+	<select id="rejectList" resultType="EquipManageVO">
+	select * from equipmentManagement
+	where status='반려'
+	</select>
+		
   </mapper>

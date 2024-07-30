@@ -45,17 +45,19 @@
 
 				</tr>
 			</thead>
-<!-- 			<tbody> -->
-<%-- 				<c:forEach var="facDe" items="${facDe }"> --%>
-<!-- 					<tr class="odd"> -->
-<%-- 						<td class="dtr-control" tabindex="0">${facDe.facility_no }</td> --%>
-<%-- 						<td>${facDe.repair_type}</td> --%>
-<%-- 						<td>${facDe.repair_status}</td> --%>
-<%-- 						<td>${facDe.repair_date}</td> --%>
-<%-- 						<td>${facDe.name }</td> --%>
-<!-- 					</tr> -->
-<%-- 				</c:forEach> --%>
-<!-- 			</tbody> -->
+			<tbody>
+				<c:forEach var="rList" items="${rList }">
+					<tr class="odd">
+						<td class="dtr-control" tabindex="0">${rList.equipment_no }</td>
+						<td>${rList.field}</td>
+						<td>${rList.e_repair_type}</td>
+						<td>${rList.equipment_name}</td>
+						<td>${rList.name }</td>
+						<td>${rList.equipment_reject }</td>
+<!-- 						<td><button type="button" class="btn btn-primary" id="submitButt">반려사유확인</button></td> -->
+					</tr>
+				</c:forEach>
+			</tbody>
 
 		</table>
 	</div>
