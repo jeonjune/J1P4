@@ -48,6 +48,31 @@ public class EquipManageServiceImpl implements EquipManageService {
 		edao.fileAdd(vo);
 	}
 	
+	//승인 후 - 장비유형 업데이트
+	@Override
+	public void updateType(EquipManageVO vo) throws Exception {
+		edao.updateType(vo);
+		
+	}
+	
+	//장비내역리스트
+	@Override
+	public List<EquipManageVO> listEquip() throws Exception {
+		return edao.listEquip();
+	}
+	
+	//반려 후 - 장비유형 업데이트
+	@Override
+	public void updateReject(EquipManageVO vo) throws Exception {
+		edao.updateReject(vo);
+	}
+	
+	//반려내역리스트
+	@Override
+	public List<EquipManageVO> rejectList() throws Exception {
+		return edao.rejectList();
+	}
+	
 	
 	
 	

@@ -21,9 +21,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -52,8 +55,10 @@ public class EquipmentController {
 	//장비내역 페이지
 	//http://localhost:8088/maintenance/equipment
 	@GetMapping(value = "/equipment")
-	public void equipmentGET() {
-			
+	public void equipmentGET(Model model)throws Exception {
+		List<EquipManageVO> eList = eService.listEquip();
+		model.addAttribute("eList", eList);
+		
 	}
 		
 
@@ -66,7 +71,6 @@ public class EquipmentController {
 		List<EquipManageVO> list = eService.equipList();
 		
 		model.addAttribute("list",list);
-		  //logger.info("list :"+ list);
 
 		return "/maintenance/list";
 		
@@ -110,14 +114,11 @@ public class EquipmentController {
         model.addAttribute("paramMap", paramMap);
 
         eService.equipAdd(vo);
-        for (String fileName : fileNameList) {
-            fvo.setFile_name(fileName);
-            eService.fileAdd(fvo);
-        }
 
         return "redirect:/maintenance/list";
     }
-
+	
+	//파일업로드 메서드
     public List<String> fileProcess(MultipartHttpServletRequest multiRequest) throws Exception {
         logger.debug("fileProcess : 파일 업로드 처리 시작!");
 
@@ -184,8 +185,10 @@ public class EquipmentController {
 	//반려내역
 	//http://localhost:8088/maintenance/reject
 	@GetMapping(value = "/reject")
-	public void rejectGET() {
-				
+	public void rejectGET(Model model) throws Exception {
+		List<EquipManageVO> rList = eService.rejectList();
+		model.addAttribute("rList", rList);
+		
 	}
 	
 	//장비신청 상세페이지
@@ -206,7 +209,30 @@ public class EquipmentController {
 		model.addAttribute("fields", commonCodeService.getCommonCodeDetailsByCodeId("FIELD"));
 	}
 	
+	//장비신청 상세페이지 업데이트 - 승인
+	@ResponseBody
+	@PostMapping(value = "/detail")
+	public String updateType(@RequestParam("equipment_no")int eq,EquipManageVO vo) throws Exception{
+		logger.info("#### eq ##### :"+ eq);
+		vo.setEquipment_no(eq);
+		eService.updateType(vo);
+		
+		return"redirect:/maintenance/equipment";
+	}
 	
+	//장비신청 상세페이지 업데이트 - 반려
+	@ResponseBody
+	@PostMapping(value = "/detail2")
+	public String updateReject(@RequestParam("equipment_no") int eno,EquipManageVO vo, @RequestParam("equipment_reject") String ereject) throws Exception{
+		logger.info("#### eno ##### :"+ eno);
+		logger.info("@@@ erejet @@@ :"+ ereject);
+		vo.setEquipment_no(eno);
+		vo.setEquipment_reject(ereject);
+		eService.updateReject(vo);
+		
+		
+		return"redirect:/maintenance/reject";
+	}
 	
 	
 	

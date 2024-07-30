@@ -52,6 +52,35 @@ public class EquipManageDAOImpl implements EquipManageDAO {
 		sqlSession.insert(NAMESPACE+"fileAdd", vo);
 	}
 	
+	//승인 후 - 장비유형 업데이트
+	@Override
+	public void updateType(EquipManageVO vo) throws Exception {
+		sqlSession.update(NAMESPACE+"updateType", vo);
+		
+	}
+	
+	//장비내역리스트
+	@Override
+	public List<EquipManageVO> listEquip() throws Exception {
+		return sqlSession.selectList(NAMESPACE+"listEquip");
+	}
+	
+	//반려 후 - 장비유형 업데이트
+	@Override
+	public void updateReject(EquipManageVO vo) throws Exception {
+		sqlSession.update(NAMESPACE+"updateReject", vo);
+	}
+	
+	//반려내역리스트
+	@Override
+	public List<EquipManageVO> rejectList() throws Exception {
+		
+		return sqlSession.selectList(NAMESPACE+"rejectList");
+	}
+	
+	
+	
+	
 	
 	
 	

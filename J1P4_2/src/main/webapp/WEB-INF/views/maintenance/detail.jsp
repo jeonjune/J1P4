@@ -93,17 +93,139 @@
 
 					</div>
 
-					<button type="button" class="btn btn-primary" id="submitButt">승인</button>
-					<button type="button" class="btn btn-primary" id="submitButt">반려</button>
+					<button type="button" class="btn btn-primary" id="submitBut">승인</button>
+			         <button type="button" class="btn btn-primary" data-bs-toggle="modal" onclick="showReject()"
+			         data-bs-target="#submitButt">반려</button>
 
 
 		</div>
 </form>
 
+	
+	<!-- 반려사유 입력 모달창 시작 -->
+   <div class="modal fade" id="rejectModal" tabindex="-1"
+      aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+         <div class="modal-content">
 
+            <!-- 모달창 헤더 -->
+            <div class="modal-header">
+               <h5 class="modal-title" id="exampleModalLabel">반려사유</h5>
+               <button type="button" class="btn-close" data-bs-dismiss="modal"
+                  aria-label="Close"></button>
+            </div>
+
+            <!-- 모달창 바디(본문) -->
+            <div class="modal-body">
+			   
+			   <h5>담당자</h5> <!-- 로그인한 팀장 이름 담기 -->
+			   	<div class="form-group">
+					<input type="text" name="name"
+					class="form-control" value="${resultVO.name}" readonly="readonly"/>
+				</div>
+               
+               <h5>반려사유</h5>
+               <div class="content">
+                  <div class="form-group">
+						<textarea id="comment2" name="equipment_reject" rows="5" cols="55"
+							placeholder="입력하세요."></textarea>
+					</div>
+                 
+               </div>
+             
+               <hr>
+<!--                <h5>연도별</h5> -->
+<!--                <input type="month" id="monthInput">년 -->
+
+            </div>
+
+            <!-- 모달창 푸터 -->
+            <div class="modal-footer">
+               <button type="button" class="btn btn-secondary"
+                  data-bs-dismiss="modal">취소</button>
+               <button type="button" class="btn btn-primary filterBtn"
+                  data-bs-dismiss="modal" id="rejectBtt">확인</button>
+            </div>
+
+         </div>
+      </div>
+   </div>
+   <!-- 모달창 끝 -->
+	
+
+	
+	
+	
+	
+	
 
 </div>
 
+<script>
+$(document).ready(function() {
+    $('#submitBut').on('click', function() {
+        var formData = new FormData($('#registForm')[0]);
+        
+        // CSRF 토큰 값을 메타 태그에서 가져오기
+        var token = $("meta[name='_csrf']").attr("content");
+        var header = $("meta[name='_csrf_header']").attr("content");
+        $.ajax({
+            url: '/maintenance/detail',
+            type: 'POST',
+            data: {"equipment_no":"${resultVO.equipment_no }"},
+            beforeSend: function(xhr) { //header.jsp에 있는 토큰때문에 써주는 것
+                xhr.setRequestHeader(header, token);
+            },
+            success: function(response) {
+                alert("승인완료!");
+                window.location.href = '/maintenance/equipment';
+            },
+            error: function(xhr, status, error) {
+                alert('등록실패 ' + error);
+            }
+        });
+    });
+});
+    
+    
+    
+function showReject() {
+    //document.getElementById('rejectProjNo').value = proj_no;
+    $('#rejectModal').modal('show');
+} 
+ 
+ 
+ //반려내역
+$(document).ready(function() {
+    $('#rejectBtt').on('click', function() {
+        var formData = new FormData($('#registForm')[0]);
+        var content = $('#comment2').val();
+        
+        // CSRF 토큰 값을 메타 태그에서 가져오기
+        var token = $("meta[name='_csrf']").attr("content");
+        var header = $("meta[name='_csrf_header']").attr("content");
+        $.ajax({
+            url: '/maintenance/detail2',
+            type: 'POST',
+            data: {"equipment_no":"${resultVO.equipment_no }", equipment_reject :content},
+            beforeSend: function(xhr) { //header.jsp에 있는 토큰때문에 써주는 것
+                xhr.setRequestHeader(header, token);
+            },
+            success: function(response) {
+                alert("반려되었습니다.");
+                window.location.href = '/maintenance/reject';
+            },
+            error: function(xhr, status, error) {
+                alert('등록실패 ' + error);
+            }
+        });
+    });
+});
+
+    
+    
+    
+</script>
 
 
 

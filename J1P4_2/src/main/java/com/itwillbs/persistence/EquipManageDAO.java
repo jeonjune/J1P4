@@ -20,4 +20,16 @@ public interface EquipManageDAO {
 	//파일등록
 	public void fileAdd(fileVO vo) throws Exception;
 	
+	//승인 후 - 장비유형 업데이트
+	public void updateType(EquipManageVO vo) throws Exception;
+	
+	//장비내역리스트
+	public List<EquipManageVO> listEquip() throws Exception;
+	
+	//반려 후 - 장비유형 업데이트
+	public void updateReject(EquipManageVO vo) throws Exception;
+	
+	//반려내역리스트
+	public List<EquipManageVO> rejectList() throws Exception;
+	
 }
