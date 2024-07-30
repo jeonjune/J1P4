@@ -161,8 +161,8 @@
     </div>
 
 <script>
-        const csrfParameter = "${_csrf.parameterName}";
-        const csrfToken = "${_csrf.token}";
+	const csrfToken = $('meta[name="_csrf"]').attr('content');
+	const csrfHeader = $('meta[name="_csrf_header"]').attr('content');
         
     $(document).ready(function() {
         $('#classForm').on('submit', function(event) {
@@ -243,9 +243,12 @@
             $.ajax({
                 url: '${pageContext.request.contextPath}/classes/delete',
                 method: 'POST',
-                data: {
-                    classNos: selected,
-                    [csrfParameter]: csrfToken
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    classNos: selected
+                }),
+                beforeSend: function(xhr) {
+                    xhr.setRequestHeader(csrfHeader, csrfToken);
                 },
                 success: function(response) {
                     location.reload();
@@ -257,7 +260,6 @@
         }
     }
 
-    
 </script>
 </body>
 </html>

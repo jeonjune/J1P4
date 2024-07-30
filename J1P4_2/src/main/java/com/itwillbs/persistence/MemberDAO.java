@@ -27,5 +27,5 @@ public interface MemberDAO {
 	// 회원 삭제
 	public void memDelete(Map<String, List> mem_no) throws Exception;
 	
-	
+
 }

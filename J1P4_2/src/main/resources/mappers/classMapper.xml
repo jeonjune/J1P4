@@ -67,6 +67,6 @@
     </update>
 
     <delete id="deleteClass" parameterType="int">
-        DELETE FROM class WHERE class_no = #{classNo}
-    </delete>
+    	DELETE FROM class WHERE class_no = #{classNo}
+	</delete>
 </mapper>

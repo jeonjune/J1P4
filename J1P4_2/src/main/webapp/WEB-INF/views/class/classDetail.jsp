@@ -96,35 +96,39 @@
                                     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#scheduleModal" onclick="initScheduleForm()">
                                         Add Schedule
                                     </button>
+                                    <button type="button" class="btn btn-primary mt-3" onclick="openAddStudentModal()">Register Student for Selected Schedules</button>
+                                    
                                     <table class="table table-bordered mt-3">
-                                        <thead>
-                                            <tr>
-                                                <th>Start Date</th>
-                                                <th>End Date</th>
-                                                <th>Start Time</th>
-                                                <th>End Time</th>
-                                                <th>Recurrence Pattern</th>
-                                                <th>Recurrence Days</th>
-                                                <th>Actions</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody id="scheduleTableBody">
-                                            <c:forEach var="schedule" items="${schedules}">
-                                                <tr>
-                                                    <td>${schedule.startDate}</td>
-                                                    <td>${schedule.endDate}</td>
-                                                    <td>${schedule.startTimeCode}</td>
-                                                    <td>${schedule.endTimeCode}</td>
-                                                    <td>${schedule.recurrencePattern}</td>
-                                                    <td>${schedule.recurrenceDays}</td>
-                                                    <td>
-                                                        <button class="btn btn-warning" onclick="editSchedule(${schedule.scheduleId})">Edit</button>
-                                                        <button class="btn btn-danger" onclick="deleteSchedule(${schedule.scheduleId})">Delete</button>
-                                                    </td>
-                                                </tr>
-                                            </c:forEach>
-                                        </tbody>
-                                    </table>
+									    <thead>
+									        <tr>
+									            <th>Select</th>
+									            <th>Start Date</th>
+									            <th>End Date</th>
+									            <th>Start Time</th>
+									            <th>End Time</th>
+									            <th>Recurrence Pattern</th>
+									            <th>Recurrence Days</th>
+									            <th>Actions</th>
+									        </tr>
+									    </thead>
+									    <tbody id="scheduleTableBody">
+									        <c:forEach var="schedule" items="${schedules}">
+									            <tr>
+									                <td><input type="checkbox" name="scheduleCheckbox" value="${schedule.scheduleId}"></td>
+									                <td>${schedule.startDate}</td>
+									                <td>${schedule.endDate}</td>
+									                <td>${schedule.startTimeCode}</td>
+									                <td>${schedule.endTimeCode}</td>
+									                <td>${schedule.recurrencePattern}</td>
+									                <td>${schedule.recurrenceDays}</td>
+									                <td>
+									                    <button class="btn btn-warning" onclick="editSchedule(${schedule.scheduleId})">Edit</button>
+									                    <button class="btn btn-danger" onclick="deleteSchedule(${schedule.scheduleId})">Delete</button>
+									                </td>
+									            </tr>
+									        </c:forEach>
+									    </tbody>
+									</table>
                                 </div>
                             </div>
                         </div>
@@ -217,12 +221,46 @@
                 </div>
             </div>
         </div>
+        
+		<!-- Add Student Modal -->
+		<div class="modal fade" id="addStudentModal" tabindex="-1" aria-labelledby="addStudentModalLabel" aria-hidden="true">
+		    <div class="modal-dialog modal-lg">
+		        <div class="modal-content">
+		            <div class="modal-header">
+		                <h5 class="modal-title" id="addStudentModalLabel">Register Student for Selected Schedules</h5>
+		                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+		            </div>
+		            <div class="modal-body">
+		                <div class="mb-3">
+		                    <label for="studentSearch" class="form-label">Search Student by Name or Phone:</label>
+		                    <input type="text" class="form-control" id="studentSearch" placeholder="Enter student name or phone">
+		                </div>
+		                <table class="table table-bordered">
+		                    <thead>
+		                        <tr>
+		                            <th>Student No</th>
+		                            <th>Name</th>
+		                            <th>Phone</th>
+		                            <th>Email</th>
+		                            <th>Select</th>
+		                        </tr>
+		                    </thead>
+		                    <tbody id="studentTableBody">
+		                        <!-- 학생 검색 시 동적으로 생성된 학생 목록을 표시하기 위함.(서버에서 데이터를 받아 이곳에 삽입) -->
+		                    </tbody>
+		                </table>
+		            </div>
+		        </div>
+		    </div>
+		</div>
+
+
     </div>
 
 <script>
-    const csrfParameter = "${_csrf.parameterName}";
-    const csrfToken = "${_csrf.token}";
-
+	const csrfToken = $('meta[name="_csrf"]').attr('content');
+	const csrfHeader = $('meta[name="_csrf_header"]').attr('content');
+	
     $(document).ready(function() {
         $('#classForm').on('submit', function(event) {
             event.preventDefault();
@@ -230,6 +268,9 @@
                 url: '${pageContext.request.contextPath}/classes/save',
                 method: 'POST',
                 data: $(this).serialize() + '&' + csrfParameter + '=' + csrfToken,
+                beforeSend: function(xhr) {
+                    xhr.setRequestHeader(csrfHeader, csrfToken);
+                },
                 success: function(response) {
                     location.reload();
                 },
@@ -246,6 +287,9 @@
                 url: form.attr('action'),
                 method: 'POST',
                 data: form.serialize() + '&' + csrfParameter + '=' + csrfToken,
+                beforeSend: function(xhr) {
+                    xhr.setRequestHeader(csrfHeader, csrfToken);
+                },
                 success: function(response) {
                     $('#scheduleModal').modal('hide');
                     location.reload();
@@ -263,6 +307,9 @@
                     url: '${pageContext.request.contextPath}/instructors/search',
                     method: 'GET',
                     data: { query: query },
+                    beforeSend: function(xhr) {
+                        xhr.setRequestHeader(csrfHeader, csrfToken);
+                    },
                     success: function(data) {
                         const instructorTableBody = $('#instructorTableBody');
                         instructorTableBody.empty();
@@ -281,6 +328,73 @@
                     }
                 });
             }
+        });
+
+        $('#studentSearch').on('input', function() {
+            const query = $(this).val();
+            if (query.length > 0) {
+                $.ajax({
+                    url: '${pageContext.request.contextPath}/students/search',
+                    method: 'GET',
+                    data: { query: query },
+                    beforeSend: function(xhr) {
+                        xhr.setRequestHeader(csrfHeader, csrfToken);
+                    },
+                    success: function(data) {
+                        const studentTableBody = $('#studentTableBody');
+                        studentTableBody.empty();
+                        data.forEach(function(student) {
+                            const row = '<tr>' +
+                                        '<td>' + student.mem_no + '</td>' +
+                                        '<td>' + student.mem_name + '</td>' +
+                                        '<td>' + student.mem_phone + '</td>' +
+                                        '<td><button class="btn btn-primary" onclick="selectStudent(\'' + student.mem_no + '\', \'' + student.mem_name + '\')">Select</button></td>' +
+                                     '</tr>';
+                            studentTableBody.append(row);
+                        });
+                    },
+                    error: function(error) {
+                        alert('Error occurred while searching for students.');
+                    }
+                });
+            }
+        });
+
+        $('#studentForm').on('submit', function(event) {
+            event.preventDefault();
+            const selectedSchedules = [];
+            $('input[name="scheduleCheckbox"]:checked').each(function() {
+                selectedSchedules.push($(this).val());
+            });
+
+            if (selectedSchedules.length === 0) {
+                alert('Please select at least one schedule.');
+                return;
+            }
+
+            const studentData = {
+                name: $('#studentName').val(),
+                email: $('#studentEmail').val(),
+                schedules: selectedSchedules
+            };
+
+            $.ajax({
+                url: '${pageContext.request.contextPath}/students/register',
+                method: 'POST',
+                data: JSON.stringify(studentData),
+                contentType: 'application/json',
+                beforeSend: function(xhr) {
+                    xhr.setRequestHeader(csrfHeader, csrfToken);
+                },
+                success: function(response) {
+                    $('#addStudentModal').modal('hide');
+                    alert('Student registered successfully.');
+                    location.reload();
+                },
+                error: function(error) {
+                    alert('Error occurred while registering student.');
+                }
+            });
         });
     });
 
@@ -317,14 +431,6 @@
         });
     }
 
-
-
-
-
-
-
-
-
     function deleteSchedule(scheduleId) {
         if (confirm('일정을 삭제하시겠습니까?')) {
             $.ajax({
@@ -332,6 +438,9 @@
                 method: 'POST',
                 data: {
                     [csrfParameter]: csrfToken
+                },
+                beforeSend: function(xhr) {
+                    xhr.setRequestHeader(csrfHeader, csrfToken);
                 },
                 success: function(response) {
                     location.reload();
@@ -348,7 +457,61 @@
         $('#instructorName').val(instructorName);
         $('#instructorModal').modal('hide');
     }
+    
+    function openAddStudentModal() {
+        const selectedSchedules = [];
+        $('input[name="scheduleCheckbox"]:checked').each(function() {
+            selectedSchedules.push($(this).val());
+        });
+
+        if (selectedSchedules.length === 0) {
+            alert('Please select at least one schedule.');
+            return;
+        }
+
+        $('#addStudentModal').modal('show');
+    }
+
+    function selectStudent(mem_no, mem_name) {
+        const selectedSchedules = [];
+        $('input[name="scheduleCheckbox"]:checked').each(function() {
+            selectedSchedules.push($(this).val());
+        });
+
+        if (selectedSchedules.length === 0) {
+            alert('Please select at least one schedule.');
+            return;
+        }
+
+        const registrationData = {
+            mem_no: mem_no,
+            schedule_no: selectedSchedules[0]
+        };
+
+        $.ajax({
+            url: '${pageContext.request.contextPath}/students/register',
+            method: 'POST',
+            data: JSON.stringify(registrationData),
+            contentType: 'application/json',
+            beforeSend: function(xhr) {
+                xhr.setRequestHeader(csrfHeader, csrfToken);
+            },
+            success: function(response) {
+                $('#addStudentModal').modal('hide');
+                alert('Student registered successfully.');
+                location.reload();
+            },
+            error: function(error) {
+                alert('Error occurred while registering student.');
+            }
+        });
+    }
 </script>
+
+
+
+
+
 </body>
 </html>
 <%@ include file="/WEB-INF/views/include/footer.jsp" %>
