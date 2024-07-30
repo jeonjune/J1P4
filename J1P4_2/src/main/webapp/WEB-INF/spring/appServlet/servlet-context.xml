@@ -34,6 +34,16 @@
 		<websocket:sockjs websocket-enabled="true"/>
 	</websocket:handlers>
 	
+	<!-- 파일업로드 설정 -->
+	<beans:bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+			
+		<beans:property name="maxUploadSize" value="52428800"/> <!-- 업로드 할때 최대파일 설정 50kb -->
+		<beans:property name="maxInMemorySize" value="1000000"/> <!-- 임시 메모리 공간 할당 -->
+		<beans:property name="defaultEncoding" value="UTF-8"/> 
+		
+	</beans:bean>
+	
+	
 	<context:component-scan base-package="com.itwillbs.web" />
 	
 	
