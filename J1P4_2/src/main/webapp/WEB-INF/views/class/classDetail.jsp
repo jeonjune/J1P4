@@ -297,12 +297,17 @@
             $('#scheduleId').val(data.scheduleId);
             $('#scheduleClassNo').val(data.classNo);
             
-            // 서버에서 반환된 날짜 형식을 'YYYY-MM-DD'로 변환
-            const startDate = new Date(data.startDate).toISOString().split('T')[0];
-            const endDate = new Date(data.endDate).toISOString().split('T')[0];
+            // 서버에서 반환된 날짜에 하루를 더함
+            const startDate = new Date(data.startDate);
+            startDate.setDate(startDate.getDate() + 1);
+            const formattedStartDate = startDate.toISOString().split('T')[0];
 
-            $('#startDate').val(startDate);
-            $('#endDate').val(endDate);
+            const endDate = new Date(data.endDate);
+            endDate.setDate(endDate.getDate() + 1);
+            const formattedEndDate = endDate.toISOString().split('T')[0];
+
+            $('#startDate').val(formattedStartDate);
+            $('#endDate').val(formattedEndDate);
             $('#startTime').val(data.startTimeCode);
             $('#endTime').val(data.endTimeCode);
             $('#recurrencePattern').val(data.recurrencePattern);
@@ -311,6 +316,13 @@
             $('#scheduleModal').modal('show');
         });
     }
+
+
+
+
+
+
+
 
 
     function deleteSchedule(scheduleId) {
