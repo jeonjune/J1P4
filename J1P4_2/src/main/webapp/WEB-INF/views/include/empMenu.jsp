@@ -5,10 +5,10 @@
 	<!--     Left navbar links -->
 	<ul class="navbar-nav" style="margin-left: 150px;">
 		<li class="nav-item"><a class="nav-link"
-			href="#"
+			href="/employee/empList"
 			role="button">직원리스트</a></li>
 		<li class="nav-item"><a class="nav-link"
-			href="#"
+			href="/employee/vacation"
 			role="button">휴가관리</a></li>
 	</ul>
 	

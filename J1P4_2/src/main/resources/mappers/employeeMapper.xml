@@ -119,6 +119,8 @@
 		update employee set retire_status=1, retire_date=now()
 		where user_id = #{user_id}
 	</update>
+	
+	
 	 <!-- 회원정보와 인증정보를 한번에 조회(Join) -->
 <!-- 	 <select id="readMemberAuth" resultMap="memberMap"> -->
 <!-- 	 	select  -->
