@@ -41,10 +41,11 @@ public class StudentController {
 
     @PostMapping("/register")
     @ResponseBody
-    public String registerStudent(@RequestBody RegistrationVO registration) {
-        registration.setRegistration_date(new java.sql.Date(System.currentTimeMillis()));
-        registrationService.registerStudent(registration);
+    public String registerStudent(@RequestBody List<RegistrationVO> registrations) {
+        for (RegistrationVO registration : registrations) {
+            registration.setRegistration_date(new java.sql.Date(System.currentTimeMillis()));
+            registrationService.registerStudent(registration);
+        }
         return "Success";
     }
-
 }

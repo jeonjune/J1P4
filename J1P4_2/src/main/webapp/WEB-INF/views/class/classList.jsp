@@ -38,28 +38,28 @@
                         <thead>
                             <tr>
                                 <th><input type="checkbox" id="selectAll" onclick="toggleSelectAll()"></th>
-                                <th>No</th>
-                                <th>Name</th>
-                                <th>Description</th>
-                                <th>Field</th>
-                                <th>Division</th>
-                                <th>Level</th>
-                                <th>Max Capacity</th>
-                                <th>Instructor</th>
+					            <th>No</th>
+					            <th>Name</th>
+					            <th>Description</th>
+					            <th>Field</th>
+					            <th>Division</th>
+					            <th>Level</th>
+					            <th>Min / Max (Capacity)</th>
+					            <th>Instructor</th>
                             </tr>
                         </thead>
                         <tbody>
                             <c:forEach var="classItem" items="${classList}">
                                 <tr>
                                     <td><input type="checkbox" class="selectCheckbox" value="${classItem.classNo}"></td>
-                                    <td>${classItem.classNo}</td>
-                                    <td><a href="${pageContext.request.contextPath}/classes/detail/${classItem.classNo}">${classItem.className}</a></td>
-                                    <td>${classItem.description}</td>
-                                    <td>${classItem.fieldCode}</td>
-                                    <td>${classItem.divisionCode}</td>
-                                    <td>${classItem.levelCode}</td>
-                                    <td>${classItem.maxCapacity}</td>
-                                    <td>${classItem.instructorName}</td>
+					                <td>${classItem.classNo}</td>
+					                <td><a href="${pageContext.request.contextPath}/classes/detail/${classItem.classNo}">${classItem.className}</a></td>
+					                <td>${classItem.description}</td>
+					                <td>${classItem.fieldCode}</td>
+					                <td>${classItem.divisionCode}</td>
+					                <td>${classItem.levelCode}</td>
+					                <td>${classItem.minCapacity} / ${classItem.maxCapacity}</td>
+					                <td>${classItem.instructorName}</td>
                                 </tr>
                             </c:forEach>
                         </tbody>
@@ -80,50 +80,55 @@
                         <h5 class="modal-title" id="classModalLabel">Add/Edit Class</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <div class="modal-body">
-                        <form:form id="classForm" method="post" action="${pageContext.request.contextPath}/classes/save" modelAttribute="classVO">
-                            <form:hidden path="classNo" />
-                            <div class="mb-3">
-                                <label for="className" class="form-label">Class Name:</label>
-                                <form:input path="className" class="form-control" required="required" id="className"/>
-                            </div>
-                            <div class="mb-3">
-                                <label for="description" class="form-label">Description:</label>
-                                <form:textarea path="description" class="form-control" id="description"/>
-                            </div>
-                            <div class="mb-3">
-                                <label for="fieldCode" class="form-label">Field:</label>
-                                <form:select path="fieldCode" class="form-control" id="fieldCode">
-                                    <form:options items="${fields}" itemValue="codeValue" itemLabel="codeValueName"/>
-                                </form:select>
-                            </div>
-                            <div class="mb-3">
-                                <label for="divisionCode" class="form-label">Division:</label>
-                                <form:select path="divisionCode" class="form-control" id="divisionCode">
-                                    <form:options items="${divisions}" itemValue="codeValue" itemLabel="codeValueName"/>
-                                </form:select>
-                            </div>
-                            <div class="mb-3">
-                                <label for="levelCode" class="form-label">Level:</label>
-                                <form:select path="levelCode" class="form-control" id="levelCode">
-                                    <form:options items="${levels}" itemValue="codeValue" itemLabel="codeValueName"/>
-                                </form:select>
-                            </div>
-                            <div class="mb-3">
-                                <label for="maxCapacity" class="form-label">Max Capacity:</label>
-                                <form:input path="maxCapacity" class="form-control" type="number" required="required" id="maxCapacity"/>
-                            </div>
-                            <div class="mb-3">
-                                <label for="instructorName" class="form-label">Instructor Name:</label>
-                                <div class="input-group">
-                                    <form:input path="instructorName" class="form-control" id="instructorName" readonly="readonly"/>
-                                    <form:hidden path="instructorNo" id="instructorNo"/>
-                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#instructorModal">Find Instructor</button>
-                                </div>
-                            </div>
-                            <button type="submit" class="btn btn-primary">Save</button>
-                        </form:form>
-                    </div>
+                    <!-- classList.jsp의 Class Modal에 추가 -->
+					<div class="modal-body">
+					    <form:form id="classForm" method="post" action="${pageContext.request.contextPath}/classes/save" modelAttribute="classVO">
+					        <form:hidden path="classNo" />
+					        <div class="mb-3">
+					            <label for="className" class="form-label">Class Name:</label>
+					            <form:input path="className" class="form-control" required="required" id="className"/>
+					        </div>
+					        <div class="mb-3">
+					            <label for="description" class="form-label">Description:</label>
+					            <form:textarea path="description" class="form-control" id="description"/>
+					        </div>
+					        <div class="mb-3">
+					            <label for="fieldCode" class="form-label">Field:</label>
+					            <form:select path="fieldCode" class="form-control" id="fieldCode">
+					                <form:options items="${fields}" itemValue="codeValue" itemLabel="codeValueName"/>
+					            </form:select>
+					        </div>
+					        <div class="mb-3">
+					            <label for="divisionCode" class="form-label">Division:</label>
+					            <form:select path="divisionCode" class="form-control" id="divisionCode">
+					                <form:options items="${divisions}" itemValue="codeValue" itemLabel="codeValueName"/>
+					            </form:select>
+					        </div>
+					        <div class="mb-3">
+					            <label for="levelCode" class="form-label">Level:</label>
+					            <form:select path="levelCode" class="form-control" id="levelCode">
+					                <form:options items="${levels}" itemValue="codeValue" itemLabel="codeValueName"/>
+					            </form:select>
+					        </div>
+					        <div class="mb-3">
+					            <label for="minCapacity" class="form-label">Min Capacity:</label>
+					            <form:input path="minCapacity" class="form-control" type="number" required="required" id="minCapacity"/>
+					        </div>
+					        <div class="mb-3">
+					            <label for="maxCapacity" class="form-label">Max Capacity:</label>
+					            <form:input path="maxCapacity" class="form-control" type="number" required="required" id="maxCapacity"/>
+					        </div>
+					        <div class="mb-3">
+					            <label for="instructorName" class="form-label">Instructor Name:</label>
+					            <div class="input-group">
+					                <form:input path="instructorName" class="form-control" id="instructorName" readonly="readonly"/>
+					                <form:hidden path="instructorNo" id="instructorNo"/>
+					                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#instructorModal">Find Instructor</button>
+					            </div>
+					        </div>
+					        <button type="submit" class="btn btn-primary">Save</button>
+					    </form:form>
+					</div>
                 </div>
             </div>
         </div>
@@ -161,26 +166,27 @@
     </div>
 
 <script>
-	const csrfToken = $('meta[name="_csrf"]').attr('content');
-	const csrfHeader = $('meta[name="_csrf_header"]').attr('content');
-        
+    const csrfToken = $('meta[name="_csrf"]').attr('content');
+    const csrfHeader = $('meta[name="_csrf_header"]').attr('content');
+
     $(document).ready(function() {
         $('#classForm').on('submit', function(event) {
             event.preventDefault();
             $.ajax({
                 url: '${pageContext.request.contextPath}/classes/save',
                 method: 'POST',
-                data: $(this).serialize() + '&' + csrfParameter + '=' + csrfToken,
+                data: $(this).serialize(),
+                beforeSend: function(xhr) {
+                    xhr.setRequestHeader(csrfHeader, csrfToken);
+                },
                 success: function(response) {
-                    $('#classModal').modal('hide');
                     location.reload();
                 },
                 error: function(error) {
-                    alert('강의를 등록하는 중 오류가 발생하였습니다.');
+                    alert('Error occurred while saving the class.');
                 }
             });
         });
-
 
         $('#instructorSearch').on('input', function() {
             const query = $(this).val();
@@ -189,6 +195,9 @@
                     url: '${pageContext.request.contextPath}/instructors/search',
                     method: 'GET',
                     data: { query: query },
+                    beforeSend: function(xhr) {
+                        xhr.setRequestHeader(csrfHeader, csrfToken);
+                    },
                     success: function(data) {
                         const instructorTableBody = $('#instructorTableBody');
                         instructorTableBody.empty();
@@ -203,24 +212,101 @@
                         });
                     },
                     error: function(error) {
-                        alert('강사를 검색하는 중 오류가 발생하였습니다.');
+                        alert('Error occurred while searching for instructors.');
                     }
                 });
             }
         });
+
+        $('#studentSearch').on('input', function() {
+            const query = $(this).val();
+            if (query.length > 0) {
+                $.ajax({
+                    url: '${pageContext.request.contextPath}/students/search',
+                    method: 'GET',
+                    data: { query: query },
+                    beforeSend: function(xhr) {
+                        xhr.setRequestHeader(csrfHeader, csrfToken);
+                    },
+                    success: function(data) {
+                        const studentTableBody = $('#studentTableBody');
+                        studentTableBody.empty();
+                        data.forEach(function(student) {
+                            const row = '<tr>' +
+                                        '<td><input type="checkbox" name="studentCheckbox" value="' + student.mem_no + '"></td>' +
+                                        '<td>' + student.mem_no + '</td>' +
+                                        '<td>' + student.mem_name + '</td>' +
+                                        '<td>' + student.mem_phone + '</td>' +
+                                        '<td>' + student.mem_addr1 + ' ' + student.mem_addr2 + '</td>' +
+                                     '</tr>';
+                            studentTableBody.append(row);
+                        });
+                    },
+                    error: function(error) {
+                        alert('Error occurred while searching for students.');
+                    }
+                });
+            }
+        });
+
+        $('#registerSelectedStudents').on('click', function(event) {
+            event.preventDefault();
+            const selectedSchedules = [];
+            $('input[name="scheduleCheckbox"]:checked').each(function() {
+                selectedSchedules.push($(this).val());
+            });
+
+            if (selectedSchedules.length === 0) {
+                alert('Please select at least one schedule.');
+                return;
+            }
+
+            const selectedStudents = [];
+            $('input[name="studentCheckbox"]:checked').each(function() {
+                selectedStudents.push($(this).val());
+            });
+
+            if (selectedStudents.length === 0) {
+                alert('Please select at least one student.');
+                return;
+            }
+
+            const registrationData = selectedStudents.map(studentNo => ({
+                mem_no: studentNo,
+                schedule_no: selectedSchedules[0] // Assuming registering one schedule at a time
+            }));
+
+            $.ajax({
+                url: '${pageContext.request.contextPath}/students/register',
+                method: 'POST',
+                data: JSON.stringify(registrationData),
+                contentType: 'application/json',
+                beforeSend: function(xhr) {
+                    xhr.setRequestHeader(csrfHeader, csrfToken);
+                },
+                success: function(response) {
+                    $('#addStudentModal').modal('hide');
+                    alert('Student(s) registered successfully.');
+                    location.reload();
+                },
+                error: function(error) {
+                    alert('Error occurred while registering student(s).');
+                }
+            });
+        });
     });
+
+    function openModal() {
+        $('#classForm')[0].reset();
+        $('#classModalLabel').text('Add Class');
+        $('#classNo').val(0); // Set classNo to 0 for new entries
+        $('#classModal').modal('show');
+    }
 
     function toggleSelectAll() {
         const selectAll = $('#selectAll').is(':checked');
         $('.selectCheckbox').prop('checked', selectAll);
     }
-
-    function openModal() {
-        $('#classForm')[0].reset();
-        $('#classModalLabel').text('Add Class');
-        $('#classNo').val(0); // 신규 추가 시 classNo를 0으로 설정
-    }
-
 
     function selectInstructor(instructorNo, instructorName) {
         $('#instructorNo').val(instructorNo);
@@ -235,18 +321,16 @@
         });
 
         if (selected.length === 0) {
-            alert('삭제할 강의를 선택해주세요.');
+            alert('Please select at least one class to delete.');
             return;
         }
 
-        if (confirm('선택한 강의를 삭제하시겠습니까?')) {
+        if (confirm('Are you sure you want to delete the selected classes?')) {
             $.ajax({
                 url: '${pageContext.request.contextPath}/classes/delete',
                 method: 'POST',
                 contentType: 'application/json',
-                data: JSON.stringify({
-                    classNos: selected
-                }),
+                data: JSON.stringify(selected),
                 beforeSend: function(xhr) {
                     xhr.setRequestHeader(csrfHeader, csrfToken);
                 },
@@ -254,13 +338,14 @@
                     location.reload();
                 },
                 error: function(error) {
-                    alert('강의를 삭제하는 중 오류가 발생하였습니다.');
+                    alert('Error occurred while deleting classes.');
                 }
             });
         }
     }
-
 </script>
+
+
 </body>
 </html>
 <%@ include file="/WEB-INF/views/include/footer.jsp" %>

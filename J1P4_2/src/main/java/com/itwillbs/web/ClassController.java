@@ -1,7 +1,6 @@
 package com.itwillbs.web;
 
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -10,7 +9,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -62,13 +60,10 @@ public class ClassController {
         return classService.getClassById(classNo);
     }
 
-    @PostMapping("/delete")
+    @PostMapping("/delete/{id}")
     @ResponseBody
-    public String deleteClasses(@RequestBody Map<String, List<Integer>> classNos) {
-        List<Integer> classNoList = classNos.get("classNos");
-        for (int classNo : classNoList) {
-            classService.deleteClass(classNo);
-        }
+    public String deleteClass(@PathVariable("id") int classNo) {
+        classService.deleteClass(classNo);
         return "redirect:/classes/list";
     }
 

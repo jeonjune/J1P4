@@ -71,6 +71,10 @@
                                             </form:select>
                                         </div>
                                         <div class="mb-3">
+                                            <label for="minCapacity" class="form-label">Min Capacity:</label>
+                                            <form:input path="minCapacity" class="form-control" type="number" required="required" id="minCapacity"/>
+                                        </div>
+                                        <div class="mb-3">
                                             <label for="maxCapacity" class="form-label">Max Capacity:</label>
                                             <form:input path="maxCapacity" class="form-control" type="number" required="required" id="maxCapacity"/>
                                         </div>
@@ -87,51 +91,66 @@
                                 </div>
                             </div>
                         </div>
+                        <!-- classDetail.jsp -->
                         <div class="tab-pane fade" id="nav-schedule" role="tabpanel" aria-labelledby="nav-schedule-tab">
-                            <div class="card">
-                                <div class="card-header">
-                                    <h3 class="card-title">Schedule Information</h3>
-                                </div>
-                                <div class="card-body">
-                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#scheduleModal" onclick="initScheduleForm()">
-                                        Add Schedule
-                                    </button>
-                                    <button type="button" class="btn btn-primary mt-3" onclick="openAddStudentModal()">Register Student for Selected Schedules</button>
-                                    
-                                    <table class="table table-bordered mt-3">
-									    <thead>
-									        <tr>
-									            <th>Select</th>
-									            <th>Start Date</th>
-									            <th>End Date</th>
-									            <th>Start Time</th>
-									            <th>End Time</th>
-									            <th>Recurrence Pattern</th>
-									            <th>Recurrence Days</th>
-									            <th>Actions</th>
-									        </tr>
-									    </thead>
-									    <tbody id="scheduleTableBody">
-									        <c:forEach var="schedule" items="${schedules}">
-									            <tr>
-									                <td><input type="checkbox" name="scheduleCheckbox" value="${schedule.scheduleId}"></td>
-									                <td>${schedule.startDate}</td>
-									                <td>${schedule.endDate}</td>
-									                <td>${schedule.startTimeCode}</td>
-									                <td>${schedule.endTimeCode}</td>
-									                <td>${schedule.recurrencePattern}</td>
-									                <td>${schedule.recurrenceDays}</td>
-									                <td>
-									                    <button class="btn btn-warning" onclick="editSchedule(${schedule.scheduleId})">Edit</button>
-									                    <button class="btn btn-danger" onclick="deleteSchedule(${schedule.scheduleId})">Delete</button>
-									                </td>
-									            </tr>
-									        </c:forEach>
-									    </tbody>
-									</table>
-                                </div>
-                            </div>
-                        </div>
+						    <div class="card">
+						        <div class="card-header">
+						            <h3 class="card-title">Schedule Information</h3>
+						        </div>
+						        <div class="card-body">
+						            <button type="button" class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#scheduleModal" onclick="initScheduleForm()">
+						                Add Schedule
+						            </button>
+						            <button type="button" class="btn btn-primary mt-3" onclick="openAddStudentModal()">Register Student</button>
+						            <button type="button" class="btn btn-primary mt-3" onclick="editSelectedSchedules()">Edit</button>
+						            <button type="button" class="btn btn-danger mt-3" onclick="deleteSelectedSchedules()">Delete</button>
+						            
+						            <table class="table table-bordered mt-3">
+						                <thead>
+						                    <tr>
+						                        <th>Select</th>
+						                        <th>Start Date</th>
+						                        <th>End Date</th>
+						                        <th>Start Time</th>
+						                        <th>End Time</th>
+						                        <th>Recurrence Pattern</th>
+						                        <th>Recurrence Days</th>
+						                        <th>Current Enrollment</th>
+						                        <th>Status</th>
+						                    </tr>
+						                </thead>
+						                <tbody id="scheduleTableBody">
+						                    <c:forEach var="schedule" items="${schedules}">
+						                        <tr>
+						                            <td><input type="checkbox" name="scheduleCheckbox" value="${schedule.scheduleId}"></td>
+						                            <td>${schedule.startDate}</td>
+						                            <td>${schedule.endDate}</td>
+						                            <td>${schedule.startTimeCode}</td>
+						                            <td>${schedule.endTimeCode}</td>
+						                            <td>${schedule.recurrencePattern}</td>
+						                            <td>${schedule.recurrenceDays}</td>
+						                            <td>${classVO.currentEnrollment}</td>
+						                            <td>
+						                                <c:choose>
+						                                    <c:when test="${classVO.currentEnrollment >= classVO.maxCapacity}">
+						                                        Closed
+						                                    </c:when>
+						                                    <c:when test="${classVO.currentEnrollment < classVO.minCapacity}">
+						                                        Recruitment
+						                                    </c:when>
+						                                    <c:otherwise>
+						                                        Normal
+						                                    </c:otherwise>
+						                                </c:choose>
+						                            </td>
+						                        </tr>
+						                    </c:forEach>
+						                </tbody>
+						            </table>
+						        </div>
+						    </div>
+						</div>
+
                     </div>
                 </div>
             </section>
@@ -222,52 +241,52 @@
             </div>
         </div>
         
-		<!-- Add Student Modal -->
-		<div class="modal fade" id="addStudentModal" tabindex="-1" aria-labelledby="addStudentModalLabel" aria-hidden="true">
-		    <div class="modal-dialog modal-lg">
-		        <div class="modal-content">
-		            <div class="modal-header">
-		                <h5 class="modal-title" id="addStudentModalLabel">Register Student for Selected Schedules</h5>
-		                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-		            </div>
-		            <div class="modal-body">
-		                <div class="mb-3">
-		                    <label for="studentSearch" class="form-label">Search Student by Name or Phone:</label>
-		                    <input type="text" class="form-control" id="studentSearch" placeholder="Enter student name or phone">
-		                </div>
-		                <table class="table table-bordered">
-		                    <thead>
-		                        <tr>
-		                            <th>Student No</th>
-		                            <th>Name</th>
-		                            <th>Phone</th>
-		                            <th>Email</th>
-		                            <th>Select</th>
-		                        </tr>
-		                    </thead>
-		                    <tbody id="studentTableBody">
-		                        <!-- 학생 검색 시 동적으로 생성된 학생 목록을 표시하기 위함.(서버에서 데이터를 받아 이곳에 삽입) -->
-		                    </tbody>
-		                </table>
-		            </div>
-		        </div>
-		    </div>
-		</div>
-
-
+        <!-- Add Student Modal -->
+        <div class="modal fade" id="addStudentModal" tabindex="-1" aria-labelledby="addStudentModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg"> <!-- modal-lg 클래스로 크기 조정 -->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="addStudentModalLabel">Register Students</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="studentSearch" class="form-label">Search Students:</label>
+                            <input type="text" class="form-control" id="studentSearch" placeholder="Enter student name or phone">
+                        </div>
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Select</th>
+                                    <th>Student No</th>
+                                    <th>Name</th>
+                                    <th>Phone</th>
+                                    <th>Address</th>
+                                    <th>Detail Address</th>
+                                </tr>
+                            </thead>
+                            <tbody id="studentTableBody">
+                                <!-- 검색된 학생 목록이 여기에 표시됩니다. -->
+                            </tbody>
+                        </table>
+                        <button type="button" class="btn btn-primary" id="registerStudentsButton">Register</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
 <script>
-	const csrfToken = $('meta[name="_csrf"]').attr('content');
-	const csrfHeader = $('meta[name="_csrf_header"]').attr('content');
-	
+    const csrfToken = $('meta[name="_csrf"]').attr('content');
+    const csrfHeader = $('meta[name="_csrf_header"]').attr('content');
+    
     $(document).ready(function() {
         $('#classForm').on('submit', function(event) {
             event.preventDefault();
             $.ajax({
                 url: '${pageContext.request.contextPath}/classes/save',
                 method: 'POST',
-                data: $(this).serialize() + '&' + csrfParameter + '=' + csrfToken,
+                data: $(this).serialize(),
                 beforeSend: function(xhr) {
                     xhr.setRequestHeader(csrfHeader, csrfToken);
                 },
@@ -275,7 +294,7 @@
                     location.reload();
                 },
                 error: function(error) {
-                    alert('강의를 등록하는 중 오류가 발생하였습니다.');
+                    alert('Error occurred while saving the class.');
                 }
             });
         });
@@ -286,7 +305,7 @@
             $.ajax({
                 url: form.attr('action'),
                 method: 'POST',
-                data: form.serialize() + '&' + csrfParameter + '=' + csrfToken,
+                data: form.serialize(),
                 beforeSend: function(xhr) {
                     xhr.setRequestHeader(csrfHeader, csrfToken);
                 },
@@ -295,7 +314,7 @@
                     location.reload();
                 },
                 error: function(error) {
-                    alert('일정을 저장하는 중 오류가 발생하였습니다.');
+                    alert('Error occurred while saving the schedule.');
                 }
             });
         });
@@ -324,7 +343,7 @@
                         });
                     },
                     error: function(error) {
-                        alert('강사를 검색하는 중 오류가 발생하였습니다.');
+                        alert('Error occurred while searching for instructors.');
                     }
                 });
             }
@@ -345,10 +364,11 @@
                         studentTableBody.empty();
                         data.forEach(function(student) {
                             const row = '<tr>' +
+                                        '<td><input type="checkbox" name="studentCheckbox" value="' + student.mem_no + '"></td>' +
                                         '<td>' + student.mem_no + '</td>' +
                                         '<td>' + student.mem_name + '</td>' +
                                         '<td>' + student.mem_phone + '</td>' +
-                                        '<td><button class="btn btn-primary" onclick="selectStudent(\'' + student.mem_no + '\', \'' + student.mem_name + '\')">Select</button></td>' +
+                                        '<td>' + student.mem_addr1 + ' ' + student.mem_addr2 + '</td>' +
                                      '</tr>';
                             studentTableBody.append(row);
                         });
@@ -360,7 +380,7 @@
             }
         });
 
-        $('#studentForm').on('submit', function(event) {
+        $('#registerStudentsButton').on('click', function(event) {
             event.preventDefault();
             const selectedSchedules = [];
             $('input[name="scheduleCheckbox"]:checked').each(function() {
@@ -372,31 +392,47 @@
                 return;
             }
 
-            const studentData = {
-                name: $('#studentName').val(),
-                email: $('#studentEmail').val(),
-                schedules: selectedSchedules
-            };
+            const selectedStudents = [];
+            $('input[name="studentCheckbox"]:checked').each(function() {
+                selectedStudents.push($(this).val());
+            });
+
+            if (selectedStudents.length === 0) {
+                alert('Please select at least one student.');
+                return;
+            }
+
+            const registrationData = selectedStudents.map(studentNo => ({
+                mem_no: studentNo,
+                schedule_no: selectedSchedules[0] // Assuming registering one schedule at a time
+            }));
 
             $.ajax({
                 url: '${pageContext.request.contextPath}/students/register',
                 method: 'POST',
-                data: JSON.stringify(studentData),
+                data: JSON.stringify(registrationData),
                 contentType: 'application/json',
                 beforeSend: function(xhr) {
                     xhr.setRequestHeader(csrfHeader, csrfToken);
                 },
                 success: function(response) {
                     $('#addStudentModal').modal('hide');
-                    alert('Student registered successfully.');
+                    alert('Student(s) registered successfully.');
                     location.reload();
                 },
                 error: function(error) {
-                    alert('Error occurred while registering student.');
+                    alert('Error occurred while registering student(s).');
                 }
             });
         });
     });
+
+    function openModal() {
+        $('#classForm')[0].reset();
+        $('#classModalLabel').text('Add Class');
+        $('#classNo').val(0); // 신규 추가 시 classNo를 0으로 설정
+        $('#classModal').modal('show');
+    }
 
     function initScheduleForm() {
         $('#scheduleForm')[0].reset();
@@ -432,13 +468,13 @@
     }
 
     function deleteSchedule(scheduleId) {
-        if (confirm('일정을 삭제하시겠습니까?')) {
+        if (confirm('Are you sure you want to delete this schedule?')) {
             $.ajax({
                 url: '${pageContext.request.contextPath}/schedules/delete/' + scheduleId,
                 method: 'POST',
-                data: {
-                    [csrfParameter]: csrfToken
-                },
+                data: JSON.stringify({
+                    [csrfHeader]: csrfToken
+                }),
                 beforeSend: function(xhr) {
                     xhr.setRequestHeader(csrfHeader, csrfToken);
                 },
@@ -446,7 +482,57 @@
                     location.reload();
                 },
                 error: function(error) {
-                    alert('일정을 삭제하는 중 오류가 발생하였습니다.');
+                    alert('Error occurred while deleting schedule.');
+                }
+            });
+        }
+    }
+
+    function editSelectedSchedules() {
+        const selectedSchedules = [];
+        $('input[name="scheduleCheckbox"]:checked').each(function() {
+            selectedSchedules.push($(this).val());
+        });
+
+        if (selectedSchedules.length === 0) {
+            alert('Please select at least one schedule to edit.');
+            return;
+        }
+
+        if (selectedSchedules.length > 1) {
+            alert('Please select only one schedule to edit.');
+            return;
+        }
+
+        editSchedule(selectedSchedules[0]);
+    }
+
+    // Function to delete selected schedules
+    function deleteSelectedSchedules() {
+        const selectedSchedules = [];
+        $('input[name="scheduleCheckbox"]:checked').each(function() {
+            selectedSchedules.push($(this).val());
+        });
+
+        if (selectedSchedules.length === 0) {
+            alert('Please select at least one schedule to delete.');
+            return;
+        }
+
+        if (confirm('Are you sure you want to delete the selected schedules?')) {
+            $.ajax({
+                url: '${pageContext.request.contextPath}/schedules/delete',
+                method: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(selectedSchedules),
+                beforeSend: function(xhr) {
+                    xhr.setRequestHeader(csrfHeader, csrfToken);
+                },
+                success: function(response) {
+                    location.reload();
+                },
+                error: function(error) {
+                    alert('Error occurred while deleting schedules.');
                 }
             });
         }
@@ -471,46 +557,7 @@
 
         $('#addStudentModal').modal('show');
     }
-
-    function selectStudent(mem_no, mem_name) {
-        const selectedSchedules = [];
-        $('input[name="scheduleCheckbox"]:checked').each(function() {
-            selectedSchedules.push($(this).val());
-        });
-
-        if (selectedSchedules.length === 0) {
-            alert('Please select at least one schedule.');
-            return;
-        }
-
-        const registrationData = {
-            mem_no: mem_no,
-            schedule_no: selectedSchedules[0]
-        };
-
-        $.ajax({
-            url: '${pageContext.request.contextPath}/students/register',
-            method: 'POST',
-            data: JSON.stringify(registrationData),
-            contentType: 'application/json',
-            beforeSend: function(xhr) {
-                xhr.setRequestHeader(csrfHeader, csrfToken);
-            },
-            success: function(response) {
-                $('#addStudentModal').modal('hide');
-                alert('Student registered successfully.');
-                location.reload();
-            },
-            error: function(error) {
-                alert('Error occurred while registering student.');
-            }
-        });
-    }
 </script>
-
-
-
-
 
 </body>
 </html>
