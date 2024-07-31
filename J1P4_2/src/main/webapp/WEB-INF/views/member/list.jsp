@@ -227,20 +227,20 @@
 	</div>
 	<!-- 필터 모달창 끝 -->
 
-	<!-- 메시지 모달창 시작 -->
+	<!-- 메시지 전송 모달창 시작 -->
 	<div class="modal fade" id="smsModal" tabindex="-1"
 		aria-labelledby="smsModalLabel" aria-hidden="true">
 		<div class="modal-dialog modal-lg">
 			<div class="modal-content">
 
-				<!-- 메시지 모달창 헤더 -->
+				<!-- 메시지 전송 모달창 헤더 -->
 				<div class="modal-header">
 					<h5 class="modal-title" id="smsModalLabel">메시지 전송</h5>
 					<button type="button" class="btn-close" data-bs-dismiss="modal"
 						aria-label="Close"></button>
 				</div>
 
-				<!-- 메시지 모달창 바디(본문) -->
+				<!-- 메시지 전송 모달창 바디(본문) -->
 				<div class="modal-body">
 					
 					<div class="accordion-item">
@@ -273,7 +273,7 @@
 
 				</div>
 
-				<!-- 메시지 모달창 푸터 -->
+				<!-- 메시지 전송 모달창 푸터 -->
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary"
 						data-bs-dismiss="modal">취소</button>
@@ -284,12 +284,12 @@
 			</div>
 		</div>
 	</div>
-	<!-- 메시지 모달창 끝 -->
+	<!-- 메시지 전송 모달창 끝 -->
 
 	<!-- 회원 리스트 출력 -->
 
 		<table id="example1" class="table table-bordered table-hover"
-			style="background: #fff;" aria-describedby="example1_info">
+			style="background: #fff; height: 100px;" aria-describedby="example1_info">
 			<thead>
 				<tr>
 					<th class="sorting"><input type="checkbox" class="chkGrp"
@@ -335,6 +335,12 @@
 		<button type="button" class="btn btn-danger smsBtn" data-bs-toggle="modal"
 			data-bs-target="#smsModal">
 			<i class="fas fa-envelope fa-fw" style="color: #fff"></i> 메시지 발송
+		</button>
+		
+		<!-- 메시지 조회 버튼 -->
+		<button type="button" class="btn btn-danger smsChkBtn" data-bs-toggle="modal"
+			data-bs-target="#smsChkModal">
+			<i class="fas fa-envelope fa-fw" style="color: #fff"></i> 메시지 조회
 		</button>
 		
 		<!-- 회원 삭제 버튼 -->
@@ -715,7 +721,8 @@
 			$('input[name="mem_no"]:checked').each(function() {
 				delete_mems.push(this.value);
 			});
-
+			
+			if (confirm("회원 삭제하시겠습니까?")) {
 			$.ajax({
 				url : '/member/memDelete',
 				method : 'POST',
@@ -734,6 +741,7 @@
 					alert("오류 발생");
 				}
 			});
+			}
 
 		});
 	});
