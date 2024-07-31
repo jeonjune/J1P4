@@ -32,6 +32,8 @@ public interface MemberDAO {
 	public List<MemberVO> memPhone(Map<String, List> mem_no) throws Exception;
 	
 	// 메시지 조회
-	public List<RecipientVO> selectSMS() throws Exception;
+	public List<RecipientVO> selectSMS(Criteria cri) throws Exception;
+	
+	public int getTotalSMS() throws Exception;
 
 }

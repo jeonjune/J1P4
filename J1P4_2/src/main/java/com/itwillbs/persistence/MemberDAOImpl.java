@@ -66,8 +66,13 @@ public class MemberDAOImpl implements MemberDAO {
 	}
 
 	@Override
-	public List<RecipientVO> selectSMS() throws Exception {
-		return sqlSession.selectList(NAMESPACE+"selectSMS");
+	public List<RecipientVO> selectSMS(Criteria cri) throws Exception {
+		return sqlSession.selectList(NAMESPACE+"selectSMS",cri);
+	}
+
+	@Override
+	public int getTotalSMS() throws Exception {
+		return sqlSession.selectOne(NAMESPACE+"totalSMS");
 	}
 	
 	

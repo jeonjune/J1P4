@@ -402,6 +402,12 @@
                 </a>
               </li>
               <li class="nav-item">
+                <a href="/member/message" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>디지털 마케팅</p>
+                </a>
+              </li>
+              <li class="nav-item">
                 <a href="/analysis/totalMemAnalysis" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>분석</p>

@@ -63,11 +63,15 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
-	public List<RecipientVO> selectSMS() throws Exception {
-		return mDao.selectSMS();
+	public List<RecipientVO> selectSMS(Criteria cri) throws Exception {
+		return mDao.selectSMS(cri);
 	}
 
-	
+	@Override
+	public int getTotalSMS() throws Exception {
+		return mDao.getTotalSMS();
+	}
+
 	
 
 	
