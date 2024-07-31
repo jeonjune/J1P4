@@ -770,6 +770,7 @@
 				success : function(data) {
 					var selectedPhones = [];
 					$.each(data, function(index, member) {
+						
 						$('#smsReceiver').append("<div class='memPhone"+index+"' style='margin-bottom:5px;'>"+member.mem_name+
 						"("+member.formatted_mem_phone+")<button class='deletePhone"+index+" btn-close btn-xs'></button></div>");
 						selectedPhones.push(member.mem_phone);
