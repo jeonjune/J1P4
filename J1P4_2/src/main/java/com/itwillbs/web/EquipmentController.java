@@ -235,8 +235,45 @@ public class EquipmentController {
 	}
 	
 	
+	//장비내역 상세페이지 - 여기서 추가구매/수리/폐기 수정 후 신청내역으로 이동
+		//http://localhost:8088/maintenance/equipdetail
+		@GetMapping(value = "/equipdetail")
+		public void equipDetailGET(Model model, @RequestParam("equipment_no") int eno) throws Exception {
+			//전달정보 저장 
+			logger.info("####eno##### :"+ eno);
+			
+			//DAO 저장된 정보 가져오기
+			Map<String, Object> result = eService.equipDetailGET(eno);
+			logger.info("result :"+ result);
+			
+			//전달할 정보 저장
+			model.addAttribute("resultVO", result.get("EquipManageVO"));
+			model.addAttribute("fileList", result.get("fileVO"));
+			
+			model.addAttribute("fields", commonCodeService.getCommonCodeDetailsByCodeId("FIELD"));
+		}
 	
 	
+	//장비내역 (추가구매/수리/폐기) - 수정하기
+	@PostMapping(value = "/equipdetail")
+	public String equipdetailPOST(EquipManageVO vo, @RequestParam("equipment_no")int eno) throws Exception {
+		logger.info("!!!! eno !!!!!!! :"+ eno);
+		vo.setEquipment_no(eno);
+		eService.equipUpdate(vo);
+		
+		return"redirect:/maintenance/list";
+	}
+	
+	//장비내역 (수리중 -> 정상)으로 수정하기
+	@ResponseBody
+	@PostMapping(value = "equipdetail2")
+	public String repairOk(EquipManageVO vo,@RequestParam("equipment_no")int eno) throws Exception {
+		eService.repairOk(vo);
+		vo.setEquipment_no(eno);
+		
+		return"redirect:/maintenance/equipment";
+	}
+		
 	
 	
 	

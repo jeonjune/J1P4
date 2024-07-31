@@ -47,9 +47,20 @@
 	
 	<!--(승인)장비내역 리스트 -->
 	<update id="updateType">
-	update equipmentManagement
-	set e_repair_type='정상',status='승인',approval_date=now()
-	where equipment_no=#{equipment_no}
+		UPDATE equipmentManagement
+		SET 
+    	e_repair_type = CASE 
+        WHEN e_repair_type = '추가 구입' THEN '정상' 
+        WHEN e_repair_type = '수리' THEN '수리중' 
+        ELSE '폐기'
+    	END,
+    	status = CASE 
+        WHEN e_repair_type = '추가 구입' THEN '승인'
+        WHEN e_repair_type = '수리' THEN '승인'
+        ELSE '승인'
+    	END,
+    	approval_date = NOW()
+		WHERE equipment_no = #{equipment_no};
 	</update>
 	
 	<!-- 장비내역 리스트 조회 -->
@@ -70,5 +81,26 @@
 	select * from equipmentManagement
 	where status='반려'
 	</select>
+	
+	<!-- 장비내역 상세페이지 조회 -->
+	<select id="equipDetailGet" resultType="EquipManageVO">
+	select * from equipmentManagement 
+	where equipment_no=#{equipment_no}
+	
+	</select>
+	
+	<!-- 추가구매/수리/폐기 수정  -->
+	<update id="equipUpdate">
+	update equipmentManagement
+	set status='대기', e_repair_type=#{e_repair_type},count=#{count},cost=#{cost},total=#{total},repair_reason=#{repair_reason},report_date=#{report_date}
+	where equipment_no=#{equipment_no}
+	</update>
+	
+	<!-- 수리중 -> 정상으로 수정 -->
+	<update id="repairOk">
+	update equipmentManagement
+	set e_repair_type='정상'
+	where equipment_no=#{equipment_no}
+	</update>
 		
   </mapper>
