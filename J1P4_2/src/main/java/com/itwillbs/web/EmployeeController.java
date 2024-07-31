@@ -97,12 +97,12 @@ public class EmployeeController {
 		
 	}
 
-	@GetMapping(value = "/test")
-	public void testGET(Model model, EmployeeVO vo, Authentication authentication) throws Exception {
-		logger.info("testGET() 실행!"); 
-		
-		
-	}
+//	@GetMapping(value = "/test")
+//	public void testGET(Model model, EmployeeVO vo, Authentication authentication) throws Exception {
+//		logger.info("testGET() 실행!"); 
+//		
+//		
+//	}
 	
 	// 출근 메소드
 	@ResponseBody
