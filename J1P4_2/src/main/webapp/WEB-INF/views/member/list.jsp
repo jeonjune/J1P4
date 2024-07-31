@@ -242,7 +242,7 @@
 
 				<!-- 메시지 전송 모달창 바디(본문) -->
 				<div class="modal-body">
-					
+					<div class="m-2">
 					<div class="accordion-item">
 					
 					    <h2 class="accordion-header" id="headingTwo">
@@ -259,17 +259,21 @@
 					</div>
 					
 					<div id="smsReceiverHidden"></div>
-					<label style="font-weight: normal;">
+					
+					
+					<label style="font-weight: normal; margin-top: 10px;">
 					<input type="checkbox" id="chkSendType">
-					예약전송:
+					예약전송
 					</label>
-					<div id="sendDate">
+					<div id="sendDate" style="margin-bottom: 10px;">
 					<input type="hidden" name="noti_date" id="currentDatetime">
 					<input type="hidden" name="noti_type" value="일반전송">
 					</div>
-					전송내용:
-					<textarea rows="20" cols="200" name="message" id="comment" class="form-control" onkeyup="up()"></textarea>
-					<p>글자수 <span id="length">0</span><p>
+					<p><span id="length">0</span> / 500자<p>
+					<textarea rows="20" cols="200" name="message" id="comment" 
+					class="form-control" onkeyup="up()" placeholder="메시지 내용을 입력하세요."></textarea>
+					</div>
+					
 
 				</div>
 
@@ -766,7 +770,7 @@
 				success : function(data) {
 					var selectedPhones = [];
 					$.each(data, function(index, member) {
-						$('#smsReceiver').append("<div class='memPhone"+index+"'>"+member.mem_name+
+						$('#smsReceiver').append("<div class='memPhone"+index+"' style='margin-bottom:5px;'>"+member.mem_name+
 						"("+member.formatted_mem_phone+")<button class='deletePhone"+index+" btn-close btn-xs'></button></div>");
 						selectedPhones.push(member.mem_phone);
 						
@@ -886,19 +890,8 @@
 	
 	/* 메시지 일반전송 시 현재 시간을 hidden에 담아서 전송 */
 	
-	const localDate = new Date();
     
-    // 한국 표준시(KST) 시간으로 변환
-    const offset = 9 * 60; // KST는 UTC보다 9시간 빠름 (9 * 60 분)
-    const localDateKST = new Date(localDate.getTime() + offset * 60 * 1000);
-    
-    // ISO 형식으로 변환
-    const isoString = localDateKST.toISOString();
-    
-    // 'Z' 제거 및 시간을 KST로 변환하여 출력
-    const formattedDate = isoString.slice(0, -1);
-    
- 	document.getElementById('currentDatetime').value= formattedDate;
+ 	document.getElementById('currentDatetime').value= new Date().toISOString().slice(0, -1);
  	
  	
 	/* 예약전송 클릭 시 시간선택 추가 */
@@ -911,7 +904,7 @@
 	        } else {
 	        	
 	            // 체크 해제된 경우
-	            $("#sendDate").html('<input type="hidden" name="noti_date" value="'+formattedDate+'">'
+	            $("#sendDate").html('<input type="hidden" name="noti_date" value="'+new Date().toISOString().slice(0, -1)+'">'
 	            		+'<input type="hidden" name="noti_type" value="일반전송">');
 	        }
 	    });

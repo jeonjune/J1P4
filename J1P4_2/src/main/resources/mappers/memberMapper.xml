@@ -96,7 +96,7 @@ substring(group_concat(CONCAT(
 	        SUBSTRING(r.recipient_mem, 8, 4)
    			) separator ', '),44) as recipient_more,
 COUNT(r.recipient_mem)-3 as recipient_count            
-from notification n join recipient r
+from notification n left join recipient r
 on n.noti_no = r.noti_no
 group by n.noti_no
 	 order by n.noti_no desc
