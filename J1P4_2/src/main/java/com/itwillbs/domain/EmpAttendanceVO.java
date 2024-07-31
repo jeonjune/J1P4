@@ -19,5 +19,8 @@ public class EmpAttendanceVO {
 	public String reject_reason;
 	public String check_status;
 	
+	public Date vacation_start;
+	public Date vacation_end;
+	
 
 }

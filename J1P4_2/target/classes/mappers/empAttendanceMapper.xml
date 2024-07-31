@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper  3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+ <mapper namespace="com.itwillbs.mapper.empAttendanceMapper">
+ 
+ <resultMap id="calendar" type="com.itwillbs.domain.EmpAttendanceVO">
+    <id property="empAttend_no" column="empAttend_no" />
+    <result property="user_no" column="user_no" />
+    <result property="attend_date" column="attend_date" />
+    <result property="quitting_time" column="quitting_time" />
+    <result property="work_status" column="work_status" />
+    <result property="vacation_reason" column="vacation_reason" />
+    <result property="vacation_approval" column="vacation_approval" />
+    <result property="reject_reason" column="reject_reason" />
+    <result property="check_status" column="check_status" />
+    <result property="vacation_start" column="vacation_start" />
+    <result property="vacation_end" column="vacation_end" />
+  </resultMap>
+	
+	<select id="calendar" resultMap="calendar">
+		select * from empAttendance
+	</select>
+ 
+ </mapper>
