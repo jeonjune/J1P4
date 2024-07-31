@@ -6,13 +6,13 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
 <%@ include file="../include/header.jsp"%>
 <%@ include file="../include/sidemenu.jsp"%>
+<%@ include file="../include/empMenu.jsp"%>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <!-- 카카오 우편번호 -->
 	<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <div class="content-wrapper" style="min-height: 831px;">
 
 
-<h1>empList </h1>
 <a href="/main/login" class="nav-link">
               <i class="nav-icon fas fa-user"></i>
               <p>
@@ -21,7 +21,6 @@
 </a>
 <sec:authorize access="isAuthenticated()">
 	<sec:authentication property="principal" var="principal"/>
-    <!-- principal property가 UserDetails임-->
 </sec:authorize>
 <%-- ${principal} <br> --%>
 user_id : ${principal.username}<br>
