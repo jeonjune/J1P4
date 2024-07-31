@@ -174,8 +174,16 @@ public class MemberController {
 	
 	// 전송 메시지 조회
 	@GetMapping(value="/message")
-	public void messageGET(Model model) throws Exception {
-		model.addAttribute("SMS",mService.selectSMS());
+	public void messageGET(Model model,Criteria cri) throws Exception {
+		
+		
+		model.addAttribute("SMS",mService.selectSMS(cri));
+		
+		PageVO pageVO = new PageVO();
+		pageVO.setCri(cri);
+		pageVO.setTotalCount(mService.getTotalSMS());
+		model.addAttribute("pageVO",pageVO);
+		
 	}
 	
 

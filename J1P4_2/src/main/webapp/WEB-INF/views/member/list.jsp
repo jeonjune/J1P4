@@ -146,8 +146,8 @@
 			<div class="textRight">
 				<select name="pageSize" id="selectPage" class="form-control">
 					<option value="10">10개씩 보기</option>
-					<option value="20">50개씩 보기</option>
-					<option value="30">100개씩 보기</option>
+					<option value="50">50개씩 보기</option>
+					<option value="100">100개씩 보기</option>
 				</select>
 			</div>
 			
@@ -337,19 +337,14 @@
 			<i class="fas fa-envelope fa-fw" style="color: #fff"></i> 메시지 발송
 		</button>
 		
-		<!-- 메시지 조회 버튼 -->
-		<button type="button" class="btn btn-danger smsChkBtn" data-bs-toggle="modal"
-			data-bs-target="#smsChkModal">
-			<i class="fas fa-envelope fa-fw" style="color: #fff"></i> 메시지 조회
-		</button>
-		
 		<!-- 회원 삭제 버튼 -->
-		<button class="btn btn-primary deleteMem" type="button" style="display: inline-block;">회원 삭제</button>
+		<button class="btn btn-primary deleteMem" type="button" style="display: inline-block;">
+		<i class="fas fa-minus fa-fw"></i> 회원 삭제</button>
 	
 		<!-- 회원 등록 버튼 -->
 		<button class="btn btn-primary" type="button"
 			data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight"
-			aria-controls="offcanvasRight">회원 등록</button>
+			aria-controls="offcanvasRight"><i class="fas fa-plus fa-fw"></i> 회원 등록</button>
 	</div>
 			<!-- 페이징 처리 -->
 			<ul class="pagination" >
@@ -873,27 +868,12 @@
         input.value = formattedValue;
     }
 	
-	/* 예약전송 클릭 시 시간선택 추가 */
-	$(function() {
-		$("#chkSendType").change(function() {
-	        if ($(this).is(':checked')) {
-	            // 체크된 경우
-	            $("#sendDate").html('<input type="datetime-local" name="noti_date" class="form-control">'+
-	                                '<input type="hidden" name="noti_type" value="예약전송">');
-	        } else {
-	            // 체크 해제된 경우
-	            $("#sendDate").html('');
-	        }
-	    });
-
-	});
 	
 	/* 메시지 입력 내용 글자수 제한 */
  	function up(){
  		var com = document.getElementById("comment");
  		var len = document.getElementById("length");
  		var val = com.value;
- 		
  		//글자수 세기
  		len.textContent = val.length;
  		
@@ -905,7 +885,38 @@
  	}
 	
 	/* 메시지 일반전송 시 현재 시간을 hidden에 담아서 전송 */
- 	document.getElementById('currentDatetime').value= new Date().toISOString().slice(0, -1);
+	
+	const localDate = new Date();
+    
+    // 한국 표준시(KST) 시간으로 변환
+    const offset = 9 * 60; // KST는 UTC보다 9시간 빠름 (9 * 60 분)
+    const localDateKST = new Date(localDate.getTime() + offset * 60 * 1000);
+    
+    // ISO 형식으로 변환
+    const isoString = localDateKST.toISOString();
+    
+    // 'Z' 제거 및 시간을 KST로 변환하여 출력
+    const formattedDate = isoString.slice(0, -1);
+    
+ 	document.getElementById('currentDatetime').value= formattedDate;
+ 	
+ 	
+	/* 예약전송 클릭 시 시간선택 추가 */
+	$(function() {
+		$("#chkSendType").change(function() {
+	        if ($(this).is(':checked')) {
+	            // 체크된 경우
+	            $("#sendDate").html('<input type="datetime-local" name="noti_date" class="form-control">'+
+	                                '<input type="hidden" name="noti_type" value="예약전송">');
+	        } else {
+	        	
+	            // 체크 해제된 경우
+	            $("#sendDate").html('<input type="hidden" name="noti_date" value="'+formattedDate+'">'
+	            		+'<input type="hidden" name="noti_type" value="일반전송">');
+	        }
+	    });
+
+	});
 	
 </script>
 
