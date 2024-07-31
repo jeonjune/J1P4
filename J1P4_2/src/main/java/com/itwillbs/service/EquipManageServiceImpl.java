@@ -72,6 +72,29 @@ public class EquipManageServiceImpl implements EquipManageService {
 	public List<EquipManageVO> rejectList() throws Exception {
 		return edao.rejectList();
 	}
+
+	//장비내역 상세페이지
+	@Override
+	public Map<String, Object> equipDetailGET(int eno) throws Exception {
+		logger.info("@@@@"+ edao.equipDetail(eno));
+		return edao.equipDetailGET(eno);
+	}
+
+	//장비내역 추가구매/수리/폐기 - 수정하기
+	@Override
+	public void equipUpdate(EquipManageVO vo) throws Exception {
+		edao.equipUpdate(vo);
+		
+	}
+
+	//수리중-> 정상 수정
+	@Override
+	public void repairOk(EquipManageVO vo) throws Exception {
+		edao.repairOk(vo);
+	}
+	
+	
+	
 	
 	
 	

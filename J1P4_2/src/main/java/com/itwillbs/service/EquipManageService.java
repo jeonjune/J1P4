@@ -31,5 +31,14 @@ public interface EquipManageService {
 		
 	//반려내역리스트
 	public List<EquipManageVO> rejectList() throws Exception;
+	
+	//장비내역 상세페이지
+	public Map<String, Object> equipDetailGET(int eno) throws Exception;
+	
+	//장비내역 추가구매/수리/폐기 - 수정하기
+	public void equipUpdate(EquipManageVO vo) throws Exception;
+	
+	//수리중-> 정상 수정
+	public void repairOk(EquipManageVO vo) throws Exception;
 
 }

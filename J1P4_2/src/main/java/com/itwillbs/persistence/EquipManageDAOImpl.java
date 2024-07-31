@@ -78,6 +78,32 @@ public class EquipManageDAOImpl implements EquipManageDAO {
 		return sqlSession.selectList(NAMESPACE+"rejectList");
 	}
 	
+	//장비내역 상세페이지
+	@Override
+	public Map<String, Object> equipDetailGET(int eno) throws Exception {
+		Map<String, Object> resrultMap = new HashMap<String, Object>();
+		resrultMap.put("EquipManageVO",sqlSession.selectOne(NAMESPACE+"equipDetailGet", eno));
+		resrultMap.put("fileVO",sqlSession.selectList(NAMESPACE+"selectFile", eno));
+		
+		return resrultMap; 
+		
+	}
+
+	//장비내역 추가구매/수리/폐기 - 수정하기
+	@Override
+	public void equipUpdate(EquipManageVO vo) throws Exception {
+		sqlSession.update(NAMESPACE+"equipUpdate", vo);
+	}
+
+	//수리중-> 정상 수정
+	@Override
+	public void repairOk(EquipManageVO vo) throws Exception {
+		sqlSession.update(NAMESPACE+"repairOk", vo);
+	}
+	
+	
+	
+	
 	
 	
 	
