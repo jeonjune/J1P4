@@ -5,12 +5,12 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.itwillbs.persistence.ClassDAO;
 import com.itwillbs.domain.ClassVO;
+import com.itwillbs.persistence.ClassDAO;
 
 @Service
 public class ClassService {
-	//
+    
     @Autowired
     private ClassDAO classDAO;
 
@@ -32,5 +32,9 @@ public class ClassService {
 
     public void deleteClass(int classNo) {
         classDAO.deleteClass(classNo);
+    }
+
+    public void updateCurrentEnrollment(ClassVO classVO) {
+        classDAO.updateCurrentEnrollment(classVO);
     }
 }

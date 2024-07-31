@@ -2,13 +2,7 @@ package com.itwillbs.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import com.itwillbs.domain.ClassScheduleVO;
 import com.itwillbs.service.ClassScheduleService;
@@ -50,5 +44,14 @@ public class ClassScheduleController {
         ClassScheduleVO schedule = classScheduleService.getScheduleById(scheduleId);
         classScheduleService.deleteSchedule(scheduleId);
         return "redirect:/classes/detail/" + schedule.getClassNo();
+    }
+
+    @PostMapping("/delete")
+    @ResponseBody
+    public String deleteSchedules(@RequestBody List<Integer> scheduleIds) {
+        for (int scheduleId : scheduleIds) {
+            classScheduleService.deleteSchedule(scheduleId);
+        }
+        return "Success";
     }
 }
