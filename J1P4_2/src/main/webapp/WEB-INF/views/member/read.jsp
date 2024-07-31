@@ -46,7 +46,7 @@
 					수강중<br>
 						</c:if></span>
 					<h2 style="margin-top: 10px;">${readMem.mem_name }님
-						(${readMem.mem_phone })</h2>
+						(${readMem.formatted_mem_phone })</h2>
 					<div class="card" style="margin-top: 20px;">
 						<div class="card-body">
 							<strong><i class="far fa-file-alt mr-1 cardMy"></i> 메모 </strong>
@@ -70,7 +70,7 @@
 					<c:if test="${readMem.sms_opt == 0}">
 						<span class="badge badge-info right badgeCustom"> 수신 미동의 </span>
 					</c:if>
-					<p class="text-muted cardMy">${readMem.mem_phone}</p>
+					<p class="text-muted cardMy">${readMem.formatted_mem_phone}</p>
 				</div>
 				<hr>
 				<div class="cardMy">
@@ -179,7 +179,7 @@
 
 						<div class="form-group">
 							<label>연락처</label> <input type="text" name="mem_phone"
-								value="${readMem.mem_phone }" class="form-control" maxlength="13" oninput="formatPhoneNumber(this)"> <label
+								value="${readMem.formatted_mem_phone }" class="form-control" maxlength="13" oninput="formatPhoneNumber(this)"> <label
 								class="chkboxCustom"> <input type="checkbox"
 								name="sms_opt" style="accent-color: #cdb4db;" value="1">&nbsp;sms
 								수신 동의

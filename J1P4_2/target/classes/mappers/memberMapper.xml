@@ -37,7 +37,11 @@
 	</select>
 	
 	<select id="readMem" resultType="MemberVO">
-		select * from member
+		SELECT *, CONCAT(
+	        SUBSTRING(mem_phone, 1, 3), '-',
+	        SUBSTRING(mem_phone, 4, 4), '-',
+	        SUBSTRING(mem_phone, 8, 4)
+   			) AS formatted_mem_phone FROM member
 		where mem_no = #{mem_no};
 	</select>
 	
@@ -76,6 +80,20 @@
 	    <foreach item="mem_no" collection="mem_no" open="(" separator="," close=")">
 	        #{mem_no}
 	    </foreach>
+  	 </select>
+  	 
+  	 <!-- 메시지 전송 내역 조회 -->
+  	 <select id="selectSMS" resultType="RecipientVO">
+  	 select n.noti_no as noti_no,n.sender_user as sender_user,n.noti_type as noti_type,
+  	 n.message as message,n.noti_date as noti_date,
+	 group_concat(CONCAT(
+		       SUBSTRING(r.recipient_mem, 1, 3), '-',
+		       SUBSTRING(r.recipient_mem, 4, 4), '-',
+		       SUBSTRING(r.recipient_mem, 8, 4)
+	   		) separator ', ') as recipient_mem
+	 from notification n join recipient r
+  	 on n.noti_no = r.noti_no
+	 group by n.noti_no;
   	 </select>
   	 
   </mapper>

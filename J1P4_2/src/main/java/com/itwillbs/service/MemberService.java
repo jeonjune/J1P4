@@ -6,6 +6,7 @@ import java.util.Map;
 
 import com.itwillbs.domain.Criteria;
 import com.itwillbs.domain.MemberVO;
+import com.itwillbs.domain.RecipientVO;
 
 public interface MemberService {
 		
@@ -28,4 +29,6 @@ public interface MemberService {
 	// 회원 번호 조회
 	public List<MemberVO> memPhone(Map<String, List> mem_no) throws Exception;
 
+	// 메시지 조회
+	public List<RecipientVO> selectSMS() throws Exception;
 }

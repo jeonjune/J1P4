@@ -16,5 +16,6 @@ public class RecipientVO {
 	private String message;
 	private String noti_date;
 	private String noti_type;
+	private String sender_user;
 
 }

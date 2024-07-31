@@ -172,6 +172,12 @@ public class MemberController {
 		
 	}
 	
+	// 전송 메시지 조회
+	@GetMapping(value="/message")
+	public void messageGET(Model model) throws Exception {
+		model.addAttribute("SMS",mService.selectSMS());
+	}
+	
 
 	
 }

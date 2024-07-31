@@ -13,6 +13,7 @@ import org.springframework.stereotype.Repository;
 
 import com.itwillbs.domain.Criteria;
 import com.itwillbs.domain.MemberVO;
+import com.itwillbs.domain.RecipientVO;
 
 @Repository
 public class MemberDAOImpl implements MemberDAO {
@@ -63,6 +64,12 @@ public class MemberDAOImpl implements MemberDAO {
 	public List<MemberVO> memPhone(Map<String, List> mem_no) throws Exception {
 		return sqlSession.selectList(NAMESPACE+"memPhone",mem_no);
 	}
+
+	@Override
+	public List<RecipientVO> selectSMS() throws Exception {
+		return sqlSession.selectList(NAMESPACE+"selectSMS");
+	}
+	
 	
 	
 	

@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import com.itwillbs.domain.Criteria;
 import com.itwillbs.domain.MemberVO;
+import com.itwillbs.domain.RecipientVO;
 import com.itwillbs.persistence.MemberDAO;
 
 @Service
@@ -59,6 +60,11 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public List<MemberVO> memPhone(Map<String, List> mem_no) throws Exception {
 		return mDao.memPhone(mem_no);
+	}
+
+	@Override
+	public List<RecipientVO> selectSMS() throws Exception {
+		return mDao.selectSMS();
 	}
 
 	
