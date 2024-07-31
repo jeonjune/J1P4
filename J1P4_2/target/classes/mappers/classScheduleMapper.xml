@@ -13,6 +13,8 @@
         <result property="endTimeCode" column="end_time_code"/>
         <result property="recurrencePattern" column="recurrence_pattern"/>
         <result property="recurrenceDays" column="recurrence_days"/>
+        <result property="recurrenceDays" column="recurrence_days"/>
+        <result property="currentEnrollment" column="current_enrollment"/>
     </resultMap>
 
     <insert id="insertSchedule" parameterType="com.itwillbs.domain.ClassScheduleVO">
@@ -42,4 +44,10 @@
     <delete id="deleteSchedule" parameterType="int">
         DELETE FROM classSchedule WHERE schedule_id = #{scheduleId}
     </delete>
+    
+    <update id="updateCurrentEnrollment" parameterType="com.itwillbs.domain.ClassScheduleVO">
+        UPDATE classSchedule
+        SET current_enrollment = #{currentEnrollment}
+        WHERE schedule_id = #{scheduleId}
+    </update>
 </mapper>

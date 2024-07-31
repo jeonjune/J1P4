@@ -34,4 +34,8 @@ public class ClassScheduleDAO {
     public void deleteSchedule(int scheduleId) {
         sqlSession.delete(NAMESPACE + ".deleteSchedule", scheduleId);
     }
+    
+    public void updateCurrentEnrollment(ClassScheduleVO schedule) {
+        sqlSession.update(NAMESPACE + ".updateCurrentEnrollment", schedule);
+    }
 }

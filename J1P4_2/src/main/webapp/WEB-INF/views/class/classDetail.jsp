@@ -129,13 +129,13 @@
 						                            <td>${schedule.endTimeCode}</td>
 						                            <td>${schedule.recurrencePattern}</td>
 						                            <td>${schedule.recurrenceDays}</td>
-						                            <td>${classVO.currentEnrollment}</td>
+						                            <td>${schedule.currentEnrollment}</td>
 						                            <td>
 						                                <c:choose>
-						                                    <c:when test="${classVO.currentEnrollment >= classVO.maxCapacity}">
+						                                    <c:when test="${schedule.currentEnrollment >= classVO.maxCapacity}">
 						                                        Closed
 						                                    </c:when>
-						                                    <c:when test="${classVO.currentEnrollment < classVO.minCapacity}">
+						                                    <c:when test="${schedule.currentEnrollment < classVO.minCapacity}">
 						                                        Recruitment
 						                                    </c:when>
 						                                    <c:otherwise>

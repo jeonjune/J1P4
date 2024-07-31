@@ -14,5 +14,6 @@ public class ClassScheduleVO {
     private String endTimeCode;
     private String recurrencePattern;
     private String recurrenceDays;
+    private int currentEnrollment;
 
 }

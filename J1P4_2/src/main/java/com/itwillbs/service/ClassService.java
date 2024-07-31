@@ -34,7 +34,4 @@ public class ClassService {
         classDAO.deleteClass(classNo);
     }
 
-    public void updateCurrentEnrollment(ClassVO classVO) {
-        classDAO.updateCurrentEnrollment(classVO);
-    }
 }

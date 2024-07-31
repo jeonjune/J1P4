@@ -13,7 +13,6 @@
         <result property="levelCode" column="level_code"/>
         <result property="minCapacity" column="min_capacity"/>
         <result property="maxCapacity" column="max_capacity"/>
-        <result property="currentEnrollment" column="current_enrollment"/>
         <result property="instructorNo" column="instructor_no"/>
         <result property="instructorName" column="instructor_name"/>
     </resultMap>
@@ -28,7 +27,6 @@
             c.level_code,
             c.min_capacity,
             c.max_capacity,
-            c.current_enrollment,
             c.instructor_no,
             e.name AS instructor_name
         FROM class c
@@ -46,7 +44,6 @@
             c.level_code,
             c.min_capacity,
             c.max_capacity,
-            c.current_enrollment,
             c.instructor_no,
             e.name AS instructor_name
         FROM class c
@@ -56,8 +53,8 @@
     </select>
 
     <insert id="addClass" parameterType="com.itwillbs.domain.ClassVO">
-        INSERT INTO class (class_name, description, field_code, division_code, level_code, min_capacity, max_capacity, current_enrollment, instructor_no)
-        VALUES (#{className}, #{description}, #{fieldCode}, #{divisionCode}, #{levelCode}, #{minCapacity}, #{maxCapacity}, #{currentEnrollment}, #{instructorNo})
+        INSERT INTO class (class_name, description, field_code, division_code, level_code, min_capacity, max_capacity, instructor_no)
+        VALUES (#{className}, #{description}, #{fieldCode}, #{divisionCode}, #{levelCode}, #{minCapacity}, #{maxCapacity}, #{instructorNo})
     </insert>
 
     <update id="editClass" parameterType="com.itwillbs.domain.ClassVO">
@@ -69,7 +66,6 @@
             level_code = #{levelCode},
             min_capacity = #{minCapacity},
             max_capacity = #{maxCapacity},
-            current_enrollment = #{currentEnrollment},
             instructor_no = #{instructorNo}
         WHERE class_no = #{classNo}
     </update>
@@ -78,9 +74,4 @@
         DELETE FROM class WHERE class_no = #{classNo}
     </delete>
 
-    <update id="updateCurrentEnrollment" parameterType="com.itwillbs.domain.ClassVO">
-        UPDATE class
-        SET current_enrollment = #{currentEnrollment}
-        WHERE class_no = #{classNo}
-    </update>
 </mapper>
