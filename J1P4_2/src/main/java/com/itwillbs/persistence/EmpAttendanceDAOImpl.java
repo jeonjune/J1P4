@@ -15,7 +15,7 @@ public class EmpAttendanceDAOImpl implements EmpAttendanceDAO {
 	@Inject
 	private SqlSession sqlSession;
 	
-	private static final String NAMESPACE = "com.itwillbs.mapper.employeeMapper.";
+	private static final String NAMESPACE = "com.itwillbs.mapper.empAttendanceMapper.";
 	
 	public List<EmpAttendanceVO> getCalendar() throws Exception {
 		List<EmpAttendanceVO> calendar = null;
