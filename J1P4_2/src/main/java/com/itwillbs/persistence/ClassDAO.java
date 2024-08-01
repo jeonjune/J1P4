@@ -35,7 +35,4 @@ public class ClassDAO {
         sqlSession.delete(NAMESPACE + ".deleteClass", classNo);
     }
 
-    public void updateCurrentEnrollment(ClassVO classVO) {
-        sqlSession.update(NAMESPACE + ".updateCurrentEnrollment", classVO);
-    }
 }

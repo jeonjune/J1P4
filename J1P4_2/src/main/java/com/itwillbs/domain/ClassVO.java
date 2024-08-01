@@ -12,7 +12,6 @@ public class ClassVO {
     private String levelCode;
     private int maxCapacity;
     private int minCapacity;         // 추가
-    private int currentEnrollment;   // 추가
     private int instructorNo;
     private String instructorName;
 }
