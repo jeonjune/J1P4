@@ -4,23 +4,67 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
  
  <mapper namespace="com.itwillbs.mapper.empAttendanceMapper">
+
+  <resultMap type="com.itwillbs.domain.EmployeeVO"
+  	           id="employeeMap">
+  	    <id property="user_no" column="user_no" />
+  	    <result property="user_no" column="user_no"/>
+  	    <result property="user_id" column="user_id"/>
+  	    <result property="user_pw" column="user_pw"/>
+  	    <result property="job_rank" column="job_rank"/>
+  	    <result property="job" column="job"/>
+  	    <result property="name" column="name"/>
+  	    <result property="birth_date" column="birth_date"/>
+  	    <result property="gender" column="gender"/>
+  	    <result property="phone_no" column="phone_no"/>
+  	    <result property="email" column="email"/>
+  	    <result property="emp_date" column="emp_date"/>
+  	    <result property="retire_status" column="retire_status"/>
+  	    <result property="retire_date" column="retire_date"/>
+  	    <result property="zip_code" column="zip_code"/>
+  	    <result property="addr1" column="addr1"/>
+  	    <result property="addr2" column="addr2"/>
+  	    <result property="enabled" column="enabled"/>
+		<collection property="vacationList" resultMap="vacation"></collection>
+		
+  </resultMap>
  
- <resultMap id="calendar" type="com.itwillbs.domain.EmpAttendanceVO">
-    <id property="empAttend_no" column="empAttend_no" />
+ <resultMap id="vacation" type="com.itwillbs.domain.EmpAttendanceVO">
+    <result property="empAttend_no" column="empAttend_no" />
     <result property="user_no" column="user_no" />
     <result property="attend_date" column="attend_date" />
     <result property="quitting_time" column="quitting_time" />
     <result property="work_status" column="work_status" />
-    <result property="vacation_reason" column="vacation_reason" />
-    <result property="vacation_approval" column="vacation_approval" />
-    <result property="reject_reason" column="reject_reason" />
     <result property="check_status" column="check_status" />
+    <result property="vacation_status" column="vacation_status" />
+    <result property="vacation_reason" column="vacation_reason" />
     <result property="vacation_start" column="vacation_start" />
     <result property="vacation_end" column="vacation_end" />
+    <result property="vacation_approval" column="vacation_approval" />
+    <result property="reject_reason" column="reject_reason" />
+  
   </resultMap>
-	
-	<select id="calendar" resultMap="calendar">
+
+
+
+	<!-- 휴가일정 캘린더로 불러오기 -->
+	<select id="calendar" resultType="com.itwillbs.domain.EmpAttendanceVO">
 		select * from empAttendance
+		where vacation_status is not null
 	</select>
- 
+	
+	<!-- 휴가 신청서 등록 -->
+ 	<insert id="vacation">
+ 		insert into empAttendance (user_no, vacation_status, vacation_reason, vacation_start, vacation_end, vacation_approval)
+  	 	values(#{user_no}, #{vacation_status}, #{vacation_reason}, #{vacation_start}, #{vacation_end}, '미승인')
+ 	</insert>
+ 	
+ 	<!-- 미승인 휴가 목록 -->
+ 	<select id="reqVaca" resultMap="employeeMap">
+ 		select e.user_no, name, job, job_rank, vacation_status, vacation_start, vacation_end, vacation_reason
+		from employee e
+		join empAttendance v on e.user_no = v.user_no
+		where vacation_status is not null and vacation_approval = '미승인'
+ 	</select>
+ 	
  </mapper>

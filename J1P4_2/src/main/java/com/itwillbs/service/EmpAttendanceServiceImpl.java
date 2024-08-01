@@ -19,6 +19,17 @@ public class EmpAttendanceServiceImpl implements EmpAttendanceService {
 	public List<EmpAttendanceVO> getCalendar() throws Exception {
 		return edao.getCalendar();
 	}
+
+	@Override
+	public void vacation(EmpAttendanceVO vo) throws Exception {
+		edao.vacation(vo);
+		
+	}
+
+	@Override
+	public List<EmpAttendanceVO> reqVaca() throws Exception {
+		return edao.reqVaca();
+	}
 	
 	
 
