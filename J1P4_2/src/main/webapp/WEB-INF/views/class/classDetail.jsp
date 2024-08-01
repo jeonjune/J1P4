@@ -31,8 +31,8 @@
                 <div class="container-fluid">
                     <nav>
                         <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                            <button class="nav-link active" id="nav-class-tab" data-bs-toggle="tab" data-bs-target="#nav-class" type="button" role="tab" aria-controls="nav-class" aria-selected="true">Class Information</button>
-                            <button class="nav-link" id="nav-schedule-tab" data-bs-toggle="tab" data-bs-target="#nav-schedule" type="button" role="tab" aria-controls="nav-schedule" aria-selected="false">Schedule Information</button>
+                            <button class="nav-link active" id="nav-class-tab" data-bs-toggle="tab" data-bs-target="#nav-class" type="button" role="tab" aria-controls="nav-class" aria-selected="true">강의 정보</button>
+                            <button class="nav-link" id="nav-schedule-tab" data-bs-toggle="tab" data-bs-target="#nav-schedule" type="button" role="tab" aria-controls="nav-schedule" aria-selected="false">일정 정보</button>
                         </div>
                     </nav>
                     <div class="tab-content" id="nav-tabContent">
@@ -45,48 +45,48 @@
                                     <form:form id="classForm" method="post" action="${pageContext.request.contextPath}/classes/save" modelAttribute="classVO">
                                         <form:hidden path="classNo" />
                                         <div class="mb-3">
-                                            <label for="className" class="form-label">Class Name:</label>
+                                            <label for="className" class="form-label">강의명</label>
                                             <form:input path="className" class="form-control" required="required" id="className"/>
                                         </div>
                                         <div class="mb-3">
-                                            <label for="description" class="form-label">Description:</label>
+                                            <label for="description" class="form-label">설명</label>
                                             <form:textarea path="description" class="form-control" id="description"/>
                                         </div>
                                         <div class="mb-3">
-                                            <label for="fieldCode" class="form-label">Field:</label>
+                                            <label for="fieldCode" class="form-label">분야</label>
                                             <form:select path="fieldCode" class="form-control" id="fieldCode">
                                                 <form:options items="${fields}" itemValue="codeValue" itemLabel="codeValueName"/>
                                             </form:select>
                                         </div>
                                         <div class="mb-3">
-                                            <label for="divisionCode" class="form-label">Division:</label>
+                                            <label for="divisionCode" class="form-label">구분</label>
                                             <form:select path="divisionCode" class="form-control" id="divisionCode">
                                                 <form:options items="${divisions}" itemValue="codeValue" itemLabel="codeValueName"/>
                                             </form:select>
                                         </div>
                                         <div class="mb-3">
-                                            <label for="levelCode" class="form-label">Level:</label>
+                                            <label for="levelCode" class="form-label">수준</label>
                                             <form:select path="levelCode" class="form-control" id="levelCode">
                                                 <form:options items="${levels}" itemValue="codeValue" itemLabel="codeValueName"/>
                                             </form:select>
                                         </div>
                                         <div class="mb-3">
-                                            <label for="minCapacity" class="form-label">Min Capacity:</label>
+                                            <label for="minCapacity" class="form-label">최소인원</label>
                                             <form:input path="minCapacity" class="form-control" type="number" required="required" id="minCapacity"/>
                                         </div>
                                         <div class="mb-3">
-                                            <label for="maxCapacity" class="form-label">Max Capacity:</label>
+                                            <label for="maxCapacity" class="form-label">최대인원</label>
                                             <form:input path="maxCapacity" class="form-control" type="number" required="required" id="maxCapacity"/>
                                         </div>
                                         <div class="mb-3">
-                                            <label for="instructorName" class="form-label">Instructor Name:</label>
+                                            <label for="instructorName" class="form-label">강의명</label>
                                             <div class="input-group">
                                                 <form:input path="instructorName" class="form-control" id="instructorName" readonly="readonly"/>
                                                 <form:hidden path="instructorNo" id="instructorNo"/>
-                                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#instructorModal">Find Instructor</button>
+                                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#instructorModal">강사 찾기</button>
                                             </div>
                                         </div>
-                                        <button type="submit" class="btn btn-primary">Save</button>
+                                        <button type="submit" class="btn btn-primary">저장</button>
                                     </form:form>
                                 </div>
                             </div>
@@ -99,24 +99,23 @@
 						        </div>
 						        <div class="card-body">
 						            <button type="button" class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#scheduleModal" onclick="initScheduleForm()">
-						                Add Schedule
+						                일정 등록
 						            </button>
-						            <button type="button" class="btn btn-primary mt-3" onclick="openAddStudentModal()">Register Student</button>
-						            <button type="button" class="btn btn-primary mt-3" onclick="editSelectedSchedules()">Edit</button>
-						            <button type="button" class="btn btn-danger mt-3" onclick="deleteSelectedSchedules()">Delete</button>
+						            <button type="button" class="btn btn-primary mt-3" onclick="openAddStudentModal()">회원 등록</button>
+						            <button type="button" class="btn btn-primary mt-3" onclick="editSelectedSchedules()">수정</button>
+						            <button type="button" class="btn btn-danger mt-3" onclick="deleteSelectedSchedules()">삭제</button>
 						            
 						            <table class="table table-bordered mt-3">
 						                <thead>
 						                    <tr>
-						                        <th>Select</th>
-						                        <th>Start Date</th>
-						                        <th>End Date</th>
-						                        <th>Start Time</th>
-						                        <th>End Time</th>
-						                        <th>Recurrence Pattern</th>
-						                        <th>Recurrence Days</th>
-						                        <th>Current Enrollment</th>
-						                        <th>Status</th>
+						                        <th></th>
+						                        <th>시작 날짜</th>
+						                        <th>종료 날짜</th>
+						                        <th>시작 시간</th>
+						                        <th>종료 시간</th>
+						                        <th>요일</th>
+						                        <th>신청 인원</th>
+						                        <th>상태</th>
 						                    </tr>
 						                </thead>
 						                <tbody id="scheduleTableBody">
@@ -127,22 +126,10 @@
 						                            <td>${schedule.endDate}</td>
 						                            <td>${schedule.startTimeCode}</td>
 						                            <td>${schedule.endTimeCode}</td>
-						                            <td>${schedule.recurrencePattern}</td>
 						                            <td>${schedule.recurrenceDays}</td>
 						                            <td>${schedule.currentEnrollment}</td>
-						                            <td>
-						                                <c:choose>
-						                                    <c:when test="${schedule.currentEnrollment >= classVO.maxCapacity}">
-						                                        Closed
-						                                    </c:when>
-						                                    <c:when test="${schedule.currentEnrollment < classVO.minCapacity}">
-						                                        Recruitment
-						                                    </c:when>
-						                                    <c:otherwise>
-						                                        Normal
-						                                    </c:otherwise>
-						                                </c:choose>
-						                            </td>
+						                            <td>${schedule.status}</td>
+
 						                        </tr>
 						                    </c:forEach>
 						                </tbody>
@@ -161,7 +148,7 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="scheduleModalLabel">Add Schedule</h5>
+                        <h5 class="modal-title" id="scheduleModalLabel">일정 등록</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
@@ -169,73 +156,70 @@
                             <form:hidden path="scheduleId" />
                             <form:hidden path="classNo" id="scheduleClassNo" value="${classVO.classNo}"/>
                             <div class="mb-3">
-                                <label for="startDate" class="form-label">Start Date:</label>
+                                <label for="startDate" class="form-label">시작 날짜</label>
                                 <form:input path="startDate" class="form-control" type="date" id="startDate"/>
                             </div>
                             <div class="mb-3">
-                                <label for="endDate" class="form-label">End Date:</label>
+                                <label for="endDate" class="form-label">종료 날짜</label>
                                 <form:input path="endDate" class="form-control" type="date" id="endDate"/>
                             </div>
                             <div class="mb-3">
-                                <label for="startTime" class="form-label">Start Time:</label>
+                                <label for="startTime" class="form-label">시작 시간</label>
                                 <form:select path="startTimeCode" id="startTime" class="form-control">
                                     <form:options items="${times}" itemValue="codeValue" itemLabel="codeValueName"/>
                                 </form:select>
                             </div>
                             <div class="mb-3">
-                                <label for="endTime" class="form-label">End Time:</label>
+                                <label for="endTime" class="form-label">종료 시간</label>
                                 <form:select path="endTimeCode" id="endTime" class="form-control">
                                     <form:options items="${times}" itemValue="codeValue" itemLabel="codeValueName"/>
                                 </form:select>
                             </div>
                             <div class="mb-3">
-                                <label for="recurrencePattern" class="form-label">Recurrence Pattern:</label>
-                                <form:input path="recurrencePattern" class="form-control" id="recurrencePattern"/>
-                            </div>
-                            <div class="mb-3">
-                                <label for="recurrenceDays" class="form-label">Recurrence Days:</label>
+                                <label for="recurrenceDays" class="form-label">요일</label>
                                 <form:select path="recurrenceDays" multiple="multiple" class="form-control" id="recurrenceDays">
-                                    <option value="Mon">Monday</option>
-                                    <option value="Tue">Tuesday</option>
-                                    <option value="Wed">Wednesday</option>
-                                    <option value="Thu">Thursday</option>
-                                    <option value="Fri">Friday</option>
-                                    <option value="Sat">Saturday</option>
+                                    <option value="Mon">월요일</option>
+                                    <option value="Tue">화요일</option>
+                                    <option value="Wed">수요일</option>
+                                    <option value="Thu">목요일</option>
+                                    <option value="Fri">금요일</option>
+                                    <option value="Sat">토요일</option>
                                 </form:select>
                             </div>
-                            <button type="submit" class="btn btn-primary">Save Schedule</button>
+                            <button type="submit" class="btn btn-primary">저장</button>
                         </form:form>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Instructor Modal -->
+                <!-- Instructor Modal -->
         <div class="modal fade" id="instructorModal" tabindex="-1" aria-labelledby="instructorModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
+            <div class="modal-dialog modal-lg"> <!-- modal-lg 클래스로 크기 조정 -->
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="instructorModalLabel">Find Instructor</h5>
+                        <h5 class="modal-title" id="instructorModalLabel">강사 찾기</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
                         <div class="mb-3">
-                            <label for="instructorSearch" class="form-label">Search Instructor by Name:</label>
+                            <label for="instructorSearch" class="form-label">이름을 입력해주세요.</label>
                             <input type="text" class="form-control" id="instructorSearch" placeholder="Enter instructor name">
                         </div>
                         <table class="table table-bordered">
                             <thead>
                                 <tr>
-                                    <th>Instructor No</th>
-                                    <th>Name</th>
-                                    <th>Expertise</th>
-                                    <th>Select</th>
+                                    <th></th>
+                                    <th>강사번호</th>
+                                    <th>이름</th>
+                                    <th>전문분야</th>
                                 </tr>
                             </thead>
                             <tbody id="instructorTableBody">
                                 <!-- 강사 검색 시 동적으로 생성된 강사 목록을 표시하기 위함.(서버에서 데이터를 받아 이곳에 삽입) -->
                             </tbody>
                         </table>
+                        <button type="button" class="btn btn-primary" id="selectInstructorButton">선택</button>
                     </div>
                 </div>
             </div>
@@ -246,30 +230,29 @@
             <div class="modal-dialog modal-lg"> <!-- modal-lg 클래스로 크기 조정 -->
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="addStudentModalLabel">Register Students</h5>
+                        <h5 class="modal-title" id="addStudentModalLabel">회원 등록</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
                         <div class="mb-3">
-                            <label for="studentSearch" class="form-label">Search Students:</label>
+                            <label for="studentSearch" class="form-label">회원검색</label>
                             <input type="text" class="form-control" id="studentSearch" placeholder="Enter student name or phone">
                         </div>
                         <table class="table table-bordered">
                             <thead>
                                 <tr>
-                                    <th>Select</th>
-                                    <th>Student No</th>
-                                    <th>Name</th>
-                                    <th>Phone</th>
-                                    <th>Address</th>
-                                    <th>Detail Address</th>
+                                    <th></th>
+                                    <th>회원번호</th>
+                                    <th>이름</th>
+                                    <th>휴대폰 번호</th>
+                                    <th>주소</th>
                                 </tr>
                             </thead>
                             <tbody id="studentTableBody">
                                 <!-- 검색된 학생 목록이 여기에 표시됩니다. -->
                             </tbody>
                         </table>
-                        <button type="button" class="btn btn-primary" id="registerStudentsButton">Register</button>
+                        <button type="button" class="btn btn-primary" id="registerStudentsButton">등록</button>
                     </div>
                 </div>
             </div>
@@ -334,10 +317,10 @@
                         instructorTableBody.empty();
                         data.forEach(function(instructor) {
                             const row = '<tr>' +
+                                        '<td><input type="checkbox" name="instructorCheckbox" value="' + instructor.instructorNo + '"></td>' +
                                         '<td>' + instructor.instructorNo + '</td>' +
                                         '<td>' + instructor.name + '</td>' +
                                         '<td>' + instructor.expertise + '</td>' +
-                                        '<td><button class="btn btn-primary" onclick="selectInstructor(\'' + instructor.instructorNo + '\', \'' + instructor.name + '\')">Select</button></td>' +
                                      '</tr>';
                             instructorTableBody.append(row);
                         });
@@ -347,6 +330,21 @@
                     }
                 });
             }
+        });
+        
+        $('#selectInstructorButton').on('click', function(event) {
+            event.preventDefault();
+            const selectedInstructor = $('input[name="instructorCheckbox"]:checked').val();
+            const selectedInstructorName = $('input[name="instructorCheckbox"]:checked').closest('tr').find('td:nth-child(3)').text();
+
+            if (!selectedInstructor) {
+                alert('Please select an instructor.');
+                return;
+            }
+
+            $('#instructorNo').val(selectedInstructor);
+            $('#instructorName').val(selectedInstructorName);
+            $('#instructorModal').modal('hide');
         });
 
         $('#studentSearch').on('input', function() {

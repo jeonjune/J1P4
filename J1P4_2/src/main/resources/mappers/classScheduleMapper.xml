@@ -11,15 +11,14 @@
         <result property="endDate" column="end_date"/>
         <result property="startTimeCode" column="start_time_code"/>
         <result property="endTimeCode" column="end_time_code"/>
-        <result property="recurrencePattern" column="recurrence_pattern"/>
-        <result property="recurrenceDays" column="recurrence_days"/>
         <result property="recurrenceDays" column="recurrence_days"/>
         <result property="currentEnrollment" column="current_enrollment"/>
+        <result property="status" column="status"/>
     </resultMap>
 
     <insert id="insertSchedule" parameterType="com.itwillbs.domain.ClassScheduleVO">
-        INSERT INTO classSchedule (class_no, start_date, end_date, start_time_code, end_time_code, recurrence_pattern, recurrence_days)
-        VALUES (#{classNo}, #{startDate}, #{endDate}, #{startTimeCode}, #{endTimeCode}, #{recurrencePattern}, #{recurrenceDays})
+        INSERT INTO classSchedule (class_no, start_date, end_date, start_time_code, end_time_code, recurrence_days)
+        VALUES (#{classNo}, #{startDate}, #{endDate}, #{startTimeCode}, #{endTimeCode}, #{recurrenceDays})
     </insert>
 
     <update id="updateSchedule" parameterType="com.itwillbs.domain.ClassScheduleVO">
@@ -28,8 +27,8 @@
             end_date = #{endDate},
             start_time_code = #{startTimeCode},
             end_time_code = #{endTimeCode},
-            recurrence_pattern = #{recurrencePattern},
-            recurrence_days = #{recurrenceDays}
+            recurrence_days = #{recurrenceDays},
+            status = #{status}
         WHERE schedule_id = #{scheduleId}
     </update>
 
@@ -50,4 +49,18 @@
         SET current_enrollment = #{currentEnrollment}
         WHERE schedule_id = #{scheduleId}
     </update>
+    
+    <select id="getAllSchedules" resultMap="scheduleResultMap">
+        SELECT * FROM classSchedule
+    </select>
+
+    <update id="updateScheduleStatus" parameterType="com.itwillbs.domain.ClassScheduleVO">
+        UPDATE classSchedule
+        SET status = #{status}
+        WHERE schedule_id = #{scheduleId}
+    </update>
+    
+    <select id="getRecruitmentSchedules" resultMap="scheduleResultMap">
+        SELECT * FROM classSchedule WHERE status = '모집'
+    </select>
 </mapper>
