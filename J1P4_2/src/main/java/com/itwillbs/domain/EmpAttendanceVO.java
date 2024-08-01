@@ -14,13 +14,16 @@ public class EmpAttendanceVO {
 	public Date commute_time;
 	public Date quitting_time;
 	public String work_status;
-	public String vacation_reason;
-	public String vacation_approval;
-	public String reject_reason;
 	public String check_status;
 	
+	public String vacation_status;
+	public String vacation_reason;
 	public Date vacation_start;
 	public Date vacation_end;
+	public String vacation_approval;
+	public String reject_reason;
+	
+	
 	
 
 }

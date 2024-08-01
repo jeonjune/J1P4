@@ -1,5 +1,6 @@
 package com.itwillbs.web;
 
+import java.security.Principal;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -8,8 +9,11 @@ import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.itwillbs.domain.EmpAttendanceVO;
@@ -25,6 +29,9 @@ public class VacationController {
 	@Inject
 	private EmpAttendanceService eService;
 	
+	@Inject
+	private EmployeeService empService;
+	
 	//일정보기
 	@RequestMapping(value = "/vacation", method = RequestMethod.GET)
 	public ModelAndView getCalendarList(ModelAndView mv, HttpServletRequest request) {
@@ -39,6 +46,32 @@ public class VacationController {
 		}
 		mv.setViewName(viewpage);
 		return mv;
+	}
+	
+	// 휴가 신청
+	@ResponseBody
+	@PostMapping(value = "/vacation")
+	public String vacationPOST(EmpAttendanceVO vo, Principal principal) throws Exception {
+		logger.info("모달창으로 휴가신청(컨트롤러)");
+		if (principal != null) {
+			logger.info("@@@@@@@@@@@@@@principal.getName()@@@@@@@@@@@ :"+principal.getName());
+			int user_no = empService.user_no(principal.getName());
+			logger.info("vo :"+vo);
+			vo.setUser_no(user_no);
+			eService.vacation(vo);
+			}
+		
+		return "/vacation/vacation";
+	}
+	
+	// 휴가 관리
+	@RequestMapping(value = "/vacList", method = RequestMethod.GET)
+	public void vacList(Model model) throws Exception {
+		logger.info("신청중인 휴가목록@@@@");
+		List<EmpAttendanceVO> reqList = eService.reqVaca();
+		model.addAttribute("reqList", reqList);
+		
+		
 	}
 	
 
