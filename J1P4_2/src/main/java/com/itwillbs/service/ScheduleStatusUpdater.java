@@ -21,8 +21,8 @@ public class ScheduleStatusUpdater {
     @Autowired
     private ClassDAO classDAO;
 
-//    @Scheduled(cron = "0 0 0 * * ?")  // 매일 자정에 실행
-    @Scheduled(cron = "0 * * * * ?") // 매 분 마다 (테스트용)
+//    @Scheduled(cron = "0 * * * * ?") // 매 분 마다 (테스트용)
+    @Scheduled(cron = "0 0 0 * * ?")  // 매일 자정에 실행
     public void updateScheduleStatus() {
         List<ClassScheduleVO> schedules = classScheduleDAO.getRecruitmentSchedules();
         LocalDate today = LocalDate.now();

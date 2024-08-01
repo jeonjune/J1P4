@@ -31,15 +31,15 @@
                 <div class="container-fluid">
                     <nav>
                         <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                            <button class="nav-link active" id="nav-class-tab" data-bs-toggle="tab" data-bs-target="#nav-class" type="button" role="tab" aria-controls="nav-class" aria-selected="true">강의 정보</button>
-                            <button class="nav-link" id="nav-schedule-tab" data-bs-toggle="tab" data-bs-target="#nav-schedule" type="button" role="tab" aria-controls="nav-schedule" aria-selected="false">일정 정보</button>
+                            <button class="nav-link active" id="nav-class-tab" data-bs-toggle="tab" data-bs-target="#nav-class" type="button" role="tab" aria-controls="nav-class" aria-selected="true">강의</button>
+                            <button class="nav-link" id="nav-schedule-tab" data-bs-toggle="tab" data-bs-target="#nav-schedule" type="button" role="tab" aria-controls="nav-schedule" aria-selected="false">일정</button>
                         </div>
                     </nav>
                     <div class="tab-content" id="nav-tabContent">
                         <div class="tab-pane fade show active" id="nav-class" role="tabpanel" aria-labelledby="nav-class-tab">
                             <div class="card">
                                 <div class="card-header">
-                                    <h3 class="card-title">Class Information</h3>
+                                    <h3 class="card-title">정보 수정</h3>
                                 </div>
                                 <div class="card-body">
                                     <form:form id="classForm" method="post" action="${pageContext.request.contextPath}/classes/save" modelAttribute="classVO">
@@ -95,7 +95,7 @@
                         <div class="tab-pane fade" id="nav-schedule" role="tabpanel" aria-labelledby="nav-schedule-tab">
 						    <div class="card">
 						        <div class="card-header">
-						            <h3 class="card-title">Schedule Information</h3>
+						            <h3 class="card-title">수정 / 등록</h3>
 						        </div>
 						        <div class="card-body">
 						            <button type="button" class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#scheduleModal" onclick="initScheduleForm()">
