@@ -96,8 +96,10 @@ public class MemberController {
 		
 	}
 	@GetMapping(value = "/details")
-	public void detailsGET(Criteria cri,@RequestParam int mem_no,Model model) throws Exception{
+	public void detailsGET(Criteria cri,@RequestParam("mem_no") int mem_no,
+			@RequestParam("pageNormal") int pageNormal,@RequestParam("pageRecruit") int pageRecruit, Model model) throws Exception{
 		logger.debug(" detailsGET() 실행 ");
+		logger.debug(" ############## pageNormal : "+pageNormal);
 		
 		List<Map<String, Object>> countClassResult = mService.countClass(mem_no);
 		
@@ -108,26 +110,95 @@ public class MemberController {
         } catch (Exception e) {
             logger.error("new6MemCount을 JSON으로 변환하는데 실패하였습니다.", e);
         }
-		
+        
+        Map<String, Object> statusNormal = new HashMap<String, Object>();
+        Map<String, Object> statusRecruit = new HashMap<String, Object>();
+        
+        statusNormal.put("mem_no", mem_no);
+        statusNormal.put("status", "정상");
+        statusNormal.put("pageNormal", pageNormal);
+        model.addAttribute("normalCount",mService.getTotalDetailCount(statusNormal));
+        model.addAttribute("statusNormal",mService.detailClass(statusNormal));
+        logger.debug(" @@@@@@@@ statusNormal : "+mService.detailClass(statusNormal));
+        
+        statusRecruit.put("mem_no", mem_no);
+        statusRecruit.put("status", "모집");
+        statusRecruit.put("pageRecruit", pageRecruit);
+        model.addAttribute("statusRecruit",mService.detailClass(statusRecruit));
+        logger.debug(" @@@@@@@@ statusRecruit : "+mService.detailClass(statusRecruit));
+        
+        
 		model.addAttribute("vo", countClassJSON);
-		
 		model.addAttribute("pageInfo",cri);
+		
+	}
+	
+	@ResponseBody
+	@GetMapping(value = "/detailsAjax")
+	public List<RegistrationVO> detailsAjaxGET(@RequestParam("mem_no") int mem_no,
+			@RequestParam("pageNormal") int pageNormal, Model model) throws Exception{
+		logger.debug(" detailsAjaxGET() 실행 ");
+		logger.debug(" ############## pageNormal : "+pageNormal);
+		
+		Map<String, Object> statusNormal = new HashMap<String, Object>();
+//		Map<String, Object> statusRecruit = new HashMap<String, Object>();
+		
+		statusNormal.put("mem_no", mem_no);
+		statusNormal.put("status", "정상");
+		statusNormal.put("pageNormal", pageNormal);
+		mService.detailClass(statusNormal);
+		logger.debug(" @@@@@@@@ statusNormal : "+statusNormal);
+		
+		
+//		statusRecruit.put("mem_no", mem_no);
+//		statusRecruit.put("status", "모집");
+//		statusRecruit.put("pageRecruit", pageRecruit);
+//		logger.debug(" @@@@@@@@ statusRecruit : "+mService.detailClass(statusRecruit));
+		
+		return mService.detailClass(statusNormal);
+
+		
+	}
+	
+	@ResponseBody
+	@GetMapping(value = "/countAjax")
+	public int countAjaxGET(@RequestParam("mem_no") int mem_no,
+			@RequestParam("status") String status) throws Exception{
+		logger.debug(" countAjaxGET 실행 ");
+		
+		Map<String, Object> statusNormal = new HashMap<String, Object>();
+//		Map<String, Object> statusRecruit = new HashMap<String, Object>();
+		
+		statusNormal.put("mem_no", mem_no);
+		statusNormal.put("status", status);
+		logger.debug(" @@@@@@@@ statusNormal : "+statusNormal);
+		
+		
+//		statusRecruit.put("mem_no", mem_no);
+//		statusRecruit.put("status", "모집");
+//		logger.debug(" @@@@@@@@ statusRecruit : "+mService.detailClass(statusRecruit));
+		
+		return mService.getTotalDetailCount(statusNormal);
+		
 		
 	}
 	
 	@ResponseBody
 	@GetMapping(value = "/detailClass")
 	public List<RegistrationVO> detailClassGET(@RequestParam("mem_no") int mem_no,
-			@RequestParam("fieldCode") String fieldCode) throws Exception{
+			@RequestParam("fieldCode") String fieldCode,
+			@RequestParam("status") String status) throws Exception{
 		logger.debug(" detailClassGET() 실행 ");
 		logger.debug(" @@@@@@@@@@@@@@@@@ mem_no : "+mem_no);
 		logger.debug(" @@@@@@@@@@@@@@@@@ fieldCode : "+fieldCode);
+		logger.debug(" @@@@@@@@@@@@@@@@@ status : "+status);
 		
 		
 		Map<String, Object> vo = new HashMap<String, Object>();
 		
 		vo.put("mem_no", mem_no);
 		vo.put("fieldCode", fieldCode);
+		vo.put("status", status);
 		logger.debug(" @@@@@@@@@@@@@@@@@ vo : "+ mService.detailClass(vo));
 		
 		return mService.detailClass(vo);

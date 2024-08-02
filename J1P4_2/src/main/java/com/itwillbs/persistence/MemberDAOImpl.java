@@ -85,6 +85,11 @@ public class MemberDAOImpl implements MemberDAO {
 	public List<RegistrationVO> detailClass(Map<String, Object> vo) throws Exception {
 		return sqlSession.selectList(NAMESPACE+"detailClass",vo);
 	}
+
+	@Override
+	public int getTotalDetailCount(Map<String, Object> vo) throws Exception {
+		return sqlSession.selectOne(NAMESPACE+"totalDetailClass",vo);
+	}
 	
 	
 	

@@ -40,4 +40,7 @@ public interface MemberService {
 		
 	// 선택한 과목에 대한 상세내용 출력
 	public List<RegistrationVO> detailClass(Map<String, Object> vo) throws Exception;
+	
+	// 상태별 과목 상세내용 개수
+		public int getTotalDetailCount(Map<String, Object> vo) throws Exception;
 }

@@ -83,6 +83,11 @@ public class MemberServiceImpl implements MemberService {
 		return mDao.detailClass(vo);
 	}
 
+	@Override
+	public int getTotalDetailCount(Map<String, Object> vo) throws Exception {
+		return mDao.getTotalDetailCount(vo);
+	}
+
 	
 	
 
