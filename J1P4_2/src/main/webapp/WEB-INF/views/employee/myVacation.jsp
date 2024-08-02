@@ -6,7 +6,6 @@
 <%@ include file="../include/header.jsp"%>
 <%@ include file="../include/sidemenu.jsp"%>
 <%@ include file="../include/myMenu.jsp"%>
-
 <style type="text/css">
 
 .centered-circle {
@@ -65,22 +64,71 @@
 					</h2>
 					<div class="card" style="margin-top: 20px;">
 						<div class="card-body">
-							<strong><i class="far fa-file-alt mr-1 cardMy"></i> 이번달 출근 현황 </strong>
+							<strong><i class="far fa-file-alt mr-1 cardMy"></i> 올 해 연차 현황 </strong>
 							<br> <br>
-							<div class="centered-circle"><span>출근일 수 <br>nn</span></div>
+							<div class="centered-circle"><span>총 연차 <br>12</span></div>
 							
-							<div class="centered-circle"><span>지각 <br>nn</span></div>
-
-							<div class="centered-circle"><span>반차 <br>nn</span></div>
+							<div class="centered-circle"><span>연차 <br>12</span></div>
 							
-							<div class="centered-circle"><span>연차 <br>nn</span></div>
+							<div class="centered-circle"><span>반차 <br>12</span></div>
 							
+							<div class="centered-circle"><span>남은 연차 <br>12</span></div>
 						</div>
 					</div>
 				</div>
 			</div>
+			<div class="col-sm-12">
+				<table id="example1" class="table table-bordered table-hover"
+					style="background: #fff" aria-describedby="example1_info">
+					<thead>
+						<tr>
+						
+							<th class="sorting" tabindex="0" aria-controls="example1"
+								rowspan="1" colspan="1"
+								aria-label="Browser: activate to sort column ascending">휴가 종류</th>
+							<th class="sorting" tabindex="0" aria-controls="example1"
+								rowspan="1" colspan="1"
+								aria-label="Browser: activate to sort column ascending">휴가 시작일</th>
+							<th class="sorting" tabindex="0" aria-controls="example1"
+								rowspan="1" colspan="1"
+								aria-label="Browser: activate to sort column ascending">휴가 종료일</th>
+							<th class="sorting" tabindex="0" aria-controls="example1"
+								rowspan="1" colspan="1"
+								aria-label="Browser: activate to sort column ascending">휴가 사유</th>
+							<th class="sorting" tabindex="0" aria-controls="example1"
+								rowspan="1" colspan="1"
+								aria-label="Browser: activate to sort column ascending">상태</th>
+							<th class="sorting" tabindex="0" aria-controls="example1"
+								rowspan="1" colspan="1"
+								aria-label="Browser: activate to sort column ascending">반려이유</th>
+								
+
+						</tr>
+						
+					</thead>
+					<tbody>
+						<c:forEach var="myVaca" items="${myVaca }">
+							<tr class="odd">
+								<td class="dtr-control" tabindex="0">${myVaca.vacation_status }</td>
+								<td class="dtr-control" tabindex="0">${myVaca.vacation_start }</td>
+								<td>${myVaca.vacation_end }</td>
+								<td>${myVaca.vacation_reason }</td>
+								<td>${myVaca.vacation_approval }</td>
+								<td>${myVaca.reject_reason }</td>
+							</tr>
+						</c:forEach>
+					</tbody>
+		
+				</table>
+			</div>
 		</div>
+		
 	</div>
+
+
+
+
+
 
 
 

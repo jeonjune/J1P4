@@ -26,6 +26,7 @@ import com.itwillbs.domain.Criteria;
 import com.itwillbs.domain.EmpAttendanceVO;
 import com.itwillbs.domain.EmployeeVO;
 import com.itwillbs.service.CommonCodeService;
+import com.itwillbs.service.EmpAttendanceService;
 import com.itwillbs.service.EmployeeService;
 
 @Controller
@@ -39,6 +40,9 @@ public class EmployeeController {
 	
     @Autowired
     private CommonCodeService commonCodeService;
+    
+    @Inject
+    private EmpAttendanceService vaService;
 	
 	// http://localhost:8088/employee/empList
 	@GetMapping(value = "/empList")
@@ -351,5 +355,23 @@ public class EmployeeController {
 				
 				model.addAttribute("myP",eService.empDetail(user_no));
 	}
+
+	// 휴가관리 페이지
+	@GetMapping(value = "/myVacation")
+	public void myVacation(Model model,Principal principal) throws Exception{
+		// user_id로 user_no 구하기
+		int user_no = 0;
+		
+		if (principal != null) {
+			logger.info("@@@@@@@@@@@@@@principal.getName()@@@@@@@@@@@ :"+principal.getName());
+			user_no = eService.user_no(principal.getName());
+			List<EmpAttendanceVO> myVaca = vaService.myVaca(user_no);
+			model.addAttribute("myVaca", myVaca);
+		}
+		
+		
+		model.addAttribute("myP",eService.empDetail(user_no));
+	}
+	
 
 }

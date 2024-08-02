@@ -45,7 +45,7 @@
      	              <%if (calendarList != null) {%>
      	              <%for (EmpAttendanceVO vo : calendarList) {%>
      	              {
-     	              	title : '<%=vo.getVacation_status()%>',
+     	              	title : '<%=vo.getV_name()%>-<%=vo.getVacation_status()%>',
      	                  start : '<%=vo.getVacation_start()%>',
      	                  end : '<%=vo.getVacation_end()%>',
      	                  color : '#' + Math.round(Math.random() * 0xffffff).toString(16)
@@ -135,7 +135,7 @@ $(document).ready(function(){
 			data : $("#fm1").serialize(),
 			success : function(data) {
 				alert("휴가 신청완료 되었습니다.");
-			
+				window.location.href = '/employee/myVacation';
 			},
 			error : function() {
 				alert("오류발생");

@@ -42,6 +42,7 @@
     <result property="vacation_end" column="vacation_end" />
     <result property="vacation_approval" column="vacation_approval" />
     <result property="reject_reason" column="reject_reason" />
+    <result property="v_name" column="v_name" />
   
   </resultMap>
 
@@ -50,21 +51,66 @@
 	<!-- 휴가일정 캘린더로 불러오기 -->
 	<select id="calendar" resultType="com.itwillbs.domain.EmpAttendanceVO">
 		select * from empAttendance
-		where vacation_status is not null
+		where vacation_status is not null and vacation_approval = '승인'
 	</select>
 	
 	<!-- 휴가 신청서 등록 -->
  	<insert id="vacation">
- 		insert into empAttendance (user_no, vacation_status, vacation_reason, vacation_start, vacation_end, vacation_approval)
-  	 	values(#{user_no}, #{vacation_status}, #{vacation_reason}, #{vacation_start}, #{vacation_end}, '미승인')
+ 		insert into empAttendance (user_no, vacation_status, vacation_reason, vacation_start, vacation_end, vacation_approval,v_name)
+  	 	values(#{user_no}, #{vacation_status}, #{vacation_reason}, #{vacation_start}, #{vacation_end}, '미승인',#{v_name})
  	</insert>
  	
  	<!-- 미승인 휴가 목록 -->
  	<select id="reqVaca" resultMap="employeeMap">
- 		select e.user_no, name, job, job_rank, vacation_status, vacation_start, vacation_end, vacation_reason
+ 		select e.user_no, name, job, job_rank, vacation_status, vacation_start, vacation_end, vacation_reason, empAttend_no
 		from employee e
 		join empAttendance v on e.user_no = v.user_no
 		where vacation_status is not null and vacation_approval = '미승인'
  	</select>
+ 	
+ 	<!-- 승인된 휴가 목록 -->
+ 	<select id="yVaca" resultMap="employeeMap">
+ 		select e.user_no, name, job, job_rank, vacation_status, vacation_start, vacation_end, vacation_reason
+		from employee e
+		join empAttendance v on e.user_no = v.user_no
+		where vacation_status is not null and vacation_approval = '승인'
+ 	</select>
+
+ 	<!-- 반려된 휴가 목록 -->
+ 	<select id="nVaca" resultMap="employeeMap">
+ 		select e.user_no, name, job, job_rank, vacation_status, vacation_start, vacation_end, vacation_reason, reject_reason
+		from employee e
+		join empAttendance v on e.user_no = v.user_no
+		where vacation_status is not null and vacation_approval = '반려'
+ 	</select>
+ 	
+ 	<!-- 휴가 반려 -->
+ 	<update id="rejectVa">
+ 		update empAttendance
+		set vacation_approval='반려', reject_reason =#{reject_reason}
+		where empAttend_no = #{empAttend_no}
+ 	</update>
+ 	
+ 	<!-- 휴가 승인 -->
+ 	<update id="yVa">
+ 		update empAttendance
+		set vacation_approval='승인'
+		where empAttend_no = #{empAttend_no}
+ 	</update>
+ 	
+ 	<!-- user_no 로 name 구하기 -->
+ 	<select id="getName" resultType="String">
+		select name from employee
+		where user_no = #{user_no}
+ 	</select>
+ 	
+ 	<!-- 내 휴가 목록 -->
+ 	<select id="myVaca" resultType="EmpAttendanceVO">
+ 		select user_no, vacation_status, vacation_start, vacation_end, vacation_reason, vacation_approval,reject_reason
+		from empAttendance
+		where vacation_status is not null and user_no = #{user_no}
+ 	</select>
+ 	
+ 	
  	
  </mapper>

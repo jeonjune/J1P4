@@ -10,6 +10,9 @@
 		<li class="nav-item"><a class="nav-link"
 			href="/employee/attend"
 			role="button">출석정보</a></li>
+		<li class="nav-item"><a class="nav-link"
+			href="/employee/myVacation"
+			role="button">휴가관리</a></li>
 	</ul>
 	
 	
