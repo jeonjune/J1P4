@@ -22,6 +22,7 @@ public class EquipManageVO {
 	private String e_repair_type; //장비보수유형 - 구입/수리/폐기
 	private String repair_reason; //유지보수사유
 	private String equipment_reject; //반려사유
+	private String status; //상태 - 대기,승인,반려
 
 	
 	

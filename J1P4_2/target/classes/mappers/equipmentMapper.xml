@@ -102,5 +102,11 @@
 	set e_repair_type='정상'
 	where equipment_no=#{equipment_no}
 	</update>
+	
+	<!-- 반려사유 가져오기  -->
+	<select id="getReject" resultType="EquipManageVO" parameterType="int">
+	select * from equipmentManagement
+	where equipment_no=#{equipment_no}
+	</select>
 		
   </mapper>

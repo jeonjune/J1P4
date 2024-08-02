@@ -14,7 +14,7 @@ public class FacilityManagementVO {
 	private String repair_type; //유지보수 유형(청소/방역/점검)
 	private String repair_status; //유지보수상세
 	private String name; //담당자이름
-	
+	private Integer count; // 한달간격 유지보수유형 count
 	
 	
 }

@@ -20,5 +20,13 @@ public interface FacilityDAO {
 	//시설상세내역 조회
 	public List<FacilityManagementVO> facDe(int facNo) throws Exception;
 	
+	//시설 한달간격 count 조회
+	public List<FacilityManagementVO> count(int facNo) throws Exception;
+	
+	//시설 최신날짜 조회
+	public List<FacilityManagementVO> dateUpdate(int facNo) throws Exception;
+	
+	//시설 이름 조회
+	public String facName(int facNo) throws Exception;
 	
 }

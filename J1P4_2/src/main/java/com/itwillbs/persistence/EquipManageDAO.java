@@ -41,4 +41,7 @@ public interface EquipManageDAO {
 	//수리중-> 정상 수정
 	public void repairOk(EquipManageVO vo) throws Exception;
 	
+	//반려사유 가져오기
+	public EquipManageVO getReject(int eno) throws Exception;
+	
 }

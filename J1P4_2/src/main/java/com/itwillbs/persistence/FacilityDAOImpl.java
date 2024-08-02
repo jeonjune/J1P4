@@ -46,6 +46,31 @@ public class FacilityDAOImpl implements FacilityDAO {
 	public List<FacilityManagementVO> facDe(int facNo) throws Exception {
 		return sqlSession.selectList(NAMESPACE+"facDe", facNo);
 	}
+
+	//시설 한달간격 count 조회
+	@Override
+	public List<FacilityManagementVO> count(int facNo) throws Exception {
+		return sqlSession.selectList(NAMESPACE+"count", facNo);
+	}
+
+	//시설 최신날짜 조회
+	@Override
+	public List<FacilityManagementVO> dateUpdate(int facNo) throws Exception {
+		return sqlSession.selectList(NAMESPACE+"dateUpdate",facNo);
+	}
+	
+	//시설 이름 조회
+	@Override
+	public String facName(int facNo) throws Exception {
+		
+		return sqlSession.selectOne(NAMESPACE+"facName", facNo);
+	}
+	
+	
+	
+	
+
+	
 	
 	
 	
