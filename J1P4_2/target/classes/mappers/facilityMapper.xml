@@ -26,8 +26,52 @@
 	<insert id="facDeIn">
 		insert into facilityManagement (repair_type,repair_status,repair_date,name,facility_no)
 		values(#{repair_type},#{repair_status},#{repair_date},#{name},#{facility_no})
-	</insert>	
+	</insert>
 	
+	<!-- 카드박스에 시설이름 가져오기 -->
+		
 	
-
+	<!-- 시설 청소/방역/점검 한달간격 count -->
+	<select id="count" resultType="FacilityManagementVO" parameterType="int">
+	<![CDATA[
+	SELECT 
+    repair_type,
+    COUNT(repair_type) AS count
+	FROM 
+	    facilityManagement
+	WHERE facility_no = #{facility_no} and (
+	    repair_date >= DATE_FORMAT(CURDATE(), '%Y-%m-01') 
+	    AND repair_date < DATE_FORMAT(DATE_ADD(CURDATE(), INTERVAL 1 MONTH), '%Y-%m-01'))
+	GROUP BY 
+	    repair_type
+	ORDER BY 
+	    count DESC; 
+	]]>
+	</select>
+	
+	<!-- 점검,방역 최신 날짜로 업데이트 -->
+	<select id="dateUpdate" resultType="FacilityManagementVO" >
+	SELECT 
+    repair_date, 
+    repair_type
+	FROM 
+	    facilityManagement
+	WHERE 
+	    facility_no = #{facility_no} 
+	  AND (
+	        (repair_type = '방역' AND repair_date = (SELECT MAX(repair_date) FROM facilityManagement WHERE repair_type = '방역' AND facility_no = #{facility_no}))
+	        OR 
+	        (repair_type = '점검' AND repair_date = (SELECT MAX(repair_date) FROM facilityManagement WHERE repair_type = '점검' AND facility_no = #{facility_no}))
+	    );    
+   </select>
+	
+	<!-- 카드박스 시설이름 조회 -->
+	<select id="facName" resultType="string" parameterType="int">
+	select f.facility_name
+	from facility f
+	JOIN facilityManagement m ON f.facility_no = m.facility_no
+	where f.facility_no = #{facility_no}
+	LIMIT 1;
+	</select>
+	
   </mapper>

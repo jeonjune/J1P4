@@ -67,11 +67,14 @@
 							수리중
   							</button>
   							<ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-						    <li><a class="dropdown-item" id="repairButt">정상 됐습니다.</a></li>
+						    <li><a class="dropdown-item" id="repairButt" >수리완료
+								<input type="hidden" id="eqno" value="${eList.equipment_no }">
+						    	</a>
+						    </li>
 						  </ul>
 						</div>
 						</c:if>
-						<c:if test="${eList.e_repair_type eq '정상' || '폐기'}">
+						<c:if test="${eList.e_repair_type eq '정상'or eList.e_repair_type eq '폐기'}">
 						${eList.e_repair_type}
 						</c:if>
 						</td>
@@ -96,8 +99,8 @@
 $(document).ready(function(){
 	
 	$(document).on("click","#repairButt",function(){
-		 var type = $('#repairButt').val();
-		//alert('asd')
+		 var type = $('#eqno').val();
+		alert(type);
 		Swal.fire({
 			   title: '수리가 끝났습니다.',
 			   icon: 'warning',
@@ -118,8 +121,7 @@ $(document).ready(function(){
 				   $.ajax({
 					   url:"/maintenance/equipdetail2",
 					   type:"POST",
-					   data: {"equipment_no":"${resultVO.equipment_no }",
-						   	  e_repair_type:type,
+					   data: {"equipment_no": type
 						   },
 					   beforeSend: function(xhr) { //header.jsp에 있는 토큰때문에 써주는 것
 				                xhr.setRequestHeader(header, token);
