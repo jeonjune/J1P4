@@ -16,7 +16,8 @@
 		aria-controls="offcanvasRight">등록하기</button>
 	<div class="col-sm-12">
 		<table id="example1"
-			class="table table-bordered table-striped dataTable dtr-inline"
+			class="table table-bordered table-hover"
+			style="background: #fff"
 			aria-describedby="example1_info">
 			<thead>
 				<tr>

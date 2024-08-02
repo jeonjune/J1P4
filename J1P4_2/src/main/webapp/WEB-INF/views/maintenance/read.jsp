@@ -7,8 +7,28 @@
 
 <div class="content-wrapper" style="min-height: 831px;">
 
-<%-- 	${facDe} --%>
 	<h1>read</h1>
+	 
+	<h2 style="margin-top: 10px;">${name}
+						</h2>
+					<div class="card" style="margin-top: 20px;">
+						<div class="card-body">
+							<strong><i class="far fa-file-alt mr-1 cardMy"></i> 월 유지보수 현황 </strong>
+							<br> <br><div style="white-space:pre;">
+							<c:out value="${count[0].repair_type}"></c:out>
+							<c:out value="${count[0].count}"></c:out>
+							<c:out value="${count[1].repair_type}"></c:out>
+							<c:out value="${count[1].count}"></c:out>
+							<c:out value="${count[2].repair_type}"></c:out>
+							<c:out value="${count[2].count}"></c:out>
+							
+							<c:out value="${fac[0].repair_type}"></c:out>
+							<c:out value="${fac[0].repair_date}"></c:out>
+							<c:out value="${fac[1].repair_type}"></c:out>
+							<c:out value="${fac[1].repair_date}"></c:out>
+							</div>
+						</div>
+					</div>
 
 
 	<button class="btn btn-primary" type="button"
@@ -17,7 +37,8 @@
 
 	<div class="col-sm-12">
 		<table id="example1"
-			class="table table-bordered table-striped dataTable dtr-inline"
+			class="table table-bordered table-hover"
+			style="background: #fff"
 			aria-describedby="example1_info">
 			<thead>
 				<tr>

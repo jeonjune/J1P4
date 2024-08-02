@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -60,11 +61,13 @@ public class ClassController {
         return classService.getClassById(classNo);
     }
 
-    @PostMapping("/delete/{id}")
+    @PostMapping("/delete")
     @ResponseBody
-    public String deleteClass(@PathVariable("id") int classNo) {
-        classService.deleteClass(classNo);
-        return "redirect:/classes/list";
+    public String deleteClasses(@RequestBody List<Integer> classNos) {
+        for (Integer classNo : classNos) {
+            classService.deleteClass(classNo);
+        }
+        return "Success";
     }
 
     @GetMapping("/detail/{id}")

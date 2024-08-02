@@ -32,8 +32,8 @@ public class EmployeeVO {
 	private String enabled;
 	
 	// 조인을 수행하는 테이블의 정보 저장
-	//private AuthVO authVO; // 1:1 구조
 	private List<AuthVO> authList; // 1:N 구조
+	private List<EmpAttendanceVO> vacationList;
 	
 	
 	

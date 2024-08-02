@@ -101,6 +101,12 @@ public class EquipManageDAOImpl implements EquipManageDAO {
 		sqlSession.update(NAMESPACE+"repairOk", vo);
 	}
 	
+	//반려사유 가져오기
+	@Override
+	public EquipManageVO getReject(int eno) throws Exception {
+		return sqlSession.selectOne(NAMESPACE+"getReject", eno);
+	}
+	
 	
 	
 	

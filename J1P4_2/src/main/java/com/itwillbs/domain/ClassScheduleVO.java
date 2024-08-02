@@ -13,11 +13,14 @@ public class ClassScheduleVO {
     private Date endDate;
     private String startTimeCode;
     private String endTimeCode;
-    private String recurrencePattern;
     private String recurrenceDays;
-    
+
     private List<ClassVO> classList;
     
+
+
+    private String status;
+    private int currentEnrollment;
 
 
 }

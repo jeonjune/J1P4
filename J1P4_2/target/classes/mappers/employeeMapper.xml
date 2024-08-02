@@ -70,7 +70,7 @@
 	
 	<!-- 출근상태 확인 -->
 	<select id="checkWork" resultType="string">
-		select work_status from empAttendance where user_no=#{user_no} and attend_date=DATE(now())
+		select work_status from empAttendance where user_no=#{user_no} and attend_date=DATE(now()) and commute_time is not null
 	</select>
 	
 	<!-- 퇴근하기 -->

@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.itwillbs.domain.FacilityManagementVO;
@@ -59,14 +60,26 @@ public class FacilityController {
 	
 	//시설상세페이지 리스트
 	@GetMapping(value = "/read")
-	public void facReadListGET(HttpServletRequest request,Model model)throws Exception {
+	public void facReadListGET(HttpServletRequest request,Model model, @RequestParam("facility_no")int fno)throws Exception {
 		logger.info("facReadListGET() 실행 :");
 		int no = (Integer.parseInt(request.getParameter("facility_no")));
 		logger.info("no :"+no);
 		List<FacilityManagementVO> facDe = fService.facDe(no);
 		logger.info("facDe :"+facDe);
-		
 		model.addAttribute("facDe",facDe);
+		
+		//시설이름 조회
+		String name = fService.facName(fno);
+		logger.info("name :"+name);
+		model.addAttribute("name", fService.facName(fno));
+		
+		//count 조회
+		model.addAttribute("count", fService.count(fno));
+		
+		//최신날짜 조회
+		List<FacilityManagementVO> fac = fService.dateUpdate(fno);
+		logger.info("fac :"+fac.size());
+		model.addAttribute("fac",fService.dateUpdate(fno));
 		
 	}
 	
@@ -83,6 +96,7 @@ public class FacilityController {
 		return "maintenance/read";
 		
 	}
+	
 	
 	
 	

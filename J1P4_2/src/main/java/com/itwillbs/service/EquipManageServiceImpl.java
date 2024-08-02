@@ -92,6 +92,12 @@ public class EquipManageServiceImpl implements EquipManageService {
 	public void repairOk(EquipManageVO vo) throws Exception {
 		edao.repairOk(vo);
 	}
+
+	//반려사유 가져오기
+	@Override
+	public EquipManageVO getReject(int eno) throws Exception {
+		return edao.getReject(eno);
+	}
 	
 	
 	

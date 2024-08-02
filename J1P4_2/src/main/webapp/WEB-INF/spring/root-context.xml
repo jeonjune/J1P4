@@ -2,8 +2,10 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:task="http://www.springframework.org/schema/task"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
-		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd">
 	
 	<!-- Root Context: defines shared resources visible to all other web components -->
 	
@@ -46,5 +48,14 @@
 	
  	<!-- Service 객체 인식 -->
 	<context:component-scan base-package="com.itwillbs.service"></context:component-scan>
-		
+	
+	<!-- 스케줄러 설정 추가 -->
+    <task:annotation-driven scheduler="taskScheduler"/>
+    
+    <bean id="taskScheduler" class="org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler">
+        <property name="poolSize" value="10"/>
+    </bean>
+
+    <bean id="scheduleStatusUpdater" class="com.itwillbs.service.ScheduleStatusUpdater" />
+
 </beans>

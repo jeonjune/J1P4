@@ -9,6 +9,9 @@
 			role="button">직원리스트</a></li>
 		<li class="nav-item"><a class="nav-link"
 			href="/vacation/vacation"
+			role="button">직원일정</a></li>
+		<li class="nav-item"><a class="nav-link"
+			href="/vacation/vacList"
 			role="button">휴가관리</a></li>
 	</ul>
 	

@@ -266,14 +266,26 @@ public class EquipmentController {
 	
 	//장비내역 (수리중 -> 정상)으로 수정하기
 	@ResponseBody
-	@PostMapping(value = "equipdetail2")
+	@PostMapping(value = "/equipdetail2")
 	public String repairOk(EquipManageVO vo,@RequestParam("equipment_no")int eno) throws Exception {
 		eService.repairOk(vo);
 		vo.setEquipment_no(eno);
 		
 		return"redirect:/maintenance/equipment";
 	}
+	
+	//반려사유 가져오기
+	@ResponseBody
+	@GetMapping(value = "/getReject")
+	public Map<String, String> getReject(@RequestParam("equipment_no")int eno) throws Exception {
+		EquipManageVO evo = eService.getReject(eno);
 		
+		Map<String, String> reject = new HashMap<String, String>();
+		reject.put("equipment_reject", evo.getEquipment_reject());
+		reject.put("name", evo.getName());
+		
+		return reject;
+	}
 	
 	
 	

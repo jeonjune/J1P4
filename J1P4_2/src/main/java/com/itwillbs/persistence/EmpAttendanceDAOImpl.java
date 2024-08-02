@@ -23,4 +23,18 @@ public class EmpAttendanceDAOImpl implements EmpAttendanceDAO {
 		return calendar;
 	}
 
+	@Override
+	public void vacation(EmpAttendanceVO vo) throws Exception {
+		sqlSession.insert(NAMESPACE+"vacation", vo);
+		
+	}
+
+	@Override
+	public List<EmpAttendanceVO> reqVaca() throws Exception {
+		
+		return sqlSession.selectList(NAMESPACE+"reqVaca");
+	}
+	
+	
+
 }
