@@ -49,11 +49,13 @@
 <!-- 					수강중<br> -->
 <%-- 						</c:if></span> --%>
 					<h2 style="margin-top: 10px;">${empDt.name }님
-						(${empDt.job } ${empDt.job_rank })</h2>
+						<c:if test="${empDt.job_rank == '관리자'}">(${empDt.job })</c:if>
+						<c:if test="${empDt.job_rank == '팀장' || empDt.job_rank == '사원' }">(${empDt.job } ${empDt.job_rank })</c:if>
+					</h2>
 					<div class="card" style="margin-top: 20px;">
 						<div class="card-body">
 							<strong><i class="far fa-file-alt mr-1 cardMy"></i> 메모 </strong>
-							<br> <br>자기소개를 넣어야하나.....
+							<br> <br>출결, 휴가 넣을 예정
 						</div>
 					</div>
 				</div>

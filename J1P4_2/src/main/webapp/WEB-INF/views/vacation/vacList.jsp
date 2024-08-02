@@ -9,16 +9,7 @@
 
  <div class="content-wrapper" style="min-height: 831px;">
  
- <button class="btn btn-primary" type="button"
-		data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight"
-		aria-controls="offcanvasRight" onclick = "location.href = '#'">휴가리스트</button>
- <button class="btn btn-primary" type="button"
-		data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight"
-		aria-controls="offcanvasRight" onclick = "location.href = '#'">휴가신청리스트</button>
- <button class="btn btn-primary" type="button"
-		data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight"
-		aria-controls="offcanvasRight" onclick = "location.href = '#'">반려된 휴가 리스트</button>
-
+<h2>신청중인 휴가</h2>
 	<div class="col-sm-12">
 		<table id="example1"
 			class="table table-bordered table-hover"
@@ -51,11 +42,14 @@
 					<th class="sorting" tabindex="0" aria-controls="example1"
 						rowspan="1" colspan="1"
 						aria-label="Browser: activate to sort column ascending">휴가 사유</th>
+					<th class="sorting" tabindex="0" aria-controls="example1"
+						rowspan="1" colspan="1"
+						aria-label="Browser: activate to sort column ascending">검토</th>
+						
 
 				</tr>
 			</thead>
-			<!-- 사번(user_no) 이름(name) 직무(job) 직급(job_rank)
- // 휴가 종류(vacation_status) 휴가 시작일, 종료일, 휴가 사유 -->
+
  
 <%--  ${reqList} --%>
 
@@ -72,16 +66,115 @@
                     <td>${vList.vacation_start }</td>
                     <td>${vList.vacation_end }</td>
                     <td>${vList.vacation_reason }</td>
+                    <td>
+                    <form action="/vacation/yVac" method="post" style="display : inline;">
+                    	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                        <input type="hidden" name="empAttend_no" value="${vList.empAttend_no}">
+                        <button type="submit" class="btn btn-primary">승인</button>
+                    </form>
+<!-- 					<button type="button" class="btn btn-primary" id="submitBut">승인</button> -->
+			         <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+			         data-bs-target="#rejectModal"  data-emp-attend-no="${vList.empAttend_no}">반려</button>
+                    </td>
                 </tr>
             </c:forEach>
-        </c:forEach>
+        	</c:forEach>
 			</tbody>
 
 		</table>
 	</div>
  
- 
+ 	<!-- 반려사유 입력 모달창 시작 -->
+   <div class="modal fade" id="rejectModal" tabindex="-1"
+      aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+         <div class="modal-content">
+
+            <!-- 모달창 헤더 -->
+            <div class="modal-header">
+               <h5 class="modal-title" id="exampleModalLabel">반려사유</h5>
+               <button type="button" class="btn-close" data-bs-dismiss="modal"
+                  aria-label="Close"></button>
+            </div>
+
+            <!-- 모달창 바디(본문) -->
+            <div class="modal-body">
+               <input type="hidden" id="hiddenEmpAttendNo" name="hiddenEmpAttendNo">
+               <h5>반려사유</h5>
+               <div class="content">
+                  <div class="form-group">
+						<textarea id="reject_reason" name="reject_reason" rows="5" cols="55"
+							placeholder="입력하세요."></textarea>
+					</div>
+                 
+               </div>
+             
+
+            </div>
+
+            <!-- 모달창 푸터 -->
+            <div class="modal-footer">
+               <button type="button" class="btn btn-secondary"
+                  data-bs-dismiss="modal">취소</button>
+               <button type="button" class="btn btn-primary filterBtn"
+                  data-bs-dismiss="modal" id="rejectBtt">확인</button>
+            </div>
+
+         </div>
+      </div>
+   </div>
+   <!-- 모달창 끝 -->
  
  </div>
+ 
+ <script>
+ 
+ var rejectModal = document.getElementById('rejectModal');
+ rejectModal.addEventListener('show.bs.modal', function (event) {
+     // 모달을 트리거한 버튼을 가져옵니다.
+     var button = event.relatedTarget;
+     // data-emp-attend-no 속성에서 값을 추출합니다.
+     var empAttendNo = button.getAttribute('data-emp-attend-no');
+     // 히든 필드에 값을 삽입합니다.
+     var hiddenEmpAttendNo = rejectModal.querySelector('#hiddenEmpAttendNo');
+     hiddenEmpAttendNo.value = empAttendNo;
+ });
+ 
+ 
+ 
+ //반려
+ $(document).ready(function() {
+     $('#rejectBtt').on('click', function() {
+         var empAttend_no = $('#hiddenEmpAttendNo').val();
+         var reject_reason = $('#reject_reason').val();
+         
+         // CSRF 토큰 값을 메타 태그에서 가져오기
+         var token = $("meta[name='_csrf']").attr("content");
+         var header = $("meta[name='_csrf_header']").attr("content");
+         $.ajax({
+             url: '/vacation/vacList',
+             type: 'POST',
+             data: {empAttend_no : empAttend_no, reject_reason :reject_reason},
+             beforeSend: function(xhr) { //header.jsp에 있는 토큰때문에 써주는 것
+                 xhr.setRequestHeader(header, token);
+             },
+             success: function(response) {
+                 alert("반려되었습니다.");
+                 window.location.href = '/vacation/nVacList';
+             },
+             error: function(xhr, status, error) {
+                 alert('실패 ' + error);
+             }
+         });
+     });
+ });
+ 
+ 
+ </script>
+ 
+ 
+ 
+ 
+ 
  
   <%@ include file="../include/footer.jsp"%>

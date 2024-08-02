@@ -23,7 +23,8 @@ public class EmpAttendanceVO {
 	public String vacation_approval;
 	public String reject_reason;
 	
-	
+	// 캘린더 출력용 이름
+	public String v_name;
 	
 
 }

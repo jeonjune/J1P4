@@ -34,6 +34,40 @@ public class EmpAttendanceDAOImpl implements EmpAttendanceDAO {
 		
 		return sqlSession.selectList(NAMESPACE+"reqVaca");
 	}
+
+	@Override
+	public List<EmpAttendanceVO> yVaca() throws Exception {
+
+		return sqlSession.selectList(NAMESPACE+"yVaca");
+	}
+
+	@Override
+	public List<EmpAttendanceVO> nVaca() throws Exception {
+		
+		return sqlSession.selectList(NAMESPACE+"nVaca");
+	}
+
+	@Override
+	public void reVaca(EmpAttendanceVO vo) throws Exception {
+		sqlSession.update(NAMESPACE + "rejectVa", vo);
+		
+	}
+
+	@Override
+	public void yVa(int empAttend_no) throws Exception {
+		sqlSession.update(NAMESPACE+"yVa", empAttend_no);
+		
+	}
+
+	@Override
+	public String getName(int user_no) throws Exception {
+		return sqlSession.selectOne(NAMESPACE+"getName", user_no);
+	}
+
+	@Override
+	public List<EmpAttendanceVO> myVaca(int user_no) throws Exception {
+		return sqlSession.selectList(NAMESPACE+"myVaca" , user_no);
+	}
 	
 	
 

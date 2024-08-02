@@ -47,7 +47,9 @@
 <!-- 					수강중<br> -->
 <%-- 						</c:if></span> --%>
 					<h2 style="margin-top: 10px;">${myP.name }님
-						(${myP.job } ${myP.job_rank })</h2>
+						<c:if test="${myP.job_rank == '관리자'}">(${myP.job })</c:if>
+						<c:if test="${myP.job_rank == '팀장' || myP.job_rank == '사원' }">(${myP.job } ${myP.job_rank })</c:if>
+					</h2>
 					<div class="card" style="margin-top: 20px;">
 						<div class="card-body">
 							<strong><i class="far fa-file-alt mr-1 cardMy"></i> 메모 </strong>
