@@ -431,9 +431,9 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a href="pages/UI/icons.html" class="nav-link">
+                <a href="/attendance/list" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>알아서</p>
+                  <p>출석관리</p>
                 </a>
               </li>
               <li class="nav-item">

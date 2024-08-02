@@ -178,12 +178,12 @@
                             <div class="mb-3">
                                 <label for="recurrenceDays" class="form-label">요일</label>
                                 <form:select path="recurrenceDays" multiple="multiple" class="form-control" id="recurrenceDays">
-                                    <option value="Mon">월요일</option>
-                                    <option value="Tue">화요일</option>
-                                    <option value="Wed">수요일</option>
-                                    <option value="Thu">목요일</option>
-                                    <option value="Fri">금요일</option>
-                                    <option value="Sat">토요일</option>
+                                    <option value="월">월요일</option>
+                                    <option value="화">화요일</option>
+                                    <option value="수">수요일</option>
+                                    <option value="목">목요일</option>
+                                    <option value="금">금요일</option>
+                                    <option value="토">토요일</option>
                                 </form:select>
                             </div>
                             <button type="submit" class="btn btn-primary">저장</button>
