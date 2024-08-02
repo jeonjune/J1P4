@@ -43,6 +43,7 @@
         <result property="endTimeCode" column="end_time_code"/>
         <result property="recurrencePattern" column="recurrence_pattern"/>
         <result property="recurrenceDays" column="recurrence_days"/>
+        <result property="status" column="status"/>
         <collection property="classList" resultMap="ClassMap"></collection>
   </resultMap>
 	
@@ -156,13 +157,15 @@
 	JOIN member m ON m.mem_no = r.mem_no
 	JOIN classSchedule cs ON cs.schedule_id = r.schedule_no
 	JOIN class c ON c.class_no = cs.class_no
-	WHERE m.mem_no = #{mem_no}
-	GROUP BY m.mem_no, field_code;
+	WHERE m.mem_no = #{mem_no} and (status = '종료')
+	GROUP BY m.mem_no, field_code
 	</select>
 	
 	<!-- 선택한 과목에 대한 상세내용 출력 -->
 	<select id="detailClass" resultMap="RegistrationMap">
-	select m.mem_no, r.registration_date, field_code, description,level_code,r.schedule_no
+	select m.mem_no, r.registration_date, field_code, description,level_code,
+    class_name,division_code,max_capacity,instructor_no,min_capacity,
+    start_date, end_date, recurrence_days, start_time_code, end_time_code
 	from registration r
 	join member m
 	on m.mem_no = r.mem_no
@@ -170,7 +173,39 @@
 	on cs.schedule_id = r.schedule_no
 	join class c
 	on c.class_no = cs.class_no
-	where m.mem_no = #{mem_no} and field_code = #{fieldCode}
+	<where>
+        m.mem_no = #{mem_no}
+        <if test="status == '종료'">
+            and field_code = #{fieldCode}
+            and status = #{status}
+        </if>
+        <if test="status == '정상' or status == '모집'">
+            and status = #{status}
+        </if>
+    </where>
+    <if test="status == '정상'">
+        <if test="pageNormal != null">
+            limit #{pageNormal}, 1
+        </if>
+    </if>
+    <if test="status == '모집'">
+        <if test="pageRecruit != null">
+            limit #{pageRecruit}, 1
+        </if>
+    </if>
+	</select>
+	
+	<!-- 게시판 총 글의 개수(페이징처리) -->
+	<select id="totalDetailClass" resultType="int">
+		select count(m.mem_no) as class_count
+	from registration r
+	join member m
+	on m.mem_no = r.mem_no
+	join classSchedule cs
+	on cs.schedule_id = r.schedule_no
+	join class c
+	on c.class_no = cs.class_no
+    where m.mem_no = #{mem_no} and status = #{status}
 	</select>
   	 
   </mapper>
