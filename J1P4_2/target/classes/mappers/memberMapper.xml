@@ -4,6 +4,47 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
   <mapper namespace="com.itwillbs.mapper.MemberMapper">
+  
+  
+  <resultMap type="com.itwillbs.domain.RegistrationVO" id="RegistrationMap">
+  	<id property="registration_no" column="registration_no"/>
+	  	<result property="registration_date" column="registration_date"/>
+	  	<result property="schedule_no" column="schedule_no"/>
+	  	<result property="mem_no" column="mem_no"/>
+	  	<result property="class_count" column="class_count"/>
+	  	<collection property="memList" resultMap="MemberMap"></collection>
+	  	<collection property="classScheduleList" resultMap="ClassScheduleMap"></collection>
+  </resultMap>
+  
+  <resultMap type="com.itwillbs.domain.MemberVO" id="MemberMap">
+  	<id property="mem_no" column="mem_no"/>
+  </resultMap>
+  
+  <resultMap type="com.itwillbs.domain.ClassVO" id="ClassMap">
+  	<id property="classNo" column="class_no"/>
+        <result property="className" column="class_name"/>
+        <result property="description" column="description"/>
+        <result property="fieldCode" column="field_code"/>
+        <result property="divisionCode" column="division_code"/>
+        <result property="levelCode" column="level_code"/>
+        <result property="minCapacity" column="min_capacity"/>
+        <result property="maxCapacity" column="max_capacity"/>
+        <result property="currentEnrollment" column="current_enrollment"/>
+        <result property="instructorNo" column="instructor_no"/>
+        <result property="instructorName" column="instructor_name"/>
+  </resultMap>
+  
+  <resultMap type="com.itwillbs.domain.ClassScheduleVO" id="ClassScheduleMap">
+  	 <id property="scheduleId" column="schedule_id"/>
+        <result property="classNo" column="class_no"/>
+        <result property="startDate" column="start_date"/>
+        <result property="endDate" column="end_date"/>
+        <result property="startTimeCode" column="start_time_code"/>
+        <result property="endTimeCode" column="end_time_code"/>
+        <result property="recurrencePattern" column="recurrence_pattern"/>
+        <result property="recurrenceDays" column="recurrence_days"/>
+        <collection property="classList" resultMap="ClassMap"></collection>
+  </resultMap>
 	
 	
 	<!-- 게시판 글 목록 ( 페이징 처리 1 ) -->
@@ -106,6 +147,30 @@
   	 <!-- 메시지 총 개수(페이징처리) -->
 	<select id="totalSMS" resultType="int">
 		select count(noti_no) from notification
+	</select>
+	
+	<!-- 과목별 수강회수 조회 -->
+	<select id="countClass" resultType="map">
+	SELECT class_status, m.mem_no, field_code, COUNT(field_code) as class_count
+    FROM registration r
+	JOIN member m ON m.mem_no = r.mem_no
+	JOIN classSchedule cs ON cs.schedule_id = r.schedule_no
+	JOIN class c ON c.class_no = cs.class_no
+	WHERE m.mem_no = #{mem_no}
+	GROUP BY m.mem_no, field_code;
+	</select>
+	
+	<!-- 선택한 과목에 대한 상세내용 출력 -->
+	<select id="detailClass" resultMap="RegistrationMap">
+	select m.mem_no, r.registration_date, field_code, description,level_code,r.schedule_no
+	from registration r
+	join member m
+	on m.mem_no = r.mem_no
+	join classSchedule cs
+	on cs.schedule_id = r.schedule_no
+	join class c
+	on c.class_no = cs.class_no
+	where m.mem_no = #{mem_no} and field_code = #{fieldCode}
 	</select>
   	 
   </mapper>

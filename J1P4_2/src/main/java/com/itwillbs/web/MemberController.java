@@ -3,6 +3,7 @@ package com.itwillbs.web;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -22,10 +23,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.itwillbs.domain.BaseVO;
 import com.itwillbs.domain.Criteria;
 import com.itwillbs.domain.MemberVO;
 import com.itwillbs.domain.PageVO;
+import com.itwillbs.domain.RegistrationVO;
 import com.itwillbs.service.MemberService;
 import com.itwillbs.service.SearchService;
 
@@ -93,11 +96,44 @@ public class MemberController {
 		
 	}
 	@GetMapping(value = "/details")
-	public void detailsGET(Criteria cri,Model model) throws Exception{
+	public void detailsGET(Criteria cri,@RequestParam int mem_no,Model model) throws Exception{
 		logger.debug(" detailsGET() 실행 ");
 		
+		List<Map<String, Object>> countClassResult = mService.countClass(mem_no);
+		
+		ObjectMapper mapper = new ObjectMapper();
+        String countClassJSON = "";
+        try {
+        	countClassJSON = mapper.writeValueAsString(countClassResult);
+        } catch (Exception e) {
+            logger.error("new6MemCount을 JSON으로 변환하는데 실패하였습니다.", e);
+        }
+		
+		model.addAttribute("vo", countClassJSON);
+		
+		model.addAttribute("pageInfo",cri);
 		
 	}
+	
+	@ResponseBody
+	@GetMapping(value = "/detailClass")
+	public List<RegistrationVO> detailClassGET(@RequestParam("mem_no") int mem_no,
+			@RequestParam("fieldCode") String fieldCode) throws Exception{
+		logger.debug(" detailClassGET() 실행 ");
+		logger.debug(" @@@@@@@@@@@@@@@@@ mem_no : "+mem_no);
+		logger.debug(" @@@@@@@@@@@@@@@@@ fieldCode : "+fieldCode);
+		
+		
+		Map<String, Object> vo = new HashMap<String, Object>();
+		
+		vo.put("mem_no", mem_no);
+		vo.put("fieldCode", fieldCode);
+		logger.debug(" @@@@@@@@@@@@@@@@@ vo : "+ mService.detailClass(vo));
+		
+		return mService.detailClass(vo);
+				
+	}
+	
 	@GetMapping(value = "/monitoring")
 	public void monitoringGET(Criteria cri,Model model) throws Exception{
 		logger.debug(" monitoringGET() 실행 ");
@@ -186,6 +222,6 @@ public class MemberController {
 		
 	}
 	
-
+	
 	
 }

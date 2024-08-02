@@ -7,6 +7,7 @@ import java.util.Map;
 import com.itwillbs.domain.Criteria;
 import com.itwillbs.domain.MemberVO;
 import com.itwillbs.domain.RecipientVO;
+import com.itwillbs.domain.RegistrationVO;
 
 public interface MemberDAO {
 	
@@ -35,5 +36,11 @@ public interface MemberDAO {
 	public List<RecipientVO> selectSMS(Criteria cri) throws Exception;
 	
 	public int getTotalSMS() throws Exception;
+	
+	// 회원별 신청과목 개수 조회
+	public List<Map<String, Object>> countClass(int mem_no) throws Exception;
+	
+	// 선택한 과목에 대한 상세내용 출력
+	public List<RegistrationVO> detailClass(Map<String, Object> vo) throws Exception;
 
 }

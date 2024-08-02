@@ -1,6 +1,7 @@
 package com.itwillbs.domain;
 
 import java.sql.Date;
+import java.util.List;
 
 import lombok.Data;
 
@@ -14,5 +15,9 @@ public class ClassScheduleVO {
     private String endTimeCode;
     private String recurrencePattern;
     private String recurrenceDays;
+    
+    private List<ClassVO> classList;
+    
+
 
 }
