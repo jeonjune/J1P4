@@ -1,6 +1,7 @@
 package com.itwillbs.domain;
 
 import java.sql.Date;
+import java.util.List;
 
 import lombok.Data;
 
@@ -10,4 +11,8 @@ public class RegistrationVO {
     private Integer schedule_no;
     private Integer mem_no;
     private Date registration_date;
+    private int class_count;
+    
+    private List<MemberVO> memList;
+    private List<ClassScheduleVO> classScheduleList;
 }

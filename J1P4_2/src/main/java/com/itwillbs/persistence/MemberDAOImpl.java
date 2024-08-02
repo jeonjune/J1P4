@@ -14,6 +14,7 @@ import org.springframework.stereotype.Repository;
 import com.itwillbs.domain.Criteria;
 import com.itwillbs.domain.MemberVO;
 import com.itwillbs.domain.RecipientVO;
+import com.itwillbs.domain.RegistrationVO;
 
 @Repository
 public class MemberDAOImpl implements MemberDAO {
@@ -73,6 +74,16 @@ public class MemberDAOImpl implements MemberDAO {
 	@Override
 	public int getTotalSMS() throws Exception {
 		return sqlSession.selectOne(NAMESPACE+"totalSMS");
+	}
+
+	@Override
+	public List<Map<String, Object>> countClass(int mem_no) throws Exception {
+		return sqlSession.selectList(NAMESPACE+"countClass",mem_no);
+	}
+
+	@Override
+	public List<RegistrationVO> detailClass(Map<String, Object> vo) throws Exception {
+		return sqlSession.selectList(NAMESPACE+"detailClass",vo);
 	}
 	
 	

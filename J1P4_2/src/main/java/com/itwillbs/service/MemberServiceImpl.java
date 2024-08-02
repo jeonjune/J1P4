@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import com.itwillbs.domain.Criteria;
 import com.itwillbs.domain.MemberVO;
 import com.itwillbs.domain.RecipientVO;
+import com.itwillbs.domain.RegistrationVO;
 import com.itwillbs.persistence.MemberDAO;
 
 @Service
@@ -72,6 +73,17 @@ public class MemberServiceImpl implements MemberService {
 		return mDao.getTotalSMS();
 	}
 
+	@Override
+	public List<Map<String, Object>> countClass(int mem_no) throws Exception {
+		return mDao.countClass(mem_no);
+	}
+
+	@Override
+	public List<RegistrationVO> detailClass(Map<String, Object> vo) throws Exception {
+		return mDao.detailClass(vo);
+	}
+
+	
 	
 
 	

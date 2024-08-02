@@ -7,14 +7,7 @@
 	
 	<insert id="insertMemSMS">
 		insert into notification (sender_user,noti_type,message,noti_date)
-		<choose>
-	        <when test="noti_type == '예약전송'">
-	            values (1, #{noti_type}, #{message}, #{noti_date})
-	        </when>
-	        <when test="noti_type == '일반전송'">
 	            values (1, #{noti_type}, #{message}, DATE_ADD(#{noti_date}, INTERVAL 9 HOUR))
-	        </when>
-	    </choose>
 	</insert>
 	
 	<insert id="insertMemReceiver">
