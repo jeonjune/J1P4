@@ -88,6 +88,11 @@ public class MemberServiceImpl implements MemberService {
 		return mDao.getTotalDetailCount(vo);
 	}
 
+	@Override
+	public RegistrationVO memberClassStatus(Map<String, Object> vo) throws Exception {
+		return mDao.memberClassStatus(vo);
+	}
+
 	
 	
 

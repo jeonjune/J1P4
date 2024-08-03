@@ -46,20 +46,20 @@
                         <h3 class="card-title">
                             <i class="fas fa-th mr-1"></i> 현재 수강중인 강의
                         </h3>
-                    <div class="card-tools normalPagination">
-                    <c:if test="${normalCount > 1}">
-  <ul class="pagination pagination-sm">
-      <li class="page-item prevButt">
-      </li>
-      <li class="page-item nextButt">
-        <a href="#" data-page="${param.pageNormal + 1}" data-type="normal" class="page-link">»</a>
-      </li>
-  </ul>
-</c:if>
-                </div>
+	                    <div class="card-tools">
+	                    <c:if test="${normalCount > 1}">
+						  <ul class="pagination pagination-sm">
+						      <li class="page-item prevButt">
+						      </li>
+						      <li class="page-item nextButt">
+						        <a href="#" class="page-link">»</a>
+						      </li>
+						  </ul>
+						</c:if>
+	            	    </div>
                     </div>
                     <div class="card-body">
-                        <div class="tab-content p-0 print">
+                        <div class="tab-content p-0 printClassNormal">
                         <c:forEach items="${statusNormal }" var="normal">
 	                        <c:forEach items="${normal.classScheduleList }" var="classList">
 	                       		<c:forEach items="${classList.classList }" var="classDetail">
@@ -82,11 +82,13 @@
 	                        </c:forEach>
                         등록일 : ${normal.registration_date }<br>
                         </c:forEach>
-                       <c:if test="${empty statusNormal }">
-                        <div style="padding: 75px;">
-                        값이 없습니데이
-                        </div>
+                        
+                        <c:if test="${empty statusNormal }">
+	                        <div style="padding: 75px;">
+	                        값이 없습니데이
+	                        </div>
                         </c:if>
+                        
                         </div>
                     </div>
                 </div>
@@ -97,9 +99,20 @@
                         <h3 class="card-title">
                             <i class="fas fa-th mr-1"></i> 수강 신청 목록
                         </h3>
+                        <div class="card-tools">
+	                    <c:if test="${recruitCount > 1}">
+						  <ul class="pagination pagination-sm">
+						      <li class="page-item prevRecruitButt">
+						      </li>
+						      <li class="page-item nextRecruitButt">
+						      	<a href="#" class="page-link">»</a>
+						      </li>
+						  </ul>
+						</c:if>
+	            	    </div>
                     </div>
                     <div class="card-body">
-                        <div class="tab-content p-0">
+                        <div class="tab-content p-0 printClassRecruit">
                          <c:forEach items="${statusRecruit }" var="recruit">
 	                        <c:forEach items="${recruit.classScheduleList }" var="classList">
 	                       		<c:forEach items="${classList.classList }" var="classDetail">
@@ -122,11 +135,13 @@
 	                        </c:forEach>
                         등록일 : ${normal.registration_date }<br>
                         </c:forEach>
+                        
                         <c:if test="${empty statusRecruit }">
-                        <div style="padding: 75px;">
-                        값이 없습니데이
-                        </div>
+	                        <div style="padding: 75px;">
+	                        값이 없습니데이
+	                        </div>
                         </c:if>
+                        
                         </div>
                     </div>
                 </div>
@@ -136,27 +151,28 @@
         <!-- 수강 상세내용 카드 -->
         <div class="printDetails"></div>
     </div>
+    
 </div>
 
 
 </div>
+
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-
-//서버에서 전달된 JSON 문자열을 `new6MemCountJson` 변수에 저장
-var classCountJson = '<c:out value="${vo}" escapeXml="false"/>';
-console.log("(❁´◡`❁)(❁´◡`❁)(❁´◡`❁)(❁´◡`❁)(❁´◡`❁)(❁´◡`❁)(❁´◡`❁)(❁´◡`❁)(❁´◡`❁)Raw JSON: ", classCountJson);
-var data = JSON.parse(classCountJson);
-
-// alert(classCountJson.trim()=='[]');
-if(classCountJson.trim()=='[]'){
-	$('.ifNull').html("아무 값도 없습니다"+'<i class="fas fa-circle-xmark mr-1"></i>');
-}
-
-var field_code = data.map(function(item) { return item.field_code; });
-var class_count = data.map(function(item) { return item.class_count; });
-console.log("field_code: ", field_code);
-console.log("class_count: ", class_count);
+	//서버에서 전달된 JSON 문자열을 `classCountJson` 변수에 저장
+	var classCountJson = '<c:out value="${vo}" escapeXml="false"/>';
+	console.log("(❁´◡`❁) Raw JSON: ", classCountJson);
+	var data = JSON.parse(classCountJson);
+	
+	// alert(classCountJson.trim()=='[]');
+	if(classCountJson.trim()=='[]'){
+		$('.ifNull').html("아무 값도 없습니다"+'<i class="fas fa-circle-xmark mr-1"></i>');
+	}
+	
+	var field_code = data.map(function(item) { return item.field_code; });
+	var class_count = data.map(function(item) { return item.class_count; });
+	console.log("field_code: ", field_code);
+	console.log("class_count: ", class_count);
 
 	var ageCtx = document.getElementById('age-chart').getContext('2d');
 
@@ -300,8 +316,6 @@ console.log("class_count: ", class_count);
 	    				}
 	    			});
 	                
-	    
-	                
 	            }
 	        }// onClick
 	        
@@ -314,7 +328,7 @@ console.log("class_count: ", class_count);
 		
 	    var url = '/member/detailsAjax';
 	    var mem_no = '${param.mem_no}';
-	    var pageRecruit = '${param.pageRecruit}';
+	    var status = '정상';
 		let page = 0;
 	
 		  $(document).on('click', '.nextButt', function(event) {
@@ -329,18 +343,40 @@ console.log("class_count: ", class_count);
 		        mem_no: mem_no,
 		        page: 1,
 		        pageNormal: page,
-		        pageRecruit: pageRecruit
+		        status : status,
+		        pageRecruit: 0
 		      },
 		      success: function(data) {
 		    	  
-		    	  $('.prevButt').html('<a href="#" data-page="${param.pageNormal - 1}" data-type="normal" class="page-link">«</a>');
+		    	  console.log(data);
+		    	  console.log(data.classScheduleList);
+		    	  
+                  $('.printClassNormal').html(
+                		  '<img alt='+data.classScheduleList[0].classList[0].fieldCode+' width="70px;" src="${pageContext.request.contextPath }/resources/img/'+data.classScheduleList[0].classList[0].fieldCode+'.png">'+
+                       	 '강의명: '+data.classScheduleList[0].classList[0].className+'<br>'+
+                       		'상세내용: '+data.classScheduleList[0].classList[0].description+'<br>'+
+                       		'강의코드: '+data.classScheduleList[0].classList[0].fieldCode+'<br>'+
+                       		'강의수준: '+data.classScheduleList[0].classList[0].divisionCode+'<br>'+
+                       		'강의레벨: '+data.classScheduleList[0].classList[0].levelCode+'<br>'+
+                       		'최대인원: '+data.classScheduleList[0].classList[0].maxCapacity+'<br>'+
+                       		'최소인원: '+data.classScheduleList[0].classList[0].minCapacity+'<br>'+
+                       		'강사: '+data.classScheduleList[0].classList[0].instructorNo+'<br>'+
+                       		'기간 : '+convertTimestampToDate(data.classScheduleList[0].startDate)+' ~ '+
+                       		convertTimestampToDate(data.classScheduleList[0].endDate)+'<br>'+
+ 	                        '매주 '+data.classScheduleList[0].recurrenceDays+'<br>'+
+ 	                        '시간 : '+TimeCodeChange(data.classScheduleList[0].startTimeCode)+' ~ '+
+ 	                        TimeCodeChange(data.classScheduleList[0].endTimeCode)+'<br>등록일 : '+
+ 	                        convertTimestampToDate(data.registration_date)+'<br>'   		
+                  );
+		    	  
+		    	  $('.prevButt').html('<a href="#" class="page-link">«</a>');
 		    	  
 		    	  $.ajax({
 				      url: '/member/countAjax',
 				      type: 'GET',
 				      data: {
 				        mem_no: mem_no,
-				        status:'정상'
+				        status: status
 				      },
 				      success: function(data) {
 				    	  if((data-1)==page){
@@ -354,68 +390,7 @@ console.log("class_count: ", class_count);
 				      }
 		    	  });
 		    	  
-		    	    let descriptionCodes = [];
-					let fieldCodes = [];
-					let level = [];
-					let registrationDate = [];
-					let className = [];
-					let divisionCodes = [];
-					let maxCapacity = [];
-					let minCapacity = [];
-					let instructor = [];
-					let startDate = [];
-					let endDate = [];
-					let recurrenceDays = [];
-					let startTimeCode = [];
-					let EndTimeCode = [];
-                  
-             		// RegistrationVO에 접근
-                  data.forEach(registration => {
-                  	
-                  	registrationDate.push(registration.registration_date);
-              		
-                  	// RegistrationVO의 classScheduleList에 접근
-                      registration.classScheduleList.forEach(classScheduleList => {
-                      	
-                      	startDate.push(classScheduleList.startDate);
-                      	endDate.push(classScheduleList.endDate);
-                      	recurrenceDays.push(classScheduleList.recurrenceDays);
-                      	startTimeCode.push(classScheduleList.startTimeCode);
-                      	EndTimeCode.push(classScheduleList.endTimeCode);	                            	
-                      	
-                      	// RegistrationVO의 classScheduleList의 classList에 접근
-                          classScheduleList.classList.forEach(classList => {
-                          	
-                          	descriptionCodes.push(classList.description);
-                          	fieldCodes.push(classList.fieldCode);
-                          	level.push(classList.levelCode);
-                          	className.push(classList.className);
-                          	divisionCodes.push(classList.divisionCode);
-                          	maxCapacity.push(classList.maxCapacity);
-                          	minCapacity.push(classList.minCapacity);
-                          	instructor.push(classList.instructorNo);
-                          	
-                          });
-                      });
-                  });
-                  
-                  $('.print').html(
-                		  '<img alt='+fieldCodes[0]+' width="70px;" src="${pageContext.request.contextPath }/resources/img/'+fieldCodes[0]+'.png">'+
-                      	 '강의명: '+className[0]+'<br>'+
-                      		'상세내용: '+descriptionCodes[0]+'<br>'+
-                      		'강의코드: '+fieldCodes[0]+'<br>'+
-                      		'강의수준: '+divisionCodes[0]+'<br>'+
-                      		'강의레벨: '+level[0]+'<br>'+
-                      		'최대인원: '+maxCapacity[0]+'<br>'+
-                      		'최소인원: '+minCapacity[0]+'<br>'+
-                      		'강사: '+instructor[0]+'<br>'+
-                      		'기간 : '+convertTimestampToDate(startDate[0])+' ~ '+
-                      		convertTimestampToDate(endDate[0])+'<br>'+
-	                        '매주 '+recurrenceDays[0]+'<br>'+
-	                        '시간 : '+TimeCodeChange(startTimeCode[0])+' ~ '+
-	                        TimeCodeChange(EndTimeCode[0])+'<br>등록일 : '+
-	                        convertTimestampToDate(registrationDate[0])+'<br>'   		
-                  );
+                 
 		      },
 		      error: function() {
 		        alert('Error loading page.');
@@ -425,6 +400,7 @@ console.log("class_count: ", class_count);
 		   
             
 		  });
+		  
 		  $(document).on('click', '.prevButt', function(event) {
 		    event.preventDefault();
 			
@@ -437,78 +413,35 @@ console.log("class_count: ", class_count);
 		        mem_no: mem_no,
 		        page: 1,
 		        pageNormal: page,
-		        pageRecruit: pageRecruit
+		        status : status,
+		        pageRecruit: 0,
 		      },
 		      success: function(data) {
 		    	  
-		    	  $('.nextButt').html('<a href="#" data-page="${param.pageNormal + 1}" data-type="normal" class="page-link">»</a>');
+		    	  $('.printClassNormal').html(
+                		  '<img alt='+data.classScheduleList[0].classList[0].fieldCode+' width="70px;" src="${pageContext.request.contextPath }/resources/img/'+data.classScheduleList[0].classList[0].fieldCode+'.png">'+
+                       	 '강의명: '+data.classScheduleList[0].classList[0].className+'<br>'+
+                       		'상세내용: '+data.classScheduleList[0].classList[0].description+'<br>'+
+                       		'강의코드: '+data.classScheduleList[0].classList[0].fieldCode+'<br>'+
+                       		'강의수준: '+data.classScheduleList[0].classList[0].divisionCode+'<br>'+
+                       		'강의레벨: '+data.classScheduleList[0].classList[0].levelCode+'<br>'+
+                       		'최대인원: '+data.classScheduleList[0].classList[0].maxCapacity+'<br>'+
+                       		'최소인원: '+data.classScheduleList[0].classList[0].minCapacity+'<br>'+
+                       		'강사: '+data.classScheduleList[0].classList[0].instructorNo+'<br>'+
+                       		'기간 : '+convertTimestampToDate(data.classScheduleList[0].startDate)+' ~ '+
+                       		convertTimestampToDate(data.classScheduleList[0].endDate)+'<br>'+
+ 	                        '매주 '+data.classScheduleList[0].recurrenceDays+'<br>'+
+ 	                        '시간 : '+TimeCodeChange(data.classScheduleList[0].startTimeCode)+' ~ '+
+ 	                        TimeCodeChange(data.classScheduleList[0].endTimeCode)+'<br>등록일 : '+
+ 	                        convertTimestampToDate(data.registration_date)+'<br>'   		
+                  );
+		    	  
+		    	  $('.nextButt').html('<a href="#" class="page-link">»</a>');
 		    	  
 		    	  if((page)==0){
 		    		  $('.prevButt').html('');
 		    	  }
-		    	  
-		    	  let descriptionCodes = [];
-					let fieldCodes = [];
-					let level = [];
-					let registrationDate = [];
-					let className = [];
-					let divisionCodes = [];
-					let maxCapacity = [];
-					let minCapacity = [];
-					let instructor = [];
-					let startDate = [];
-					let endDate = [];
-					let recurrenceDays = [];
-					let startTimeCode = [];
-					let EndTimeCode = [];
-                  
-             		// RegistrationVO에 접근
-                  data.forEach(registration => {
-                  	
-                  	registrationDate.push(registration.registration_date);
-              		
-                  	// RegistrationVO의 classScheduleList에 접근
-                      registration.classScheduleList.forEach(classScheduleList => {
-                      	
-                      	startDate.push(classScheduleList.startDate);
-                      	endDate.push(classScheduleList.endDate);
-                      	recurrenceDays.push(classScheduleList.recurrenceDays);
-                      	startTimeCode.push(classScheduleList.startTimeCode);
-                      	EndTimeCode.push(classScheduleList.endTimeCode);	                            	
-                      	
-                      	// RegistrationVO의 classScheduleList의 classList에 접근
-                          classScheduleList.classList.forEach(classList => {
-                          	
-                          	descriptionCodes.push(classList.description);
-                          	fieldCodes.push(classList.fieldCode);
-                          	level.push(classList.levelCode);
-                          	className.push(classList.className);
-                          	divisionCodes.push(classList.divisionCode);
-                          	maxCapacity.push(classList.maxCapacity);
-                          	minCapacity.push(classList.minCapacity);
-                          	instructor.push(classList.instructorNo);
-                          	
-                          });
-                      });
-                  });
-                  
-                  $('.print').html(
-                		  '<img alt='+fieldCodes[0]+' width="70px;" src="${pageContext.request.contextPath }/resources/img/'+fieldCodes[0]+'.png">'+
-                      	 '강의명: '+className[0]+'<br>'+
-                      		'상세내용: '+descriptionCodes[0]+'<br>'+
-                      		'강의코드: '+fieldCodes[0]+'<br>'+
-                      		'강의수준: '+divisionCodes[0]+'<br>'+
-                      		'강의레벨: '+level[0]+'<br>'+
-                      		'최대인원: '+maxCapacity[0]+'<br>'+
-                      		'최소인원: '+minCapacity[0]+'<br>'+
-                      		'강사: '+instructor[0]+'<br>'+
-                      		'기간 : '+convertTimestampToDate(startDate[0])+' ~ '+
-                      		convertTimestampToDate(endDate[0])+'<br>'+
-	                        '매주 '+recurrenceDays[0]+'<br>'+
-	                        '시간 : '+TimeCodeChange(startTimeCode[0])+' ~ '+
-	                        TimeCodeChange(EndTimeCode[0])+'<br>등록일 : '+
-	                        convertTimestampToDate(registrationDate[0])+'<br>'   		
-                  );
+
 		      },
 		      error: function() {
 		        alert('Error loading page.');
@@ -518,7 +451,135 @@ console.log("class_count: ", class_count);
             
 		});
 	
+	});
+	
+	$(document).ready(function() {
+		
+	    var url = '/member/detailsAjax';
+	    var mem_no = '${param.mem_no}';
+	    var status = '모집';
+		let page = 0;
+	
+		  $(document).on('click', '.nextRecruitButt', function(event) {
+		    event.preventDefault(); 
+		    
+		    page += 1;
+
+		    $.ajax({
+		      url: url,
+		      type: 'GET',
+		      data: {
+		        mem_no: mem_no,
+		        page: 1,
+		        pageRecruit: page,
+		        status : status,
+		        pageNormal: 0
+		      },
+		      success: function(data) {
+		    	  
+		    	  console.log(data);
+                  $('.printClassRecruit').html(
+                		  '<img alt='+data.classScheduleList[0].classList[0].fieldCode+' width="70px;" src="${pageContext.request.contextPath }/resources/img/'+data.classScheduleList[0].classList[0].fieldCode+'.png">'+
+                       	 '강의명: '+data.classScheduleList[0].classList[0].className+'<br>'+
+                       		'상세내용: '+data.classScheduleList[0].classList[0].description+'<br>'+
+                       		'강의코드: '+data.classScheduleList[0].classList[0].fieldCode+'<br>'+
+                       		'강의수준: '+data.classScheduleList[0].classList[0].divisionCode+'<br>'+
+                       		'강의레벨: '+data.classScheduleList[0].classList[0].levelCode+'<br>'+
+                       		'최대인원: '+data.classScheduleList[0].classList[0].maxCapacity+'<br>'+
+                       		'최소인원: '+data.classScheduleList[0].classList[0].minCapacity+'<br>'+
+                       		'강사: '+data.classScheduleList[0].classList[0].instructorNo+'<br>'+
+                       		'기간 : '+convertTimestampToDate(data.classScheduleList[0].startDate)+' ~ '+
+                       		convertTimestampToDate(data.classScheduleList[0].endDate)+'<br>'+
+ 	                        '매주 '+data.classScheduleList[0].recurrenceDays+'<br>'+
+ 	                        '시간 : '+TimeCodeChange(data.classScheduleList[0].startTimeCode)+' ~ '+
+ 	                        TimeCodeChange(data.classScheduleList[0].endTimeCode)+'<br>등록일 : '+
+ 	                        convertTimestampToDate(data.registration_date)+'<br>'   		
+                  );
+		    	  
+		    	  $('.prevRecruitButt').html('<a href="#" class="page-link">«</a>');
+		    	  
+		    	  $.ajax({
+				      url: '/member/countAjax',
+				      type: 'GET',
+				      data: {
+				        mem_no: mem_no,
+				        status: status
+				      },
+				      success: function(data) {
+				    	  if((data-1)==page){
+				    		  $('.nextRecruitButt').html('');
+				    	  }
+				    	  
+				      },
+				      error: function(error) {
+					        alert('에에에에러.');
+					        console.log(error);
+				      }
+		    	  });
+		    	  
+                 
+		      },
+		      error: function(error) {
+		        alert('Error loading page.');
+		        console.log(error);
+		      }
+		    });
+		    
+		   
+            
 		  });
+		  
+		  $(document).on('click', '.prevRecruitButt', function(event) {
+		    event.preventDefault();
+			
+		    page -= 1;
+
+		    $.ajax({
+		      url: url,
+		      type: 'GET',
+		      data: {
+		        mem_no: mem_no,
+		        page: 1,
+		        pageRecruit: page,
+		        status : status,
+		        pageNormal: 0
+		      },
+		      success: function(data) {
+		    	  
+		    	  $('.printClassRecruit').html(
+                		  '<img alt='+data.classScheduleList[0].classList[0].fieldCode+' width="70px;" src="${pageContext.request.contextPath }/resources/img/'+data.classScheduleList[0].classList[0].fieldCode+'.png">'+
+                       	 '강의명: '+data.classScheduleList[0].classList[0].className+'<br>'+
+                       		'상세내용: '+data.classScheduleList[0].classList[0].description+'<br>'+
+                       		'강의코드: '+data.classScheduleList[0].classList[0].fieldCode+'<br>'+
+                       		'강의수준: '+data.classScheduleList[0].classList[0].divisionCode+'<br>'+
+                       		'강의레벨: '+data.classScheduleList[0].classList[0].levelCode+'<br>'+
+                       		'최대인원: '+data.classScheduleList[0].classList[0].maxCapacity+'<br>'+
+                       		'최소인원: '+data.classScheduleList[0].classList[0].minCapacity+'<br>'+
+                       		'강사: '+data.classScheduleList[0].classList[0].instructorNo+'<br>'+
+                       		'기간 : '+convertTimestampToDate(data.classScheduleList[0].startDate)+' ~ '+
+                       		convertTimestampToDate(data.classScheduleList[0].endDate)+'<br>'+
+ 	                        '매주 '+data.classScheduleList[0].recurrenceDays+'<br>'+
+ 	                        '시간 : '+TimeCodeChange(data.classScheduleList[0].startTimeCode)+' ~ '+
+ 	                        TimeCodeChange(data.classScheduleList[0].endTimeCode)+'<br>등록일 : '+
+ 	                        convertTimestampToDate(data.registration_date)+'<br>'   		
+                  );
+		    	  
+		    	  $('.nextRecruitButt').html('<a href="#" class="page-link">»</a>');
+		    	  
+		    	  if((page)==0){
+		    		  $('.prevRecruitButt').html('');
+		    	  }
+
+		      },
+		      error: function() {
+		        alert('Error loading page.');
+		      }
+		    });
+		    
+            
+		});
+	
+	});
 	
 	
 	function convertTimestampToDate(timestamp) {

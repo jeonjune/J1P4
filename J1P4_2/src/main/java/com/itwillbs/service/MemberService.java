@@ -43,4 +43,7 @@ public interface MemberService {
 	
 	// 상태별 과목 상세내용 개수
 		public int getTotalDetailCount(Map<String, Object> vo) throws Exception;
+		
+		// 회원별 현재 수강중 강의와 수강신청 목록 출력
+		public RegistrationVO memberClassStatus(Map<String, Object> vo) throws Exception;
 }
