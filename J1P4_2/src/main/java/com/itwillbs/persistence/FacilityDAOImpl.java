@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
+import com.itwillbs.domain.Criteria;
 import com.itwillbs.domain.FacilityManagementVO;
 import com.itwillbs.domain.FacilityVO;
 
@@ -43,15 +44,23 @@ public class FacilityDAOImpl implements FacilityDAO {
 	
 	//시설상세내역 조회
 	@Override
-	public List<FacilityManagementVO> facDe(int facNo) throws Exception {
-		return sqlSession.selectList(NAMESPACE+"facDe", facNo);
+	public List<FacilityManagementVO> facDe(Criteria cri) throws Exception {
+		return sqlSession.selectList(NAMESPACE+"facDe", cri);
 	}
+	
+	//시설상세내역 조회 페이징
+	@Override
+	public int getCountFacDe(int facNo) throws Exception {
+		return sqlSession.selectOne(NAMESPACE+"countFacDe",facNo);
+	}
+	
 
 	//시설 한달간격 count 조회
 	@Override
 	public List<FacilityManagementVO> count(int facNo) throws Exception {
 		return sqlSession.selectList(NAMESPACE+"count", facNo);
 	}
+
 
 	//시설 최신날짜 조회
 	@Override

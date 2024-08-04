@@ -21,7 +21,9 @@ public class Criteria  {
 	private String job_rank;
 	private String field;
 	private String e_repair_type;
+	private String repair_type;
 	private String status;
+	private Integer facility_no;
 
 
 	public Criteria() {

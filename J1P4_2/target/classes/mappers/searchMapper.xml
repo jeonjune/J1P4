@@ -197,12 +197,11 @@
 	</select>
 	
 	<!-- 장비 검색 결과 리스트 목록 ( 페이징 처리) -->
-	<select id="searchEquip" resultType="EquipmentVO">
+	<select id="searchEquip" resultType="EquipManageVO">
 		select * from equipmentManagement
-		<if test="status == '반려'">
 			<if test="searchType == 'searchAll'">
 				WHERE (equipment_name like CONCAT('%', #{keyword}, '%')
-				OR manufacturer LIKE CONCAT('%', #{keyword}, '%') 
+				OR manufacturer LIKE CONCAT('%', #{keyword}, '%'))
 			</if>
 			<if test="searchType == 'searchName'">
 				WHERE (equipment_name like CONCAT('%', #{keyword}, '%')) 
@@ -210,34 +209,19 @@
 			<if test="searchType == 'searchCompany'">
 				WHERE (manufacturer LIKE CONCAT('%', #{keyword}, '%'))
 			</if>
-			<if test="field != null and field != ''">
-				AND field = #{field}
-			</if>
-			<if test="e_repair_type != null and e_repair_type != ''">
-				AND e_repair_type = #{e_repair_type}
-			</if>
+		<if test="status == '반려'">
 			AND status ='반려'
 		</if>
 		<if test="status == '승인'">
-			<if test="searchType == 'searchAll'">
-				WHERE (equipment_name like CONCAT('%', #{keyword}, '%')
-				OR manufacturer LIKE CONCAT('%', #{keyword}, '%') 
-			</if>
-			<if test="searchType == 'searchName'">
-				WHERE (equipment_name like CONCAT('%', #{keyword}, '%')) 
-			</if>
-			<if test="searchType == 'searchCompany'">
-				WHERE (manufacturer LIKE CONCAT('%', #{keyword}, '%'))
-			</if>
+			AND status ='승인'
+		</if>
 			<if test="field != null and field != ''">
 				AND field = #{field}
 			</if>
 			<if test="e_repair_type != null and e_repair_type != ''">
 				AND e_repair_type = #{e_repair_type}
 			</if>
-			AND status ='승인'
-		</if>
-		ORDER BY equipment DESC
+		ORDER BY equipment_no DESC
 		LIMIT #{pageStart}, #{pageSize}
 	</select>
 
@@ -247,30 +231,43 @@
     <where>
         <choose>
             <when test="searchType == 'searchAll'">
-            	(name like CONCAT('%', #{keyword}, '%')
-				OR phone_no LIKE CONCAT('%', #{keyword}, '%')
-				OR email LIKE CONCAT('%', #{keyword}, '%')) AND retire_status = 0
+            	(equipment_name like CONCAT('%', #{keyword}, '%')
+				OR manufacturer LIKE CONCAT('%', #{keyword}, '%'))
             </when>
             <when test="searchType == 'searchName'">
-                name like CONCAT('%', #{keyword}, '%') AND retire_status = 0
+                equipment_name like CONCAT('%', #{keyword}, '%')
             </when>
-            <when test="searchType == 'searchCompany">
-                manufacturer LIKE CONCAT('%', #{keyword}, '%') AND retire_status = 0
+            <when test="searchType == 'searchCompany'">
+                manufacturer LIKE CONCAT('%', #{keyword}, '%')
             </when>
-            <otherwise>
-                1=1 AND retire_status = 0
-            </otherwise>
         </choose>
-        <if test="job != null and job != ''">
-			AND job = #{job}
+        <if test="status == '반려'">
+			AND status ='반려'
 		</if>
-		<if test="job_rank != null and job_rank != ''">
-			AND job_rank = #{job_rank}
+		<if test="status == '승인'">
+			AND status ='승인'
 		</if>
-		<if test="filter != null and filter != ''">
-			AND user_no in (select user_no from empAttendance where work_status = '출근')
+        <if test="field != null and field != ''">
+			AND field = #{field}
+		</if>
+		<if test="e_repair_type != null and e_repair_type != ''">
+			AND e_repair_type = #{e_repair_type}
 		</if>
     </where>
+	</select>
+	
+	<!-- 시설 상세페이지 검색 결과 리스트 목록 ( 페이징 처리) -->
+	<select id="searchFacility" resultType="FacilityManagementVO">
+		select * from facilityManagement
+		where repair_type=#{repair_type} and facility_no=#{facility_no}
+		ORDER BY repair_date DESC
+		LIMIT #{pageStart}, #{pageSize}
+	</select>
+
+	<!-- 시설 상세페이지 검색 결과 리스트 개수 ( 페이징 처리 ) -->
+	<select id="totalFacilityCount" resultType="int">
+	    SELECT count(facility_no) from facilityManagement
+	    where repair_type=#{repair_type} and facility_no=#{facility_no}
 	</select>
 
 

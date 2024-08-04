@@ -9,6 +9,7 @@ import javax.inject.Inject;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
+import com.itwillbs.domain.Criteria;
 import com.itwillbs.domain.EquipManageVO;
 import com.itwillbs.domain.fileVO;
 
@@ -61,10 +62,16 @@ public class EquipManageDAOImpl implements EquipManageDAO {
 	
 	//장비내역리스트
 	@Override
-	public List<EquipManageVO> listEquip() throws Exception {
-		return sqlSession.selectList(NAMESPACE+"listEquip");
+	public List<EquipManageVO> listEquip(Criteria cri) throws Exception {
+		return sqlSession.selectList(NAMESPACE+"listEquip",cri);
 	}
-	
+
+	//장비내역리스트 페이징
+	@Override
+	public int equipListCount() throws Exception {
+		return sqlSession.selectOne(NAMESPACE+"equipListCount");
+	}
+
 	//반려 후 - 장비유형 업데이트
 	@Override
 	public void updateReject(EquipManageVO vo) throws Exception {
@@ -73,9 +80,15 @@ public class EquipManageDAOImpl implements EquipManageDAO {
 	
 	//반려내역리스트
 	@Override
-	public List<EquipManageVO> rejectList() throws Exception {
+	public List<EquipManageVO> rejectList(Criteria cri) throws Exception {
 		
-		return sqlSession.selectList(NAMESPACE+"rejectList");
+		return sqlSession.selectList(NAMESPACE+"rejectList",cri);
+	}
+	
+	//반려내역리스트 페이징
+	@Override
+	public int rejectListCount() throws Exception {
+		return sqlSession.selectOne(NAMESPACE+"rejectListCount");
 	}
 	
 	//장비내역 상세페이지

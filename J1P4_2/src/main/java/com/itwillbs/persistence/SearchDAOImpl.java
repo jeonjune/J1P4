@@ -12,6 +12,9 @@ import org.springframework.stereotype.Repository;
 import com.itwillbs.domain.BaseVO;
 import com.itwillbs.domain.Criteria;
 import com.itwillbs.domain.EmployeeVO;
+import com.itwillbs.domain.EquipManageVO;
+import com.itwillbs.domain.EquipmentVO;
+import com.itwillbs.domain.FacilityManagementVO;
 import com.itwillbs.domain.MemberVO;
 
 @Repository
@@ -44,6 +47,26 @@ public class SearchDAOImpl implements SearchDAO {
 	@Override
 	public int getEmpCount(Criteria cri) throws Exception {
 		return sqlSession.selectOne(NAMESPACE+"totalEmpCount",cri);
+	}
+
+	@Override
+	public List<EquipManageVO> searchEquip(Criteria cri) throws Exception {
+		return sqlSession.selectList(NAMESPACE + "searchEquip", cri);
+	}
+
+	@Override
+	public int getEquipCount(Criteria cri) throws Exception {
+		return sqlSession.selectOne(NAMESPACE+"totalEquipCount",cri);
+	}
+
+	@Override
+	public List<FacilityManagementVO> searchFacility(Criteria cri) throws Exception {
+		return sqlSession.selectList(NAMESPACE + "searchFacility", cri);
+	}
+
+	@Override
+	public int getFacilityCount(Criteria cri) throws Exception {
+		return sqlSession.selectOne(NAMESPACE+"totalFacilityCount",cri);
 	}
 
 	

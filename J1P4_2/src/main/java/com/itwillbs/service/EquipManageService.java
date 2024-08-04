@@ -3,6 +3,7 @@ package com.itwillbs.service;
 import java.util.List;
 import java.util.Map;
 
+import com.itwillbs.domain.Criteria;
 import com.itwillbs.domain.EquipManageVO;
 import com.itwillbs.domain.fileVO;
 
@@ -24,13 +25,19 @@ public interface EquipManageService {
 	public void updateType(EquipManageVO vo) throws Exception;
 		
 	//장비내역리스트
-	public List<EquipManageVO> listEquip() throws Exception;
+	public List<EquipManageVO> listEquip(Criteria cri) throws Exception;
 	
+	//장비내역리스트 페이징
+	public int equipListCount() throws Exception;
+		
 	//반려 후 - 장비유형 업데이트
 	public void updateReject(EquipManageVO vo) throws Exception;
 		
 	//반려내역리스트
-	public List<EquipManageVO> rejectList() throws Exception;
+	public List<EquipManageVO> rejectList(Criteria cri) throws Exception;
+	
+	//반려내역리스트 페이징
+	public int rejectListCount() throws Exception;
 	
 	//장비내역 상세페이지
 	public Map<String, Object> equipDetailGET(int eno) throws Exception;

@@ -2,7 +2,7 @@ package com.itwillbs.persistence;
 
 import java.util.List;
 
-
+import com.itwillbs.domain.Criteria;
 import com.itwillbs.domain.FacilityManagementVO;
 import com.itwillbs.domain.FacilityVO;
 
@@ -18,7 +18,10 @@ public interface FacilityDAO {
 	public void facDeIn(FacilityManagementVO vo) throws Exception;
 	
 	//시설상세내역 조회
-	public List<FacilityManagementVO> facDe(int facNo) throws Exception;
+	public List<FacilityManagementVO> facDe(Criteria cri) throws Exception;
+	
+	//시설상세내역 조회 페이징
+	public int getCountFacDe(int facNo) throws Exception;
 	
 	//시설 한달간격 count 조회
 	public List<FacilityManagementVO> count(int facNo) throws Exception;

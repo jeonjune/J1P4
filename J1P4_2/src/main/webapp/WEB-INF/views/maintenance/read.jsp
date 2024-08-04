@@ -30,10 +30,28 @@
 						</div>
 					</div>
 
-
+	<form action="" method="get" class='actionForm'>
+	<input type="hidden" value="${param.facility_no }" name="facility_no">
+		<div class="content">
+						<input type="radio" value="전체" class="btn-check btn-check-all" 
+							id="radioRepair0"> <label
+							class="btn btn-outline-dark radioField" for="radioRepair0">전체</label>
+						<input type="radio" value="점검" class="btn-check btn-check-type" name="repair_type"
+							id="radioRepair1"> <label
+							class="btn btn-outline-dark radioField" for="radioRepair1">점검</label>
+						<input type="radio" value="방역" class="btn-check btn-check-type" name="repair_type"
+							id="radioRepair2"> <label
+							class="btn btn-outline-dark radioField" for="radioRepair2">방역</label>
+						<input type="radio" value="청소" class="btn-check btn-check-type" name="repair_type"
+							id="radioRepair3" > <label
+							class="btn btn-outline-dark radioField" for="radioRepair3">청소</label>
+					</div>
+	</form>				
+	
 	<button class="btn btn-primary" type="button"
 		data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight"
 		aria-controls="offcanvasRight">상세페이지 등록</button>
+		
 
 	<div class="col-sm-12">
 		<table id="example1"
@@ -74,6 +92,62 @@
 
 		</table>
 	</div>
+	<!-- 페이징 처리 -->
+			<ul class="pagination" >
+				<c:if test="${pageVO.prev }">
+					<li class="paginate_button page-item previous"
+						id="example1_previous">
+						<!-- 검색을 하지 않았을 때 페이징 처리 --> <c:if
+							test="${empty param.repair_type}">
+							<a
+								href="/maintenance/read?facility_no=${param.facility_no }&page=${pageVO.startPage-1 }"
+								aria-controls="example1" data-dt-idx="0" tabindex="0"
+								class="page-link">«</a>
+						</c:if> <!-- 검색을 했을 때 페이징 처리 --> <c:if
+							test="${not empty param.repair_type}">
+							<a
+								href="/maintenance/read?facility_no=${param.facility_no }&repair_type=${pageVO.cri.repair_type }&page=${pageVO.startPage-1 }"
+								aria-controls="example1" data-dt-idx="0" tabindex="0"
+								class="page-link">«</a>
+						</c:if>
+					</li>
+				</c:if>
+				<c:forEach var="i" begin="${pageVO.startPage }"
+					end="${pageVO.endPage }" step="1">
+					<li
+						class="paginate_button page-item ${pageVO.cri.page == i ? 'active':'' }">
+						<!-- 검색을 하지 않았을 때 페이징 처리 --> <c:if
+							test="${empty param.repair_type}">
+							<a href="/maintenance/read?facility_no=${param.facility_no }&page=${i }"
+								aria-controls="example1" data-dt-idx="1" tabindex="0"
+								class="page-link">${i }</a>
+						</c:if> <!-- 검색을 했을 때 페이징 처리 --> <c:if
+							test="${not empty param.repair_type}">
+							<a
+								href="/maintenance/read?facility_no=${param.facility_no }&repair_type=${pageVO.cri.repair_type }&page=${i }"
+								aria-controls="example1" data-dt-idx="1" tabindex="0"
+								class="page-link">${i }</a>
+						</c:if>
+					</li>
+				</c:forEach>
+				<c:if test="${pageVO.next && pageVO.endPage > 0 }">
+					<li class="paginate_button page-item next" id="example1_next">
+						<!-- 검색을 하지 않았을 때 페이징 처리 --> <c:if
+							test="${empty param.repair_type}">
+							<a
+								href="/maintenance/read?facility_no=${param.facility_no }&page=${pageVO.endPage+1 }"
+								aria-controls="example1" data-dt-idx="7" tabindex="0"
+								class="page-link">»</a>
+						</c:if> <!-- 검색을 했을 때 페이징 처리 --> <c:if
+							test="${not empty param.repair_type}">
+							<a
+								href="/maintenance/read?facility_no=${param.facility_no }&repair_type=${pageVO.cri.repair_type }&page=${pageVO.endPage+1 }"
+								aria-controls="example1" data-dt-idx="7" tabindex="0"
+								class="page-link">»</a>
+						</c:if>
+					</li>
+				</c:if>
+			</ul>
 
 </div>
 
@@ -167,8 +241,36 @@
  		}
  	}
  	
+ 	$(function() {
+		$('.btn-check-type')
+				.click(
+						function() {
+							
+							$(".actionForm").submit();
+
+						});
+
+	});
  	
+ 	$(function() {
+		$('.btn-check-all')
+				.click(
+						function() {
+							
+							window.location.href = '/maintenance/read?facility_no=${param.facility_no}';
+
+						});
+
+	});
  	
+ 	$(function() {
+	 	if ('${param.repair_type}' == '${pageVO.cri.repair_type}') {
+	 		if ('${param.repair_type}'=='') {
+	 			$(".btn-check-all").attr('checked', true);
+	 		}
+	 		$(":radio[name='repair_type'][value='${param.repair_type}']").attr('checked', true);
+	 	}
+ 	});
  	
 </script>
 

@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import com.itwillbs.domain.Criteria;
 import com.itwillbs.domain.FacilityManagementVO;
 import com.itwillbs.domain.FacilityVO;
 import com.itwillbs.persistence.FacilityDAO;
@@ -42,10 +43,17 @@ public class FacilityServiceImpl implements FacilityService {
 	
 	//시설내역조회
 	@Override
-	public List<FacilityManagementVO> facDe(int facNo) throws Exception {
+	public List<FacilityManagementVO> facDe(Criteria cri) throws Exception {
 		
-		return fdao.facDe(facNo);
+		return fdao.facDe(cri);
 	}
+	
+	//시설상세내역 페이징
+	@Override
+	public int getCountFacDe(int facNo) throws Exception {
+		return fdao.getCountFacDe(facNo);
+	}
+	
 
 	//시설 한달간격 count 조회
 	@Override
@@ -54,6 +62,7 @@ public class FacilityServiceImpl implements FacilityService {
 		return fdao.count(facNo);
 	}
 	
+
 	//시설 최신날짜 조회
 	@Override
 	public List<FacilityManagementVO> dateUpdate(int facNo) throws Exception {
