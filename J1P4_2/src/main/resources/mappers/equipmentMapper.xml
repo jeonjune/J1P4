@@ -67,6 +67,14 @@
 	<select id="listEquip" resultType="EquipManageVO">
 	select * from equipmentManagement
 	where status='승인'
+	order by equipment_no desc
+	limit #{pageStart},${pageSize}
+	</select>
+	
+	<!-- 장비내역 리스트 개수(페이징처리) -->
+	<select id="equipListCount" resultType="int">
+		select count(equipment_no) from equipmentManagement
+		where status='승인'
 	</select>
 	
 	<!-- (반려)장비내역 리스트 -->
@@ -80,6 +88,14 @@
 	<select id="rejectList" resultType="EquipManageVO">
 	select * from equipmentManagement
 	where status='반려'
+	order by equipment_no desc
+	limit #{pageStart},${pageSize}
+	</select>
+	
+	<!-- 장비내역 리스트 개수(페이징처리) -->
+	<select id="rejectListCount" resultType="int">
+		select count(equipment_no) from equipmentManagement
+		where status='반려'
 	</select>
 	
 	<!-- 장비내역 상세페이지 조회 -->

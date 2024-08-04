@@ -12,6 +12,9 @@ import org.springframework.util.ObjectUtils;
 import com.itwillbs.domain.BaseVO;
 import com.itwillbs.domain.Criteria;
 import com.itwillbs.domain.EmployeeVO;
+import com.itwillbs.domain.EquipManageVO;
+import com.itwillbs.domain.EquipmentVO;
+import com.itwillbs.domain.FacilityManagementVO;
 import com.itwillbs.domain.Filter;
 import com.itwillbs.domain.MemberVO;
 import com.itwillbs.persistence.MemberDAO;
@@ -51,6 +54,27 @@ public class SearchServiceImpl implements SearchService {
 	public int getEmpCount(Criteria cri) throws Exception {
 		return sDao.getEmpCount(cri);
 	}
+
+	@Override
+	public List<EquipManageVO> searchEquip(Criteria cri) throws Exception {
+		return sDao.searchEquip(cri);
+	}
+
+	@Override
+	public int getEquipCount(Criteria cri) throws Exception {
+		return sDao.getEquipCount(cri);
+	}
+
+	@Override
+	public List<FacilityManagementVO> searchFacility(Criteria cri) throws Exception {
+		return sDao.searchFacility(cri);
+	}
+
+	@Override
+	public int getFacilityCount(Criteria cri) throws Exception {
+		return sDao.getFacilityCount(cri);
+	}
+	
 	
 	
 

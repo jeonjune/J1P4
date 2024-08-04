@@ -1,5 +1,6 @@
 package com.itwillbs.web;
 
+import java.security.Principal;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -7,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,10 +16,20 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
+import com.itwillbs.domain.EmpAttendanceVO;
+import com.itwillbs.domain.EquipManageVO;
+import com.itwillbs.domain.Criteria;
 import com.itwillbs.domain.FacilityManagementVO;
+import com.itwillbs.domain.FacilityReservationVO;
 import com.itwillbs.domain.FacilityVO;
+import com.itwillbs.service.CommonCodeService;
+import com.itwillbs.service.FacReservationService;
+import com.itwillbs.domain.MemberVO;
+import com.itwillbs.domain.PageVO;
 import com.itwillbs.service.FacilityService;
+import com.itwillbs.service.SearchService;
 
 @Controller
 @RequestMapping(value="/maintenance/*")
@@ -27,6 +39,14 @@ public class FacilityController {
 	
 	@Inject
 	private FacilityService fService;
+	
+	@Inject
+	private SearchService sService;
+	
+   @Inject FacReservationService frService;
+   
+   @Autowired
+   private CommonCodeService commonCodeService;
 	
 	
 	//시설리스트
@@ -60,13 +80,33 @@ public class FacilityController {
 	
 	//시설상세페이지 리스트
 	@GetMapping(value = "/read")
-	public void facReadListGET(HttpServletRequest request,Model model, @RequestParam("facility_no")int fno)throws Exception {
+	public void facReadListGET(Criteria cri,HttpServletRequest request,Model model, @RequestParam("facility_no")int fno)throws Exception {
+		
+		if(cri.getRepair_type() != null) {
+			
+			List<FacilityManagementVO> facDe = sService.searchFacility(cri);
+			// 하단 페이징처리 정보
+			PageVO pageVO = new PageVO();
+			pageVO.setCri(cri);
+			pageVO.setTotalCount(sService.getFacilityCount(cri));
+			// 연결된 뷰페이지로 정보 전달
+			model.addAttribute("facDe", facDe);
+			model.addAttribute("pageVO",pageVO);
+			
+		} else {
+
 		logger.info("facReadListGET() 실행 :");
-		int no = (Integer.parseInt(request.getParameter("facility_no")));
-		logger.info("no :"+no);
-		List<FacilityManagementVO> facDe = fService.facDe(no);
+		List<FacilityManagementVO> facDe = fService.facDe(cri);
 		logger.info("facDe :"+facDe);
 		model.addAttribute("facDe",facDe);
+		
+		// 페이징 처리
+		PageVO pageVO = new PageVO();
+		pageVO.setCri(cri);
+		pageVO.setTotalCount(fService.getCountFacDe(fno));
+		
+		model.addAttribute("pageVO",pageVO);
+		}
 		
 		//시설이름 조회
 		String name = fService.facName(fno);
@@ -80,6 +120,8 @@ public class FacilityController {
 		List<FacilityManagementVO> fac = fService.dateUpdate(fno);
 		logger.info("fac :"+fac.size());
 		model.addAttribute("fac",fService.dateUpdate(fno));
+		
+		
 		
 	}
 	
@@ -97,7 +139,67 @@ public class FacilityController {
 		
 	}
 	
-	
+	 //------------------------------------------------------------------------캘린더
+	   
+	   // http://localhost:8088/maintenance/reservation
+	   //시설예약 페이지 - 캘린터 조회
+	   @GetMapping(value = "/reservation")
+	   public ModelAndView getCalendarList(Model model,ModelAndView mv, HttpServletRequest request,FacilityReservationVO fvo) {
+	      String viewpage = "/maintenance/reservation";
+	      List<FacilityReservationVO> calendar = null;
+	      try {
+	         calendar = frService.rsvSelect();
+	         request.setAttribute("calendarList", calendar);
+	         logger.info("@@@@@@@@@@@@@@calendar@@@@@@@@@@@ :"+calendar);
+	      } catch (Exception e) {
+	         e.printStackTrace();
+	      }
+	      mv.setViewName(viewpage);
+	      
+	      model.addAttribute("FacilityReservationVO", fvo);
+	      model.addAttribute("FacilityReservationVO", fvo);
+	      model.addAttribute("fields", commonCodeService.getCommonCodeDetailsByCodeId("FIELD"));
+	      model.addAttribute("times", commonCodeService.getCommonCodeDetailsByCodeId("TIME"));
+	       
+	      return mv;
+	   }
+	   
+	   //시설예약 등록
+	   @ResponseBody
+	   @PostMapping(value = "/reservation")
+	   public String rsvPOST(FacilityReservationVO vo) throws Exception {
+	      logger.info("모달창으로 휴가신청(컨트롤러)");
+	      vo.setManager_no(12);
+	      frService.reservation(vo);
+	      return "maintenance/reservation";
+	   }
+	   
+	   //시설예약 수정
+	   @ResponseBody
+	   @PostMapping(value = "/rsvUpdate")
+	   public void rsvUpdatePOST( FacilityReservationVO vo) throws Exception{
+	      logger.info("모달창수정완료)");
+	      logger.info("#### vo ##### :"+vo);
+	      frService.rsvUpdate(vo);
+	      //return"maintenance/reservation";
+	   }
+	   
+	   //시설예약 삭제
+	   @ResponseBody
+	   @PostMapping(value = "/rsvDelete")
+	   public void rsvDeletePOST(FacilityReservationVO vo) throws Exception {
+	      logger.info("삭제완료");
+	      frService.rsvDelete(vo);
+	   }
+	   
+	   //시설예약 회원검색
+	   @ResponseBody
+	   @GetMapping(value = "/memSearch")
+	   public List<FacilityReservationVO> memSearchGET(@RequestParam("keyword")String keyword) throws Exception{
+	      List<FacilityReservationVO> search = frService.memSearch(keyword);
+	      return search;
+	   }
+
 	
 	
 	

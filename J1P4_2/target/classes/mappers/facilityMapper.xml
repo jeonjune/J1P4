@@ -20,6 +20,14 @@
 	<select id="facDe" resultType="FacilityManagementVO">
 		select * from facilityManagement
 		where facility_no=#{facility_no}
+		order by facility_no desc
+		limit #{pageStart},${pageSize}
+	</select>
+	
+	<!-- 시설상세페이지내역조회 페이징 -->
+	<select id="countFacDe" resultType="int">
+		select count(facility_no) from facilityManagement
+		where facility_no=#{facility_no}
 	</select>
 	
 	<!-- 시설상세페이지 등록 -->

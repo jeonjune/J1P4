@@ -31,10 +31,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import com.itwillbs.domain.Criteria;
 import com.itwillbs.domain.EquipManageVO;
+import com.itwillbs.domain.MemberVO;
+import com.itwillbs.domain.PageVO;
 import com.itwillbs.domain.fileVO;
 import com.itwillbs.service.CommonCodeService;
 import com.itwillbs.service.EquipManageService;
+import com.itwillbs.service.SearchService;
 
 import net.coobird.thumbnailator.Thumbnails;
 
@@ -51,13 +55,37 @@ public class EquipmentController {
 	@Autowired
 	private CommonCodeService commonCodeService;
 	
+	@Inject
+	private SearchService sService;
+	
 	
 	//장비내역 페이지
 	//http://localhost:8088/maintenance/equipment
 	@GetMapping(value = "/equipment")
-	public void equipmentGET(Model model)throws Exception {
-		List<EquipManageVO> eList = eService.listEquip();
+	public void equipmentGET(Model model,Criteria cri)throws Exception {
+		
+		if(cri.getKeyword() != null) {
+			
+			List<EquipManageVO> eList = sService.searchEquip(cri);
+			// 하단 페이징처리 정보
+			PageVO pageVO = new PageVO();
+			pageVO.setCri(cri);
+			pageVO.setTotalCount(sService.getEquipCount(cri));
+			// 연결된 뷰페이지로 정보 전달
+			model.addAttribute("eList", eList);
+			model.addAttribute("pageVO",pageVO);
+			
+			return;
+		}
+		
+		List<EquipManageVO> eList = eService.listEquip(cri);
 		model.addAttribute("eList", eList);
+		
+		PageVO pageVO = new PageVO();
+		pageVO.setCri(cri);
+		pageVO.setTotalCount(eService.equipListCount());
+		
+		model.addAttribute("pageVO",pageVO);
 		
 	}
 		
@@ -185,9 +213,31 @@ public class EquipmentController {
 	//반려내역
 	//http://localhost:8088/maintenance/reject
 	@GetMapping(value = "/reject")
-	public void rejectGET(Model model) throws Exception {
-		List<EquipManageVO> rList = eService.rejectList();
+	public void rejectGET(Model model,Criteria cri) throws Exception {
+		
+		if(cri.getKeyword() != null) {
+			
+			List<EquipManageVO> rList = sService.searchEquip(cri);
+			// 하단 페이징처리 정보
+			PageVO pageVO = new PageVO();
+			pageVO.setCri(cri);
+			pageVO.setTotalCount(sService.getEquipCount(cri));
+			// 연결된 뷰페이지로 정보 전달
+			model.addAttribute("rList", rList);
+			model.addAttribute("pageVO",pageVO);
+			
+			return;
+		}
+		
+		List<EquipManageVO> rList = eService.rejectList(cri);
 		model.addAttribute("rList", rList);
+		
+		PageVO pageVO = new PageVO();
+		pageVO.setCri(cri);
+		pageVO.setTotalCount(eService.rejectListCount());
+
+		// 연결된 뷰페이지로 정보 전달
+		model.addAttribute("pageVO",pageVO);
 		
 	}
 	
