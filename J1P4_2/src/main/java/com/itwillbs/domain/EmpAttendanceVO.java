@@ -1,6 +1,7 @@
 package com.itwillbs.domain;
 
 import java.sql.Date;
+import java.sql.Time;
 
 import lombok.Data;
 
@@ -11,8 +12,8 @@ public class EmpAttendanceVO {
 	public int user_no;
 	
 	public Date attend_date;
-	public Date commute_time;
-	public Date quitting_time;
+	public Time commute_time;
+	public Time quitting_time;
 	public String work_status;
 	public String check_status;
 	

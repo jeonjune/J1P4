@@ -8,6 +8,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.itwillbs.domain.AuthVO;
+import com.itwillbs.domain.Criteria;
 import com.itwillbs.domain.EmpAttendanceVO;
 import com.itwillbs.domain.EmployeeVO;
 import com.itwillbs.persistence.EmployeeDAO;
@@ -22,10 +23,16 @@ public class EmployeeServiceImpl implements EmployeeService {
 	private PasswordEncoder pwEncoder;
 
 	@Override
-	public List<EmployeeVO> empList() throws Exception {
+	public List<EmployeeVO> empList(Criteria cri) throws Exception {
 		
-		return edao.empList();
+		return edao.empList(cri);
 	}
+	
+	@Override
+	public int getTotalEmpCount() throws Exception {
+		return edao.getTotalEmpCount();
+	}
+
 
 	@Override
 	public void empJoin(EmployeeVO vo) throws Exception {
@@ -108,6 +115,15 @@ public class EmployeeServiceImpl implements EmployeeService {
 	public void reEmp(String user_id) throws Exception {
 		edao.reEmp(user_id);
 	}
+
+	@Override
+	public List<EmpAttendanceVO> monthWork(int user_no) throws Exception {
+		return edao.monthWork(user_no);
+	}
+	
+	
+	
+	
 	
 	
 
