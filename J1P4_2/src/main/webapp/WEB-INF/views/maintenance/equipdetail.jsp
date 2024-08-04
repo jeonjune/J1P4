@@ -43,7 +43,7 @@
 						<label> 장비신청유형 </label> <select id="select_type"
 							name="e_repair_type" size="1">
 							<option>선택하세요.</option>
-							<option value="추가 구입">추가 구입</option>
+							<option value="추가 구입">추가구입</option>
 							<option value="수리">수리</option>
 							<option value="폐기">폐기</option>
 						</select>
