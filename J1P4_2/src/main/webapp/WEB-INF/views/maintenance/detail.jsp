@@ -79,17 +79,10 @@
 
 					<div class="form-group">
 						<label>첨부파일</label>
-						${fileList} 
 					
-					<c:forEach var="fileVO" items="${fileList}" varStatus="i">
-						<c:set var="tmp" value="${fileVO.file_name.substring(fileVO.file_name.lastIndexOf('.')) }" />
 						
-						파일 : ${i.count } : <a href="/maintenance/download?fileName=${fileVO.file_name }">${fileVO.file_name }</a><hr>
+						<a href="/maintenance/download?fileName=${fileList.file_name }">${fileList.file_name }</a><hr>
 						
-						<c:if test="${tmp =='.png' }">
-							<img src="/maintenance/download?fileName=${fileVO.file_name }"><hr>
-						</c:if>
-					</c:forEach>
 
 					</div>
 

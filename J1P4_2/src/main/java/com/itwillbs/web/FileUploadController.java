@@ -31,7 +31,7 @@ import net.coobird.thumbnailator.Thumbnails;
 @Controller
 public class FileUploadController {
 	
-	private static final Logger logger = LoggerFactory.getLogger(CommonController.class);
+	private static final Logger logger = LoggerFactory.getLogger(FileUploadController.class);
 	private final String FAKE_PATH = "/upload";
 	
 	@GetMapping(value = "/regist")
