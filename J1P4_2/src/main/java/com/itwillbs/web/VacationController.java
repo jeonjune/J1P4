@@ -61,6 +61,7 @@ public class VacationController {
 			String v_name = eService.getName(user_no);
 			vo.setUser_no(user_no);
 			vo.setV_name(v_name);
+
 			eService.vacation(vo);
 			}
 		

@@ -79,6 +79,54 @@
 					</div>
 				</div>
 			</div>
+			
+						<div class="col-sm-12">
+				<table id="example1" class="table table-bordered table-hover"
+					style="background: #fff" aria-describedby="example1_info">
+					<thead>
+						<tr>
+						<!-- empAttend_no, attend_date, commute_time, quitting_time, work_status, check_status, vacation_status, vacation_start, vacation_end -->
+							<th class="sorting" tabindex="0" aria-controls="example1"
+								rowspan="1" colspan="1"
+								aria-label="Browser: activate to sort column ascending">출근 날짜</th>
+							<th class="sorting" tabindex="0" aria-controls="example1"
+								rowspan="1" colspan="1"
+								aria-label="Browser: activate to sort column ascending">출근 시간</th>
+							<th class="sorting" tabindex="0" aria-controls="example1"
+								rowspan="1" colspan="1"
+								aria-label="Browser: activate to sort column ascending">퇴근 시간</th>
+							<th class="sorting" tabindex="0" aria-controls="example1"
+								rowspan="1" colspan="1"
+								aria-label="Browser: activate to sort column ascending">출근 정보</th>
+							<th class="sorting" tabindex="0" aria-controls="example1"
+								rowspan="1" colspan="1"
+								aria-label="Browser: activate to sort column ascending">휴가 정보</th>
+								
+
+						</tr>
+						
+					</thead>
+					<tbody>
+						<c:forEach var="monthWork" items="${monthWork }">
+							<tr class="odd">
+							 	<c:if test="${monthWork.vacation_status == null}">
+								<td class="dtr-control" tabindex="0">${monthWork.attend_date }</td>
+							 	</c:if>
+							 	<c:if test="${monthWork.vacation_status != null}">
+								<td>${monthWork.vacation_start }</td>
+							 	</c:if>
+								<td class="dtr-control" tabindex="0">${monthWork.commute_time }</td>
+								<td>${monthWork.quitting_time }</td>
+								<td>${monthWork.check_status }</td>
+								<td>${monthWork.vacation_status }</td>
+							</tr>
+						</c:forEach>
+					</tbody>
+		
+				</table>
+			</div>
+			
+			
 		</div>
 	</div>
 

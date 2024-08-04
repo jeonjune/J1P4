@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import com.itwillbs.domain.AuthVO;
+import com.itwillbs.domain.Criteria;
 import com.itwillbs.domain.EmpAttendanceVO;
 import com.itwillbs.domain.EmployeeVO;
 
@@ -24,7 +25,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 	private static final String NAMESPACE = "com.itwillbs.mapper.employeeMapper.";
 
 	@Override
-	public List<EmployeeVO> empList() throws Exception {
+	public List<EmployeeVO> empList(Criteria cri) throws Exception {
 		return sqlSession.selectList(NAMESPACE+"empList");
 	}
 
@@ -104,6 +105,23 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 	public void reEmp(String user_id) throws Exception {
 		sqlSession.update(NAMESPACE+"reEmp", user_id);
 	}
+
+	@Override
+	public List<EmpAttendanceVO> monthWork(int user_no) throws Exception {
+		return sqlSession.selectList(NAMESPACE+"monthWork", user_no);
+	}
+	
+	// 페이징
+	@Override
+	public int getTotalEmpCount() throws Exception {
+		return sqlSession.selectOne(NAMESPACE+"totalEmpCount");
+	}
+
+	
+	
+	
+	
+	
 	
 	
 	
