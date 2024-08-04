@@ -143,7 +143,7 @@ public class EquipmentController {
         
         logger.debug("@@@@@@ 난 이제 지쳤어요 땡벌땡벌 "+ paramMap.get("fileNameList"));
         fvo.setFile_name(paramMap.get("fileNameList"));
-        logger.debug("@@@@@@ 난 이제 지쳤어요 땡벌땡벌  "+ fvo.getFile_name());
+        logger.debug("@@@@@@ 난 이제 지쳤어요 땡벌땡벌 "+ fvo.getFile_name());
         
         eService.equipAdd(vo);
         eService.fileAdd(fvo);
