@@ -35,8 +35,8 @@
 
 	<!-- 첨부파일 업로드 -->
 	<insert id="fileAdd" parameterType="fileVO">
-	insert into file(file_no,equipment_no,cvt_name,file_date,file_name)
-	values(#{file_no},#{equipment_no},#{cvt_name},#{file_date},#{file_name})
+	insert into file(equipment_no,cvt_name,file_date,file_name)
+	values((select max(equipment_no) from equipmentManagement),#{cvt_name},#{file_date},#{file_name})
 	</insert>
 	
 	<!--첨부파일 조회  -->
@@ -50,15 +50,12 @@
 		UPDATE equipmentManagement
 		SET 
     	e_repair_type = CASE 
-        WHEN e_repair_type = '추가 구입' THEN '정상' 
+        WHEN e_repair_type = '구입' THEN '정상' 
+        WHEN e_repair_type = '추가구입' THEN '정상'
         WHEN e_repair_type = '수리' THEN '수리중' 
         ELSE '폐기'
     	END,
-    	status = CASE 
-        WHEN e_repair_type = '추가 구입' THEN '승인'
-        WHEN e_repair_type = '수리' THEN '승인'
-        ELSE '승인'
-    	END,
+    	status = '승인',
     	approval_date = NOW()
 		WHERE equipment_no = #{equipment_no};
 	</update>

@@ -39,7 +39,7 @@ public class EquipManageServiceImpl implements EquipManageService {
 	//특정 장비신청 상세페이지 조회
 	@Override
 	public Map<String, Object> equipDetail(int eno) throws Exception {
-		logger.info("#####"+ edao.equipDetail(eno));
+		logger.info("##### 조회 "+ edao.equipDetail(eno));
 		return edao.equipDetail(eno);
 	}
 	

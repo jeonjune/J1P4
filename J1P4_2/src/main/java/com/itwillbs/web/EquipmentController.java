@@ -140,8 +140,13 @@ public class EquipmentController {
         logger.debug("paramMap :{} ", paramMap);
 
         model.addAttribute("paramMap", paramMap);
-
+        
+        logger.debug("@@@@@@ 난 이제 지쳤어요 땡벌땡벌 "+ paramMap.get("fileNameList"));
+        fvo.setFile_name(paramMap.get("fileNameList"));
+        logger.debug("@@@@@@ 난 이제 지쳤어요 땡벌땡벌 "+ fvo.getFile_name());
+        
         eService.equipAdd(vo);
+        eService.fileAdd(fvo);
 
         return "redirect:/maintenance/list";
     }
@@ -175,37 +180,34 @@ public class EquipmentController {
     }
 
     @GetMapping("/download")
-    public void downloadGET(@RequestParam("file_name") String fileName, HttpServletResponse resp, HttpServletRequest req) 
+    public void downloadGET(@RequestParam("fileName") String fileName, HttpServletResponse resp, HttpServletRequest req) 
     		throws Exception {
-        logger.debug("downloadGET() 실행");
-
-        OutputStream out = resp.getOutputStream();
-        String downFile = req.getRealPath(FAKE_PATH) + "\\" + fileName;
-        File file = new File(downFile);
-        
-        int lastIdx = fileName.lastIndexOf(".");
-		String thumbName = fileName.substring(0,lastIdx);
+logger.debug(" downloadGET() 실행 ");	
 		
-		File thumbnail = new File(req.getRealPath(FAKE_PATH)+"\\"+"thumbnail"+"\\"+thumbName+".png");
-        
-        if (file.exists()) {
-        	//썸네일을 출력 
-			Thumbnails.of(file).size(100, 100).outputFormat("png").toOutputStream(out);
-        }
-            
-        	//다운로드에 필요한 설정
-        	resp.setHeader("Cache-Control", "no-cache");
-            resp.addHeader("Content-disposition", "attachment; fileName=" + URLEncoder.encode(fileName, "UTF-8"));
-
-            FileInputStream fis = new FileInputStream(file);
-            byte[] buffer = new byte[1024 * 8];
-            while (true) {
-                int data = fis.read(buffer);
-                if (data == -1) break;
-                out.write(buffer, 0, data);
-            }
-            fis.close();
-            out.close();
+		// 외부 (브라우저)로 통신가능한 통로
+		OutputStream out = resp.getOutputStream();
+		
+		// 다운로드할 파일의 정보(위치)
+		String downFile = req.getRealPath(FAKE_PATH)+"\\"+fileName;
+		
+		// 다운로드할 파일 생성
+		File file = new File(downFile);
+		
+		// 다운로드에 필요한 설정
+		resp.setHeader("Cache-Control", "no-cache");
+		resp.addHeader("Content-disposition", "attachment; fileName="+URLEncoder.encode(fileName,"UTF-8"));
+		
+		FileInputStream fis = new FileInputStream(file);
+		
+		byte[] buffer = new byte[1024 * 8];
+		
+		while(true) {
+			int data = fis.read(buffer);
+			if(data == -1) break; // 파일의 끝
+			
+			
+			out.write(buffer,0,data);
+		}
     }
 	
 	
@@ -251,6 +253,7 @@ public class EquipmentController {
 		//DAO 저장된 정보 가져오기
 		Map<String, Object> resultVO = eService.equipDetail(eno);
 		logger.info("resultVO :"+ resultVO);
+		logger.info("resultVO :"+ resultVO.get("fileVO"));
 		
 		//전달할 정보 저장
 		model.addAttribute("resultVO", resultVO.get("EquipManageVO"));

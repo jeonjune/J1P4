@@ -42,7 +42,7 @@ public class EquipManageDAOImpl implements EquipManageDAO {
 		
 		Map<String, Object> resrultMap = new HashMap<String, Object>();
 		resrultMap.put("EquipManageVO",sqlSession.selectOne(NAMESPACE+"equipDetail", eno));
-		resrultMap.put("fileVO",sqlSession.selectList(NAMESPACE+"selectFile", eno));
+		resrultMap.put("fileVO",sqlSession.selectOne(NAMESPACE+"selectFile", eno));
 		
 		return resrultMap;
 	}
