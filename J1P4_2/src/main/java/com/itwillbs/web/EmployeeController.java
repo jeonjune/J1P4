@@ -78,6 +78,9 @@ public class EmployeeController {
 		
 		List<EmployeeVO> empList = eService.empList(cri);
 		model.addAttribute("empList", empList);
+		EmployeeVO employee = new EmployeeVO(); // 폼 객체
+        model.addAttribute("employee", employee);
+
 		model.addAttribute("job", commonCodeService.getCommonCodeDetailsByCodeId("JOB"));
 		logger.info("job : "+commonCodeService.getCommonCodeDetailsByCodeId("JOB"));
 	    model.addAttribute("job_rank", commonCodeService.getCommonCodeDetailsByCodeId("JOB_RANK"));
@@ -378,7 +381,15 @@ public class EmployeeController {
 					logger.info("@@@@@@@@@@@@@@principal.getName()@@@@@@@@@@@ :"+principal.getName());
 					user_no = eService.user_no(principal.getName());
 					List<EmpAttendanceVO> result =  eService.monthWork(user_no);
+					int countVa = eService.countVa(user_no);
 					model.addAttribute("monthWork", result);
+					model.addAttribute("countLate", eService.countLate(user_no));
+					model.addAttribute("countVa", countVa);
+					model.addAttribute("countHalf", eService.countHalf(user_no));
+					
+					int countAtt = eService.countAtt(user_no)+countVa;
+					model.addAttribute("countAtt", countAtt);
+					
 					logger.info("@@@@@@@@@@@@@@출결확인ㅇㅇㅇㅇ@@@@@@@@@@@ :"+result);
 				}
 
@@ -396,6 +407,12 @@ public class EmployeeController {
 			logger.info("@@@@@@@@@@@@@@principal.getName()@@@@@@@@@@@ :"+principal.getName());
 			user_no = eService.user_no(principal.getName());
 			List<EmpAttendanceVO> myVaca = vaService.myVaca(user_no);
+			int countVa = eService.yearCountVa(user_no);
+			int countHalf = eService.yearCountHalf(user_no);
+			double leftVa = 12 - countVa - (countHalf / 2.0);
+			model.addAttribute("countVa", countVa);
+			model.addAttribute("countHalf",countHalf);
+			model.addAttribute("leftVa",leftVa);
 			model.addAttribute("myVaca", myVaca);
 		}
 		

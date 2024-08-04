@@ -37,8 +37,9 @@
 				<div class="card-body">
 					<div style="position: absolute; right: 30px;">
 						
-						
-						
+					<button class="btn btn-primary" type="button"
+							 data-bs-toggle="modal" data-bs-target="#vaModal">휴가신청</button>	
+							 
 					</div>
 					<c:if test="${myP.job_rank == '관리자'}">
 						<span class="badge badge-success right"><strong><i
@@ -68,11 +69,11 @@
 							<br> <br>
 							<div class="centered-circle"><span>총 연차 <br>12</span></div>
 							
-							<div class="centered-circle"><span>연차 <br>12</span></div>
+							<div class="centered-circle"><span>연차 <br>${countVa }</span></div>
 							
-							<div class="centered-circle"><span>반차 <br>12</span></div>
+							<div class="centered-circle"><span>반차 <br>${countHalf }</span></div>
 							
-							<div class="centered-circle"><span>남은 연차 <br>12</span></div>
+							<div class="centered-circle"><span>남은 연차 <br>${leftVa }</span></div>
 						</div>
 					</div>
 				</div>
@@ -125,7 +126,62 @@
 		
 	</div>
 
+   <!-- 휴가 모달창 시작 -->
+	<div class="modal fade" id="vaModal" tabindex="-1"
+		aria-labelledby="vaModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content">
 
+				<!-- 모달창 헤더 -->
+				<div class="modal-header">
+					<h5 class="modal-title" id="vaModalLabel">휴가 신청서</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal"
+						aria-label="Close"></button>
+				</div>
+
+				<!-- 모달창 바디(본문) -->
+				<form action="" method="post" id="fm1" name="fm1">
+ 					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+				<div class="modal-body">
+					<div class="m-2">
+					<div class="accordion-item">
+					<div class="textRight">
+						<select name="vacation_status" id="vacation_status" class="form-control">
+							<option value="휴가">휴가</option>
+							<option value="오전반차">오전 반차</option>
+							<option value="오후반차">오후 반차</option>
+							<option value="기타">기타 휴가</option>
+						</select>
+					</div>
+					</div>
+					<div class="form-group">
+						<label>휴가 시작일</label> 
+						<input type="date" name="vacation_start" class="form-control" />
+					</div>
+					<div class="form-group">
+						<label>휴가 종료일(출근일)</label>
+						<input type="date" name="vacation_end" class="form-control" />
+					</div>
+					<p><span id="length">0</span> / 500자<p>
+					<textarea rows="20" cols="200" name="vacation_reason" id="vacation_reason" 
+					class="form-control" onkeyup="up()" placeholder="휴가 사유를 입력하세요."></textarea>
+					</div>
+
+				</div>
+				</form>
+
+				<!-- 모달창 푸터 -->
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary"
+						data-bs-dismiss="modal">취소</button>
+					<button type="button" class="btn btn-primary vaSendBtn"
+						data-bs-dismiss="modal">전송하기</button>
+				</div>
+
+			</div>
+		</div>
+	</div>
+	<!-- 휴가 신청 모달창 끝 -->
 
 
 
@@ -134,5 +190,33 @@
 
 </div>
 
+
+
+
+<script>
+$(document).ready(function(){
+	$('.vaSendBtn').click(function(){
+		$.ajax({
+			url : "/vacation/vacation",
+			type : "POST",
+			data : $("#fm1").serialize(),
+			success : function(data) {
+				if(data === "endVa"){
+					alert("남은 휴가가 없습니다.");
+						
+					}else {					
+					alert("휴가 신청완료 되었습니다.");
+					}
+					window.location.href = '/employee/myVacation';
+				},
+			error : function() {
+				alert("오류발생");
+			}
+		});
+	});
+});
+
+
+</script>
 
 <%@ include file="../include/footer.jsp"%>

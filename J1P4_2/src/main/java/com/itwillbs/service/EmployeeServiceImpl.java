@@ -120,6 +120,36 @@ public class EmployeeServiceImpl implements EmployeeService {
 	public List<EmpAttendanceVO> monthWork(int user_no) throws Exception {
 		return edao.monthWork(user_no);
 	}
+
+	@Override
+	public int countLate(int user_no) throws Exception {
+		return edao.countLate(user_no);
+	}
+
+	@Override
+	public int countVa(int user_no) throws Exception {
+		return edao.countVa(user_no);
+	}
+
+	@Override
+	public int countHalf(int user_no) throws Exception {
+		return edao.countHalf(user_no);
+	}
+
+	@Override
+	public int yearCountVa(int user_no) throws Exception {
+		return edao.yearCountVa(user_no);
+	}
+
+	@Override
+	public int yearCountHalf(int user_no) throws Exception {
+		return edao.yearCountHalf(user_no);
+	}
+
+	@Override
+	public int countAtt(int user_no) throws Exception {
+		return edao.countAtt(user_no);
+	}
 	
 	
 	

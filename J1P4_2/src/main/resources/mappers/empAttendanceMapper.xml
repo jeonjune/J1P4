@@ -70,18 +70,24 @@
  	
  	<!-- 승인된 휴가 목록 -->
  	<select id="yVaca" resultMap="employeeMap">
+ 		<![CDATA[
  		select e.user_no, name, job, job_rank, vacation_status, vacation_start, vacation_end, vacation_reason
 		from employee e
 		join empAttendance v on e.user_no = v.user_no
-		where vacation_status is not null and vacation_approval = '승인'
+		where vacation_status is not null and vacation_approval = '승인' AND 
+        vacation_start >= DATE_FORMAT(CURDATE(), '%Y-01-01')
+      	]]>
  	</select>
 
  	<!-- 반려된 휴가 목록 -->
  	<select id="nVaca" resultMap="employeeMap">
+ 	<![CDATA[
  		select e.user_no, name, job, job_rank, vacation_status, vacation_start, vacation_end, vacation_reason, reject_reason
 		from employee e
 		join empAttendance v on e.user_no = v.user_no
-		where vacation_status is not null and vacation_approval = '반려'
+		where vacation_status is not null and vacation_approval = '반려' AND
+		vacation_start >= DATE_FORMAT(CURDATE(), '%Y-01-01')
+      	]]>
  	</select>
  	
  	<!-- 휴가 반려 -->
@@ -108,7 +114,8 @@
  	<select id="myVaca" resultType="EmpAttendanceVO">
  		select user_no, vacation_status, vacation_start, vacation_end, vacation_reason, vacation_approval,reject_reason
 		from empAttendance
-		where vacation_status is not null and user_no = #{user_no}
+		where vacation_status is not null and user_no = #{user_no} AND
+		vacation_start >= DATE_FORMAT(CURDATE(), '%Y-01-01')
  	</select>
  	
  	

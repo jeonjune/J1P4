@@ -133,9 +133,87 @@
 	<![CDATA[
 		select empAttend_no, attend_date, commute_time, quitting_time, work_status, check_status, vacation_status, vacation_start, vacation_end
 		from empAttendance
-		where user_no = #{user_no} and (vacation_approval = '승인' or commute_time is not null)
+		where user_no = #{user_no} and (vacation_approval = '승인' or commute_time is not null) AND (
+        attend_date >= DATE_FORMAT(CURDATE(), '%Y-%m-01')
+        AND attend_date < DATE_FORMAT(DATE_ADD(CURDATE(),INTERVAL 1 MONTH), '%Y-%m-01'))
+        ORDER BY 
+		  CASE 
+		    WHEN vacation_status IS NULL THEN attend_date
+		    ELSE vacation_start
+		  END
 	]]>
 	</select>
+	
+	<!-- 지각 카운트 -->
+	<select id="countLate" resultType="int">
+		<![CDATA[
+		select count(check_status)
+		from empAttendance
+		where check_status = '지각' and user_no = #{user_no} AND (
+        attend_date >= DATE_FORMAT(CURDATE(), '%Y-%m-01')
+        AND attend_date < DATE_FORMAT(DATE_ADD(CURDATE(),INTERVAL 1 MONTH), '%Y-%m-01'))
+		]]>
+	</select>
+	<!-- 휴가 카운트 -->
+	<select id="countVa" resultType="int">
+		<![CDATA[
+		select SUM(DATEDIFF(
+        LEAST(vacation_end, LAST_DAY(CURDATE())),
+        GREATEST(vacation_start, DATE_FORMAT(CURDATE(), '%Y-%m-01'))
+    	)) AS total_vacation_days
+		from empAttendance
+		where (vacation_status = '휴가' or vacation_status = '기타') and vacation_approval = '승인' and user_no = #{user_no} AND (
+        vacation_start < DATE_FORMAT(DATE_ADD(CURDATE(), INTERVAL 1 MONTH), '%Y-%m-01')
+        AND vacation_end >= DATE_FORMAT(CURDATE(), '%Y-%m-01'))
+		]]>
+	</select>
+	<!-- 반차 카운트 -->
+	<select id="countHalf" resultType="int">
+		<![CDATA[
+		select count(*)
+		from empAttendance
+		where (vacation_status = '오전반차' or vacation_status = '오후반차') and vacation_approval = '승인' and user_no = #{user_no} AND (
+        vacation_start < DATE_FORMAT(DATE_ADD(CURDATE(), INTERVAL 1 MONTH), '%Y-%m-01')
+        AND vacation_end >= DATE_FORMAT(CURDATE(), '%Y-%m-01'))
+		]]>
+	</select>
+	
+	<!-- 올해 휴가 카운트 -->
+	<select id="yearCountVa" resultType="int">
+		<![CDATA[
+		select SUM(DATEDIFF(
+        LEAST(vacation_end, LAST_DAY(CURDATE())),
+        GREATEST(vacation_start, DATE_FORMAT(CURDATE(), '%Y-%m-01'))
+    	)) AS total_vacation_days
+		from empAttendance
+		where (vacation_status = '휴가' or vacation_status = '기타') and vacation_approval = '승인' and user_no = #{user_no} AND (
+        vacation_start <= DATE_FORMAT(CURDATE(), '%Y-12-31') 
+      	AND vacation_end >= DATE_FORMAT(CURDATE(), '%Y-01-01'))
+		]]>
+	</select>
+	<!-- 올해 반차 카운트 -->
+	<select id="yearCountHalf" resultType="int">
+		<![CDATA[
+		select count(*)
+		from empAttendance
+		where (vacation_status = '오전반차' or vacation_status = '오후반차') and vacation_approval = '승인' and user_no = #{user_no} AND (
+        vacation_start <= DATE_FORMAT(CURDATE(), '%Y-12-31') 
+      	AND vacation_end >= DATE_FORMAT(CURDATE(), '%Y-01-01'))
+		]]>
+	</select>
+	
+	<!-- 이번달 출석일 -->
+	<select id="countAtt" resultType="int">
+		<![CDATA[
+		select count(*)
+		from empAttendance
+		where user_no = #{user_no} and work_status is not null and ( attend_date >= DATE_FORMAT(CURDATE(), '%Y-%m-01')
+	    AND attend_date < DATE_FORMAT(DATE_ADD(CURDATE(),INTERVAL 1 MONTH), '%Y-%m-01'))
+	    ]]>
+	</select>
+	
+	
+	
 	
 	 <!-- 회원정보와 인증정보를 한번에 조회(Join) -->
 <!-- 	 <select id="readMemberAuth" resultMap="memberMap"> -->

@@ -100,7 +100,7 @@
 						<input type="date" name="vacation_start" class="form-control" />
 					</div>
 					<div class="form-group">
-						<label>휴가 종료일</label>
+						<label>휴가 종료일(출근일)</label>
 						<input type="date" name="vacation_end" class="form-control" />
 					</div>
 					<p><span id="length">0</span> / 500자<p>
@@ -134,7 +134,12 @@ $(document).ready(function(){
 			type : "POST",
 			data : $("#fm1").serialize(),
 			success : function(data) {
+				if(data === "endVa"){
+				alert("남은 휴가가 없습니다.");
+					
+				}else {					
 				alert("휴가 신청완료 되었습니다.");
+				}
 				window.location.href = '/employee/myVacation';
 			},
 			error : function() {

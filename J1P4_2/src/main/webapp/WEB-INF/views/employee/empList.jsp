@@ -107,7 +107,7 @@
 		<!-- 테이블 커스텀 (정렬 / 행 개수) -->
 		<div class="content memListSort">
 		
-			<div></div>
+			<div>검색결과 : ${pageVO.totalCount }명</div>
 			
 			<!-- 정렬 기준 선택 -->
 			<div id="sortRight">
@@ -215,9 +215,9 @@
 	<sec:authentication property="principal" var="principal"/>
 </sec:authorize>
 <%-- ${principal} <br> --%>
-user_id : ${principal.username}<br>
-권한 : ${principal.authorities}<br>
-출근상태 : ${checkW }
+<%-- user_id : ${principal.username}<br> --%>
+<%-- 권한 : ${principal.authorities}<br> --%>
+<%-- 출근상태 : ${checkW } --%>
 <%-- ${author } --%>
 <!-- <div class="dropdown" id="commute-div"> -->
 <%--     <c:choose>   --%>
@@ -366,6 +366,7 @@ user_id : ${principal.username}<br>
 
 
 <form action="" method="post" id="fm1" name="fm1">
+	
  <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 	<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight"
 		aria-labelledby="offcanvasRightLabel">
@@ -402,19 +403,21 @@ user_id : ${principal.username}<br>
                         </div>
                         <span id="checkpass" style="font-size: 14px;"></span>
                        
-<!--                         <div class="form-group"> -->
-<!--                             <label>직무</label> -->
-<%--                             <form:select path="job" class="form-control" name="job"> --%>
-<%--                                 <form:options items="${job}" itemValue="codeValue" itemLabel="codeValueName"/> --%>
-<%--                             </form:select> --%>
-<!--                         </div> -->
+                        <form:form method="post" modelAttribute="employee">
+                        <div class="form-group">
+                            <label>직무</label>
+                            <form:select path="job" class="form-control" name="job">
+                                <form:options items="${job}" itemValue="codeValue" itemLabel="codeValueName"/>
+                            </form:select>
+                        </div>
                         
-<!--                         <div class="form-group"> -->
-<!--                             <label>직급</label> -->
-<%--                             <form:select path="job_rank" class="form-control" name="job_rank"> --%>
-<%--                                 <form:options items="${job_rank}" itemValue="codeValue" itemLabel="codeValueName"/> --%>
-<%--                             </form:select> --%>
-<!--                         </div> -->
+                        <div class="form-group">
+                            <label>직급</label>
+                            <form:select path="job_rank" class="form-control" name="job_rank">
+                                <form:options items="${job_rank}" itemValue="codeValue" itemLabel="codeValueName"/>
+                            </form:select>
+                        </div>
+                        </form:form>
                      
 						<div class="form-group">
 							<label>입사일</label> <input type="date" name="emp_date"
