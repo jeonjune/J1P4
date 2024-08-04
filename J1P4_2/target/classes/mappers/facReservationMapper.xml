@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+  <mapper namespace="com.itwillbs.mapper.facReservationMapper">
+
+	<!-- 시설예약 등록 -->
+	<insert id="reservation">
+	insert into facilityReservation (faReservation_no,manager_no,facility_no,mem_no,rsv_name,rsv_date,start_time,end_time,rsv_day,facility_name,field,count_people,rsv_phone,rsv_status)
+	values(#{faReservation_no},#{manager_no},#{facility_no},#{mem_no},#{rsv_name},#{rsv_date},#{start_time},#{end_time},#{rsv_day},#{facility_name},#{field},#{count_people},#{rsv_phone},'예약완료')
+	</insert>
+  	
+  	<!-- 시설예약 캘린더에서 조회 -->
+  	<select id="rsvSelect" resultType="FacilityReservationVO">
+  	select * from facilityReservation
+  	where rsv_status is not null
+  	</select>
+  	
+  	<!-- 시설예약 수정 -->
+  	<update id="rsvUpdate">
+  	UPDATE facilityReservation
+  	SET rsv_name=#{rsv_name}, rsv_date=#{rsv_date},start_time=#{start_time},end_time=#{end_time},field=#{field},
+  	rsv_day=#{rsv_day},facility_name=#{facility_name},
+  	count_people=#{count_people}, rsv_phone=#{rsv_phone}
+  	WHERE faReservation_no=#{faReservation_no}
+  	</update>
+  	
+  	<!-- 시설예약 삭제 -->
+  	<delete id="rsvDelete">
+  	delete from facilityReservation
+	where faReservation_no=#{faReservation_no}	
+  	</delete>
+  	
+  	<!-- 시설예약 회원검색 -->
+  	<select id="memSearch" resultType="MemberVO">
+	select mem_no,mem_name, mem_phone 
+	from member
+	where mem_name LIKE CONCAT('%',#{keyword},'%') AND mem_delete is null
+  	</select>
+  	
+  	
+  	
+  	
+  	
+  	
+  	
+  </mapper>
