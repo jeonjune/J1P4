@@ -108,7 +108,7 @@ public class VacationController {
 		logger.info("반려된 휴가목록@@@@");
 		List<EmpAttendanceVO> nList = eService.nVaca();
 		model.addAttribute("nList", nList);
-		
+		 
 	}
 	
 	// 휴가 승인
