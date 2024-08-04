@@ -7,153 +7,179 @@
 <%@ include file="../include/sidemenu.jsp"%>
 <%@ include file="../include/memMenu.jsp"%>
 
-
 <div class="content-wrapper" style="min-height: 831px;">
 
-<div class="card cardCustom">
-    <div class="col-md-10" style="margin-left: 150px; margin-top: 30px; margin-bottom: 10px;">
-        <div class="row">
-            <!-- 수강 분포 카드 -->
-            <div class="card col-md-6">
-                <div class="card-header border-0 ui-sortable-handle">
-                    <h3 class="card-title">
-                        <i class="fas fa-chart-pie mr-1"></i> 수강 분포
-                    </h3>
-                </div>
-                <div class="card-body">
-                    <div class="tab-content p-4">
-                        <div class='ifNull'></div>
-                        <div class="chart" style="position: relative; height: 400px;">
-                            <div class="chartjs-size-monitor">
-                                <div class="chartjs-size-monitor-expand">
-                                    <div class=""></div>
-                                </div>
-                                <div class="chartjs-size-monitor-shrink">
-                                    <div class=""></div>
-                                </div>
-                            </div>
-                            <canvas id="age-chart" height="400" style="height: 400px; display: block; width: 100%;" width="900" class="chartjs-render-monitor"></canvas>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- 오른쪽 컬럼 -->
-            <div class="col-md-6">
-                <!-- 현재 수강중인 강의 카드 -->
-                <div class="card">
-                    <div class="card-header border-0 ui-sortable-handle">
-                        <h3 class="card-title">
-                            <i class="fas fa-th mr-1"></i> 현재 수강중인 강의
-                        </h3>
-	                    <div class="card-tools">
-	                    <c:if test="${normalCount > 1}">
-						  <ul class="pagination pagination-sm">
-						      <li class="page-item prevButt">
-						      </li>
-						      <li class="page-item nextButt">
-						        <a href="#" class="page-link">»</a>
-						      </li>
-						  </ul>
-						</c:if>
-	            	    </div>
-                    </div>
-                    <div class="card-body">
-                        <div class="tab-content p-0 printClassNormal">
-                        <c:forEach items="${statusNormal }" var="normal">
-	                        <c:forEach items="${normal.classScheduleList }" var="classList">
-	                       		<c:forEach items="${classList.classList }" var="classDetail">
-                        <img alt="${classDetail.fieldCode }" width="70px;" src="${pageContext.request.contextPath }/resources/img/${classDetail.fieldCode }.png">
-	                       			강의명: ${classDetail.className }<br>
-	                       			상세내용: ${classDetail.description }<br>
-	                       			강의코드: ${classDetail.fieldCode }<br>
-	                       			강의수준: ${classDetail.divisionCode }<br>
-	                       			강의레벨: ${classDetail.levelCode }<br>
-	                       			최대인원: ${classDetail.maxCapacity }<br>
-	                       			최소인원: ${classDetail.minCapacity }<br>
-	                       			강사: ${classDetail.instructorNo }<br>
-	                       		</c:forEach>
-	                       
-	                        기간 : ${classList.startDate } ~
-	                        ${classList.endDate }<br>
-	                        매주 ${classList.recurrenceDays }<br>
-	                        시간 : ${classList.startTimeCode }~
-	                        ${classList.endTimeCode }<br>
-	                        </c:forEach>
-                        등록일 : ${normal.registration_date }<br>
-                        </c:forEach>
-                        
-                        <c:if test="${empty statusNormal }">
-	                        <div style="padding: 75px;">
-	                        값이 없습니데이
-	                        </div>
-                        </c:if>
-                        
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 수강 신청 목록 카드 -->
-                <div class="card mt-3">
-                    <div class="card-header border-0 ui-sortable-handle">
-                        <h3 class="card-title">
-                            <i class="fas fa-th mr-1"></i> 수강 신청 목록
-                        </h3>
-                        <div class="card-tools">
-	                    <c:if test="${recruitCount > 1}">
-						  <ul class="pagination pagination-sm">
-						      <li class="page-item prevRecruitButt">
-						      </li>
-						      <li class="page-item nextRecruitButt">
-						      	<a href="#" class="page-link">»</a>
-						      </li>
-						  </ul>
-						</c:if>
-	            	    </div>
-                    </div>
-                    <div class="card-body">
-                        <div class="tab-content p-0 printClassRecruit">
-                         <c:forEach items="${statusRecruit }" var="recruit">
-	                        <c:forEach items="${recruit.classScheduleList }" var="classList">
-	                       		<c:forEach items="${classList.classList }" var="classDetail">
-	                       		<img alt="${classDetail.fieldCode }" width="70px;" src="${pageContext.request.contextPath }/resources/img/${classDetail.fieldCode }.png">
-	                       			강의명: ${classDetail.className }<br>
-	                       			상세내용: ${classDetail.description }<br>
-	                       			강의코드: ${classDetail.fieldCode }<br>
-	                       			강의수준: ${classDetail.divisionCode }<br>
-	                       			강의레벨: ${classDetail.levelCode }<br>
-	                       			최대인원: ${classDetail.maxCapacity }<br>
-	                       			최소인원: ${classDetail.minCapacity }<br>
-	                       			강사: ${classDetail.instructorNo }<br>
-	                       		</c:forEach>
-	                       
-	                        기간 : ${classList.startDate } ~
-	                        ${classList.endDate }<br>
-	                        매주 ${classList.recurrenceDays }<br>
-	                        시간 : ${classList.startTimeCode }~
-	                        ${classList.endTimeCode }<br>
-	                        </c:forEach>
-                        등록일 : ${normal.registration_date }<br>
-                        </c:forEach>
-                        
-                        <c:if test="${empty statusRecruit }">
-	                        <div style="padding: 75px;">
-	                        값이 없습니데이
-	                        </div>
-                        </c:if>
-                        
-                        </div>
-                    </div>
-                </div>
-            </div>
+	<div class="card cardCustom">
+	
+    	<div class="cardMargin col-md-10">
+        <div class="row d-flex align-items-stretch">
+    <!-- 좌측 카드 -->
+    <!-- 수강 분포 카드 시작 -->
+    <div class="card col-md-6 d-flex flex-column">
+        <!-- 수강 분포 카드 헤더 -->
+        <div class="card-header border-0 ui-sortable-handle">
+            <h3 class="card-title">
+                <i class="fas fa-chart-pie mr-1"></i> 수강 분포
+            </h3>
         </div>
 
-        <!-- 수강 상세내용 카드 -->
-        <div class="printDetails"></div>
+        <!-- 수강 분포 카드 바디 -->
+        <div class="card-body flex-fill">
+            <!-- 분포 그래프 -->
+            <div class="tab-content p-4">
+                <!-- 값이 없는 회원(신규회원)에게 출력될 안내문구 -->
+                <div class='ifNull'></div>
+                
+                <div class="chart" style="position: relative; height: 400px;">
+                    <div class="chartjs-size-monitor">
+                        <div class="chartjs-size-monitor-expand">
+                            <div class=""></div>
+                        </div>
+                        <div class="chartjs-size-monitor-shrink">
+                            <div class=""></div>
+                        </div>
+                    </div>
+                    <canvas id="age-chart" height="400" style="height: 400px; display: block; width: 100%;" width="900" class="chartjs-render-monitor"></canvas>
+                </div>
+            </div>
+            <!-- 분포 그래프 -->
+            
+            <!-- 수강 상세내용 출력 -->
+            <div class="printDetails"></div>
+        </div>
     </div>
-    
-</div>
+    <!-- 수강 분포 카드 끝 -->
 
+    <!-- 우측 카드 묶음 -->
+    <div class="col-md-6 d-flex flex-column">
+        <!-- 현재 수강중인 강의 카드 시작 -->
+        <div class="card flex-fill">
+            <!-- 현재 수강중인 강의 카드 헤더 -->
+            <div class="card-header border-0 ui-sortable-handle">
+                <h3 class="card-title">
+                    <i class="fas fa-th mr-1"></i> 현재 수강중인 강의
+                </h3>
+                
+                <!-- 페이징 처리 -->
+                <div class="card-tools">
+                    <!-- 수강중인 강의가 2개 이상부터 페이징처리 시작 -->
+                    <c:if test="${normalCount > 1}">
+                        <ul class="pagination pagination-sm">
+                            <!-- 이전버튼 -->
+                            <li class="page-item prevButt"></li>
+                            <!-- 다음버튼 -->
+                            <li class="page-item nextButt">
+                                <a href="#" class="page-link">»</a>
+                            </li>
+                        </ul>
+                    </c:if>
+                </div>
+            </div>
+
+            <!-- 현재 수강중인 강의 카드 바디 -->
+            <div class="card-body flex-fill">
+                <!-- 현재 수강중인 강의 출력 -->
+                <div class="tab-content p-0 printClassNormal">
+                    <c:forEach items="${statusNormal }" var="normal">
+                        <c:forEach items="${normal.classScheduleList }" var="classList">
+                            <c:forEach items="${classList.classList }" var="classDetail">
+                                <img alt="${classDetail.fieldCode }" width="70px;" src="${pageContext.request.contextPath }/resources/img/${classDetail.fieldCode }.png">
+                                강의명: ${classDetail.className }<br>
+                                상세내용: ${classDetail.description }<br>
+                                강의코드: ${classDetail.fieldCode }<br>
+                                강의수준: ${classDetail.divisionCode }<br>
+                                강의레벨: ${classDetail.levelCode }<br>
+                                최대인원: ${classDetail.maxCapacity }<br>
+                                최소인원: ${classDetail.minCapacity }<br>
+                                강사: <c:forEach items="${normal.empList }" var="empList">
+                        		${empList.name }</c:forEach><br>
+                            </c:forEach>
+                            기간 : ${classList.startDate } ~ ${classList.endDate }<br>
+                            매주 ${classList.recurrenceDays }<br>
+                            시간 : ${classList.startTimeCode }~ ${classList.endTimeCode }<br>
+                        </c:forEach>
+                        
+                        등록일 : ${normal.registration_date }<br>
+                    </c:forEach>
+
+                    <!-- 수강중인 강의가 없을 경우 출력 -->
+                    <c:if test="${empty statusNormal }">
+                        <div style="padding: 75px;">
+                            값이 없습니데이
+                        </div>
+                    </c:if>
+                </div>
+                <!-- 현재 수강중인 강의 출력 -->
+            </div>
+        </div>
+        <!-- 현재 수강중인 강의 카드 끝 -->
+
+        <!-- 수강 신청 목록 카드 시작 -->
+        <div class="card mt-3 flex-fill">
+            <!-- 수강 신청 목록 카드 헤더 -->
+            <div class="card-header border-0 ui-sortable-handle">
+                <h3 class="card-title">
+                    <i class="fas fa-th mr-1"></i> 수강 신청 목록
+                </h3>
+                
+                <!-- 페이징 처리 -->
+                <div class="card-tools">
+                    <!-- 수강신청한 강의가 2개 이상부터 페이징처리 시작 -->
+                    <c:if test="${recruitCount > 1}">
+                        <ul class="pagination pagination-sm">
+                            <!-- 이전버튼 -->
+                            <li class="page-item prevRecruitButt"></li>
+                            <!-- 다음버튼 -->
+                            <li class="page-item nextRecruitButt">
+                                <a href="#" class="page-link">»</a>
+                            </li>
+                        </ul>
+                    </c:if>
+                </div>
+            </div>
+
+            <!-- 수강 신청 목록 카드 바디 -->
+            <div class="card-body flex-fill">
+                <!-- 수강 신청 목록 출력 -->
+                <div class="tab-content p-0 printClassRecruit">
+                    <c:forEach items="${statusRecruit }" var="recruit">
+                        <c:forEach items="${recruit.classScheduleList }" var="classList">
+                            <c:forEach items="${classList.classList }" var="classDetail">
+                                <img alt="${classDetail.fieldCode }" width="70px;" src="${pageContext.request.contextPath }/resources/img/${classDetail.fieldCode }.png">
+                                강의명: ${classDetail.className }<br>
+                                상세내용: ${classDetail.description }<br>
+                                강의코드: ${classDetail.fieldCode }<br>
+                                강의수준: ${classDetail.divisionCode }<br>
+                                강의레벨: ${classDetail.levelCode }<br>
+                                최대인원: ${classDetail.maxCapacity }<br>
+                                최소인원: ${classDetail.minCapacity }<br>
+                                강사: <c:forEach items="${recruit.empList }" var="empList">
+                        		${empList.name }</c:forEach><br>
+                            </c:forEach>
+                            기간 : ${classList.startDate } ~ ${classList.endDate }<br>
+                            매주 ${classList.recurrenceDays }<br>
+                            시간 : ${classList.startTimeCode }~ ${classList.endTimeCode }<br>
+                        </c:forEach>
+                        등록일 : ${recruit.registration_date }<br>
+                    </c:forEach>
+
+                    <!-- 수강 신청 목록이 없을 경우 출력 -->
+                    <c:if test="${empty statusRecruit }">
+                        <div style="padding: 75px;">
+                            값이 없습니데이
+                        </div>
+                    </c:if>
+                </div>
+                <!-- 수강 신청 목록 출력 -->
+            </div>
+        </div>
+        <!-- 수강 신청 목록 카드 끝 -->
+    </div>
+    <!-- 우측 카드 묶음 -->
+</div>
+  	  </div>
+    
+	</div>
 
 </div>
 
@@ -266,6 +292,14 @@
 	                        data.forEach(registration => {
 	                        	
                             	registrationDate.push(registration.registration_date);
+                            	
+                            	// RegistrationVO의 empList에 접근
+                            	registration.empList.forEach(empList => {
+	                            	
+                            		instructor.push(empList.name);
+
+	                            });
+                            	
                         		
                             	// RegistrationVO의 classScheduleList에 접근
 	                            registration.classScheduleList.forEach(classScheduleList => {
@@ -286,7 +320,6 @@
 	                                	divisionCodes.push(classList.divisionCode);
 	                                	maxCapacity.push(classList.maxCapacity);
 	                                	minCapacity.push(classList.minCapacity);
-	                                	instructor.push(classList.instructorNo);
 	                                	
 	                                });
 	                            });
@@ -360,7 +393,7 @@
                        		'강의레벨: '+data.classScheduleList[0].classList[0].levelCode+'<br>'+
                        		'최대인원: '+data.classScheduleList[0].classList[0].maxCapacity+'<br>'+
                        		'최소인원: '+data.classScheduleList[0].classList[0].minCapacity+'<br>'+
-                       		'강사: '+data.classScheduleList[0].classList[0].instructorNo+'<br>'+
+                       		'강사: '+data.empList[0].name+'<br>'+
                        		'기간 : '+convertTimestampToDate(data.classScheduleList[0].startDate)+' ~ '+
                        		convertTimestampToDate(data.classScheduleList[0].endDate)+'<br>'+
  	                        '매주 '+data.classScheduleList[0].recurrenceDays+'<br>'+
@@ -427,7 +460,7 @@
                        		'강의레벨: '+data.classScheduleList[0].classList[0].levelCode+'<br>'+
                        		'최대인원: '+data.classScheduleList[0].classList[0].maxCapacity+'<br>'+
                        		'최소인원: '+data.classScheduleList[0].classList[0].minCapacity+'<br>'+
-                       		'강사: '+data.classScheduleList[0].classList[0].instructorNo+'<br>'+
+                       		'강사: '+data.empList[0].name+'<br>'+
                        		'기간 : '+convertTimestampToDate(data.classScheduleList[0].startDate)+' ~ '+
                        		convertTimestampToDate(data.classScheduleList[0].endDate)+'<br>'+
  	                        '매주 '+data.classScheduleList[0].recurrenceDays+'<br>'+
@@ -487,7 +520,7 @@
                        		'강의레벨: '+data.classScheduleList[0].classList[0].levelCode+'<br>'+
                        		'최대인원: '+data.classScheduleList[0].classList[0].maxCapacity+'<br>'+
                        		'최소인원: '+data.classScheduleList[0].classList[0].minCapacity+'<br>'+
-                       		'강사: '+data.classScheduleList[0].classList[0].instructorNo+'<br>'+
+                       		'강사: '+data.empList[0].name+'<br>'+
                        		'기간 : '+convertTimestampToDate(data.classScheduleList[0].startDate)+' ~ '+
                        		convertTimestampToDate(data.classScheduleList[0].endDate)+'<br>'+
  	                        '매주 '+data.classScheduleList[0].recurrenceDays+'<br>'+
@@ -555,7 +588,7 @@
                        		'강의레벨: '+data.classScheduleList[0].classList[0].levelCode+'<br>'+
                        		'최대인원: '+data.classScheduleList[0].classList[0].maxCapacity+'<br>'+
                        		'최소인원: '+data.classScheduleList[0].classList[0].minCapacity+'<br>'+
-                       		'강사: '+data.classScheduleList[0].classList[0].instructorNo+'<br>'+
+                       		'강사: '+data.empList[0].name+'<br>'+
                        		'기간 : '+convertTimestampToDate(data.classScheduleList[0].startDate)+' ~ '+
                        		convertTimestampToDate(data.classScheduleList[0].endDate)+'<br>'+
  	                        '매주 '+data.classScheduleList[0].recurrenceDays+'<br>'+

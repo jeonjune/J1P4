@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.itwillbs.domain.Criteria;
+import com.itwillbs.domain.HealthMonitorVO;
 import com.itwillbs.domain.MemberVO;
 import com.itwillbs.domain.RecipientVO;
 import com.itwillbs.domain.RegistrationVO;
@@ -48,5 +49,20 @@ public interface MemberDAO {
 	
 	// 회원별 현재 수강중 강의와 수강신청 목록 출력
 	public RegistrationVO memberClassStatus(Map<String, Object> vo) throws Exception;
+	
+	// 회원 건강 모니터링 출력
+	public HealthMonitorVO getHealthMonitor(Map<String, Object> vo) throws Exception;
+	
+	//회원 신체변화 출력
+	public List<Map<String, Object>> getChangeBody(int mem_no) throws Exception;
+	
+	// 회원 인바디 수정
+	public void updateInbody(HealthMonitorVO vo) throws Exception;
+	
+	// 회원 인바디 등록
+	public void insertInbody(HealthMonitorVO vo) throws Exception;
+	
+	// 회원 강의 누적 기간 출력
+	public int countingMemClass(int mem_no) throws Exception;
 
 }

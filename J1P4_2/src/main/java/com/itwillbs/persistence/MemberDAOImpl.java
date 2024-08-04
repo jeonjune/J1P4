@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import com.itwillbs.domain.Criteria;
+import com.itwillbs.domain.HealthMonitorVO;
 import com.itwillbs.domain.MemberVO;
 import com.itwillbs.domain.RecipientVO;
 import com.itwillbs.domain.RegistrationVO;
@@ -95,6 +96,33 @@ public class MemberDAOImpl implements MemberDAO {
 	public RegistrationVO memberClassStatus(Map<String, Object> vo) throws Exception {
 		return sqlSession.selectOne(NAMESPACE+"detailClass",vo);
 	}
+
+	@Override
+	public HealthMonitorVO getHealthMonitor(Map<String, Object> vo) throws Exception {
+		return sqlSession.selectOne(NAMESPACE+"getHealthMonitor",vo);
+	}
+
+	@Override
+	public List<Map<String, Object>> getChangeBody(int mem_no) throws Exception {
+		return sqlSession.selectList(NAMESPACE+"getChangeBody",mem_no);
+	}
+
+	@Override
+	public void updateInbody(HealthMonitorVO vo) throws Exception {
+		sqlSession.update(NAMESPACE+"updateInbody",vo);
+	}
+
+	@Override
+	public void insertInbody(HealthMonitorVO vo) throws Exception {
+		sqlSession.insert(NAMESPACE+"insertInbody",vo);
+	}
+
+	@Override
+	public int countingMemClass(int mem_no) throws Exception {
+		return sqlSession.selectOne(NAMESPACE+"countingMemClass",mem_no);
+	}
+	
+	
 	
 	
 	

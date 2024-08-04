@@ -12,11 +12,16 @@
 	  	<result property="mem_no" column="mem_no"/>
 	  	<result property="class_count" column="class_count"/>
 	  	<collection property="memList" resultMap="MemberMap"></collection>
+	  	<collection property="empList" resultMap="EmployeeMap"></collection>
 	  	<collection property="classScheduleList" resultMap="ClassScheduleMap"></collection>
   </resultMap>
   
   <resultMap type="com.itwillbs.domain.MemberVO" id="MemberMap">
   	<id property="mem_no" column="mem_no"/>
+  </resultMap>
+  
+  <resultMap type="com.itwillbs.domain.EmployeeVO" id="EmployeeMap">
+  	<id property="name" column="name"/>
   </resultMap>
   
   <resultMap type="com.itwillbs.domain.ClassVO" id="ClassMap">
@@ -46,17 +51,7 @@
         <collection property="classList" resultMap="ClassMap"></collection>
   </resultMap>
 	
-	<!-- 게시판 글 목록 ( 페이징 처리 1 ) -->
-	<select id="listPage" resultType="MemberVO">
-		<![CDATA[
-			select * from member
-			where mem_no > 0 and mem_delete is null
-			order by mem_no desc, reg_date desc
-			limit #{page},10
-		]]>		
-	</select>
-	
-	<!-- 게시판 글 목록 ( 페이징 처리 2 ) -->
+	<!-- 게시판 글 목록 ( 페이징 처리 ) -->
 	<select id="listPage2" resultType="MemberVO">
 		<![CDATA[
 			SELECT *, CONCAT(
@@ -81,7 +76,7 @@
 	        SUBSTRING(mem_phone, 1, 3), '-',
 	        SUBSTRING(mem_phone, 4, 4), '-',
 	        SUBSTRING(mem_phone, 8, 4)
-   			) AS formatted_mem_phone FROM member
+   			) AS formatted_mem_phone, FLOOR(DATEDIFF(CURDATE(), mem_birth) / 365.25) AS mem_age FROM member
 		where mem_no = #{mem_no};
 	</select>
 	
@@ -161,7 +156,7 @@
 	
 	<!-- 선택한 과목에 대한 상세내용 출력 -->
 	<select id="detailClass" resultMap="RegistrationMap">
-		select m.mem_no, r.registration_date, field_code, description,level_code,
+		select name, m.mem_no, r.registration_date, field_code, description,level_code,
 	    class_name,division_code,max_capacity,instructor_no,min_capacity,
 	    start_date, end_date, recurrence_days, start_time_code, end_time_code
 		from registration r
@@ -171,6 +166,8 @@
 		on cs.schedule_id = r.schedule_no
 		join class c
 		on c.class_no = cs.class_no
+		join employee e
+        on instructor_no = user_no
 		<where>
 	        m.mem_no = #{mem_no}
 	        <if test="status == '종료'">
@@ -204,6 +201,56 @@
 		join class c
 		on c.class_no = cs.class_no
 	    where m.mem_no = #{mem_no} and status = #{status}
+	</select>
+	
+	<!-- 회원 건강 모니터링 출력 -->
+	<select id="getHealthMonitor" resultType="HealthMonitorVO">
+		select *, name as manager_name from healthMonitor
+		join employee on manager_no = user_no 
+		where mem_no = #{mem_no}
+		order by inbody_date desc
+		limit #{pageStart},1
+	</select>
+	
+	<!-- 회원 신체변화 출력 -->
+	<select id="getChangeBody" resultType="HealthMonitorVO">
+		select * from (
+    	select inbody_no, LEFT(inbody_date, 7) as inbody_date, weight, muscle, fat
+    	from healthMonitor
+   		where mem_no = #{mem_no}
+  		order by inbody_date desc
+   		limit 6
+		) as changeBody_data
+		order by inbody_date asc
+	</select>
+	
+	<update id="updateInbody">
+		update healthMonitor set exercise_goal = #{exercise_goal},
+		height = #{height}, weight = #{weight}, fat=#{fat}, fat_mass=#{fat_mass},
+		muscle=#{muscle}, muscle_mass=#{muscle_mass}, belly_fat=#{belly_fat}, bmi=#{bmi},
+		bmr=#{bmr}, consult_content=#{consult_content}
+		where inbody_no = #{inbody_no} and manager_no = #{manager_no};
+	</update>
+	
+	<insert id="insertInbody">
+		insert into healthMonitor (mem_no, manager_no, inbody_date, exercise_goal, height, weight,
+		fat, fat_mass, muscle, muscle_mass, belly_fat, bmi, bmr, consult_content)
+		values (#{mem_no}, #{manager_no}, #{inbody_date}, #{exercise_goal}, #{height}, #{weight},
+		#{fat}, #{fat_mass}, #{muscle}, #{muscle_mass}, #{belly_fat}, #{bmi}, #{bmr}, #{consult_content})
+	</insert>
+	
+	<select id="countingMemClass" resultType="int">
+		SELECT IFNULL(
+           SUM(
+               CASE 
+                   WHEN cs.start_date IS NOT NULL AND cs.end_date IS NOT NULL 
+                   THEN DATEDIFF(cs.end_date, cs.start_date)
+                   ELSE 0
+               END
+           ), 0) AS class_count
+FROM registration r
+JOIN classSchedule cs ON cs.schedule_id = r.schedule_no
+WHERE r.mem_no = #{mem_no}
 	</select>
   	 
   </mapper>
