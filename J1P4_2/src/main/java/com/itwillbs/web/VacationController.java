@@ -58,6 +58,12 @@ public class VacationController {
 			logger.info("@@@@@@@@@@@@@@principal.getName()@@@@@@@@@@@ :"+principal.getName());
 			int user_no = empService.user_no(principal.getName());
 			logger.info("vo :"+vo);
+			int countVa = empService.yearCountVa(user_no);
+			int countHalf = empService.yearCountHalf(user_no);
+			double leftVa = 12 - countVa - (countHalf / 2.0);
+			if(leftVa <= 0) {
+				return "endVa";
+			}
 			String v_name = eService.getName(user_no);
 			vo.setUser_no(user_no);
 			vo.setV_name(v_name);
@@ -102,16 +108,16 @@ public class VacationController {
 		logger.info("반려된 휴가목록@@@@");
 		List<EmpAttendanceVO> nList = eService.nVaca();
 		model.addAttribute("nList", nList);
-		
+		 
 	}
 	
 	// 휴가 승인
 	@RequestMapping(value = "yVac",method = RequestMethod.POST)
-	public String yVac(@RequestParam("empAttend_no") int empAttend_no) throws Exception {
+	public String yVac(@RequestParam("empAttend_no") int empAttend_no,@RequestParam("user_no") int user_no) throws Exception {
 		logger.info("휴가 승인@@@@"+ empAttend_no);
 		eService.yVa(empAttend_no);
 		
-		return "redirect:/vacation/yVacList";
+		return "redirect:/vacation/vacList";
 	}
 	
 	

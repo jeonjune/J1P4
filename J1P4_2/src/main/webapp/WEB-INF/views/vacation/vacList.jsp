@@ -70,6 +70,7 @@
                     <form action="/vacation/yVac" method="post" style="display : inline;">
                     	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                         <input type="hidden" name="empAttend_no" value="${vList.empAttend_no}">
+                        <input type="hidden" name="user_no" value="${list.user_no}">
                         <button type="submit" class="btn btn-primary">승인</button>
                     </form>
 <!-- 					<button type="button" class="btn btn-primary" id="submitBut">승인</button> -->
@@ -160,7 +161,7 @@
              },
              success: function(response) {
                  alert("반려되었습니다.");
-                 window.location.href = '/vacation/nVacList';
+             	 history.go(0);
              },
              error: function(xhr, status, error) {
                  alert('실패 ' + error);

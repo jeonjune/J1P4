@@ -67,13 +67,13 @@
 						<div class="card-body">
 							<strong><i class="far fa-file-alt mr-1 cardMy"></i> 이번달 출근 현황 </strong>
 							<br> <br>
-							<div class="centered-circle"><span>출근일 수 <br>nn</span></div>
+							<div class="centered-circle"><span>출근일 수 <br>${countAtt }</span></div>
 							
-							<div class="centered-circle"><span>지각 <br>nn</span></div>
+							<div class="centered-circle"><span>지각 <br>${countLate }</span></div>
 
-							<div class="centered-circle"><span>반차 <br>nn</span></div>
+							<div class="centered-circle"><span>반차 <br>${countHalf }</span></div>
 							
-							<div class="centered-circle"><span>연차 <br>nn</span></div>
+							<div class="centered-circle"><span>연차 <br>${countVa }</span></div>
 							
 						</div>
 					</div>
@@ -113,7 +113,7 @@
 								<td class="dtr-control" tabindex="0">${monthWork.attend_date }</td>
 							 	</c:if>
 							 	<c:if test="${monthWork.vacation_status != null}">
-								<td>${monthWork.vacation_start }</td>
+								<td>${monthWork.vacation_start }~${monthWork.vacation_end }</td>
 							 	</c:if>
 								<td class="dtr-control" tabindex="0">${monthWork.commute_time }</td>
 								<td>${monthWork.quitting_time }</td>
