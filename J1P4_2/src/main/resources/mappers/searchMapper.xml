@@ -196,7 +196,7 @@
     </where>
 	</select>
 	
-	<!-- 장비 검색 결과 리스트 목록 ( 페이징 처리 ) -->
+	<!-- 장비 검색 결과 리스트 목록 ( 페이징 처리) -->
 	<select id="searchEquip" resultType="EquipmentVO">
 		select * from equipmentManagement
 		<if test="status == '반려'">
@@ -243,7 +243,7 @@
 
 	<!-- 장비 검색 결과 리스트 개수 ( 페이징 처리 ) -->
 	<select id="totalEquipCount" resultType="int">
-    SELECT count(user_no) FROM employee
+    SELECT count(equipment_no) from equipmentManagement
     <where>
         <choose>
             <when test="searchType == 'searchAll'">
@@ -254,11 +254,8 @@
             <when test="searchType == 'searchName'">
                 name like CONCAT('%', #{keyword}, '%') AND retire_status = 0
             </when>
-            <when test="searchType == 'searchPhoneNum'">
-                phone_no LIKE CONCAT('%', #{keyword}, '%') AND retire_status = 0
-            </when>
-            <when test="searchType == 'searchEmail'">
-                email LIKE CONCAT('%', #{keyword}, '%') AND retire_status = 0
+            <when test="searchType == 'searchCompany">
+                manufacturer LIKE CONCAT('%', #{keyword}, '%') AND retire_status = 0
             </when>
             <otherwise>
                 1=1 AND retire_status = 0
