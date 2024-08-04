@@ -9,6 +9,7 @@ import com.itwillbs.domain.HealthMonitorVO;
 import com.itwillbs.domain.MemberVO;
 import com.itwillbs.domain.RecipientVO;
 import com.itwillbs.domain.RegistrationVO;
+import com.itwillbs.domain.fileVO;
 
 public interface MemberService {
 		
@@ -18,7 +19,7 @@ public interface MemberService {
 	public int getTotalCount() throws Exception;
 	
 	// 회원 기본페이지
-	public MemberVO readMem(int mem_no) throws Exception;
+	public Map<String, Object> readMem(int mem_no) throws Exception;
 	
 	// 회원등록
 	public void memJoin(MemberVO vo) throws Exception;
@@ -63,5 +64,8 @@ public interface MemberService {
 	
 	// 회원 강의 누적 기간 출력
 	public int countingMemClass(int mem_no) throws Exception;
+	
+	//파일등록
+	public void fileMemAdd(fileVO vo) throws Exception;
 	
 }

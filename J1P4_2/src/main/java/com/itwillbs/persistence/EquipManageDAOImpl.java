@@ -96,7 +96,7 @@ public class EquipManageDAOImpl implements EquipManageDAO {
 	public Map<String, Object> equipDetailGET(int eno) throws Exception {
 		Map<String, Object> resrultMap = new HashMap<String, Object>();
 		resrultMap.put("EquipManageVO",sqlSession.selectOne(NAMESPACE+"equipDetailGet", eno));
-		resrultMap.put("fileVO",sqlSession.selectList(NAMESPACE+"selectFile", eno));
+		resrultMap.put("fileVO",sqlSession.selectOne(NAMESPACE+"selectFile", eno));
 		
 		return resrultMap; 
 		

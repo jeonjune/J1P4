@@ -426,7 +426,7 @@
 
 
 	<!-- 회원 등록 오프캔버스 시작 -->
-	<form action="" method="post" id="fm1" name="fm1">
+	<form action="" method="post" id="fm1" name="fm1" enctype="multipart/form-data">
 
 		<input type="hidden" name="${_csrf.parameterName}"
 			value="${_csrf.token}" />
@@ -500,7 +500,10 @@
 								placeholder="상세주소" name="mem_addr2" class="form-control">
 						</div>
 
-
+						<div class="form-group">
+						<label>첨부파일</label> <input type="file" name="file"
+						 class="form-control" />
+						</div>
 						<button type="button" class="btn btn-primary" id="submitButt">등록하기</button>
 
 					</div>
@@ -606,17 +609,27 @@
 	/* 회원등록 Ajax */
 	$(function() {
 		$("#submitButt").click(function(event) {
-
+			
+			const token = $("meta[name='_csrf']").attr("content")
+			const header = $("meta[name='_csrf_header']").attr("content");
+			
 	        // 전화번호 필드에서 하이픈 제거
 	        $("input[name='mem_phone']").each(function() {
 	            var cleanedPhone = $(this).val().replace(/-/g, '');
 	            $(this).val(cleanedPhone);
 	        });
 			
+			var formData = new FormData($("#fm1")[0]);
+			
 			$.ajax({
 				url : "/member/memJoin",
 				type : "POST",
-				data : $("#fm1").serialize(),
+				data : formData,
+				contentType: false, //필수
+	            processData: false, //필수
+	            beforeSend: function(xhr) { //header.jsp에 있는 토큰때문에 써주는 것
+	                xhr.setRequestHeader(header, token);
+	            },
 				success : function(data) {
 					alert("회원이 등록 되었습니다.");
 
