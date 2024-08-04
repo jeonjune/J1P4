@@ -9,211 +9,301 @@
 <div class="content-wrapper" style="min-height: 831px;">
 
 	<div class="card cardCustom">
-		<div class="card-header" style="margin-bottom: 30px">
-			<h2 class="card-title" style="margin-left: 150px;">회원 기본정보</h2>
-		</div>
 
-		<div class="col-md-10" style="margin-left: 150px;">
-
+		<div class="cardMargin col-md-10">
+		<div class="row d-flex">
+						
+			<!-- 회원 이름 & 운동 목표 카드-->
 			<div class="card">
-				<div class="card-body">
-					<div style="position: absolute; right: 30px;">
-						<a href="/member/list">
-							<button type="button" class="btn btn-light">뒤로가기</button>
-						</a>
-						<button class="btn btn-primary" type="button"
+				<!-- 페이징 처리 -->
+	                    <div class="card-tools d-flex justify-content-between align-items-center">
+	                    <form action="" method="get" class="inbodyForm">
+	                    <div class="form-inline">
+	                    <input type="hidden" value="${param.mem_no }" name="mem_no">
+	                    <c:if test="${not empty healthInfo.inbody_no }">
+	                    <select class="form-control" id="selectInbody" name="pageStart">
+	                    	<c:forEach items="${inbodyDate }" var="test" varStatus="i">
+							<option value="${i.index }">${test.inbody_date }</option>
+						</c:forEach>
+	                    </select>
+	                    </c:if>
+	                    </div>
+	                    </form>
+							  <div>
+							  <c:if test="${not empty healthInfo.inbody_no }">
+							  <button class="btn btn-primary" type="button"
 							data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight"
 							aria-controls="offcanvasRight">수정하기</button>
-					</div>
-					<c:if test="${readMem.mem_rank == '장기회원'}">
-						<span class="badge badge-success right"><strong><i
-								class="fas fa-crown"></i> VIP</strong></span>
-					</c:if>
-					<c:if test="${readMem.mem_rank == '신규회원'}">
-						<span class="badge badge-success right"><strong><i
-								class="fas fa-seedling"></i> NEW</strong></span>
-					</c:if>
-					<c:if test="${readMem.mem_rank == '일반회원'}">
-						<span class="badge badge-success right"><strong><i
-								class="fas fa-user"></i> MEM</strong></span>
-					</c:if>
-					<span class="badge badge-light right"> <c:if
-							test="${readMem.class_status == 1}">
-					미수강<br>
-						</c:if> <c:if test="${readMem.class_status == 0}">
-					수강중<br>
-						</c:if></span>
-					<h2 style="margin-top: 10px;">${readMem.mem_name }님
-						(${readMem.formatted_mem_phone })</h2>
+							  </c:if>
+							  <button class="btn btn-outline-primary" type="button"
+							data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight2"
+							aria-controls="offcanvasRight">추가하기</button>
+							  </div>
+	            	    </div>
+			
+				<div class="card-body">
+					
+					<h2 style="margin-top: 10px;">${healthInfo.inbody_date}</h2>
 					<div class="card" style="margin-top: 20px;">
 						<div class="card-body">
-							<strong><i class="far fa-file-alt mr-1 cardMy"></i> 메모 </strong>
-							<br> <br><div style="white-space:pre;"><c:out value="${readMem.mem_note}"/></div>
+							<strong><i class="far fa-file-alt mr-1 cardMy"></i> 운동 목표 </strong>
+							<br> <br><div style="white-space:pre;"><c:out value="${healthInfo.exercise_goal}"/></div>
 						</div>
 					</div>
 				</div>
 			</div>
+			
+		 <!-- 좌측 카드 묶음 -->
+    <div class="col-md-6 d-flex flex-column">
+        <!-- 기본 정보 카드 시작 -->
+        <div class="card flex-fill">
+            <!-- 기본 정보 카드 헤더 -->
+            <div class="card-header border-0 ui-sortable-handle">
+                <h3 class="card-title">
+                    <i class="fas fa-th mr-1"></i> 기본 정보
+                </h3>
+            </div>
+            <!-- 기본 정보 카드 바디 -->
+            <div class="card-body">
+                <!-- 기본 정보 출력 -->
+                <div class="tab-content p-0 printClassNormal">
+                <c:if test="${not empty healthInfo }">
+                    키 : ${healthInfo.height}cm<br>
+                    체중 : ${healthInfo.weight}kg<br>
+                    체지방량 : ${healthInfo.fat}kg<br>
+                    골격근량 : ${healthInfo.muscle}kg<br>
+                    기초대사량 : ${healthInfo.bmr}kcal<br>
+                    복부지방률 : ${healthInfo.belly_fat}
+                   </c:if> 
+                    <!-- 기본 정보가 없을 경우 출력 -->
+                    <c:if test="${empty healthInfo }">
+                        <div style="padding: 75px;">
+                            값이 없습니데이
+                        </div>
+                    </c:if>
+                </div>
+                <!-- 기본 정보 출력 -->
+            </div>
+        </div>
+        <!-- 기본 정보 카드 끝 -->
+
+        <!-- 상담 내용 카드 시작 -->
+        <div class="card mt-3 flex-fill">
+            <!-- 상담 내용 카드 헤더 -->
+            <div class="card-header border-0 ui-sortable-handle">
+                <h3 class="card-title">
+                    <i class="fas fa-th mr-1"></i> 상담 내용
+                </h3>
+            </div>
+            <!-- 상담 내용 카드 바디 -->
+            <div class="card-body">
+                <!-- 상담 내용 출력 -->
+                <div class="tab-content p-0 printClassRecruit">
+                    <c:if test="${not empty healthInfo.consult_content or not empty healthInfo.manager_no}">
+                    담당강사 : ${healthInfo.manager_name } <br>
+                    ${healthInfo.consult_content }
+                    </c:if>
+                    <!-- 상담 내용이 없을 경우 출력 -->
+                    <c:if test="${empty healthInfo.consult_content }">
+                        <div style="padding: 75px;">
+                            값이 없습니데이
+                        </div>
+                    </c:if>
+                </div>
+                <!-- 상담 내용 출력 -->
+            </div>
+        </div>
+        <!-- 상담 내용 카드 끝 -->
+    </div>
+
+    <!-- 골격근 어쩌고 카드 시작 -->
+    <div class="card col-md-6 d-flex flex-column">
+        <!-- 골격근 어쩌고 카드 헤더 -->
+        <div class="card-header border-0 ui-sortable-handle">
+            <h3 class="card-title">
+                <i class="fas fa-th mr-1"></i>
+                골격근.지방분석
+            </h3>
+        </div>
+        <!-- 골격근 어쩌고 카드 바디 -->
+        <div class="card-body p-5 flex-fill">
+            <!-- 그래프 표 수평정렬 -->
+            <div class="charts-container">
+                <!-- 체중 그래프 -->
+                <div class="tab-content p-0 col-md-3">
+                    <div class="chart tab-pane active" id="b-chart" style="position: relative; height: 400px;">
+                        <div class="chartjs-size-monitor">
+                            <div class="chartjs-size-monitor-expand">
+                                <div class=""></div>
+                            </div>
+                            <div class="chartjs-size-monitor-shrink">
+                                <div class=""></div>
+                            </div>
+                        </div>
+                        <canvas id="num-mem-sport-bar-chart" height="400" width="900" class="chartjs-render-monitor canvasChart"></canvas>
+                    </div>
+                </div>
+                <!-- 체중 그래프 -->
+
+                <!-- 골격근률,체지방율,BMI 그래프 -->
+                <div class="tab-content col-md-8">
+                    <div class="chart tab-pane active" id="b-chart2" style="position: relative; height: 400px;">
+                        <div class="chartjs-size-monitor">
+                            <div class="chartjs-size-monitor-expand">
+                                <div class=""></div>
+                            </div>
+                            <div class="chartjs-size-monitor-shrink">
+                                <div class=""></div>
+                            </div>
+                        </div>
+                        <canvas id="num2-mem-sport-bar-chart" height="400" width="900" class="chartjs-render-monitor canvasChart"></canvas>
+                    </div>
+                </div>
+                <!-- 골격근률,체지방율,BMI 그래프 -->
+            </div>
+        </div>
+    </div>
+    <!-- 골격근 어쩌고 카드 끝 -->
+		
 		</div>
+		
+			<!-- 신체변화 카드-->
+			<div class="card">
+			
+              <div class="card-header ui-sortable-handle">
+                <h3 class="card-title">
+                  <i class="fas fa-chart-pie mr-1"></i>
+                 	신체변화
+                </h3>
 
-		<div class="d-flex justify-content-center" style="margin-top: 20px;">
-
-			<div class="col-md-5" style="display: inline-block;">
-
-				<div class="cardMy">
-					<strong><i class="fas fa-phone mr-1 cardMx"></i> 연락처 </strong>
-					<c:if test="${readMem.sms_opt == 1}">
-						<span class="badge badge-warning right badgeCustom"> 수신 동의
-						</span>
-					</c:if>
-					<c:if test="${readMem.sms_opt == 0}">
-						<span class="badge badge-info right badgeCustom"> 수신 미동의 </span>
-					</c:if>
-					<p class="text-muted cardMy">${readMem.formatted_mem_phone}</p>
-				</div>
-				<hr>
-				<div class="cardMy">
-					<strong><i class="far fa-heart mr-1 cardMx"></i> 생년월일</strong>
-					<p class="text-muted cardMy">${readMem.mem_birth }</p>
-				</div>
-				<hr>
-				<div class="cardMy">
-					<strong><i class="fas fa-venus-mars mr-1 cardMx"></i> 성별</strong>
-					<p class="text-muted cardMy">
-						<c:if test="${readMem.mem_gender == 1}">
-					여자<br>
-						</c:if>
-						<c:if test="${readMem.mem_gender == 0}">
-					남자<br>
-						</c:if>
-					</p>
-				</div>
-				<hr>
-				<div class="cardMy">
-					<strong><i class="far fa-file-alt mr-1 cardMx"></i> 생일</strong>
-					<p class="text-muted cardMy">${readMem.mem_birth }</p>
-				</div>
-				<hr>
-				<div class="cardMy">
-					<strong><i class="far fa-folder-open mr-1 cardMx"></i> 수강
-						상태</strong>
-					<p class="text-muted cardMy">
-						<c:if test="${readMem.class_status == 1}">
-					미수강<br>
-						</c:if>
-						<c:if test="${readMem.class_status == 0}">
-					수강중<br>
-						</c:if>
-					</p>
-				</div>
-
-			</div>
-			<div class="col-md-5" style="display: inline-block;">
-
-
-				<div class="cardMy">
-					<strong><i class="far fa-envelope mr-1 cardMx"></i> 이메일 </strong>
-					<c:if test="${readMem.email_opt == 1}">
-						<span class="badge badge-warning right badgeCustom"> 수신 동의
-						</span>
-					</c:if>
-					<c:if test="${readMem.email_opt == 0}">
-						<span class="badge badge-info right badgeCustom"> 수신 미동의 </span>
-					</c:if>
-					<p class="text-muted cardMy">${readMem.mem_email}</p>
-				</div>
-				<hr>
-				<div class="cardMy">
-					<strong><i class="fas fa-map-marker-alt mr-1 cardMx"></i>
-						주소</strong>
-					<p class="text-muted cardMy">${readMem.mem_addr1}${readMem.mem_addr2}</p>
-				</div>
-				<hr>
-				<div class="cardMy">
-					<strong><i class="fas fa-star mr-1 cardMx"></i> 회원 등급</strong>
-					<p class="text-muted cardMy">${readMem.mem_rank}</p>
-				</div>
-				<hr>
-				<div class="cardMy">
-					<strong><i class="far fa-calendar mr-1 cardMx"></i> 등록일</strong>
-					<p class="text-muted cardMy">${readMem.reg_date}</p>
-				</div>
-				<hr>
-				<div class="cardMy">
-					<strong><i class="far fa-regular fa-clock mr-1 cardMx"></i>
-						수강 시간</strong>
-					<p class="text-muted cardMy">${readMem.class_time}시간</p>
-				</div>
-
-			</div>
+              </div><!-- /.card-header -->
+              
+              <div class="card-body">
+              
+                <div class="tab-content p-0">
+                  <div class="chart tab-pane active" id="revenue-chart" style="position: relative; height: 200px;">
+                  	
+                  	<div class="chartjs-size-monitor">
+                  		<div class="chartjs-size-monitor-expand">
+                  			<div class="">
+                  			</div>
+                  		</div>
+                  		<div class="chartjs-size-monitor-shrink">
+                  			<div class="">
+                  			</div>
+                  		</div>
+                  	</div>
+                  	
+                      <canvas id="revenue2-chart-canvas" height="200" style="height: 200px; display: block; width: 900px;" width="900" class="chartjs-render-monitor"></canvas>
+                   </div>
+                   
+                  <div class="chart tab-pane active" id="revenue-chart" style="position: relative; height: 200px; margin-top: 30px;">
+                  	
+                  	<div class="chartjs-size-monitor">
+                  		<div class="chartjs-size-monitor-expand">
+                  			<div class="">
+                  			</div>
+                  		</div>
+                  		<div class="chartjs-size-monitor-shrink">
+                  			<div class="">
+                  			</div>
+                  		</div>
+                  	</div>
+                  	
+                      <canvas id="revenue3-chart-canvas" height="200" style="height: 200px; display: block; width: 900px;" width="900" class="chartjs-render-monitor"></canvas>
+                   </div>
+                   
+                </div>
+                
+              </div>
+              
+            </div>      
+            
 		</div>
 
 	</div>
-
-	<!-- 회원 수정창 (모달) -->
-	<form action="" method="post" id="fm1" name="fm1">
+	
+	
+	<form id="fm1" name="fm1">
 		<input type="hidden" name="${_csrf.parameterName}"
-			value="${_csrf.token}" /> <input type="hidden" name="mem_no"
-			value="${param.mem_no}" />
+			value="${_csrf.token}" /> <input type="hidden" name="inbody_no"
+			value="${healthInfo.inbody_no}" />
+			<input type="hidden" name="manager_no" value="${healthInfo.manager_no}" />
 		<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight"
 			aria-labelledby="offcanvasRightLabel">
 			<div class="offcanvas-header">
-				<h5 id="offcanvasRightLabel">회원수정</h5>
+				<h5 id="offcanvasRightLabel">인바디 수정</h5>
 				<button type="button" class="btn-close text-reset"
 					data-bs-dismiss="offcanvas" aria-label="Close"></button>
 			</div>
 			<div class="offcanvas-body">
 
-
 				<section class="content">
 					<div class="container-fluid">
-						<div class="form-group">
-							<label>이름</label> <input type="text" name="mem_name"
-								value="${readMem.mem_name }" class="form-control">
+						<label>키</label> 
+						<div class="form-group input-group">
+							<input type="number" name="height"
+								value="${healthInfo.height}" class="form-control">
+								<span class="input-group-text" id="basic-addon2">cm</span>
 						</div>
-						<div class="form-group">
-							<label>생년월일</label> <input type="date" name="mem_birth"
-								value="${readMem.mem_birth }" class="form-control" />
+						<label>체중</label> 
+						<div class="form-group input-group">
+							<input type="number" name="weight"
+								value="${healthInfo.weight}" class="form-control" />
+								<span class="input-group-text" id="basic-addon2">kg</span>
+						</div>
+						<label>체지방량</label> 
+						<div class="form-group input-group">
+							<input type="number" name="fat"
+								value="${healthInfo.fat}" class="form-control" />
+								<span class="input-group-text" id="basic-addon2">kg</span>
+						</div>
+						<label>체지방률</label> 
+						<div class="form-group input-group">
+							<input type="number" name="fat_mass"
+								value="${healthInfo.fat_mass}" class="form-control" />
+								<span class="input-group-text" id="basic-addon2">%</span>
+						</div>
+						<label>골격근량</label> 
+						<div class="form-group input-group">
+							<input type="number" name="muscle"
+								value="${healthInfo.muscle}" class="form-control" />
+								<span class="input-group-text" id="basic-addon2">kg</span>
+						</div>
+						<label>골격근율</label> 
+						<div class="form-group input-group">
+							<input type="number" name="muscle_mass"
+								value="${healthInfo.muscle_mass}" class="form-control" />
+								<span class="input-group-text" id="basic-addon2">%</span>
+						</div>
+						<label>BMI</label> 
+						<div class="form-group input-group">
+							<input type="number" name="bmi"
+								value="${healthInfo.bmi}" class="form-control" />
+								<span class="input-group-text" id="basic-addon2"></span>
+						</div>
+						<label>기초대사량</label> 
+						<div class="form-group input-group">
+							<input type="number" name="bmr"
+								value="${healthInfo.bmr}" class="form-control" />
+								<span class="input-group-text" id="basic-addon2">kcal</span>
+						</div>
+						<label>복부비만율</label> 
+						<div class="form-group input-group">
+							<input type="number" name="belly_fat"
+								value="${healthInfo.belly_fat}" class="form-control" />
+								<span class="input-group-text" id="basic-addon2"></span>
+						</div>
+						<label>운동목표</label>
+						<div class="form-group input-group">
+							<textarea rows="5" cols="38" name="exercise_goal">${healthInfo.exercise_goal}</textarea>
+						</div>
+						<label>상담내용</label>
+						<div class="form-group input-group">
+							<textarea rows="5" cols="38" name="consult_content">${healthInfo.consult_content}</textarea>
 						</div>
 
-						<div class="form-group">
-							<label>연락처</label> <input type="text" name="mem_phone"
-								value="${readMem.formatted_mem_phone }" class="form-control" maxlength="13" oninput="formatPhoneNumber(this)"> <label
-								class="chkboxCustom"> <input type="checkbox"
-								name="sms_opt" style="accent-color: #cdb4db;" value="1">&nbsp;sms
-								수신 동의
-							</label>
-						</div>
-
-						<div class="form-group">
-							<label>이메일</label> <input type="text" name="mem_email"
-								value="${readMem.mem_email }" class="form-control"> <label
-								class="chkboxCustom"> <input type="checkbox"
-								style="accent-color: #cdb4db;" name="email_opt" value="1">&nbsp;이메일
-								수신 동의
-							</label>
-						</div>
-						<div class="form-group">
-							<label>메모</label> <br>
-							<textarea class="form-control" name="mem_note" rows="5" cols="38"><c:out value="${readMem.mem_note }" /></textarea>
-						</div>
-						<div class="form-group">
-							<label>주소</label>
-							<div class="input-group">
-								<input type="button" onclick="sample6_execDaumPostcode()"
-									value="주소 찾기" class="btn btn-dark btn-sm"> <input
-									type="text" id="sample6_address" placeholder="주소"
-									name="mem_addr1" class="form-control"
-									value="${readMem.mem_addr1 }">
-							</div>
-						</div>
-						<div class="form-group">
-							<label>상세주소</label> <input type="text" id="sample6_detailAddress"
-								placeholder="상세주소" name="mem_addr2" class="form-control"
-								value="${readMem.mem_addr2 }">
-						</div>
-
-
-						<button type="button" class="btn btn-primary" id="submitButt">수정하기</button>
+						<button type="button" class="btn btn-primary" id="updateButt">수정하기</button>
 
 					</div>
 				</section>
@@ -221,7 +311,290 @@
 		</div>
 
 	</form>
+	
+	<form id="fm2" name="fm2">
+		<input type="hidden" name="${_csrf.parameterName}"
+			value="${_csrf.token}" /> <input type="hidden" name="mem_no"
+			value="${param.mem_no}" />
+			<input type="hidden" name="manager_no" value="1" />
+		<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight2"
+			aria-labelledby="offcanvasRightLabel">
+			<div class="offcanvas-header">
+				<h5 id="offcanvasRightLabel">인바디 추가</h5>
+				<button type="button" class="btn-close text-reset"
+					data-bs-dismiss="offcanvas" aria-label="Close"></button>
+			</div>
+			<div class="offcanvas-body">
+
+				<section class="content">
+					<div class="container-fluid">
+						<label>등록일</label> 
+						<div class="form-group input-group">
+							<input type="date" name="inbody_date" class="form-control">
+						</div>
+						<label>키</label> 
+						<div class="form-group input-group">
+							<input type="number" name="height" class="form-control">
+								<span class="input-group-text" id="basic-addon2">cm</span>
+						</div>
+						<label>체중</label> 
+						<div class="form-group input-group">
+							<input type="number" name="weight" class="form-control" />
+								<span class="input-group-text" id="basic-addon2">kg</span>
+						</div>
+						<label>체지방량</label> 
+						<div class="form-group input-group">
+							<input type="number" name="fat" class="form-control" />
+								<span class="input-group-text" id="basic-addon2">kg</span>
+						</div>
+						<label>체지방률</label> 
+						<div class="form-group input-group">
+							<input type="number" name="fat_mass" class="form-control" />
+								<span class="input-group-text" id="basic-addon2">%</span>
+						</div>
+						<label>골격근량</label> 
+						<div class="form-group input-group">
+							<input type="number" name="muscle" class="form-control" />
+								<span class="input-group-text" id="basic-addon2">kg</span>
+						</div>
+						<label>골격근율</label> 
+						<div class="form-group input-group">
+							<input type="number" name="muscle_mass" class="form-control" />
+								<span class="input-group-text" id="basic-addon2">%</span>
+						</div>
+						<label>BMI</label> 
+						<div class="form-group input-group">
+							<input type="number" name="bmi" class="form-control" />
+								<span class="input-group-text" id="basic-addon2"></span>
+						</div>
+						<label>기초대사량</label> 
+						<div class="form-group input-group">
+							<input type="number" name="bmr" class="form-control" />
+								<span class="input-group-text" id="basic-addon2">kcal</span>
+						</div>
+						<label>복부비만율</label> 
+						<div class="form-group input-group">
+							<input type="number" name="belly_fat" class="form-control" />
+								<span class="input-group-text" id="basic-addon2"></span>
+						</div>
+						<label>운동목표</label>
+						<div class="form-group input-group">
+							<textarea rows="5" cols="38" name="exercise_goal"></textarea>
+						</div>
+						<label>상담내용</label>
+						<div class="form-group input-group">
+							<textarea rows="5" cols="38" name="consult_content"></textarea>
+						</div>
+
+						<button type="button" class="btn btn-primary" id="submitButt">추가하기</button>
+
+					</div>
+				</section>
+			</div>
+		</div>
+
+	</form>
+
 </div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script type="text/javascript">
+	var weight = '${healthInfo.weight}'
+	var fat_mass = '${healthInfo.fat_mass}'
+	var muscle_mass = '${healthInfo.muscle_mass}'
+	var bmi = '${healthInfo.bmi}'
+	
+	var nmsbCtx = document.getElementById('num-mem-sport-bar-chart').getContext('2d');
+	var nmsbChart = new Chart(nmsbCtx, {
+	    type: 'bar',
+	    data: {
+	        labels: ['체중'],
+	        datasets: [{
+	        	label: "KG",
+	            data: [weight,120],
+	            backgroundColor: [
+	                'rgba(255, 99, 132, 0.2)'
+	            ],
+	            borderColor: [
+	                'rgba(255, 99, 132, 1)'
+	            ],
+	            borderWidth: 2
+	        }]
+	    },
+	    options: {
+	        maintainAspectRatio: false,
+	        responsive: true,
+	        legend: {
+	            display: false
+	        }
+	    }
+	});     
+	var nmsbCtx2 = document.getElementById('num2-mem-sport-bar-chart').getContext('2d');
+	var nmsbChart2 = new Chart(nmsbCtx2, {
+	    type: 'bar',
+	    data: {
+	        labels: ['골격근률','체지방율','BMI'],
+	        datasets: [{
+	        	label: "%",
+	            data: [muscle_mass,fat_mass,bmi,50],
+	            backgroundColor: [
+	            	'rgba(75, 192, 192, 0.2)',
+	            	'rgba(255, 206, 86, 0.2)',
+	            	'rgba(54, 162, 235, 0.2)'
+	            ],
+	            borderColor: [
+	            	'rgba(75, 192, 192, 1)',
+	            	'rgba(255, 206, 86, 1)',
+	            	'rgba(54, 162, 235, 1)'
+	            ],
+	            borderWidth: 2
+	        }]
+	    },
+	    options: {
+	        maintainAspectRatio: false,
+	        responsive: true,
+	        legend: {
+	            display: false
+	        }
+	    }
+	});     
+	
+	//서버에서 전달된 JSON 문자열을 `classCountJson` 변수에 저장
+	var bodyDataJson = '<c:out value="${bodyDataJSON}" escapeXml="false"/>';
+	var data = JSON.parse(bodyDataJson);
+		
+	var inbody_date = data.map(function(item) { return item.inbody_date; });
+	var weight = data.map(function(item) { return item.weight; });
+	var muscle = data.map(function(item) { return item.muscle; });
+	var fat = data.map(function(item) { return item.fat; });
+	
+	console.log("inbody_date: ", inbody_date);
+	console.log("weight: ", weight);
+	console.log("muscle: ", muscle);
+	console.log("fat: ", fat);
+	
+	var ctx = document.getElementById('revenue2-chart-canvas').getContext('2d');
+    var revenueChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: inbody_date,
+            datasets: [
+            {
+              label: '골격근량',
+              backgroundColor: 'rgba(255, 99, 132, 0)',
+              borderColor: 'rgba(255, 99, 132, 1)',
+              pointRadius: false,
+              pointColor: 'rgba(255, 99, 132, 1)',
+              pointStrokeColor: '#c1c7d1',
+              pointHighlightFill: '#fff',
+              pointHighlightStroke: 'rgba(220,220,220,1)',
+              data: muscle,
+              fill: true
+            },
+            {
+                label: '체지방량',
+                backgroundColor: 'rgba(255, 99, 132, 0)',
+                borderColor: 'rgba(75, 192, 192, 1)',
+                pointRadius: false,
+                pointColor: 'rgba(75, 192, 192, 1)',
+                pointStrokeColor: '#c1c7d1',
+                pointHighlightFill: '#fff',
+                pointHighlightStroke: 'rgba(220,220,220,1)',
+                data: fat,
+                fill: true
+              }
+            ]
+        },
+        options: {
+            maintainAspectRatio: false,
+            responsive: true,
+            legend: {
+                display: true
+            },
+            elements: {
+                point: {
+                    hitRadius: 40
+                }
+            }
+        }
+    });
+	var ctx = document.getElementById('revenue3-chart-canvas').getContext('2d');
+    var revenueChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: inbody_date,
+            datasets: [
+            {
+              label: '체중',
+              backgroundColor: 'rgba(75, 192, 192, 0)',
+              borderColor: 'rgba(54, 162, 235, 1)',
+              pointRadius: false,
+              pointColor: 'rgba(54, 162, 235, 1)',
+              pointStrokeColor: '#c1c7d1',
+              pointHighlightFill: '#fff',
+              pointHighlightStroke: 'rgba(220,220,220,1)',
+              data: weight,
+              fill: true
+            }
+            ]
+        },
+        options: {
+            maintainAspectRatio: false,
+            responsive: true,
+            legend: {
+                display: true
+            },
+            elements: {
+                point: {
+                    hitRadius: 40
+                }
+            }
+        }
+    });
+    
+    $("#selectInbody").change(function() {
+
+		$(".inbodyForm").submit();
+	});
+    $("#selectInbody").val("${param.pageStart }");
+    
+    $(function() {
+		$("#updateButt").click(function() {
+				
+			$.ajax({
+				url : "/member/updateInbody",
+				type : "POST",
+				data : $("#fm1").serialize(),
+				success : function(data) {
+					alert("인바디 정보가 수정되었습니다.");
+
+					history.go(0);
+				},
+				error : function() {
+					alert("오류발생");
+				}
+			});
+		});
+	});
+    
+    $(function() {
+		$("#submitButt").click(function() {
+				
+			$.ajax({
+				url : "/member/insertInbody",
+				type : "POST",
+				data : $("#fm2").serialize(),
+				success : function(data) {
+					alert("인바디 정보가 등록되었습니다.");
+
+					window.location.href = '/member/monitoring?mem_no=${param.mem_no }&pageStart=0';
+				},
+				error : function() {
+					alert("오류발생");
+				}
+			});
+		});
+	});
+</script>
 
 
 <%@ include file="../include/footer.jsp"%>

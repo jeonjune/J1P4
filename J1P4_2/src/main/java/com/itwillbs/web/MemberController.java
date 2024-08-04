@@ -3,6 +3,7 @@ package com.itwillbs.web;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -26,6 +28,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.itwillbs.domain.BaseVO;
 import com.itwillbs.domain.Criteria;
+import com.itwillbs.domain.HealthMonitorVO;
 import com.itwillbs.domain.MemberVO;
 import com.itwillbs.domain.PageVO;
 import com.itwillbs.domain.RegistrationVO;
@@ -90,8 +93,9 @@ public class MemberController {
 		logger.debug(" readGET() 실행 ");
 		
 		logger.debug(" @@@@@@@@@@@ int mem_no = "+mem_no);
+		logger.debug(" @@@@@@@@@@@ 중요 = "+mService.countingMemClass(mem_no));
 		
-		
+		model.addAttribute("counting",mService.countingMemClass(mem_no));
 		model.addAttribute("readMem",mService.readMem(mem_no));
 		model.addAttribute("pageInfo",cri);
 		
@@ -219,7 +223,7 @@ public class MemberController {
 		vo.put("status", status);
 		
 		// 실행 결과를 출력
-		logger.debug("  (●'◡'●) 특정 스포츠 상세 정보 vo : "+ mService.detailClass(vo));
+		logger.debug("  (●'◡'●) 특정 스포츠 상세 정보 : "+ mService.detailClass(vo));
 		
 		// 결과값이 여러개일 수 있으므로 List에 담아 리턴
 		return mService.detailClass(vo);
@@ -229,9 +233,52 @@ public class MemberController {
 	
 	// 회원 건강 모니터링 페이지 연결
 	@GetMapping(value = "/monitoring")
-	public void monitoringGET(Criteria cri,Model model) throws Exception{
+	public void monitoringGET(@RequestParam int mem_no,@RequestParam int pageStart,Model model) throws Exception{
 		logger.debug(" monitoringGET() 실행 ");
 		
+		Map<String, Object> health = new HashMap<String, Object>();
+		health.put("mem_no", mem_no);
+		health.put("pageStart", pageStart);
+		model.addAttribute("healthInfo",mService.getHealthMonitor(health));
+		
+		logger.debug(" (●'◡'●) 특정 회원 건강 정보 : "+mService.getHealthMonitor(health));
+		
+		List<Map<String, Object>> bodyDataResult = mService.getChangeBody(mem_no);
+		
+		ObjectMapper mapper = new ObjectMapper();
+        String bodyDataJSON = "";
+        try {
+        	bodyDataJSON = mapper.writeValueAsString(bodyDataResult);
+        } catch (Exception e) {
+            logger.error("new6MemCount을 JSON으로 변환하는데 실패하였습니다.", e);
+        }
+        
+        List<Map<String, Object>> inbodyList = mService.getChangeBody(mem_no);
+        Collections.reverse(inbodyList); 
+        
+        model.addAttribute("bodyDataJSON", bodyDataJSON);
+        model.addAttribute("inbodyDate", inbodyList);
+		
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/updateInbody", method = RequestMethod.POST)
+	public void updateInbodyPOST(HealthMonitorVO vo) throws Exception {
+		logger.debug(" updateInbodyPOST(vo) 실행 ");
+		
+		logger.debug(" 인바디 수정 할 정보 : "+vo);
+		
+		mService.updateInbody(vo);
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/insertInbody", method = RequestMethod.POST)
+	public void insertInbodyPOST(HealthMonitorVO vo) throws Exception {
+		logger.debug(" insertInbodyPOST(vo) 실행 ");
+		
+		logger.debug(" 인바디 추가 할 정보 : "+vo);
+		
+		mService.insertInbody(vo);
 	}
 	
 	// 회원 문서 페이지 연결
@@ -264,7 +311,7 @@ public class MemberController {
 		
 	}
 	
-	// 회원리스트 페이지 - 회원 수정 AJAX
+	// 회원 기본페이지 - 회원 수정 AJAX
 	@ResponseBody
 	@PostMapping(value = "/memUpdate")
 	public void memUpdatePOST(MemberVO vo) throws Exception {
@@ -288,7 +335,7 @@ public class MemberController {
 		
 	}
 	
-	// 회원리스트 페이지 - 회원 삭제 AJAX
+	// 회원 기본페이지 - 회원 삭제 AJAX
 	@ResponseBody
 	@PostMapping(value = "/memDelete")
 	public void memDeletePOST(@RequestBody Map<String, List> mem_no) throws Exception {

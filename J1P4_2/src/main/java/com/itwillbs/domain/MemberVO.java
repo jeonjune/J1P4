@@ -24,5 +24,6 @@ public class MemberVO {
 	private String mem_addr2;
 	private Date mem_delete;
 	private Integer countPhone;
+	private Integer mem_age;
 	
 }

@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import com.itwillbs.domain.Criteria;
+import com.itwillbs.domain.HealthMonitorVO;
 import com.itwillbs.domain.MemberVO;
 import com.itwillbs.domain.RecipientVO;
 import com.itwillbs.domain.RegistrationVO;
@@ -93,6 +94,32 @@ public class MemberServiceImpl implements MemberService {
 		return mDao.memberClassStatus(vo);
 	}
 
+	@Override
+	public HealthMonitorVO getHealthMonitor(Map<String, Object> vo) throws Exception {
+		return mDao.getHealthMonitor(vo);
+	}
+
+	@Override
+	public List<Map<String, Object>> getChangeBody(int mem_no) throws Exception {
+		return mDao.getChangeBody(mem_no);
+	}
+
+	@Override
+	public void updateInbody(HealthMonitorVO vo) throws Exception {
+		mDao.updateInbody(vo);
+	}
+
+	@Override
+	public void insertInbody(HealthMonitorVO vo) throws Exception {
+		mDao.insertInbody(vo);
+	}
+
+	@Override
+	public int countingMemClass(int mem_no) throws Exception {
+		return mDao.countingMemClass(mem_no);
+	}
+	
+	
 	
 	
 

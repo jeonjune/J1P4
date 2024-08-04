@@ -73,7 +73,7 @@
 				<hr>
 				<div class="cardMy">
 					<strong><i class="far fa-heart mr-1 cardMx"></i> 생년월일</strong>
-					<p class="text-muted cardMy">${readMem.mem_birth }</p>
+					<p class="text-muted cardMy">${readMem.mem_birth } ( 만 ${readMem.mem_age }세 )</p>
 				</div>
 				<hr>
 				<div class="cardMy">
@@ -89,8 +89,10 @@
 				</div>
 				<hr>
 				<div class="cardMy">
-					<strong><i class="far fa-file-alt mr-1 cardMx"></i> 생일</strong>
-					<p class="text-muted cardMy">${readMem.mem_birth }</p>
+					<strong><i class="far fa-file-alt mr-1 cardMx"></i> 강의 누적 기간</strong>
+					<c:if test="${not empty counting }">
+					<p class="text-muted cardMy">${counting } 일</p>
+					</c:if>
 				</div>
 				<hr>
 				<div class="cardMy">

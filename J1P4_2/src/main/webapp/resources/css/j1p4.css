@@ -44,3 +44,16 @@
 #selectType {
 	width: 90px;
 }
+
+.charts-container {
+  display: flex;
+  gap: 40px; /* 차트 간의 간격 조정 */
+}
+
+.canvasChart {
+	height: 400px; display: block; width: 900px;
+}
+
+.cardMargin {
+	margin-left: 150px; margin-top: 30px; margin-bottom: 10px
+}

@@ -14,5 +14,6 @@ public class RegistrationVO {
     private int class_count;
     
     private List<MemberVO> memList;
+    private List<EmployeeVO> empList;
     private List<ClassScheduleVO> classScheduleList;
 }
