@@ -4,6 +4,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ include file="../include/header.jsp"%>
 <%@ include file="../include/sidemenu.jsp"%>
+<%@ include file="../include/facMenu.jsp"%>
 <div class="content-wrapper" style="min-height: 831px;">
 
 
