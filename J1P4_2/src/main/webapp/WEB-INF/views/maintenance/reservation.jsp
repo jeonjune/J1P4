@@ -276,7 +276,7 @@
 					<div class="form-group">
 						<label>예약자</label> <input type="text" name="rsv_name" id="rsv_name2"
 							class="form-control" />
-						<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#instructorModal">회원검색</button>	
+						<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#instructorModal2">회원검색</button>	
 					</div>
 					
 					   		<div class="form-group">
@@ -367,6 +367,43 @@
 	</div>
 	 <!--시설예약 수정/삭제 모달창 시작 -->
     
+    
+    
+     <!-- 수정모달 회원검색 모달 -->
+   <div class="modal fade" id="instructorModal2" tabindex="-1" aria-labelledby="instructorModalLabel" aria-hidden="true" style="z-index:1060;">
+       <div class="modal-dialog modal-lg"> <!-- modal-lg 클래스로 크기 조정 -->
+           <div class="modal-content">
+               <div class="modal-header">
+                   <h5 class="modal-title" id="instructorModalLabel">회원 찾기</h5>
+                   <input type="hidden" id="instructorNo" name="mem_no">
+                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+               </div>
+               <div class="modal-body">
+                   <div class="mb-3">
+                       <label for="instructorSearch2" class="form-label">이름을 입력해주세요.</label>
+                       <input type="text" class="form-control" id="instructorSearch2" placeholder="Enter instructor name">
+                   </div>
+                   <table class="table table-bordered">
+                       <thead>
+                           <tr>
+                               <th></th>
+                               <th>회원번호</th>
+                               <th>이름</th>
+                               <th>연락처</th>
+                           </tr>
+                       </thead>
+                       <tbody id="instructorTableBody2">
+                           <!-- 강사 검색 시 동적으로 생성된 강사 목록을 표시하기 위함.(서버에서 데이터를 받아 이곳에 삽입) -->
+                       </tbody>
+                   </table>
+                   <button type="button" class="btn btn-primary" id="selectInstructorButton2">선택</button>
+               </div>
+           </div>
+       </div>
+   </div>
+    <!-- 수정모달 회원검색 모달 끝 -->
+    
+    
  	
     
   </div>
@@ -374,6 +411,7 @@
 
     
    <script>
+   //스크립트시작
    const csrfToken = $('meta[name="_csrf"]').attr('content');
    const csrfHeader = $('meta[name="_csrf_header"]').attr('content');
    
@@ -434,6 +472,7 @@
 		});
 	});
    
+  
    //--------------------------------------------------------------------------------시설예약 - 회원검색
    
    //회원이름 검색하는 입력창
@@ -471,7 +510,7 @@
    
    
    $('#selectInstructorButton').on('click', function(event) { //회원검색 모달창 <선택>버튼
-	   //alert("선택버튼");
+	  
        event.preventDefault(); //호출하여 버튼 클릭 시 발생할 수 있는 기본 동작(예: 폼 제출)을 방지
        const selectedInstructor = $('input[name="instructorCheckbox"]:checked').val(); //체크된 체크박스 정보를 담는 변수
        const selectedMemName = $('input[name="instructorCheckbox"]:checked').closest('tr').find('td:nth-child(3)').text();
@@ -494,6 +533,71 @@
     	});
        
    });
+   
+   
+  //----------------------------------------캘린더클릭-수정모달창 시작-------------------------------------------------------
+  	
+  
+  	 //회원이름 검색하는 입력창
+   $('#instructorSearch2').on('input', function() {
+	   //alert("입력");
+       const keyword = $(this).val();
+       if (keyword.length > 0) {
+           $.ajax({
+               url: '/maintenance/memSearch',
+               method: 'GET',
+               data: { keyword: keyword },
+               beforeSend: function(xhr) {
+                   xhr.setRequestHeader(csrfHeader, csrfToken);
+               },
+               success: function(data) {
+                   const instructorTableBody = $('#instructorTableBody2');
+                   instructorTableBody.empty(); // 이전 검색결과 비우기
+                   data.forEach(function(member) {//검색결과값들
+                       const row = '<tr>' +
+                                   '<td><input type="checkbox" name="instructorCheckbox" value="' + member.mem_no + '"></td>' +
+                                   '<td>' + member.mem_no + '</td>' +
+                                   '<td>' + member.mem_name + '</td>' +
+                                   '<td>' + member.mem_phone + '</td>' +
+                                '</tr>';
+                       instructorTableBody.append(row);
+                   });
+               },
+               error: function(error) {
+                   alert('오류');
+               }
+           });
+       }
+   });
+  
+  
+  
+   //수정모달 회원찾기
+    $('#selectInstructorButton2').on('click', function(event) { //회원검색 모달창 <선택>버튼
+       event.preventDefault(); //호출하여 버튼 클릭 시 발생할 수 있는 기본 동작(예: 폼 제출)을 방지
+       const selectedInstructor = $('input[name="instructorCheckbox"]:checked').val(); //체크된 체크박스 정보를 담는 변수
+       const selectedMemName = $('input[name="instructorCheckbox"]:checked').closest('tr').find('td:nth-child(3)').text();
+       const selectedMemPhone = $('input[name="instructorCheckbox"]:checked').closest('tr').find('td:nth-child(4)').text();
+
+       if (!selectedInstructor) {
+           alert('Please select an instructor.');
+           return;
+       }
+
+       $('#instructorNo').val(selectedInstructor);
+       $('#rsv_name2').val(selectedMemName);
+       $('#rsv_phone2').val(selectedMemPhone);
+       $('#instructorModal2').modal('hide');
+       
+       $('#instructorModal2').on('hidden.bs.modal', function () { //2번모달창 끄면 1번모달창 안 움직임 해결
+    	    if ($('.modal:visible').length) { // 열려 있는 모달이 있는지 확인
+    	        $('body').addClass('modal-open'); // 'modal-open' 클래스를 다시 추가
+    	    }
+    	});
+       
+   });
+   
+   
    
    </script> 
 

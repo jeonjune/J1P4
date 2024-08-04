@@ -34,8 +34,8 @@
 							name="e_repair_type" size="1">
 							<option>선택하세요.</option>
 							<option value="구입">구입</option>
-							<option value="수리">수리</option>
-							<option value="폐기">폐기</option>
+<!-- 							<option value="수리">수리</option> -->
+<!-- 							<option value="폐기">폐기</option> -->
 						</select>
 					</div>
 					

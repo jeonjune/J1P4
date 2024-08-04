@@ -155,9 +155,6 @@
 	</div>
 	<!-- 필터 모달창 끝 -->
 
-<!-- 	<button class="btn btn-primary" type="button" -->
-<!-- 		data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" -->
-<!-- 		aria-controls="offcanvasRight">버튼</button> -->
 
 	<div class="col-sm-12">
 		<table id="example1"
@@ -178,6 +175,10 @@
 					<th class="sorting" tabindex="0" aria-controls="example1"
 						rowspan="1" colspan="1"
 						aria-label="Browser: activate to sort column ascending">장비이름</th>
+					
+					<th class="sorting" tabindex="0" aria-controls="example1"
+						rowspan="1" colspan="1"
+						aria-label="Browser: activate to sort column ascending">제조사</th>
 				
 					<th class="sorting" tabindex="0" aria-controls="example1"
 						rowspan="1" colspan="1"
@@ -195,6 +196,7 @@
 						<td>${rList.field}</td>
 						<td>${rList.e_repair_type}</td>
 						<td>${rList.equipment_name}</td>
+						<td>${rList.manufacturer }</td>
 						<td>${rList.name }</td>
 <%-- 						<td>${rList.equipment_reject }</td> --%>
 					 <td>
