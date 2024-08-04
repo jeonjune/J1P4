@@ -61,20 +61,20 @@ public class EmployeeController {
 			logger.info("@@@@@@@@@@@@@@checkW@@@@@@@@@@@ :"+checkW);
 		}
 		
-//		if(cri.getKeyword() != null) {
-//			
-//			List<EmployeeVO> empList = sService.searchEmp(cri);
-//			// 하단 페이징처리 정보
-//			PageVO pageVO = new PageVO();
-//			pageVO.setCri(cri);
-//			pageVO.setTotalCount(sService.getEmpCount(cri));
-//			logger.debug(" @@@@@@@@@@@@@@@@@ 글 개수 : "+sService.getTotalCount(cri));
-//			// 연결된 뷰페이지로 정보 전달
-//			model.addAttribute("empList", empList);
-//			model.addAttribute("pageVO",pageVO);
-//			
-//			return;
-//		}
+		if(cri.getKeyword() != null) {
+			
+			List<EmployeeVO> empList = sService.searchEmp(cri);
+			// 하단 페이징처리 정보
+			PageVO pageVO = new PageVO();
+			pageVO.setCri(cri);
+			pageVO.setTotalCount(sService.getEmpCount(cri));
+			logger.debug(" @@@@@@@@@@@@@@@@@ 글 개수 : "+sService.getTotalCount(cri));
+			// 연결된 뷰페이지로 정보 전달
+			model.addAttribute("empList", empList);
+			model.addAttribute("pageVO",pageVO);
+			
+			return;
+		}
 		
 		List<EmployeeVO> empList = eService.empList(cri);
 		model.addAttribute("empList", empList);
@@ -85,11 +85,11 @@ public class EmployeeController {
 		logger.info("@@@@@@@@@@@@@@vo@@@@@@@@@@@ :"+vo);
 		
 		// 하단 페이징처리 정보
-//		PageVO pageVO = new PageVO();
-//		pageVO.setCri(cri);
-//		pageVO.setTotalCount(sService.getEmpCount(cri));
-//		logger.debug(" @@@@@@@@@@@@@@@@@ 글 개수 : "+sService.getTotalCount(cri));
-//		model.addAttribute("pageVO",pageVO);
+		PageVO pageVO = new PageVO();
+		pageVO.setCri(cri);
+		pageVO.setTotalCount(sService.getEmpCount(cri));
+		logger.debug(" @@@@@@@@@@@@@@@@@ 글 개수 : "+sService.getTotalCount(cri));
+		model.addAttribute("pageVO",pageVO);
 	}
 	
 	@ResponseBody

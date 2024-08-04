@@ -402,19 +402,19 @@ user_id : ${principal.username}<br>
                         </div>
                         <span id="checkpass" style="font-size: 14px;"></span>
                        
-                        <div class="form-group">
-                            <label>직무</label>
-                            <form:select path="job" class="form-control" name="job">
-                                <form:options items="${job}" itemValue="codeValue" itemLabel="codeValueName"/>
-                            </form:select>
-                        </div>
+<!--                         <div class="form-group"> -->
+<!--                             <label>직무</label> -->
+<%--                             <form:select path="job" class="form-control" name="job"> --%>
+<%--                                 <form:options items="${job}" itemValue="codeValue" itemLabel="codeValueName"/> --%>
+<%--                             </form:select> --%>
+<!--                         </div> -->
                         
-                        <div class="form-group">
-                            <label>직급</label>
-                            <form:select path="job_rank" class="form-control" name="job_rank">
-                                <form:options items="${job_rank}" itemValue="codeValue" itemLabel="codeValueName"/>
-                            </form:select>
-                        </div>
+<!--                         <div class="form-group"> -->
+<!--                             <label>직급</label> -->
+<%--                             <form:select path="job_rank" class="form-control" name="job_rank"> --%>
+<%--                                 <form:options items="${job_rank}" itemValue="codeValue" itemLabel="codeValueName"/> --%>
+<%--                             </form:select> --%>
+<!--                         </div> -->
                      
 						<div class="form-group">
 							<label>입사일</label> <input type="date" name="emp_date"

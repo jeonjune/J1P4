@@ -26,7 +26,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 
 	@Override
 	public List<EmployeeVO> empList(Criteria cri) throws Exception {
-		return sqlSession.selectList(NAMESPACE+"empList");
+		return sqlSession.selectList(NAMESPACE+"empList",cri);
 	}
 
 	@Override
