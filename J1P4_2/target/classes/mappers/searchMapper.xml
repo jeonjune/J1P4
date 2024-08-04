@@ -5,10 +5,8 @@
 
 <mapper namespace="com.itwillbs.mapper.SearchMapper">
 
-
-	<!-- 검색 결과 리스트 목록 ( 페이징 처리 ) -->
+	<!-- 회원 검색 결과 리스트 목록 ( 페이징 처리 ) -->
 	<select id="searchMem" resultType="MemberVO">
-	
 		SELECT *, CONCAT(
 	        SUBSTRING(mem_phone, 1, 3), '-',
 	        SUBSTRING(mem_phone, 4, 4), '-',
@@ -17,16 +15,16 @@
 		<if test="searchType == 'searchAll'">
 			WHERE (mem_name LIKE CONCAT('%', #{keyword}, '%')
 			OR mem_phone LIKE CONCAT('%', #{keyword}, '%')
-			OR mem_email LIKE CONCAT('%', #{keyword}, '%')) AND mem_delete is null
+			OR mem_email LIKE CONCAT('%', #{keyword}, '%'))
 		</if>
 		<if test="searchType == 'searchName'">
-			WHERE (mem_name LIKE CONCAT('%', #{keyword}, '%')) AND mem_delete is null
+			WHERE (mem_name LIKE CONCAT('%', #{keyword}, '%'))
 		</if>
 		<if test="searchType == 'searchPhoneNum'">
-			WHERE (mem_phone LIKE CONCAT('%', #{keyword}, '%')) AND mem_delete is null
+			WHERE (mem_phone LIKE CONCAT('%', #{keyword}, '%'))
 		</if>
 		<if test="searchType == 'searchEmail'">
-			WHERE (mem_email LIKE CONCAT('%', #{keyword}, '%')) AND mem_delete is null
+			WHERE (mem_email LIKE CONCAT('%', #{keyword}, '%'))
 		</if>
 		<if test="memYear != null">
 			AND reg_date LIKE CONCAT(#{memYear}, '%')
@@ -37,6 +35,7 @@
 		<if test="mem_gender != null and mem_gender != ''">
 			AND mem_gender = #{mem_gender}
 		</if>
+		AND mem_delete is null
 		ORDER BY
 		<choose>
 			<when
@@ -69,7 +68,7 @@
 		LIMIT #{pageStart}, #{pageSize}
 	</select>
 
-	<!-- 검색 결과 리스트 개수 ( 페이징 처리 ) -->
+	<!-- 회원 검색 결과 리스트 개수 ( 페이징 처리 ) -->
 	<select id="totalCount" resultType="int">
     SELECT count(mem_no) FROM member
     <where>
@@ -102,8 +101,177 @@
             AND mem_gender = #{mem_gender}
         </if>
     </where>
-</select>
+	</select>
+	
+	<!-- 직원 검색 결과 리스트 목록 ( 페이징 처리 ) -->
+	<select id="searchEmp" resultType="EmployeeVO">
+		select * from employee
+		<if test="searchType == 'searchAll'">
+			WHERE (name like CONCAT('%', #{keyword}, '%')
+			OR phone_no LIKE CONCAT('%', #{keyword}, '%')
+			OR email LIKE CONCAT('%', #{keyword}, '%')) AND retire_status = 0
+		</if>
+		<if test="searchType == 'searchName'">
+			WHERE (name like CONCAT('%', #{keyword}, '%')) AND retire_status = 0
+		</if>
+		<if test="searchType == 'searchPhoneNum'">
+			WHERE (phone_no LIKE CONCAT('%', #{keyword}, '%')) AND retire_status = 0
+		</if>
+		<if test="searchType == 'searchEmail'">
+			WHERE (email LIKE CONCAT('%', #{keyword}, '%')) AND retire_status = 0
+		</if>
+		<if test="job != null and job != ''">
+			AND job = #{job}
+		</if>
+		<if test="job_rank != null and job_rank != ''">
+			AND job_rank = #{job_rank}
+		</if>
+		<if test="filter != null and filter != ''">
+			AND user_no in (select user_no from empAttendance where work_status = '출근' and attend_date = curdate())
+		</if>
+		ORDER BY
+		<choose>
+			<when
+				test="sortVal != null and sortVal != ''">
+				<if test="sortVal == 'name'">
+					name
+				</if>
+				<if test="sortVal == 'emp_date'">
+					emp_date
+				</if>
+			</when>
+			<otherwise>
+				user_no
+			</otherwise>
+		</choose>
+		<choose>	
+			<when
+				test ="sortCri != null and sortCri != ''">	
+				<if test="sortCri == 'asc'">
+					ASC
+				</if>
+				<if test="sortCri == 'desc'">
+					DESC
+				</if>
+			</when>
+			<otherwise>
+				DESC
+			</otherwise>
+		</choose>
+		LIMIT #{pageStart}, #{pageSize}
+	</select>
 
+	<!-- 직원 검색 결과 리스트 개수 ( 페이징 처리 ) -->
+	<select id="totalEmpCount" resultType="int">
+    SELECT count(user_no) FROM employee
+    <where>
+        <choose>
+            <when test="searchType == 'searchAll'">
+            	(name like CONCAT('%', #{keyword}, '%')
+				OR phone_no LIKE CONCAT('%', #{keyword}, '%')
+				OR email LIKE CONCAT('%', #{keyword}, '%')) AND retire_status = 0
+            </when>
+            <when test="searchType == 'searchName'">
+                name like CONCAT('%', #{keyword}, '%') AND retire_status = 0
+            </when>
+            <when test="searchType == 'searchPhoneNum'">
+                phone_no LIKE CONCAT('%', #{keyword}, '%') AND retire_status = 0
+            </when>
+            <when test="searchType == 'searchEmail'">
+                email LIKE CONCAT('%', #{keyword}, '%') AND retire_status = 0
+            </when>
+            <otherwise>
+                1=1 AND retire_status = 0
+            </otherwise>
+        </choose>
+        <if test="job != null and job != ''">
+			AND job = #{job}
+		</if>
+		<if test="job_rank != null and job_rank != ''">
+			AND job_rank = #{job_rank}
+		</if>
+		<if test="filter != null and filter != ''">
+			AND user_no in (select user_no from empAttendance where work_status = '출근')
+		</if>
+    </where>
+	</select>
+	
+	<!-- 장비 검색 결과 리스트 목록 ( 페이징 처리) -->
+	<select id="searchEquip" resultType="EquipmentVO">
+		select * from equipmentManagement
+		<if test="status == '반려'">
+			<if test="searchType == 'searchAll'">
+				WHERE (equipment_name like CONCAT('%', #{keyword}, '%')
+				OR manufacturer LIKE CONCAT('%', #{keyword}, '%') 
+			</if>
+			<if test="searchType == 'searchName'">
+				WHERE (equipment_name like CONCAT('%', #{keyword}, '%')) 
+			</if>
+			<if test="searchType == 'searchCompany'">
+				WHERE (manufacturer LIKE CONCAT('%', #{keyword}, '%'))
+			</if>
+			<if test="field != null and field != ''">
+				AND field = #{field}
+			</if>
+			<if test="e_repair_type != null and e_repair_type != ''">
+				AND e_repair_type = #{e_repair_type}
+			</if>
+			AND status ='반려'
+		</if>
+		<if test="status == '승인'">
+			<if test="searchType == 'searchAll'">
+				WHERE (equipment_name like CONCAT('%', #{keyword}, '%')
+				OR manufacturer LIKE CONCAT('%', #{keyword}, '%') 
+			</if>
+			<if test="searchType == 'searchName'">
+				WHERE (equipment_name like CONCAT('%', #{keyword}, '%')) 
+			</if>
+			<if test="searchType == 'searchCompany'">
+				WHERE (manufacturer LIKE CONCAT('%', #{keyword}, '%'))
+			</if>
+			<if test="field != null and field != ''">
+				AND field = #{field}
+			</if>
+			<if test="e_repair_type != null and e_repair_type != ''">
+				AND e_repair_type = #{e_repair_type}
+			</if>
+			AND status ='승인'
+		</if>
+		ORDER BY equipment DESC
+		LIMIT #{pageStart}, #{pageSize}
+	</select>
+
+	<!-- 장비 검색 결과 리스트 개수 ( 페이징 처리 ) -->
+	<select id="totalEquipCount" resultType="int">
+    SELECT count(equipment_no) from equipmentManagement
+    <where>
+        <choose>
+            <when test="searchType == 'searchAll'">
+            	(name like CONCAT('%', #{keyword}, '%')
+				OR phone_no LIKE CONCAT('%', #{keyword}, '%')
+				OR email LIKE CONCAT('%', #{keyword}, '%')) AND retire_status = 0
+            </when>
+            <when test="searchType == 'searchName'">
+                name like CONCAT('%', #{keyword}, '%') AND retire_status = 0
+            </when>
+            <when test="searchType == 'searchCompany">
+                manufacturer LIKE CONCAT('%', #{keyword}, '%') AND retire_status = 0
+            </when>
+            <otherwise>
+                1=1 AND retire_status = 0
+            </otherwise>
+        </choose>
+        <if test="job != null and job != ''">
+			AND job = #{job}
+		</if>
+		<if test="job_rank != null and job_rank != ''">
+			AND job_rank = #{job_rank}
+		</if>
+		<if test="filter != null and filter != ''">
+			AND user_no in (select user_no from empAttendance where work_status = '출근')
+		</if>
+    </where>
+	</select>
 
 
 </mapper>

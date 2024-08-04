@@ -17,6 +17,11 @@ public class Criteria  {
 	private int sms_opt;
 	private int email_opt;
 	private String searchType;
+	private String job;
+	private String job_rank;
+	private String field;
+	private String e_repair_type;
+	private String status;
 
 
 	public Criteria() {

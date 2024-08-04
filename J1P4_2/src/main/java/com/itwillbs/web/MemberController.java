@@ -54,25 +54,9 @@ public class MemberController {
 	@GetMapping(value="/list")
 	public void listPageGET(Model model,Criteria cri,MemberVO vo) throws Exception {
 		logger.debug(" @@@@@@@@@@@@@@@@@@@@@@@ : "+cri);
-		
-		
-		if(cri.getFilter() == null && cri.getKeyword() == null && cri.getMemYear() == null) {
-			// 서비스 -> DB의 정보를 가져오기 (페이징처리)
-			List<MemberVO> memberList = mService.listPage(cri);
-			logger.debug(" @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ "+memberList);
-			logger.debug(" size : "+memberList.size());
-			logger.debug(" pageStart : "+cri.getPageStart());
-			// 하단 페이징처리 정보
-			PageVO pageVO = new PageVO();
-			pageVO.setCri(cri);
-			pageVO.setTotalCount(mService.getTotalCount());
+
+		if(cri.getKeyword() != null) {
 			
-			
-			// 연결된 뷰페이지로 정보 전달
-			model.addAttribute("memberList", memberList);
-			model.addAttribute("pageVO",pageVO);
-			
-		} else {
 			List<MemberVO> memberList = sService.searchMem(cri);
 			// 하단 페이징처리 정보
 			PageVO pageVO = new PageVO();
@@ -82,8 +66,23 @@ public class MemberController {
 			// 연결된 뷰페이지로 정보 전달
 			model.addAttribute("memberList", memberList);
 			model.addAttribute("pageVO",pageVO);
+			
+			return;
 		}
 		
+		List<MemberVO> memberList = mService.listPage(cri);
+		logger.debug(" @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ "+memberList);
+		logger.debug(" size : "+memberList.size());
+		logger.debug(" pageStart : "+cri.getPageStart());
+		// 하단 페이징처리 정보
+		PageVO pageVO = new PageVO();
+		pageVO.setCri(cri);
+		pageVO.setTotalCount(mService.getTotalCount());
+		
+		
+		// 연결된 뷰페이지로 정보 전달
+		model.addAttribute("memberList", memberList);
+		model.addAttribute("pageVO",pageVO);
 				
 	}
 	
