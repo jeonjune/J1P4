@@ -25,9 +25,12 @@ import com.itwillbs.domain.AuthVO;
 import com.itwillbs.domain.Criteria;
 import com.itwillbs.domain.EmpAttendanceVO;
 import com.itwillbs.domain.EmployeeVO;
+import com.itwillbs.domain.MemberVO;
+import com.itwillbs.domain.PageVO;
 import com.itwillbs.service.CommonCodeService;
 import com.itwillbs.service.EmpAttendanceService;
 import com.itwillbs.service.EmployeeService;
+import com.itwillbs.service.SearchService;
 
 @Controller
 @RequestMapping(value = "/employee/*")
@@ -43,10 +46,13 @@ public class EmployeeController {
     
     @Inject
     private EmpAttendanceService vaService;
+    
+    @Inject
+	private SearchService sService;
 	
 	// http://localhost:8088/employee/empList
 	@GetMapping(value = "/empList")
-	public void empListGET(Model model, EmployeeVO vo, Principal principal) throws Exception {
+	public void empListGET(Model model, EmployeeVO vo, Principal principal, Criteria cri) throws Exception {
 		logger.info("empListGET() 실행!"); 
 		if (principal != null) {
 			logger.info("@@@@@@@@@@@@@@principal.getName()@@@@@@@@@@@ :"+principal.getName());
@@ -56,13 +62,35 @@ public class EmployeeController {
 			logger.info("@@@@@@@@@@@@@@checkW@@@@@@@@@@@ :"+checkW);
 		}
 		
-		List<EmployeeVO> empList = eService.empList();
+		if(cri.getKeyword() != null) {
+			
+			List<EmployeeVO> empList = sService.searchEmp(cri);
+			// 하단 페이징처리 정보
+			PageVO pageVO = new PageVO();
+			pageVO.setCri(cri);
+			pageVO.setTotalCount(sService.getEmpCount(cri));
+			logger.debug(" @@@@@@@@@@@@@@@@@ 글 개수 : "+sService.getTotalCount(cri));
+			// 연결된 뷰페이지로 정보 전달
+			model.addAttribute("empList", empList);
+			model.addAttribute("pageVO",pageVO);
+			
+			return;
+		}
+		
+		List<EmployeeVO> empList = eService.empList(cri);
 		model.addAttribute("empList", empList);
 		model.addAttribute("job", commonCodeService.getCommonCodeDetailsByCodeId("JOB"));
 		logger.info("job : "+commonCodeService.getCommonCodeDetailsByCodeId("JOB"));
 	    model.addAttribute("job_rank", commonCodeService.getCommonCodeDetailsByCodeId("JOB_RANK"));
 	    
 		logger.info("@@@@@@@@@@@@@@vo@@@@@@@@@@@ :"+vo);
+		
+		// 하단 페이징처리 정보
+		PageVO pageVO = new PageVO();
+		pageVO.setCri(cri);
+		pageVO.setTotalCount(sService.getEmpCount(cri));
+		logger.debug(" @@@@@@@@@@@@@@@@@ 글 개수 : "+sService.getTotalCount(cri));
+		model.addAttribute("pageVO",pageVO);
 	}
 	
 	@ResponseBody

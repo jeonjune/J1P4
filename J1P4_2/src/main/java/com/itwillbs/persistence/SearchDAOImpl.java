@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 
 import com.itwillbs.domain.BaseVO;
 import com.itwillbs.domain.Criteria;
+import com.itwillbs.domain.EmployeeVO;
 import com.itwillbs.domain.MemberVO;
 
 @Repository
@@ -33,6 +34,16 @@ public class SearchDAOImpl implements SearchDAO {
 	public int getTotalCount(Criteria cri) throws Exception {
 		logger.debug(" (⌐■_■) DAO : getTotalCount() 실행 ");
 		return sqlSession.selectOne(NAMESPACE+"totalCount",cri);
+	}
+
+	@Override
+	public List<EmployeeVO> searchEmp(Criteria cri) throws Exception {
+		return sqlSession.selectList(NAMESPACE + "searchEmp", cri);
+	}
+
+	@Override
+	public int getEmpCount(Criteria cri) throws Exception {
+		return sqlSession.selectOne(NAMESPACE+"totalEmpCount",cri);
 	}
 
 	

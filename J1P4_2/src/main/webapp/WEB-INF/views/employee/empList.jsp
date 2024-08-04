@@ -12,6 +12,199 @@
 	<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <div class="content-wrapper" style="min-height: 831px;">
 
+<!-- 검색 / 필터 / 정렬 / 행 개수 데이터 전송 -->
+	<form action="" method="get" class='actionForm'>
+
+		<div class="form-inline">
+		
+			<!-- 검색 -->
+			<div class="input-group mb-3">
+			
+				<!-- 검색 타입 선택 -->
+				<div class="input-group-prepend">
+					<select name="searchType" id="selectType" class="form-control">
+						<option value="searchAll" selected="selected">전체</option>
+						<option value="searchName">이름</option>
+						<option value="searchPhoneNum">연락처</option>
+						<option value="searchEmail">이메일</option>
+					</select>
+				</div>
+				
+				<!-- 검색 입력창 -->
+				<input class="form-control" type="search" name="keyword"
+					value="${param.keyword }" placeholder="Search" aria-label="Search">
+				
+				<!-- 검색 버튼 -->	
+				<div class="input-group-append">
+					<button class="btn" type="submit" id="submitBtn"
+						onclick="toggleSpinner()">
+						<i class="fas fa-search fa-fw"></i>
+					</button>
+				</div>
+				
+			</div>
+			
+		</div>
+		<div style="display: inline-block;">
+		<!-- 필터 모달창 버튼 -->
+			<button type="button" class="btn btn-primary" data-bs-toggle="modal"
+				data-bs-target="#filterModal">
+				<i class="fas fa-filter fa-fw"></i>
+			</button>
+
+			<!-- 필터 지우기 버튼 -->
+			<button type="button" class="btn btn-info" id="resetFilters">
+				<i class="fas fa-trash fa-fw"></i>
+			</button>
+		</div>
+		
+		<!-- 사용자가 선택한 필터를 보여주는 공간 -->
+		<div style="padding-left: 10px; display: inline-block;">
+		<div class="filter1" style="display: inline-block;">
+			<div class="deleteFilter">
+				<!-- 사용자가 필터를 사용하여 검색했을 때 선택한 필터를 보여주는 공간 -->
+				<c:if test="${not empty param.filter }">
+					<h5>
+						<span class="badge badge-warning p-2" style="color: #000;">
+							<input type="hidden" name="filter" value="${param.filter }">${param.filter }
+							<button class="removeFi btn-close btn-xs" aria-label="Close"
+								style="margin-left: 7px;"></button>
+						</span>
+					</h5>
+				</c:if>
+			</div>
+		</div>
+		
+		<div class="filter2" style="display: inline-block;">
+			<div class="deleteFilter">
+				<c:if test="${not empty param.job }">
+					<h5>
+						<span class="badge badge-warning p-2" style="color: #000;">
+							<input type="hidden" name="job" value="${param.job }">${param.job }
+							<button class="removeFi btn-close btn-xs" aria-label="Close"
+								style="margin-left: 7px;"></button>
+						</span>
+					</h5>
+				</c:if>
+			</div>
+		</div>
+		
+		<div class="filter3" style="display: inline-block;">
+			<div class="deleteFilter">
+				<c:if test="${not empty param.job_rank }">
+					<h5>
+						<span class="badge badge-warning p-2" style="color: #000;">
+							<input type="hidden" name="job_rank" value="${param.job_rank }">${param.job_rank }
+							<button class="removeFi btn-close btn-xs" aria-label="Close"
+								style="margin-left: 7px;"></button>
+						</span>
+					</h5>
+				</c:if>
+			</div>
+		</div>
+
+		</div>
+
+		<!-- 테이블 커스텀 (정렬 / 행 개수) -->
+		<div class="content memListSort">
+		
+			<div></div>
+			
+			<!-- 정렬 기준 선택 -->
+			<div id="sortRight">
+				<input type="hidden" name="sortCri"> <input type="hidden"
+					name="sortVal"> <input type="radio" value="name"
+					class="btn-check chkSort" id="radioName1"> <label
+					class="btn" for="radioName1">이름순(오름차순)</label> <input type="radio"
+					value="name" class="btn-check chkSort" id="radioName2">
+				<label class="btn" for="radioName2">이름순(내림차순)</label> <input
+					type="radio" value="emp_date" class="btn-check chkSort"
+					id="radioReg"> <label class="btn" for="radioReg">등록순</label>
+			</div>
+			
+			<!-- 행 개수 선택 -->
+			<div class="textRight">
+				<select name="pageSize" id="selectPage" class="form-control">
+					<option value="10">10개씩 보기</option>
+					<option value="50">50개씩 보기</option>
+					<option value="100">100개씩 보기</option>
+				</select>
+			</div>
+			
+		</div>
+
+	</form>
+	<!-- 검색 / 필터 / 정렬 / 행 개수 데이터 전송 -->
+
+	<!-- 필터 모달창 시작 -->
+	<div class="modal fade" id="filterModal" tabindex="-1"
+		aria-labelledby="filterModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+
+				<!-- 필터 모달창 헤더 -->
+				<div class="modal-header">
+					<h5 class="modal-title" id="filterModalLabel">필터하기</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal"
+						aria-label="Close"></button>
+				</div>
+
+				<!-- 필터 모달창 바디(본문) -->
+				<div class="modal-body">
+
+					<h5>직무별</h5>
+					<div class="content">
+						<input type="radio" value="관리자" class="btn-check" name="job"
+							id="radioJob1"> <label
+							class="btn btn-outline-dark radioField" for="radioJob1">관리자</label>
+						<input type="radio" value="시설팀" class="btn-check" name="job"
+							id="radioJob2"> <label
+							class="btn btn-outline-dark radioField" for="radioJob2">시설팀</label>
+						<input type="radio" value="강사팀" class="btn-check" name="job"
+							id="radioJob3"> <label
+							class="btn btn-outline-dark radioField" for="radioJob3">강사팀</label>
+						<input type="radio" value="운영팀" class="btn-check" name="job"
+							id="radioJob4"> <label
+							class="btn btn-outline-dark radioField" for="radioJob4">운영팀</label>
+						<input type="radio" value="안내데스크" class="btn-check" name="job"
+							id="radioJob5"> <label
+							class="btn btn-outline-dark radioField" for="radioJob5">안내데스크</label>
+					</div>
+					<hr>
+					<h5>직급별</h5>
+					<div class="content">
+						<input type="radio" value="관리자" class="btn-check" name="job_rank"
+							id="radioRank1"> <label
+							class="btn btn-outline-dark radioField" for="radioRank1">관리자</label>
+						<input type="radio" value="팀장" class="btn-check" name="job_rank"
+							id="radioRank2"> <label
+							class="btn btn-outline-dark radioField" for="radioRank2">팀장</label>
+						<input type="radio" value="사원" class="btn-check" name="job_rank"
+							id="radioRank3"> <label
+							class="btn btn-outline-dark radioField" for="radioRank3">사원</label>
+					</div>
+					<hr>
+					<h5>출근 여부</h5>
+					<div class="content">
+						<input type="radio" value="출근" class="btn-check" name="filter"
+							id="radioChk1"> <label
+							class="btn btn-outline-dark radioField" for="radioChk1">출근 중</label>
+					</div>
+
+				</div>
+
+				<!-- 필터 모달창 푸터 -->
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary"
+						data-bs-dismiss="modal">취소</button>
+					<button type="button" class="btn btn-primary filterBtn"
+						data-bs-dismiss="modal">필터 추가</button>
+				</div>
+
+			</div>
+		</div>
+	</div>
+	<!-- 필터 모달창 끝 -->
 
 <a href="/main/login" class="nav-link">
               <i class="nav-icon fas fa-user"></i>
@@ -104,6 +297,72 @@ user_id : ${principal.username}<br>
 
 		</table>
 	</div>
+	
+	<!-- 페이징 처리 -->
+			<ul class="pagination" >
+				<c:if test="${pageVO.prev }">
+					<li class="paginate_button page-item previous"
+						id="example1_previous">
+						<!-- 검색을 하지 않았을 때 페이징 처리 --> <c:if
+							test="${empty param.keyword and empty param.job and empty param.job_rank and empty param.filter
+						and empty param.sortCri and empty param.sortVal}">
+							<a
+								href="/employee/empList?page=${pageVO.startPage-1 }&pageSize=${pageVO.cri.pageSize}"
+								aria-controls="example1" data-dt-idx="0" tabindex="0"
+								class="page-link">«</a>
+						</c:if> <!-- 검색을 했을 때 페이징 처리 --> <c:if
+							test="${not empty param.keyword or not empty param.job or not empty param.job_rank or not empty param.filter
+						or not empty param.sortCri or not empty param.sortVal}">
+							<a
+								href="/employee/empList?searchType=${pageVO.cri.searchType }&keyword=${pageVO.cri.keyword }&job=${pageVO.cri.job }&job_rank=${pageVO.cri.job_rank }
+								&filter=${pageVO.cri.filter }&sortCri=${pageVO.cri.sortCri }&sortVal=${pageVO.cri.sortVal }&page=${i }&pageSize=${pageVO.cri.pageSize}"
+								aria-controls="example1" data-dt-idx="0" tabindex="0"
+								class="page-link">«</a>
+						</c:if>
+					</li>
+				</c:if>
+				<c:forEach var="i" begin="${pageVO.startPage }"
+					end="${pageVO.endPage }" step="1">
+					<li
+						class="paginate_button page-item ${pageVO.cri.page == i ? 'active':'' }">
+						<!-- 검색을 하지 않았을 때 페이징 처리 --> <c:if
+							test="${empty param.keyword and empty param.job and empty param.job_rank and empty param.filter
+						and empty param.sortCri and empty param.sortVal}">
+							<a href="/employee/empList?page=${i }&pageSize=${pageVO.cri.pageSize}"
+								aria-controls="example1" data-dt-idx="1" tabindex="0"
+								class="page-link">${i }</a>
+						</c:if> <!-- 검색을 했을 때 페이징 처리 --> <c:if
+							test="${not empty param.keyword or not empty param.job or not empty param.job_rank or not empty param.filter
+						or not empty param.sortCri or not empty param.sortVal}">
+							<a
+								href="/employee/empList?searchType=${pageVO.cri.searchType }&keyword=${pageVO.cri.keyword }&job=${pageVO.cri.job }&job_rank=${pageVO.cri.job_rank }
+								&filter=${pageVO.cri.filter }&sortCri=${pageVO.cri.sortCri }&sortVal=${pageVO.cri.sortVal }&page=${i }&pageSize=${pageVO.cri.pageSize}"
+								aria-controls="example1" data-dt-idx="1" tabindex="0"
+								class="page-link">${i }</a>
+						</c:if>
+					</li>
+				</c:forEach>
+				<c:if test="${pageVO.next && pageVO.endPage > 0 }">
+					<li class="paginate_button page-item next" id="example1_next">
+						<!-- 검색을 하지 않았을 때 페이징 처리 --> <c:if
+							test="${empty param.keyword and empty param.job and empty param.job_rank and empty param.filter
+						and empty param.sortCri and empty param.sortVal}">
+							<a
+								href="/employee/empList?page=${pageVO.endPage+1 }&pageSize=${pageVO.cri.pageSize}"
+								aria-controls="example1" data-dt-idx="7" tabindex="0"
+								class="page-link">»</a>
+						</c:if> <!-- 검색을 했을 때 페이징 처리 --> <c:if
+							test="${not empty param.keyword or not empty param.job or not empty param.job_rank or not empty param.filter
+						or not empty param.sortCri or not empty param.sortVal }">
+							<a
+								href="/employee/empList?searchType=${pageVO.cri.searchType }&keyword=${pageVO.cri.keyword }&job=${pageVO.cri.job }&job_rank=${pageVO.cri.job_rank }
+								&filter=${pageVO.cri.filter }&sortCri=${pageVO.cri.sortCri }&sortVal=${pageVO.cri.sortVal }&page=${i }&pageSize=${pageVO.cri.pageSize}"
+								aria-controls="example1" data-dt-idx="7" tabindex="0"
+								class="page-link">»</a>
+						</c:if>
+					</li>
+				</c:if>
+			</ul>
 
 </div>
 
@@ -145,19 +404,19 @@ user_id : ${principal.username}<br>
                         </div>
                         <span id="checkpass" style="font-size: 14px;"></span>
                        
-                        <div class="form-group">
-                            <label>직무</label>
-                            <form:select path="job" class="form-control" name="job">
-                                <form:options items="${job}" itemValue="codeValue" itemLabel="codeValueName"/>
-                            </form:select>
-                        </div>
+<!--                         <div class="form-group"> -->
+<!--                             <label>직무</label> -->
+<%--                             <form:select path="job" class="form-control" name="job"> --%>
+<%--                                 <form:options items="${job}" itemValue="codeValue" itemLabel="codeValueName"/> --%>
+<%--                             </form:select> --%>
+<!--                         </div> -->
                         
-                        <div class="form-group">
-                            <label>직급</label>
-                            <form:select path="job_rank" class="form-control" name="job_rank">
-                                <form:options items="${job_rank}" itemValue="codeValue" itemLabel="codeValueName"/>
-                            </form:select>
-                        </div>
+<!--                         <div class="form-group"> -->
+<!--                             <label>직급</label> -->
+<%--                             <form:select path="job_rank" class="form-control" name="job_rank"> --%>
+<%--                                 <form:options items="${job_rank}" itemValue="codeValue" itemLabel="codeValueName"/> --%>
+<%--                             </form:select> --%>
+<!--                         </div> -->
                      
 						<div class="form-group">
 							<label>입사일</label> <input type="date" name="emp_date"
@@ -684,6 +943,108 @@ $(function() {
 		
 	}// end of function check_commute() {} --------------------------------
 	
+	/* 사용자가 선택한 필터 출력 */
+	$(function() {
+		$('.filterBtn')
+				.click(
+						function() {
+
+							let filter = $('input[name=filter]:checked').val();
+							let job = $('input[name=job]:checked').val();
+							let job_rank = $('input[name=job_rank]:checked')
+									.val();
+
+							/* 출근여부 필터를 선택했을 때 */
+							if (filter != undefined) {
+								$('.filter1')
+										.html(
+												'<div class="deleteFilter"><h5><span class="badge badge-warning p-2" style="color: #000;">'
+														+ '<input type="hidden" name="filter" value="'+filter+'">'
+														+ filter
+														+ '<button class="removeFi btn-close btn-xs" aria-label="Close" style="margin-left: 7px;">'
+														+ '</button></span></h5></div>');
+							}
+
+							/* 직무 선택했을 때 */
+							if (job != undefined) {
+								$('.filter2')
+										.html(
+												'<div class="deleteFilter"><h5><span class="badge badge-warning p-2" style="color: #000;">'
+														+ '<input type="hidden" name="job" value="'+job+'">'
+														+ job
+														+ '<button class="removeFi btn-close btn-xs" aria-label="Close" style="margin-left: 7px;">'
+														+ '</button></span></h5></div>');
+							}
+
+							/* 직급 선택했을 때 */
+							if (job_rank != null) {
+
+								$('.filter3')
+										.html(
+												'<div class="deleteFilter"><h5><span class="badge badge-warning p-2" style="color: #000;">'
+														+ '<input type="hidden" name="job_rank" value="'+job_rank+'">'
+														+ job_rank
+														+ '<button class="removeFi btn-close btn-xs" aria-label="Close" style="margin-left: 7px;">'
+														+ '</button></span></h5></div>');
+							}
+
+						});
+
+	});
+
+	/* 선택한 필터 개별 삭제 */
+	$(document).on('click', '.removeFi', function() {
+		$(this).parent().remove()
+	});
+
+	/* 선택한 필터 전체 삭제 */
+	$(document).ready(function() {
+		$('#resetFilters').click(function() {
+			if (confirm("필터를 삭제하시겠습니까?")) {
+				$('.deleteFilter').empty();
+			}
+		});
+	});
+
+	if ('${param.searchType}' == '${pageVO.cri.searchType}'
+			&& '${pageVO.cri.searchType}' != '') {
+		$("#selectType").val("${param.searchType}");
+	}
+
+	$("#selectPage").val("${pageVO.cri.pageSize }");
+	
+	$("#selectPage").change(function() {
+
+		$('input[name="sortVal"]').val('${param.sortVal}');
+		$('input[name="sortCri"]').val('${param.sortCri}');
+
+		$(".actionForm").submit();
+	});
+	
+	$(document).ready(function() {
+		$('.chkSort').on('change', function() {
+			var selectedVal = $(this).val();
+			var sortCriValue;
+
+			if ($(this).attr('id') === 'radioName1') {
+				sortCriValue = 'asc'; // 오름차순
+			} else if ($(this).attr('id') === 'radioName2') {
+				sortCriValue = 'desc'; // 내림차순
+			} else if ($(this).attr('id') === 'radioReg') {
+				sortCriValue = 'asc'; // 등록순
+			}
+
+			// sortCri, sortVal 업데이트
+			$('input[name="sortVal"]').val(selectedVal);
+			$('input[name="sortCri"]').val(sortCriValue);
+
+			// 확인을 위해 콘솔에 출력
+			console.log('Selected sortCri:', sortCriValue);
+
+			$(".actionForm").submit();
+
+		});
+	});
 
 
 </script>

@@ -11,6 +11,7 @@ import org.springframework.util.ObjectUtils;
 
 import com.itwillbs.domain.BaseVO;
 import com.itwillbs.domain.Criteria;
+import com.itwillbs.domain.EmployeeVO;
 import com.itwillbs.domain.Filter;
 import com.itwillbs.domain.MemberVO;
 import com.itwillbs.persistence.MemberDAO;
@@ -39,6 +40,16 @@ public class SearchServiceImpl implements SearchService {
 //			}
 //		}
 		return sDao.getTotalCount(cri);
+	}
+
+	@Override
+	public List<EmployeeVO> searchEmp(Criteria cri) throws Exception {
+		return sDao.searchEmp(cri);
+	}
+
+	@Override
+	public int getEmpCount(Criteria cri) throws Exception {
+		return sDao.getEmpCount(cri);
 	}
 	
 	

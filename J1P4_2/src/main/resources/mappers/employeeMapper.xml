@@ -38,6 +38,14 @@
   	<!-- 직원리스트 -->
 	<select id="empList" resultType="EmployeeVO">
 		select * from employee
+		where user_no > 0 and retire_status = 0
+		order by user_no desc
+		limit #{pageStart},${pageSize}
+	</select>
+	
+	<!-- 직원리스트 개수(페이징처리) -->
+	<select id="totalEmpCount" resultType="int">
+		select count(user_no) from employee
 		where retire_status = 0
 	</select>
   	 
