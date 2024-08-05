@@ -1,6 +1,7 @@
 package com.itwillbs.persistence;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -16,6 +17,7 @@ import com.itwillbs.domain.HealthMonitorVO;
 import com.itwillbs.domain.MemberVO;
 import com.itwillbs.domain.RecipientVO;
 import com.itwillbs.domain.RegistrationVO;
+import com.itwillbs.domain.fileVO;
 
 @Repository
 public class MemberDAOImpl implements MemberDAO {
@@ -40,9 +42,16 @@ public class MemberDAOImpl implements MemberDAO {
 	}
 
 	@Override
-	public MemberVO readMem(int mem_no) throws Exception {
+	public Map<String, Object> readMem(int mem_no) throws Exception {
 		logger.debug(" (⌐■_■) DAO : readMem(int mem_no) 실행 ");
-		return sqlSession.selectOne(NAMESPACE+"readMem",mem_no);
+		
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		resultMap.put("MemberVO",sqlSession.selectOne(NAMESPACE+"readMem", mem_no));
+		resultMap.put("fileVO",sqlSession.selectOne(NAMESPACE+"selectMemFile", mem_no));
+		
+		return resultMap;
+		
+		
 	}
 
 	@Override
@@ -120,6 +129,11 @@ public class MemberDAOImpl implements MemberDAO {
 	@Override
 	public int countingMemClass(int mem_no) throws Exception {
 		return sqlSession.selectOne(NAMESPACE+"countingMemClass",mem_no);
+	}
+
+	@Override
+	public void fileMemAdd(fileVO vo) throws Exception {
+		sqlSession.insert(NAMESPACE+"fileMemAdd",vo);
 	}
 	
 	

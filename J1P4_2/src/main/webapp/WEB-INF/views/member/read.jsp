@@ -89,7 +89,7 @@
 				</div>
 				<hr>
 				<div class="cardMy">
-					<strong><i class="far fa-file-alt mr-1 cardMx"></i> 강의 누적 기간</strong>
+					<strong><i class="far fa-clock mr-1 cardMx"></i> 강의 누적 기간</strong>
 					<c:if test="${not empty counting }">
 					<p class="text-muted cardMy">${counting } 일</p>
 					</c:if>
@@ -141,9 +141,14 @@
 				</div>
 				<hr>
 				<div class="cardMy">
-					<strong><i class="far fa-regular fa-clock mr-1 cardMx"></i>
-						수강 시간</strong>
-					<p class="text-muted cardMy">${readMem.class_time}시간</p>
+					<strong><i class="far fa-regular fa-file mr-1 cardMx"></i>
+						계약서</strong>
+					<p class="text-muted cardMy">
+					<a href="/maintenance/download?fileName=${fileList.file_name }">${fileList.file_name }</a></p>
+					<c:set var="tmp" value="${fileList.file_name.substring(fileList.file_name.lastIndexOf('.')) }"/>
+					<c:if test="${tmp=='.png' or tmp=='.gif'}">
+					<img src = "/download?fileName=${fileList.file_name }">
+					</c:if>
 				</div>
 
 			</div>

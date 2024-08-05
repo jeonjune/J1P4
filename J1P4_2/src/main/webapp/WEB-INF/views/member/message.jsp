@@ -50,99 +50,18 @@
 			</div>
 			
 		</div>
-		<div style="display: inline-block;">
-		<!-- 필터 모달창 버튼 -->
-			<button type="button" class="btn btn-primary" data-bs-toggle="modal"
-				data-bs-target="#filterModal">
-				<i class="fas fa-filter fa-fw"></i>
-			</button>
-
-			<!-- 필터 지우기 버튼 -->
-			<button type="button" class="btn btn-info" id="resetFilters">
-				<i class="fas fa-trash fa-fw"></i>
-			</button>
-		</div>
-		
-		<!-- 사용자가 선택한 필터를 보여주는 공간 -->
-		<div style="padding-left: 10px; display: inline-block;">
-		<div class="filter1" style="display: inline-block;">
-			<div class="deleteFilter">
-				<!-- 사용자가 필터를 사용하여 검색했을 때 선택한 필터를 보여주는 공간 -->
-				<c:if test="${not empty param.filter }">
-					<h5>
-						<span class="badge badge-warning p-2" style="color: #000;">
-							<input type="hidden" name="filter" value="${param.filter }">${param.filter }
-							<button class="removeFi btn-close btn-xs" aria-label="Close"
-								style="margin-left: 7px;"></button>
-						</span>
-					</h5>
-				</c:if>
-			</div>
-		</div>
-		
-		<div class="filter2" style="display: inline-block;">
-			<div class="deleteFilter">
-				<c:if test="${not empty param.memYear }">
-					<h5>
-						<span class="badge badge-warning p-2" style="color: #000;">
-							<input type="hidden" name="memYear" value="${param.memYear }">${param.memYear }
-							<button class="removeFi btn-close btn-xs" aria-label="Close"
-								style="margin-left: 7px;"></button>
-						</span>
-					</h5>
-				</c:if>
-			</div>
-		</div>
-		
-		<div class="filter3" style="display: inline-block;">
-			<div class="deleteFilter">
-				<c:if test="${not empty param.mem_gender }">
-					<h5>
-						<span class="badge badge-warning p-2" style="color: #000;">
-							<input type="hidden" name="mem_gender"
-							value="${param.mem_gender }"> <c:if
-								test="${param.mem_gender == 0}">남자</c:if> <c:if
-								test="${param.mem_gender == 1}">여자</c:if>
-							<button class="removeFi btn-close btn-xs" aria-label="Close"
-								style="margin-left: 7px;"></button>
-						</span>
-					</h5>
-				</c:if>
-			</div>
-		</div>
-		
-		<div class="filter4" style="display: inline-block;">
-			<c:if test="${not empty param.msg_opt }">
-				<div class="border border-1 rounded-3 p-2" role="group"
-					style="width: 120px; margin-bottom: 20px; background-color: #fff;">
-					<button class="removeFi btn-close" aria-label="Close"
-						style="width: 1px; position: absolute;"></button>
-					<input type="hidden" value="chk" name="msg_opt"> <span
-						style="padding-left: 20px; font-size: 18px; font-weight: bold;">
-						<c:if test="${not empty param.msg_opt}">메시지만 동의</c:if>
-					</span>
-				</div>
-			</c:if>
-		</div>
-		</div>
-
-		<!-- 테이블 커스텀 (정렬 / 행 개수) -->
-		<div class="content memListSort">
-		
-			<div>검색결과 : ${pageVO.totalCount }건</div>
-
-			
-			<!-- 행 개수 선택 -->
-			<div class="textRight">
-				<select name="pageSize" id="selectPage" class="form-control">
-					<option value="10">10개씩 보기</option>
-					<option value="20">50개씩 보기</option>
-					<option value="30">100개씩 보기</option>
-				</select>
-			</div>
-			
-		</div>
-
+	<input type="hidden" value="${param.facility_no }" name="facility_no">
+		<div class="content">
+						<input type="radio" value="전체" class="btn-check btn-check-all" 
+							id="radioRepair0"> <label
+							class="btn btn-outline-dark radioField" for="radioRepair0">전체</label>
+						<input type="radio" value="점검" class="btn-check btn-check-type" name="repair_type"
+							id="radioRepair1"> <label
+							class="btn btn-outline-dark radioField" for="radioRepair1">예약전송</label>
+						<input type="radio" value="방역" class="btn-check btn-check-type" name="repair_type"
+							id="radioRepair2"> <label
+							class="btn btn-outline-dark radioField" for="radioRepair2">일반전송</label>
+					</div>
 	</form>
 	<!-- 검색 / 필터 / 정렬 / 행 개수 데이터 전송 -->
 	

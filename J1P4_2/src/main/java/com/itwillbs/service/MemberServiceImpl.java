@@ -15,6 +15,7 @@ import com.itwillbs.domain.HealthMonitorVO;
 import com.itwillbs.domain.MemberVO;
 import com.itwillbs.domain.RecipientVO;
 import com.itwillbs.domain.RegistrationVO;
+import com.itwillbs.domain.fileVO;
 import com.itwillbs.persistence.MemberDAO;
 
 @Service
@@ -37,7 +38,7 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
-	public MemberVO readMem(int mem_no) throws Exception {
+	public Map<String, Object> readMem(int mem_no) throws Exception {
 		logger.debug(" (●'◡'●) Service : readMem(int mem_no) 실행 ");
 		return mDao.readMem(mem_no);
 	}
@@ -117,6 +118,11 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public int countingMemClass(int mem_no) throws Exception {
 		return mDao.countingMemClass(mem_no);
+	}
+
+	@Override
+	public void fileMemAdd(fileVO vo) throws Exception {
+		mDao.fileMemAdd(vo);
 	}
 	
 	

@@ -1,14 +1,21 @@
 package com.itwillbs.web;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,6 +31,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.itwillbs.domain.BaseVO;
@@ -32,6 +41,7 @@ import com.itwillbs.domain.HealthMonitorVO;
 import com.itwillbs.domain.MemberVO;
 import com.itwillbs.domain.PageVO;
 import com.itwillbs.domain.RegistrationVO;
+import com.itwillbs.domain.fileVO;
 import com.itwillbs.service.MemberService;
 import com.itwillbs.service.SearchService;
 
@@ -44,6 +54,7 @@ import net.nurigo.sdk.message.response.SingleMessageSentResponse;
 @RequestMapping(value="/member/*")
 public class MemberController {
 	private static final Logger logger = LoggerFactory.getLogger(MemberController.class);
+	private final String FAKE_PATH = "/upload";
 	
 	@Inject
 	private MemberService mService;
@@ -91,11 +102,14 @@ public class MemberController {
 	public void readGET(Model model,@RequestParam int mem_no,Criteria cri) throws Exception{
 		logger.debug(" readGET() 실행 ");
 		
-		logger.debug(" @@@@@@@@@@@ int mem_no = "+mem_no);
-		logger.debug(" @@@@@@@@@@@ 중요 = "+mService.countingMemClass(mem_no));
+		Map<String, Object> resultVO = mService.readMem(mem_no);
+		logger.info("resultVO :"+ resultVO);
+		logger.info("resultVO :"+ resultVO.get("fileVO"));
 		
+		//전달할 정보 저장
+		model.addAttribute("readMem", resultVO.get("MemberVO"));
+		model.addAttribute("fileList", resultVO.get("fileVO"));
 		model.addAttribute("counting",mService.countingMemClass(mem_no));
-		model.addAttribute("readMem",mService.readMem(mem_no));
 		model.addAttribute("pageInfo",cri);
 		
 	}
@@ -289,7 +303,7 @@ public class MemberController {
 	// 회원리스트 페이지 - 회원 등록 AJAX
 	@ResponseBody
 	@PostMapping(value = "/memJoin")
-	public void memJoinPOST(MemberVO vo) throws Exception {
+	public void memJoinPOST(MultipartHttpServletRequest multiRequest, MemberVO vo, fileVO fvo) throws Exception {
 		logger.info(" memJoinPOST(vo) 실행 ");
 		
 		// 컨트롤러로 회원 등록을 위해 전달받은 값을 출력
@@ -305,10 +319,92 @@ public class MemberController {
 			vo.setEmail_opt(0);
 		}
 		
+		// 파일업로드
+		multiRequest.setCharacterEncoding("UTF-8");
+        Map<String, String> paramMap = new HashMap();
+        Enumeration<String> enu = multiRequest.getParameterNames();
+        
+        while (enu.hasMoreElements()) {
+            String name = enu.nextElement();
+            String value = multiRequest.getParameter(name);
+            paramMap.put(name, value);
+        }
+        
+        logger.debug("paramMap :{} ", paramMap);
+
+        List<String> fileNameList = fileProcess(multiRequest);
+        paramMap.put("fileNameList", String.join(",", fileNameList));
+        logger.debug("paramMap :{} ", paramMap);
+        
+        logger.debug("@@@@@@ 난 이제 지쳤어요 땡벌땡벌 "+ paramMap.get("fileNameList"));
+        fvo.setFile_name(paramMap.get("fileNameList"));
+        logger.debug("@@@@@@ 난 이제 지쳤어요 땡벌땡벌 "+ fvo.getFile_name());
+        
+        mService.memJoin(vo);
+        mService.fileMemAdd(fvo);
+		
 		// insert로 회원 등록 실행 (return 값 없음)
-		mService.memJoin(vo);
 		
 	}
+	
+	//파일업로드 메서드
+    public List<String> fileProcess(MultipartHttpServletRequest multiRequest) throws Exception {
+        logger.debug("fileProcess : 파일 업로드 처리 시작!");
+
+        List<String> fileNameList = new ArrayList();
+        Iterator<String> fileNames = multiRequest.getFileNames();
+        while (fileNames.hasNext()) {
+            String fileName = fileNames.next();
+            MultipartFile mFile = multiRequest.getFile(fileName);
+            String oFileName = mFile.getOriginalFilename();
+            fileNameList.add(oFileName);
+
+            File file = new File(multiRequest.getRealPath(FAKE_PATH) + "\\" + oFileName);
+            if (mFile.getSize() != 0) {
+                if (!file.exists()) {
+                    if (file.getParentFile().mkdirs()) {
+                        file.createNewFile();
+                    }
+                }
+                mFile.transferTo(file);
+            }
+        }
+        logger.debug("fileNameList : {}", fileNameList);
+        logger.debug("파일 업로드 완료!!, 파일 이름 저장 완료!");
+
+        return fileNameList;
+    }
+
+    @GetMapping("/download")
+    public void downloadGET(@RequestParam("fileName") String fileName, HttpServletResponse resp, HttpServletRequest req) 
+    		throws Exception {
+logger.debug(" downloadGET() 실행 ");	
+		
+		// 외부 (브라우저)로 통신가능한 통로
+		OutputStream out = resp.getOutputStream();
+		
+		// 다운로드할 파일의 정보(위치)
+		String downFile = req.getRealPath(FAKE_PATH)+"\\"+fileName;
+		
+		// 다운로드할 파일 생성
+		File file = new File(downFile);
+		
+		// 다운로드에 필요한 설정
+		resp.setHeader("Cache-Control", "no-cache");
+		resp.addHeader("Content-disposition", "attachment; fileName="+URLEncoder.encode(fileName,"UTF-8"));
+		
+		FileInputStream fis = new FileInputStream(file);
+		
+		byte[] buffer = new byte[1024 * 8];
+		
+		while(true) {
+			int data = fis.read(buffer);
+			if(data == -1) break; // 파일의 끝
+			
+			
+			out.write(buffer,0,data);
+		}
+    }
 	
 	// 회원 기본페이지 - 회원 수정 AJAX
 	@ResponseBody
