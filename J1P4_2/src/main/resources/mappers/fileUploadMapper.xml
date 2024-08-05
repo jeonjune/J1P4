@@ -5,7 +5,7 @@
 
 <mapper namespace="com.itwillbs.mapper.FileUploadMapper">
 
-	<insert id="fileEmpAdd" parameterType="fileVO">
+	<insert id="fileEmpAdd">
 		insert into file(user_no,file_date,file_name)
 		values((select max(user_no) from employee),#{file_date},#{file_name})
 	</insert>
@@ -15,6 +15,11 @@
 		select * from file
 		where user_no = #{user_no}
 	</select>	
-
+	
+	<update id="updateEmpFile">
+		UPDATE file 
+		SET file_name = #{file_name}
+		WHERE user_no = #{user_no}
+	</update>
 
 </mapper>

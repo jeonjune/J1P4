@@ -57,3 +57,10 @@
 .cardMargin {
 	margin-left: 150px; margin-top: 30px; margin-bottom: 10px
 }
+
+ #preview {
+            display: none;
+            margin-top: 10px;
+            max-width: 40%;
+            height: auto;
+        }

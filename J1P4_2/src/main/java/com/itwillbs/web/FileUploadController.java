@@ -11,6 +11,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -20,13 +21,19 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
-import net.coobird.thumbnailator.Thumbnails;
+import com.itwillbs.domain.fileVO;
+import com.itwillbs.service.EmployeeService;
+import com.itwillbs.service.FileUploadService;
+
+//import net.coobird.thumbnailator.Thumbnails;
 
 @Controller
 public class FileUploadController {
@@ -34,52 +41,42 @@ public class FileUploadController {
 	private static final Logger logger = LoggerFactory.getLogger(FileUploadController.class);
 	private final String FAKE_PATH = "/upload";
 	
-	@GetMapping(value = "/regist")
-	public void uploadFormGET() throws Exception{
-		
-		
-	}
+	@Inject
+	private FileUploadService fService;
+	@Inject
+	private EmployeeService eService;
 	
 	//파일업로드처리
-	@PostMapping(value = "/upload")
-	public String fileUploadPOST(MultipartHttpServletRequest multiRequest, Model model) throws Exception{
+	@ResponseBody
+	@PostMapping(value = "/file/upload")
+	public void fileUploadPOST(MultipartHttpServletRequest multiRequest, Model model,fileVO fvo,
+			@RequestParam("user_id") String user_id) throws Exception{
+		logger.debug("@@@@@@ 파일 수정 유저번호 "+ eService.user_no(user_id));
+		fvo.setUser_no(eService.user_no(user_id));
 		
-		//한글처리인코딩
+		// 파일업로드
 		multiRequest.setCharacterEncoding("UTF-8");
-		//파라메터 정보 저장 Map(키값, value값)
-		Map paramMap = new HashMap();
-		
-		//input타입의 file의 정보를 제외한 모든 정보 가져오기
-		Enumeration enu = multiRequest.getParameterNames();
-		while(enu.hasMoreElements()) {
-			
-			// 파라메터명
-			//true일때 들어오겠다
-			String name = (String)enu.nextElement();
-			logger.debug("name : " + name);
-			
-			String value = multiRequest.getParameter(name);
-			logger.debug("value :" + value);
-			
-			//전달받은 파라메터 정보를 Map에 저장
-			paramMap.put(name, value);
-			
-		}
-			logger.debug("paramMap :{} " , paramMap);
-			// 파일의 정보를 제외한 모든 파라메터 정보를 저장완료!!!
-//------------------------------------------------------------------------------
-			// 파일 업로드 필요 --> 그다음 정보를 Map 추가 저장
-			List<String> fileNameList = fileProcess(multiRequest);
-			
-			//map에 파일의 이름 정보를 저장 
-			paramMap.put("fileNameList", fileNameList);
-			logger.debug("paramMap :{} " , paramMap);
-			
-			//model 객체에 정보 저장 
-			model.addAttribute("paramMap", paramMap);
-			
-		
-		return"maintenance/detail";
+        Map<String, String> paramMap = new HashMap();
+        Enumeration<String> enu = multiRequest.getParameterNames();
+        
+        while (enu.hasMoreElements()) {
+            String name = enu.nextElement();
+            String value = multiRequest.getParameter(name);
+            paramMap.put(name, value);
+        }
+        
+        logger.debug("paramMap :{} ", paramMap);
+
+        List<String> fileNameList = fileProcess(multiRequest);
+        paramMap.put("fileNameList", String.join(",", fileNameList));
+        logger.debug("paramMap :{} ", paramMap);
+        
+        logger.debug("@@@@@@ 난 이제 지쳤어요 땡벌땡벌 "+ paramMap.get("fileNameList"));
+        fvo.setFile_name(paramMap.get("fileNameList"));
+        logger.debug("@@@@@@ 난 이제 지쳤어요 땡벌땡벌 "+ fvo.getFile_name());
+        
+        fService.updateEmpFile(fvo);
+	
 	}
 	
 	//파일 업로드 모듈(메서드)
@@ -162,7 +159,7 @@ public class FileUploadController {
 				//Thumbnails.of(file).size(50, 50).outputFormat("png").toFile(thumbnail); //다운로드 받아야 할 파일의 썸네일을 파일형태로 만들겠다
 				
 				//썸네일을 출력 
-				Thumbnails.of(file).size(100, 100).outputFormat("png").toOutputStream(out);
+//				Thumbnails.of(file).size(100, 100).outputFormat("png").toOutputStream(out);
 				
 			}
 			

@@ -1,9 +1,15 @@
 package com.itwillbs.web;
 
+import java.io.File;
 import java.security.Principal;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
@@ -20,15 +26,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.itwillbs.domain.AuthVO;
 import com.itwillbs.domain.Criteria;
 import com.itwillbs.domain.EmpAttendanceVO;
 import com.itwillbs.domain.EmployeeVO;
 import com.itwillbs.domain.PageVO;
+import com.itwillbs.domain.fileVO;
 import com.itwillbs.service.CommonCodeService;
 import com.itwillbs.service.EmpAttendanceService;
 import com.itwillbs.service.EmployeeService;
+import com.itwillbs.service.FileUploadService;
 import com.itwillbs.service.SearchService;
 
 @Controller
@@ -36,6 +46,7 @@ import com.itwillbs.service.SearchService;
 public class EmployeeController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(EmployeeController.class);
+	private final String FAKE_PATH = "/upload";
 	
 	@Inject
 	private EmployeeService eService;
@@ -48,6 +59,9 @@ public class EmployeeController {
     
     @Inject
 	private SearchService sService;
+    
+    @Inject
+    private FileUploadService fService;
 	
 	// http://localhost:8088/employee/empList
     @GetMapping(value = "/empList")
@@ -103,7 +117,7 @@ public class EmployeeController {
 	
 	@ResponseBody
 	@PostMapping(value = "/empList")
-	public String empListPOST(EmployeeVO vo, AuthVO avo) throws Exception {
+	public String empListPOST(EmployeeVO vo, AuthVO avo,MultipartHttpServletRequest multiRequest,fileVO fvo) throws Exception {
 		logger.info("모달창으로 직원 등록(컨트롤러)");
 		
 		logger.info("vo :"+vo);
@@ -119,10 +133,66 @@ public class EmployeeController {
 		}else if(vo.getJob_rank().equals("사원")) {
 			avo.setAuth("ROLE_MEMBER");						
 		}
-		eService.empAuth(avo);
+		
+		// 파일업로드
+		multiRequest.setCharacterEncoding("UTF-8");
+        Map<String, String> paramMap = new HashMap();
+        Enumeration<String> enu = multiRequest.getParameterNames();
+        
+        while (enu.hasMoreElements()) {
+            String name = enu.nextElement();
+            String value = multiRequest.getParameter(name);
+            paramMap.put(name, value);
+        }
+        
+        logger.debug("paramMap :{} ", paramMap);
+
+        List<String> fileNameList = fileProcess(multiRequest);
+        paramMap.put("fileNameList", String.join(",", fileNameList));
+        logger.debug("paramMap :{} ", paramMap);
+        
+        logger.debug("@@@@@@ 난 이제 지쳤어요 땡벌땡벌 "+ paramMap.get("fileNameList"));
+        fvo.setFile_name(paramMap.get("fileNameList"));
+        logger.debug("@@@@@@ 난 이제 지쳤어요 땡벌땡벌 "+ fvo.getFile_name());
+        
+        eService.empAuth(avo);
+        if(fvo.getFile_name().equals(null)) {
+        	fService.fileEmpAdd(fvo);        	
+        }
+		
+		// insert로 회원 등록 실행 (return 값 없음)
+	
 		
 		return "/employee/empList";
 	}
+
+//파일업로드 메서드
+public List<String> fileProcess(MultipartHttpServletRequest multiRequest) throws Exception {
+    logger.debug("fileProcess : 파일 업로드 처리 시작!");
+
+    List<String> fileNameList = new ArrayList();
+    Iterator<String> fileNames = multiRequest.getFileNames();
+    while (fileNames.hasNext()) {
+        String fileName = fileNames.next();
+        MultipartFile mFile = multiRequest.getFile(fileName);
+        String oFileName = mFile.getOriginalFilename();
+        fileNameList.add(oFileName);
+
+        File file = new File(multiRequest.getRealPath(FAKE_PATH) + "\\" + oFileName);
+        if (mFile.getSize() != 0) {
+            if (!file.exists()) {
+                if (file.getParentFile().mkdirs()) {
+                    file.createNewFile();
+                }
+            }
+            mFile.transferTo(file);
+        }
+    }
+    logger.debug("fileNameList : {}", fileNameList);
+    logger.debug("파일 업로드 완료!!, 파일 이름 저장 완료!");
+
+    return fileNameList;
+}
 
 	//아이디 중복 체크
 	//ajax로 처리할때는 @ResponseBody를 써야 응답이 가능.
@@ -317,11 +387,18 @@ public class EmployeeController {
 	public void empDetailGET(Model model,@RequestParam int user_no,Criteria cri) throws Exception{
 		logger.debug(" empDetailGET() 실행 ");
 		
+		Map<String, Object> resultVO = eService.empDetail(user_no);
+		logger.info("resultVO :"+ resultVO);
+		logger.info("resultVO :"+ resultVO.get("fileVO"));
+		
+		//전달할 정보 저장
+		model.addAttribute("empDt", resultVO.get("EmployeeVO"));
+		model.addAttribute("fileList", resultVO.get("fileVO"));
+		
 		logger.debug(" @@@@@@@@@@@ int user_no = "+user_no);
 		model.addAttribute("job", commonCodeService.getCommonCodeDetailsByCodeId("JOB"));
 	    model.addAttribute("job_rank", commonCodeService.getCommonCodeDetailsByCodeId("JOB_RANK"));
 		
-		model.addAttribute("empDt",eService.empDetail(user_no));
 		//model.addAttribute("pageInfo",cri);
 		
 	}
@@ -333,7 +410,7 @@ public class EmployeeController {
 		logger.info("@@@@@@@@@@@@@@모달창으로 직원 수정(컨트롤러)");
 		
 		logger.info("vo :"+vo);
-		eService.empUpdate(vo);
+		
 		// 직원 권한부여
 		avo.setUser_id(vo.getUser_id());
 		if(vo.getJob_rank().equals("관리자")) {
@@ -344,6 +421,9 @@ public class EmployeeController {
 			avo.setAuth("ROLE_MEMBER");						
 		}
 		eService.authUpdate(avo);
+		logger.info("avo :"+avo);
+		
+		eService.empUpdate(vo);
 		
 	}
 	
@@ -369,7 +449,9 @@ public class EmployeeController {
 		}
 
 		
-		model.addAttribute("myP",eService.empDetail(user_no));
+		Map<String, Object> resultVO = eService.empDetail(user_no);
+		model.addAttribute("myP", resultVO.get("EmployeeVO"));
+		model.addAttribute("fileList", resultVO.get("fileVO"));
 		
 		model.addAttribute("job", commonCodeService.getCommonCodeDetailsByCodeId("JOB"));
 	    model.addAttribute("job_rank", commonCodeService.getCommonCodeDetailsByCodeId("JOB_RANK"));
@@ -399,8 +481,8 @@ public class EmployeeController {
 					logger.info("@@@@@@@@@@@@@@출결확인ㅇㅇㅇㅇ@@@@@@@@@@@ :"+result);
 				}
 
-				
-				model.addAttribute("myP",eService.empDetail(user_no));
+				Map<String, Object> resultVO = eService.empDetail(user_no);
+				model.addAttribute("myP", resultVO.get("EmployeeVO"));
 	}
 
 	// 휴가관리 페이지
@@ -423,7 +505,8 @@ public class EmployeeController {
 		}
 		
 		
-		model.addAttribute("myP",eService.empDetail(user_no));
+		Map<String, Object> resultVO = eService.empDetail(user_no);
+		model.addAttribute("myP", resultVO.get("EmployeeVO"));
 	}
 	
 

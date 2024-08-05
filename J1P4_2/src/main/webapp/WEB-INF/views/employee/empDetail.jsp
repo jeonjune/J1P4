@@ -5,22 +5,19 @@
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <%@ include file="../include/header.jsp"%>
 <%@ include file="../include/sidemenu.jsp"%>
-
+<%@ include file="../include/empMenu.jsp"%>
 <script
 	src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 
 <div class="content-wrapper" style="min-height: 831px;">
-
 	<div class="card cardCustom">
-		<div class="card-header" style="margin-bottom: 30px">
-			<h2 class="card-title" style="margin-left: 150px;">직원 기본정보</h2>
-		</div>
+	
+    <div class="col-md-10 mx-auto" style="margin-top: 50px;">
 
-		<div class="col-md-10" style="margin-left: 150px;">
-
-			<div class="card">
-				<div class="card-body">
-					<div style="position: absolute; right: 30px;">
+        <div class="card">
+            <div class="card-body">
+					<div class="card">
+            <div style="position: absolute; right: 15px; top:15px;">
 						<a href="/employee/empList">
 							<button type="button" class="btn btn-light">뒤로가기</button>
 						</a>
@@ -30,100 +27,103 @@
 						<!-- 직원 삭제(퇴사) 버튼 -->
 						<button class="btn btn-primary" type="button" id="reEmp">삭제하기</button>
 					</div>
-					<c:if test="${empDt.job_rank == '관리자'}">
-						<span class="badge badge-success right"><strong><i
-								class="fas fa-crown"></i> 관리자</strong></span>
-					</c:if>
-					<c:if test="${empDt.job_rank == '사원'}">
-						<span class="badge badge-success right"><strong><i
-								class="fas fa-seedling"></i> 사원</strong></span>
-					</c:if>
-					<c:if test="${empDt.job_rank == '팀장'}">
-						<span class="badge badge-success right"><strong><i
-								class="fas fa-user"></i> 팀장</strong></span>
-					</c:if>
-<%-- 					<span class="badge badge-light right"> <c:if --%>
-<%-- 							test="${readMem.class_status == 1}"> --%>
-<!-- 					미수강<br> -->
-<%-- 						</c:if> <c:if test="${readMem.class_status == 0}"> --%>
-<!-- 					수강중<br> -->
-<%-- 						</c:if></span> --%>
-					<h2 style="margin-top: 10px;">${empDt.name }님
-						<c:if test="${empDt.job_rank == '관리자'}">(${empDt.job })</c:if>
-						<c:if test="${empDt.job_rank == '팀장' || empDt.job_rank == '사원' }">(${empDt.job } ${empDt.job_rank })</c:if>
-					</h2>
-					<div class="card" style="margin-top: 20px;">
-						<div class="card-body">
-							<strong><i class="far fa-file-alt mr-1 cardMy"></i> 메모 </strong>
-							<br> <br>출결, 휴가 넣을 예정
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
+                <div class="p-3">
+                <c:if test="${empDt.job_rank == '관리자'}">
+                    <span class="badge badge-success right"><strong><i class="fas fa-crown"></i> 관리자</strong></span>
+                </c:if>
+                <c:if test="${empDt.job_rank == '사원'}">
+                    <span class="badge badge-success right"><strong><i class="fas fa-seedling"></i> 사원</strong></span>
+                </c:if>
+                <c:if test="${empDt.job_rank == '팀장'}">
+                    <span class="badge badge-success right"><strong><i class="fas fa-user"></i> 팀장</strong></span>
+                </c:if>
+                <h2 style="margin-top: 10px;">${empDt.name }님
+                    <c:if test="${empDt.job_rank == '관리자'}">(${empDt.job })</c:if>
+                    <c:if test="${empDt.job_rank == '팀장' || empDt.job_rank == '사원' }">(${empDt.job } ${empDt.job_rank })</c:if>
+                </h2>
+                </div>
+                </div>
 
-		<div class="d-flex justify-content-center" style="margin-top: 20px;">
+                <div class="d-flex flex-wrap align-items-start">
+                    <div id="profile" class="me-3 m-3" style="flex: 0 0 200px; width: 200px; height: 270px;">
+        <c:if test="${empty fileList}">
+        <img src="${pageContext.request.contextPath }/resources/img/default_profile.png" style="width: 100%; height: 100%; object-fit: cover;">
+    </c:if>
+    <c:if test="${not empty fileList}">
+    <c:if test='${not empty fileList.file_name }'>
+        <p class="text-muted cardMy">
+            <c:set var="tmp" value="${fileList.file_name.substring(fileList.file_name.lastIndexOf('.')) }"/>
+            <c:if test="${tmp=='.png' or tmp=='.jpg' or tmp=='.jpeg'}">
+                <img src="/download?fileName=${fileList.file_name }" style="width: 100%; height: 100%; object-fit: cover;">
+            </c:if>
+        </p>
+        </c:if>
+		<c:if test='${empty fileList.file_name }'>
+        <img src="${pageContext.request.contextPath }/resources/img/default_profile.png" style="width: 100%; height: 100%; object-fit: cover;">
+		</c:if>
+		</c:if>
+</div>
 
-			<div class="col-md-5" style="display: inline-block;">
+                    <div class="d-flex flex-column flex-fill" style="flex: 1; min-width: 0;">
+                        <div class="d-flex flex-wrap" style="margin-left: 70px;">
+                            <div class="col-md-6" id="detail1">
+                                <div class="cardMy">
+                                    <strong><i class="fas fa-phone mr-1 cardMx"></i> 연락처 </strong>
+                                    <p class="text-muted cardMy">${empDt.phone_no}</p>
+                                </div>
+                                <hr>
+                                <div class="cardMy">
+                                    <strong><i class="far fa-heart mr-1 cardMx"></i> 생년월일</strong>
+                                    <p class="text-muted cardMy">${empDt.birth_date }</p>
+                                </div>
+                                <hr>
+                                <div class="cardMy">
+                                    <strong><i class="fas fa-venus-mars mr-1 cardMx"></i> 성별</strong>
+                                    <p class="text-muted cardMy">
+                                        <c:if test="${empDt.gender == true}">
+                                            여자<br>
+                                        </c:if>
+                                        <c:if test="${empDt.gender == false}">
+                                            남자<br>
+                                        </c:if>
+                                    </p>
+                                </div>
+                                <hr>
+                                <div class="cardMy">
+                                    <strong><i class="far fa-calendar mr-1 cardMx"></i> 입사일</strong>
+                                    <p class="text-muted cardMy">${empDt.emp_date}</p>
+                                </div>
+                            </div>
 
-				<div class="cardMy">
-					<strong><i class="fas fa-phone mr-1 cardMx"></i> 연락처 </strong>
-					<p class="text-muted cardMy">${empDt.phone_no}</p>
-				</div>
-				<hr>
-				<div class="cardMy">
-					<strong><i class="far fa-heart mr-1 cardMx"></i> 생년월일</strong>
-					<p class="text-muted cardMy">${empDt.birth_date }</p>
-				</div>
-				<hr>
-				<div class="cardMy">
-					<strong><i class="fas fa-venus-mars mr-1 cardMx"></i> 성별</strong>
-					<p class="text-muted cardMy">
-						<c:if test="${empDt.gender == true}">
-					여자<br>
-						</c:if>
-						<c:if test="${empDt.gender == false}">
-					남자<br>
-						</c:if>
-					</p>
-				</div>
-				<hr>
-				<div class="cardMy">
-					<strong><i class="far fa-calendar mr-1 cardMx"></i> 입사일</strong>
-					<p class="text-muted cardMy">${empDt.emp_date}</p>
-				</div>
+                            <div class="col-md-6" id="detail2">
+                                <div class="cardMy">
+                                    <strong><i class="far fa-envelope mr-1 cardMx"></i> 이메일 </strong>
+                                    <p class="text-muted cardMy">${empDt.email}</p>
+                                </div>
+                                <hr>
+                                <div class="cardMy">
+                                    <strong><i class="fas fa-map-marker-alt mr-1 cardMx"></i> 주소</strong>
+                                    <p class="text-muted cardMy">${empDt.addr1}${myP.addr2}</p>
+                                </div>
+                                <hr>
+                                <div class="cardMy">
+                                    <strong><i class="fas fa-star mr-1 cardMx"></i> 직급</strong>
+                                    <p class="text-muted cardMy">${empDt.job_rank}</p>
+                                </div>
+                                <hr>
+                                <div class="cardMy">
+                                    <strong><i class="far fa-file-alt mr-1 cardMx"></i> 직무</strong>
+                                    <p class="text-muted cardMy">${empDt.job }</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
-			</div>
-			<div class="col-md-5" style="display: inline-block;">
-
-
-				<div class="cardMy">
-					<strong><i class="far fa-envelope mr-1 cardMx"></i> 이메일 </strong>
-					
-					<p class="text-muted cardMy">${empDt.email}</p>
-				</div>
-				<hr>
-				<div class="cardMy">
-					<strong><i class="fas fa-map-marker-alt mr-1 cardMx"></i>
-						주소</strong>
-					<p class="text-muted cardMy">${empDt.addr1}${empDt.addr2}</p>
-				</div>
-				<hr>
-				<div class="cardMy">
-					<strong><i class="fas fa-star mr-1 cardMx"></i> 직급</strong>
-					<p class="text-muted cardMy">${empDt.job_rank}</p>
-				</div>
-				<hr>
-				<div class="cardMy">
-					<strong><i class="far fa-file-alt mr-1 cardMx"></i> 직무</strong>
-					<p class="text-muted cardMy">${empDt.job }</p>
-				</div>
-				
-
-			</div>
-		</div>
-
-	</div>
 <form id='actionForm' action="/employee/reEmp" method='get'>
 	<input id="user_id" type='hidden' name='user_id' value='${empDt.user_id}'>
 </form>
@@ -214,6 +214,7 @@
 <script>
 	$(function() {
 		$("#submitButt").click(function() {
+			
 			$.ajax({
 				url : "/employee/empUpdate",
 				type : "POST",

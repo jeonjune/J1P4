@@ -124,6 +124,11 @@ public class MemberServiceImpl implements MemberService {
 	public void fileMemAdd(fileVO vo) throws Exception {
 		mDao.fileMemAdd(vo);
 	}
+
+	@Override
+	public RecipientVO selectPhone(int noti_no) throws Exception {
+		return mDao.selectPhone(noti_no);
+	}
 	
 	
 	

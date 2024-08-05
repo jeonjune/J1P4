@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.itwillbs.domain.Criteria;
+import com.itwillbs.domain.EquipManageVO;
 import com.itwillbs.domain.HealthMonitorVO;
 import com.itwillbs.domain.MemberVO;
 import com.itwillbs.domain.RecipientVO;
@@ -68,5 +69,9 @@ public interface MemberDAO {
 	
 	// 파일등록
 	public void fileMemAdd(fileVO vo) throws Exception;
+	
+	//수신번호 가져오기
+	public RecipientVO selectPhone(int noti_no) throws Exception;
+		
 
 }

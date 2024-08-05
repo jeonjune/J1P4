@@ -458,6 +458,10 @@
                             <label>상세주소</label>
                             <input type="text" id="sample6_detailAddress" placeholder="상세주소" name="addr2"  class="form-control" >
                         </div>
+                        <div class="form-group">
+                            <label>사진업로드</label>
+                            <input type="file" name="file" accept="image/jpg, image/jpeg, image/png" class="form-control" >
+                        </div>
                         
                         
                         <button type="button" class="btn btn-primary" id="submitButt">등록</button>
@@ -476,10 +480,20 @@
 
 $(function() {
 	$("#submitButt").click(function() {
+		const token = $("meta[name='_csrf']").attr("content")
+		const header = $("meta[name='_csrf_header']").attr("content");
+		
+		var formData = new FormData($("#fm1")[0]);
+		
 		$.ajax({
 			url : "/employee/empList",
 			type : "POST",
-			data : $("#fm1").serialize(),
+			data : formData,
+			contentType: false, //필수
+            processData: false, //필수
+            beforeSend: function(xhr) { //header.jsp에 있는 토큰때문에 써주는 것
+                xhr.setRequestHeader(header, token);
+            },
 			success : function(data) {
 				alert("직원이 등록 되었습니다.");
 				

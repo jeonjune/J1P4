@@ -135,6 +135,11 @@ public class MemberDAOImpl implements MemberDAO {
 	public void fileMemAdd(fileVO vo) throws Exception {
 		sqlSession.insert(NAMESPACE+"fileMemAdd",vo);
 	}
+
+	@Override
+	public RecipientVO selectPhone(int noti_no) throws Exception {
+		return sqlSession.selectOne(NAMESPACE+"selectPhone",noti_no);
+	}
 	
 	
 	

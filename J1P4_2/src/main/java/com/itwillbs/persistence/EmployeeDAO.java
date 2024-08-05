@@ -1,6 +1,7 @@
 package com.itwillbs.persistence;
 
 import java.util.List;
+import java.util.Map;
 
 import com.itwillbs.domain.AuthVO;
 import com.itwillbs.domain.Criteria;
@@ -40,7 +41,7 @@ public interface EmployeeDAO {
 	public void inWork(int user_no)throws Exception;
 	
 	// 직원 상세페이지
-	public EmployeeVO empDetail(int user_no) throws Exception;
+	public Map<String, Object> empDetail(int user_no) throws Exception;
 	
 	// 직원 수정
 	public void empUpdate(EmployeeVO vo) throws Exception;

@@ -7,6 +7,8 @@ import lombok.Data;
 @Data
 public class fileVO {
 	
+	private int mem_no; //장비번호
+	private int user_no; //장비번호
 	private int equipment_no; //장비번호
 	private int file_no; //파일번호
 	private String cvt_name; //파일경로

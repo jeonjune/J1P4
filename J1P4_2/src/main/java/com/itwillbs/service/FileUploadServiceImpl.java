@@ -1,4 +1,4 @@
-package com.itwillbs.persistence;
+package com.itwillbs.service;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,41 +6,38 @@ import java.util.Map;
 
 import javax.inject.Inject;
 
-import org.apache.ibatis.session.SqlSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 
 import com.itwillbs.domain.Criteria;
 import com.itwillbs.domain.MemberVO;
 import com.itwillbs.domain.NotificationVO;
 import com.itwillbs.domain.RecipientVO;
 import com.itwillbs.domain.fileVO;
+import com.itwillbs.persistence.FileUploadDAO;
+import com.itwillbs.persistence.MemberDAO;
+import com.itwillbs.persistence.MessageDAO;
 
-@Repository
-public class FileUploadDAOImpl implements FileUploadDAO {
+@Service
+public class FileUploadServiceImpl implements FileUploadService {
 	
-	private static final Logger logger = LoggerFactory.getLogger(FileUploadDAOImpl.class);
+	private static final Logger logger = LoggerFactory.getLogger(FileUploadServiceImpl.class);
 	
 	@Inject
-	private SqlSession sqlSession;
-	
-	private static final String NAMESPACE = "com.itwillbs.mapper.FileUploadMapper.";
+	private FileUploadDAO fDao;
 
 	@Override
 	public void fileEmpAdd(fileVO vo) throws Exception {
-		sqlSession.insert(NAMESPACE+"fileEmpAdd",vo);
+		fDao.fileEmpAdd(vo);
 	}
 
 	@Override
 	public void updateEmpFile(fileVO vo) throws Exception {
-		sqlSession.update(NAMESPACE+"updateEmpFile",vo);
+		fDao.updateEmpFile(vo);
 	}
 
-	
-	
 
-	
-	
+
 	
 }

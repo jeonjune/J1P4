@@ -1,6 +1,7 @@
 package com.itwillbs.service;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -37,8 +38,10 @@ public class EmployeeServiceImpl implements EmployeeService {
 	@Override
 	public void empJoin(EmployeeVO vo) throws Exception {
 		//비밀번호 암호화
-		String pw = pwEncoder.encode(vo.getUser_pw());
-		vo.setUser_pw(pw);
+		if(!vo.getUser_pw().equals(null)) {
+			String pw = pwEncoder.encode(vo.getUser_pw());
+			vo.setUser_pw(pw);			
+		}
 		
 		edao.empJoin(vo);
 	}
@@ -93,7 +96,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 	}
 
 	@Override
-	public EmployeeVO empDetail(int user_no) throws Exception {
+	public Map<String, Object> empDetail(int user_no) throws Exception {
 		
 		return edao.empDetail(user_no);
 	}
@@ -101,8 +104,8 @@ public class EmployeeServiceImpl implements EmployeeService {
 	@Override
 	public void empUpdate(EmployeeVO vo) throws Exception {
 		//비밀번호 암호화
-		String pw = pwEncoder.encode(vo.getUser_pw());
-		vo.setUser_pw(pw);
+//		String pw = pwEncoder.encode(vo.getUser_pw());
+//		vo.setUser_pw(pw);
 		edao.empUpdate(vo);
 	}
 

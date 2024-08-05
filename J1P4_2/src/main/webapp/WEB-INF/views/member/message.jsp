@@ -129,18 +129,8 @@
 						<td>${sms.noti_type }</td>
 						<td>${sms.message }</td>
 						<td>
-                       <c:choose>
-                            <c:when test="${not empty sms.recipient_more}">
-                                <span class="recipient">
-                                    ${sms.recipient_mem}
-                                    <span class="more-content">${sms.recipient_more}</span>
-                                    <span class="show-more" data-recipient-count="${sms.recipient_count}">...외 ${sms.recipient_count}명</span>
-                                </span>
-                            </c:when>
-                            <c:otherwise>
-                                ${sms.recipient_mem}
-                            </c:otherwise>
-                        </c:choose>
+						<input type="hidden" id="noti_no" value="${sms.noti_no }">
+                     	<button type="button" class="btn btn-warning" onclick="showMemPhone(${sms.noti_no })">수신 번호 확인</button>
                     </td>
 						<td>${sms.noti_date }</td>
 
@@ -162,6 +152,54 @@
 		</button>
 
 	</div>
+	
+	<!-- 반려사유 가져오는 모달창 시작 -->
+   <div class="modal fade" id="phoneModal" tabindex="-1"
+      aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+         <div class="modal-content">
+
+            <!-- 모달창 헤더 -->
+            <div class="modal-header">
+               <h5 class="modal-title" id="exampleModalLabel">반려사유</h5>
+               <button type="button" class="btn-close" data-bs-dismiss="modal"
+                  aria-label="Close"></button>
+            </div>
+
+            <!-- 모달창 바디(본문) -->
+            <div class="modal-body">
+			   
+			   <h5>담당자</h5> <!-- 로그인한 팀장 이름 담기 -->
+			   	<div class="form-group">
+<!-- 					<input type="text" name="name"  -->
+<%-- 					class="form-control" value="${resultVO.name}" readonly="readonly"/> --%>
+				<p id="rejectNameText"></p>
+				</div>
+               
+               <h5>반려사유</h5>
+               <div class="content">
+                  <div class="form-group">
+						 <p id="rejectReasonText"></p>
+					</div>
+                 
+               </div>
+             
+               <hr>
+
+            </div>
+
+            <!-- 모달창 푸터 -->
+            <div class="modal-footer">
+               <button type="button" class="btn btn-secondary"
+                  data-bs-dismiss="modal">취소</button>
+               <button type="button" class="btn btn-primary filterBtn"
+                  data-bs-dismiss="modal" id="rejectBtt">확인</button>
+            </div>
+
+         </div>
+      </div>
+   </div>
+   <!-- 모달창 끝 -->
 			<!-- 페이징 처리 -->
 			<ul class="pagination" >
 			
@@ -216,6 +254,23 @@ $(document).ready(function() {
         }
     });
 });
+
+function showMemPhone(noti_no){
+	
+	$.ajax({
+		url: '/member/phoneNum',
+        method: 'GET',
+        data: {noti_no : noti_no},
+        success: function(response) {
+            document.getElementById('rejectReasonText').innerText = response.recipient_mem;
+            
+            $('#phoneModal').modal('show');
+        },
+        error: function() {
+            alert('반려 사유를 가져오는데 실패했습니다.');
+        }
+	});
+}
 
 </script>
 <%@ include file="../include/footer.jsp"%>
