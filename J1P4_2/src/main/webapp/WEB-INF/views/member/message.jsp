@@ -29,9 +29,9 @@
 				<div class="input-group-prepend">
 					<select name="searchType" id="selectType" class="form-control">
 						<option value="searchAll" selected="selected">전체</option>
-						<option value="searchName">수신번호</option>
-						<option value="searchPhoneNum">전송내용</option>
-						<option value="searchEmail">담당자</option>
+						<option value="searchPhoneNum">수신번호</option>
+						<option value="searchContent">전송내용</option>
+						<option value="searchManager">담당자</option>
 					</select>
 				</div>
 				
@@ -50,64 +50,20 @@
 			</div>
 			
 		</div>
-	<input type="hidden" value="${param.facility_no }" name="facility_no">
 		<div class="content">
 						<input type="radio" value="전체" class="btn-check btn-check-all" 
-							id="radioRepair0"> <label
-							class="btn btn-outline-dark radioField" for="radioRepair0">전체</label>
-						<input type="radio" value="점검" class="btn-check btn-check-type" name="repair_type"
-							id="radioRepair1"> <label
-							class="btn btn-outline-dark radioField" for="radioRepair1">예약전송</label>
-						<input type="radio" value="방역" class="btn-check btn-check-type" name="repair_type"
-							id="radioRepair2"> <label
-							class="btn btn-outline-dark radioField" for="radioRepair2">일반전송</label>
+							id="radioMSGtype0"> <label
+							class="btn btn-outline-dark radioField" for="radioMSGtype0">전체</label>
+						<input type="radio" value="예약전송" class="btn-check btn-check-type" name="filter"
+							id="radioMSGtype1"> <label
+							class="btn btn-outline-dark radioField" for="radioMSGtype1">예약전송</label>
+						<input type="radio" value="일반전송" class="btn-check btn-check-type" name="filter"
+							id="radioMSGtype2"> <label
+							class="btn btn-outline-dark radioField" for="radioMSGtype2">일반전송</label>
 					</div>
 	</form>
 	<!-- 검색 / 필터 / 정렬 / 행 개수 데이터 전송 -->
 	
-	<!-- 필터 모달창 시작 -->
-	<div class="modal fade" id="filterModal" tabindex="-1"
-		aria-labelledby="filterModalLabel" aria-hidden="true">
-		<div class="modal-dialog">
-			<div class="modal-content">
-
-				<!-- 필터 모달창 헤더 -->
-				<div class="modal-header">
-					<h5 class="modal-title" id="filterModalLabel">필터하기</h5>
-					<button type="button" class="btn-close" data-bs-dismiss="modal"
-						aria-label="Close"></button>
-				</div>
-
-				<!-- 필터 모달창 바디(본문) -->
-				<div class="modal-body">
-
-					<h5>전송유형</h5>
-					<div class="content">
-						<input type="radio" value="신규회원" class="btn-check" name="filter"
-							id="radioRank1"> <label
-							class="btn btn-outline-dark radioField" for="radioRank1">일반전송</label>
-						<input type="radio" value="일반회원" class="btn-check" name="filter"
-							id="radioRank2"> <label
-							class="btn btn-outline-dark radioField" for="radioRank2">예약전송</label>
-					</div>
-					<hr>
-					<h5>연도별</h5>
-					<input type="month" id="monthInput">년
-
-				</div>
-
-				<!-- 필터 모달창 푸터 -->
-				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary"
-						data-bs-dismiss="modal">취소</button>
-					<button type="button" class="btn btn-primary filterBtn"
-						data-bs-dismiss="modal">필터 추가</button>
-				</div>
-
-			</div>
-		</div>
-	</div>
-	<!-- 필터 모달창 끝 -->
 
 <table id="example1" class="table table-bordered table-hover"
 			style="background: #fff; height: 100px;" aria-describedby="example1_info">
@@ -202,32 +158,57 @@
    <!-- 모달창 끝 -->
 			<!-- 페이징 처리 -->
 			<ul class="pagination" >
-			
 				<c:if test="${pageVO.prev }">
 					<li class="paginate_button page-item previous"
 						id="example1_previous">
+						<!-- 검색을 하지 않았을 때 페이징 처리 --> <c:if
+							test="${empty param.searchType}">
 							<a
 								href="/member/message?page=${pageVO.startPage-1 }"
 								aria-controls="example1" data-dt-idx="0" tabindex="0"
 								class="page-link">«</a>
+						</c:if> <!-- 검색을 했을 때 페이징 처리 --> <c:if
+							test="${not empty param.searchType}">
+							<a
+								href="/member/message?searchType=${param.searchType }&keyword=${pageVO.cri.keyword }&filter=${pageVO.cri.filter }&page=${pageVO.startPage-1 }"
+								aria-controls="example1" data-dt-idx="0" tabindex="0"
+								class="page-link">«</a>
+						</c:if>
 					</li>
 				</c:if>
-				
 				<c:forEach var="i" begin="${pageVO.startPage }"
 					end="${pageVO.endPage }" step="1">
 					<li
 						class="paginate_button page-item ${pageVO.cri.page == i ? 'active':'' }">
+						<!-- 검색을 하지 않았을 때 페이징 처리 --> <c:if
+							test="${empty param.searchType}">
 							<a href="/member/message?page=${i }"
 								aria-controls="example1" data-dt-idx="1" tabindex="0"
 								class="page-link">${i }</a>
+						</c:if> <!-- 검색을 했을 때 페이징 처리 --> <c:if
+							test="${not empty param.searchType}">
+							<a
+								href="/member/message?searchType=${param.searchType }&keyword=${pageVO.cri.keyword }&filter=${pageVO.cri.filter }&page=${i }"
+								aria-controls="example1" data-dt-idx="1" tabindex="0"
+								class="page-link">${i }</a>
+						</c:if>
 					</li>
 				</c:forEach>
 				<c:if test="${pageVO.next && pageVO.endPage > 0 }">
 					<li class="paginate_button page-item next" id="example1_next">
+						<!-- 검색을 하지 않았을 때 페이징 처리 --> <c:if
+							test="${empty param.searchType}">
 							<a
 								href="/member/message?page=${pageVO.endPage+1 }"
 								aria-controls="example1" data-dt-idx="7" tabindex="0"
 								class="page-link">»</a>
+						</c:if> <!-- 검색을 했을 때 페이징 처리 --> <c:if
+							test="${not empty param.searchType}">
+							<a
+								href="/member/message?searchType=${param.searchType }&keyword=${pageVO.cri.keyword }&filter=${pageVO.cri.filter }&page=${pageVO.endPage+1 }"
+								aria-controls="example1" data-dt-idx="7" tabindex="0"
+								class="page-link">»</a>
+						</c:if>
 					</li>
 				</c:if>
 			</ul>
@@ -271,6 +252,37 @@ function showMemPhone(noti_no){
         }
 	});
 }
+
+$(function() {
+	$('.btn-check-type')
+			.click(
+					function() {
+						
+						$(".actionForm").submit();
+
+					});
+
+});
+	
+	$(function() {
+	$('.btn-check-all')
+			.click(
+					function() {
+						
+						window.location.href = '/member/message';
+
+					});
+
+});
+	
+	$(function() {
+ 	if ('${param.filter}' == '${pageVO.cri.filter}') {
+ 		if ('${param.filter}'=='') {
+ 			$(".btn-check-all").attr('checked', true);
+ 		}
+ 		$(":radio[name='filter'][value='${param.filter}']").attr('checked', true);
+ 	}
+	});
 
 </script>
 <%@ include file="../include/footer.jsp"%>

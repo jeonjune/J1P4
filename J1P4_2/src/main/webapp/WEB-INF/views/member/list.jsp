@@ -821,12 +821,14 @@
         });
     });
 	
+	
 	$(document).ready(function() {
 		$('.smsSendBtn').click(function() {
 			var selectedOptions = "";
 			var selectedMessage = "";
 			var selectedNotiDate = "";
 			var selectedNotiType = "";
+			var manager = "${sess_name}";
 			
 			const token = $("meta[name='_csrf']").attr("content")
 			const header = $("meta[name='_csrf_header']").attr("content");
@@ -852,7 +854,8 @@
 					recipient_mem : selectedOptions,
 					message : selectedMessage,
 					noti_date : selectedNotiDate,
-					noti_type : selectedNotiType
+					noti_type : selectedNotiType,
+					sender_user : manager
 				}),
 				beforeSend : function(xhr) {
 					xhr.setRequestHeader(header, token);

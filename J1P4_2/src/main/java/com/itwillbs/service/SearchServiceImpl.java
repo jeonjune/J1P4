@@ -17,6 +17,7 @@ import com.itwillbs.domain.EquipmentVO;
 import com.itwillbs.domain.FacilityManagementVO;
 import com.itwillbs.domain.Filter;
 import com.itwillbs.domain.MemberVO;
+import com.itwillbs.domain.RecipientVO;
 import com.itwillbs.persistence.MemberDAO;
 import com.itwillbs.persistence.SearchDAO;
 
@@ -73,6 +74,16 @@ public class SearchServiceImpl implements SearchService {
 	@Override
 	public int getFacilityCount(Criteria cri) throws Exception {
 		return sDao.getFacilityCount(cri);
+	}
+
+	@Override
+	public List<RecipientVO> searchMSG(Criteria cri) throws Exception {
+		return sDao.searchMSG(cri);
+	}
+
+	@Override
+	public int getMSGCount(Criteria cri) throws Exception {
+		return sDao.getMSGCount(cri);
 	}
 	
 	
