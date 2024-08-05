@@ -6,6 +6,7 @@
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <%@ include file="../include/header.jsp"%>
 <%@ include file="../include/sidemenu.jsp"%>
+<%@ include file="../include/facMenu.jsp"%>
 <%@page import="java.util.List"%>
 <%@ page import="java.sql.*" %>
 
