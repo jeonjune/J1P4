@@ -68,12 +68,12 @@
 				<div class="container-fluid">
 
 					<div class="form-group">
-						<label>시설이름</label> <input type="text" name="facility_name"
+						<label>시설이름</label> <input type="text" name="facility_name" 
 							class="form-control" id="facility_name">
 					</div>
 
 					<div class="form-group">
-						<label>담당자</label> <input type="text" name="name"
+						<label>담당자</label> <input type="text" name="name" id="name"
 							class="form-control" />
 					</div>
 
@@ -92,6 +92,16 @@
 	$(function() {
 		$("#submitButt").click(function() {
 			console.log($("#fm1").serialize());
+			
+			//빈칸검사
+			  var facility_name = $('#facility_name').val();
+		      var name = $('#name').val();
+			        
+	        if (facility_name == "" || name == "") {
+	            alert("빈칸을 모두 입력해주세요.");
+	            return;
+	        }
+			
 			$.ajax({
 				url : "/maintenance/facility",
 				type : "POST",

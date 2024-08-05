@@ -50,5 +50,8 @@ public interface EquipManageService {
 	
 	//반려사유 가져오기
 	public EquipManageVO getReject(int eno) throws Exception;
+	
+	//장비신청 상세페이지 수정 (사원)
+	public void updateDetail(EquipManageVO vo) throws Exception;
 
 }

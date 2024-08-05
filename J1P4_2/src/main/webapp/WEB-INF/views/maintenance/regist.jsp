@@ -19,20 +19,20 @@
 
 					
 					<div class="form-group">
-						<label>담당자</label> <input type="text" name="name"
+						<label>담당자</label> <input type="text" name="name" id="name"
 							class="form-control" />
 					</div>
 					
 					<div class="form-group">
-						<label>작성날짜</label> <input type="date" name="report_date"
+						<label>작성날짜</label> <input type="date" name="report_date" id="report_date"
 							class="form-control" />
 					</div>
 					
 					
 					<div class="form-group">
-						<label> 장비신청유형 </label> <select id="select_type"
+						<label> 장비신청유형 </label> <select id="select_type" required="required"
 							name="e_repair_type" size="1">
-							<option>선택하세요.</option>
+							<option value="">선택하세요.</option>
 							<option value="구입">구입</option>
 <!-- 							<option value="수리">수리</option> -->
 <!-- 							<option value="폐기">폐기</option> -->
@@ -42,34 +42,34 @@
 					<div class="form-group">
                             <label>분야</label>
 					<form:form method="post" modelAttribute="EquipManageVO">
-                            <form:select path="field" class="form-control">
+                            <form:select path="field" class="form-control" id="field">
                                 <form:options items="${fields}" itemValue="codeValue" itemLabel="codeValueName"/>
                             </form:select>
                     </form:form>
                     </div>
 					
 					<div class="form-group">
-						<label>신청장비이름</label> <input type="text" name="equipment_name"
+						<label>신청장비이름</label> <input type="text" name="equipment_name" id="equipment_name"
 							class="form-control" />
 					</div>
 					
 					<div class="form-group">
-						<label>제조사</label> <input type="text" name="manufacturer"
+						<label>제조사</label> <input type="text" name="manufacturer" id="manufacturer"
 							class="form-control" />
 					</div>
 
 					<div class="form-group">
-						<label>개수</label> <input type="text" name="count"
+						<label>개수</label> <input type="text" name="count" id="count"
 							class="form-control" />
 					</div>
 					
 					<div class="form-group">
-						<label>가격</label> <input type="text" name="cost"
+						<label>가격</label> <input type="text" name="cost" id="cost"
 							class="form-control" />
 					</div>
 					
 					<div class="form-group">
-						<label>총 가격</label> <input type="text" name="total"
+						<label>총 가격</label> <input type="text" name="total" id="total"
 							class="form-control" />
 					</div>
 					
@@ -96,48 +96,67 @@
 
 
 <script>
+
+//빈칸 검사, 장비신청등록
 $(document).ready(function() {
-    $('#submitButt').on('click', function() {
-        var formData = new FormData($('#registForm')[0]);
+    $('#submitButt').on('click', function(event) {
+        event.preventDefault(); // 기본 폼 제출 방지
+
+        // 빈칸 검사
+        var name = $('#name').val();
+        var report_date = $('#report_date').val();
+        //var select_type = $('#select_type').val();
+        var field = $('#field').val();
+        var equipment_name = $('#equipment_name').val();
+        var manufacturer = $('#manufacturer').val();
+        var count = $('#count').val();
+        var cost = $('#cost').val();
+       // var total = $('#total').val();
+        var comment = $('#comment').val();
         
-        // CSRF 토큰 값을 메타 태그에서 가져오기
-        var token = $("meta[name='_csrf']").attr("content");
-        var header = $("meta[name='_csrf_header']").attr("content");
+        if (name == "" || report_date == "" || field == "" || equipment_name == "" ||
+            manufacturer == "" || count == "" || cost == "" || comment == "") {
+            alert("빈칸을 모두 입력해주세요.");
+            return;
+        }
+       
+        if($('#select_type').val() == ""){
+        	   alert("선택하지 않은 필드를 선택해주세요.");
+            return;
+           } 
+
         
-        $.ajax({
-            url: '/maintenance/regist',
-            type: 'POST',
-            data: formData,
-            contentType: false, //필수
-            processData: false, //필수
-            beforeSend: function(xhr) { //header.jsp에 있는 토큰때문에 써주는 것
-                xhr.setRequestHeader(header, token);
-            },
-            success: function(response) {
-                alert("등록성공!");
-                window.location.href = '/maintenance/list';
-            },
-            error: function(xhr, status, error) {
-                alert('등록실패 ' + error);
-            }
-        });
+     //장비신청 등록
+     // 폼 데이터 수집
+     var formData = new FormData($('#registForm')[0]);
+     // CSRF 토큰 값 가져오기
+     var token = $("meta[name='_csrf']").attr("content");
+     var header = $("meta[name='_csrf_header']").attr("content");
+     
+     $.ajax({
+           url: '/maintenance/regist',
+           type: 'POST',
+           data: formData,
+           contentType: false, // 필수
+           processData: false, // 필수
+           beforeSend: function(xhr) { // CSRF 토큰 설정
+               xhr.setRequestHeader(header, token);
+           },
+           success: function(response) {
+               alert("등록성공!");
+               window.location.href = '/maintenance/list';
+           },
+           error: function(xhr, status, error) {
+               alert('등록실패: ' + error);
+           }
+       });
     });
 });
-    
-    
-    //파일추가버튼 클릭시 함수
-//     var cnt = 1; //파일 수
-//     function addFile(){
-//     	alert("파일추가버튼클릭!");
-//     	$('.fileDiv').append("<input type='file' name='file"+cnt+"' id='exampleInputFile'>");
-//     	cnt++;
-    	
-//     }
-    
-    
-    
-    
 </script>
+
+
+
+    
 
 
 
