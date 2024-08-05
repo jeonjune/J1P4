@@ -82,7 +82,10 @@
 						<label>첨부파일</label>
 					
 						
-						<a href="/maintenance/download?fileName=${fileList.file_name }">${fileList.file_name }</a><hr>
+					<c:if test="${!fileList.file_name.equals('no') }">
+					<p class="text-muted cardMy">
+					<a href="/maintenance/download?fileName=${fileList.file_name }">${fileList.file_name }</a></p>					
+					</c:if>
 						
 
 					</div>

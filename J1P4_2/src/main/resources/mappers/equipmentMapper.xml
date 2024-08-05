@@ -41,8 +41,8 @@
 	
 	<!--첨부파일 조회  -->
 	<select id="selectFile" resultType="fileVO">
-	select * from file
-	where equipment_no=#{equipment_no}
+	SELECT IFNULL(
+    (select file_name from file where equipment_no=#{equipment_no}) ,'no') AS file_name
 	</select>	
 	
 	<!--(승인)장비내역 리스트 -->

@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import com.itwillbs.domain.EmployeeVO;
+import com.itwillbs.domain.fileVO;
 
 @Repository
 public class MainDAOImpl implements MainDAO {
@@ -22,6 +23,11 @@ public class MainDAOImpl implements MainDAO {
 	@Override
 	public EmployeeVO logInfo(String user_id) throws Exception {
 		return sqlSession.selectOne(NAMESPACE+"logInfo", user_id);
+	}
+
+	@Override
+	public fileVO logPic(String user_id) throws Exception {
+		return sqlSession.selectOne(NAMESPACE+"logPic",user_id);
 	}
 	
 	

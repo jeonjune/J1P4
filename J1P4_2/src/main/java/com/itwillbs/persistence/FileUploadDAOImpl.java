@@ -33,8 +33,13 @@ public class FileUploadDAOImpl implements FileUploadDAO {
 	}
 
 	@Override
-	public void updateEmpFile(fileVO vo) throws Exception {
-		sqlSession.update(NAMESPACE+"updateEmpFile",vo);
+	public int updateEmpFile(fileVO vo) throws Exception {
+		return sqlSession.update(NAMESPACE+"updateEmpFile",vo);
+	}
+
+	@Override
+	public void fileProfAdd(fileVO vo) throws Exception {
+		sqlSession.insert(NAMESPACE+"fileProfAdd",vo);
 	}
 
 	

@@ -297,10 +297,19 @@
 <!--       Sidebar user panel (optional) -->
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">
-          <img src="${pageContext.request.contextPath }/resources/dist/img/해린2.jpg" class="img-circle elevation-2" alt="User Image">
+<%--         ${sess_pic } --%>
+        <c:if test="${!sess_pic.equals('no') }">
+        <c:set var="tmp" value="${sess_pic.substring(sess_pic.lastIndexOf('.')) }"/>
+            <c:if test="${tmp=='.png' or tmp=='.jpg' or tmp=='.jpeg'}">
+                <img src="/download?fileName=${sess_pic }" class="img-circle elevation-2" alt="User Image">
+            </c:if>
+        </c:if>
+        <c:if test="${sess_pic.equals('no') }">
+          <img src="${pageContext.request.contextPath }/resources/img/default_profile.png" class="img-circle elevation-2" alt="User Image">
+        </c:if>
         </div>
         <div class="info">
-          <a href="/employee/myPage" class="d-block">${name }</a>
+          <a href="/employee/myPage" class="d-block">${sess_name }</a>
         </div>
         
       </div>

@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.OutputStream;
 import java.net.URLEncoder;
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -14,6 +15,7 @@ import java.util.Map;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,6 +34,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import com.itwillbs.domain.fileVO;
 import com.itwillbs.service.EmployeeService;
 import com.itwillbs.service.FileUploadService;
+import com.itwillbs.service.MainService;
 
 //import net.coobird.thumbnailator.Thumbnails;
 
@@ -46,11 +49,14 @@ public class FileUploadController {
 	@Inject
 	private EmployeeService eService;
 	
+	@Inject
+	private MainService mService;
+	
 	//파일업로드처리
 	@ResponseBody
 	@PostMapping(value = "/file/upload")
 	public void fileUploadPOST(MultipartHttpServletRequest multiRequest, Model model,fileVO fvo,
-			@RequestParam("user_id") String user_id) throws Exception{
+			@RequestParam("user_id") String user_id,HttpServletRequest request,Principal principal) throws Exception{
 		logger.debug("@@@@@@ 파일 수정 유저번호 "+ eService.user_no(user_id));
 		fvo.setUser_no(eService.user_no(user_id));
 		
@@ -75,8 +81,36 @@ public class FileUploadController {
         fvo.setFile_name(paramMap.get("fileNameList"));
         logger.debug("@@@@@@ 난 이제 지쳤어요 땡벌땡벌 "+ fvo.getFile_name());
         
-        fService.updateEmpFile(fvo);
+        int result = fService.updateEmpFile(fvo);
+        if(result != 1) {        	
+        	fvo.setUser_no(eService.user_no(user_id));
+        	fvo.setFile_name(paramMap.get("fileNameList"));
+        	logger.debug("@@@@@@ 집가구싶아아아아 "+ fvo.getUser_no());
+        	fService.fileProfAdd(fvo);
+        }
+        if (principal != null) {
+        	HttpSession session = request.getSession();
+        	fileVO fvo2 = mService.logPic(principal.getName());
+        	session.setAttribute("sess_pic", fvo2.getFile_name());
+        	logger.info("@@@@@@@@@@@@@@file_name@@@@@@@@@@@ :"+session.getAttribute("sess_pic"));
+        }
 	
+	}
+	@ResponseBody
+	@PostMapping(value = "/file/delete")
+	public void fileDeletePOST(fileVO fvo, @RequestParam("user_id") String user_id, HttpServletRequest request,Principal principal) throws Exception{
+		logger.debug("@@@@@@ 파일 수정 유저번호 "+ eService.user_no(user_id));
+		fvo.setUser_no(eService.user_no(user_id));
+		fvo.setFile_name(null);
+		fService.updateEmpFile(fvo);
+		
+		if (principal != null) {
+        	HttpSession session = request.getSession();
+        	fileVO fvo2 = mService.logPic(principal.getName());
+        	session.setAttribute("sess_pic", fvo2.getFile_name());
+        	logger.info("@@@@@@@@@@@@@@file_name@@@@@@@@@@@ :"+session.getAttribute("sess_pic"));
+        }
+		
 	}
 	
 	//파일 업로드 모듈(메서드)

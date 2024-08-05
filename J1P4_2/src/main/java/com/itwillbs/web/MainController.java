@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.itwillbs.domain.EmployeeVO;
+import com.itwillbs.domain.fileVO;
 import com.itwillbs.service.MainService;
 
 
@@ -31,11 +32,15 @@ public class MainController {
 		if (principal != null) {
 			logger.info("@@@@@@@@@@@@@@principal.getName()@@@@@@@@@@@ :"+principal.getName());
 			try {
-				EmployeeVO vo = mService.logInfo(principal.getName());
 				HttpSession session = request.getSession();
-				session.setAttribute("name", vo.getName());
-				session.setAttribute("job", vo.getJob());
-				session.setAttribute("user_no", vo.getUser_no());
+				EmployeeVO vo = mService.logInfo(principal.getName());
+				fileVO fvo = mService.logPic(principal.getName());
+				
+				session.setAttribute("sess_pic", fvo.getFile_name());
+				session.setAttribute("sess_name", vo.getName());
+				session.setAttribute("sess_job", vo.getJob());
+				session.setAttribute("sess_user_no", vo.getUser_no());
+				logger.info("@@@@@@@@@@@@@@file_name@@@@@@@@@@@ :"+session.getAttribute("sess_pic"));
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

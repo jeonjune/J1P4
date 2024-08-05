@@ -11,6 +11,13 @@
  	where user_id = #{user_id}
  </select>
  
+ <select id="logPic" resultType="fileVO">
+ 	SELECT IFNULL(
+    (SELECT file_name 
+     FROM file 
+     WHERE user_no = (SELECT user_no FROM employee WHERE user_id = #{user_id})
+    ),'no') AS file_name;
+ </select>
  
  
  </mapper>

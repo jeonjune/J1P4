@@ -40,11 +40,10 @@
 
                 <div class="d-flex flex-wrap align-items-start">
                     <div id="profile" class="me-3 m-3" style="flex: 0 0 200px; width: 200px; height: 270px;">
-    <c:if test="${empty fileList}">
+    <c:if test="${fileList.file_name.equals('no') }">
         <img src="${pageContext.request.contextPath }/resources/img/default_profile.png" style="width: 100%; height: 100%; object-fit: cover;">
     </c:if>
-    <c:if test="${not empty fileList}">
-    <c:if test='${not empty fileList.file_name }'>
+    <c:if test="${!fileList.file_name.equals('no') }">
         <p class="text-muted cardMy">
             <c:set var="tmp" value="${fileList.file_name.substring(fileList.file_name.lastIndexOf('.')) }"/>
             <c:if test="${tmp=='.png' or tmp=='.jpg' or tmp=='.jpeg'}">
@@ -52,10 +51,6 @@
             </c:if>
         </p>
         </c:if>
-		<c:if test='${empty fileList.file_name }'>
-        <img src="${pageContext.request.contextPath }/resources/img/default_profile.png" style="width: 100%; height: 100%; object-fit: cover;">
-		</c:if>
-		</c:if>
 		<div  style="position: absolute; left: 70px;">
     <button type="button" class="btn btn-primary btn-sm"
     data-bs-toggle="modal" data-bs-target="#profileModal">사진변경
@@ -145,7 +140,7 @@
 				<!-- 사진 업로드 모달창 바디(본문) -->
 				<div class="modal-body">
 				<input type="hidden" name="user_id" class="form-control" id="user_id" value="${myP.user_id }">
-					<input type="file" name="file" class="form-control" id="fileInput">
+					<input type="file" name="file" class="form-control" id="fileInput" accept="image/jpg, image/jpeg, image/png">
 					<img id="preview" alt="미리보기" src="">	
 				</div>
 
@@ -316,7 +311,7 @@
 			
 			if(confirm("등록된 사진을 삭제하시겠습니까?")){
 			$.ajax({
-				url : "/file/upload",
+				url : "/file/delete",
 				type : "POST",
 				data : formData,
 				contentType: false, //필수

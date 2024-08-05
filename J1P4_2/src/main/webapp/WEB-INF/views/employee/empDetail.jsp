@@ -46,11 +46,10 @@
 
                 <div class="d-flex flex-wrap align-items-start">
                     <div id="profile" class="me-3 m-3" style="flex: 0 0 200px; width: 200px; height: 270px;">
-        <c:if test="${empty fileList}">
+        <c:if test="${fileList.file_name.equals('no') }">
         <img src="${pageContext.request.contextPath }/resources/img/default_profile.png" style="width: 100%; height: 100%; object-fit: cover;">
     </c:if>
-    <c:if test="${not empty fileList}">
-    <c:if test='${not empty fileList.file_name }'>
+    <c:if test="${!fileList.file_name.equals('no') }">
         <p class="text-muted cardMy">
             <c:set var="tmp" value="${fileList.file_name.substring(fileList.file_name.lastIndexOf('.')) }"/>
             <c:if test="${tmp=='.png' or tmp=='.jpg' or tmp=='.jpeg'}">
@@ -58,10 +57,6 @@
             </c:if>
         </p>
         </c:if>
-		<c:if test='${empty fileList.file_name }'>
-        <img src="${pageContext.request.contextPath }/resources/img/default_profile.png" style="width: 100%; height: 100%; object-fit: cover;">
-		</c:if>
-		</c:if>
 </div>
 
                     <div class="d-flex flex-column flex-fill" style="flex: 1; min-width: 0;">
