@@ -70,8 +70,14 @@ public class EmployeeController {
 			pageVO.setTotalCount(sService.getEmpCount(cri));
 			logger.debug(" @@@@@@@@@@@@@@@@@ 글 개수 : "+sService.getTotalCount(cri));
 			// 연결된 뷰페이지로 정보 전달
+			EmployeeVO employee = new EmployeeVO(); // 폼 객체
+			model.addAttribute("employee", employee);
 			model.addAttribute("empList", empList);
 			model.addAttribute("pageVO",pageVO);
+			
+			model.addAttribute("job", commonCodeService.getCommonCodeDetailsByCodeId("JOB"));
+			logger.info("job : "+commonCodeService.getCommonCodeDetailsByCodeId("JOB"));
+			model.addAttribute("job_rank", commonCodeService.getCommonCodeDetailsByCodeId("JOB_RANK"));
 			
 			return;
 		}
