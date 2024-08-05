@@ -216,6 +216,20 @@ $(document).ready(function(){
 	});
 });
 
+/* 메시지 입력 내용 글자수 제한 */
+	function up(){
+		var com = document.getElementById("vacation_reason");
+		var len = document.getElementById("length");
+		var val = com.value;
+		//글자수 세기
+		len.textContent = val.length;
+		
+		//글자수 제한
+		if(val.length>500){
+			com.value = val.substring(0,5000);
+			len.textContent = 500; //제한 후 글자수 업데이트
+		}
+	}
 
 </script>
 

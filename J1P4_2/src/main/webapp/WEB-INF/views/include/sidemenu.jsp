@@ -300,7 +300,7 @@
           <img src="${pageContext.request.contextPath }/resources/dist/img/해린2.jpg" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-          <a href="/employee/myPage" class="d-block">전지윤</a>
+          <a href="/employee/myPage" class="d-block">${name }</a>
         </div>
         
       </div>
