@@ -21,6 +21,17 @@ public interface EmpAttendanceService {
 	// 반려된 휴가 리스트
 	public List<EmpAttendanceVO> nVaca() throws Exception;
 	
+
+	// 직무별 신청한 휴가 리스트
+	public List<EmpAttendanceVO> reqJob(String job) throws Exception;
+	
+	// 직무별 승인된 휴가 리스트
+	public List<EmpAttendanceVO> yVaJob(String job) throws Exception;
+	
+	// 직무별 반려된 휴가 리스트
+	public List<EmpAttendanceVO> nVaJob(String job) throws Exception;
+	
+	
 	// 휴가 반려
 	public void reVaca(EmpAttendanceVO vo) throws Exception;
 

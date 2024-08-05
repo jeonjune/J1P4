@@ -212,8 +212,30 @@
 	    ]]>
 	</select>
 	
+	<!-- 반려안된 휴가 수 -->
+	<select id="appCount" resultType="int">
+		<![CDATA[
+		select SUM(DATEDIFF(
+        LEAST(vacation_end, LAST_DAY(CURDATE())),
+        GREATEST(vacation_start, DATE_FORMAT(CURDATE(), '%Y-%m-01'))
+    	)) AS total_vacation_days
+		from empAttendance
+		where (vacation_status ='휴가' or vacation_status='기타') and vacation_approval !='반려'  and user_no = #{user_no} AND (
+        vacation_start <= DATE_FORMAT(CURDATE(), '%Y-12-31') 
+      	AND vacation_end >= DATE_FORMAT(CURDATE(), '%Y-01-01'))
+		]]>
+	</select>
 	
-	
+	<!-- 반려안된 반차 수 -->
+		<select id="appHCount" resultType="int">
+		<![CDATA[
+		select count(*)
+		from empAttendance
+		where vacation_status like '%반차' and vacation_approval !='반려'  and user_no = #{user_no} AND (
+        vacation_start <= DATE_FORMAT(CURDATE(), '%Y-12-31') 
+      	AND vacation_end >= DATE_FORMAT(CURDATE(), '%Y-01-01'))
+		]]>
+	</select>
 	
 	 <!-- 회원정보와 인증정보를 한번에 조회(Join) -->
 <!-- 	 <select id="readMemberAuth" resultMap="memberMap"> -->

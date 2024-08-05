@@ -40,6 +40,22 @@ public class EmpAttendanceServiceImpl implements EmpAttendanceService {
 	public List<EmpAttendanceVO> nVaca() throws Exception {
 		return edao.nVaca();
 	}
+	
+
+	@Override
+	public List<EmpAttendanceVO> reqJob(String job) throws Exception {
+		return edao.reqJob(job);
+	}
+
+	@Override
+	public List<EmpAttendanceVO> yVaJob(String job) throws Exception {
+		return edao.yVaJob(job);
+	}
+
+	@Override
+	public List<EmpAttendanceVO> nVaJob(String job) throws Exception {
+		return edao.nVaJob(job);
+	}
 
 	@Override
 	public void reVaca(EmpAttendanceVO vo) throws Exception {

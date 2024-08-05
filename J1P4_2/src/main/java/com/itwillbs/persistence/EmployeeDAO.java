@@ -76,5 +76,12 @@ public interface EmployeeDAO {
 	// 이번달 출석일
 	public Integer countAtt(int user_no) throws Exception;
 	
+	// 반려안된 총 휴가수
+	public Integer appCount(int user_no) throws Exception;
+	
+	// 반려안된 총 반차 수
+	public Integer appHCount(int user_no) throws Exception;
+	
+	
 
 }

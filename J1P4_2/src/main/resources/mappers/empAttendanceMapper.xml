@@ -90,6 +90,36 @@
       	]]>
  	</select>
  	
+ 	<!-- 직무별 미승인 휴가 목록 -->
+ 	<select id="reqJob" resultMap="employeeMap">
+ 		select e.user_no, name, job, job_rank, vacation_status, vacation_start, vacation_end, vacation_reason, empAttend_no
+		from employee e
+		join empAttendance v on e.user_no = v.user_no
+		where e.job=#{job} and vacation_status is not null and vacation_approval = '미승인'
+ 	</select>
+ 	
+ 	<!-- 직무별 승인된 휴가 목록 -->
+ 	<select id="yVaJob" resultMap="employeeMap">
+ 		<![CDATA[
+ 		select e.user_no, name, job, job_rank, vacation_status, vacation_start, vacation_end, vacation_reason
+		from employee e
+		join empAttendance v on e.user_no = v.user_no
+		where e.job=#{job} and vacation_status is not null and vacation_approval = '승인' AND 
+        vacation_start >= DATE_FORMAT(CURDATE(), '%Y-01-01')
+      	]]>
+ 	</select>
+
+ 	<!-- 직무별 반려된 휴가 목록 -->
+ 	<select id="nVaJob" resultMap="employeeMap">
+ 	<![CDATA[
+ 		select e.user_no, name, job, job_rank, vacation_status, vacation_start, vacation_end, vacation_reason, reject_reason
+		from employee e
+		join empAttendance v on e.user_no = v.user_no
+		where e.job=#{job} and vacation_status is not null and vacation_approval = '반려' AND
+		vacation_start >= DATE_FORMAT(CURDATE(), '%Y-01-01')
+      	]]>
+ 	</select>
+ 	
  	<!-- 휴가 반려 -->
  	<update id="rejectVa">
  		update empAttendance

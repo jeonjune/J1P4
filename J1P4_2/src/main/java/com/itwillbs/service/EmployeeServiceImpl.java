@@ -161,6 +161,16 @@ public class EmployeeServiceImpl implements EmployeeService {
 	public Integer countAtt(int user_no) throws Exception {
 		return edao.countAtt(user_no);
 	}
+
+	@Override
+	public Integer appCount(int user_no) throws Exception {
+		return edao.appCount(user_no);
+	}
+
+	@Override
+	public Integer appHCount(int user_no) throws Exception {
+		return edao.appHCount(user_no);
+	}
 	
 	
 	
