@@ -7,7 +7,7 @@
 	
 	<insert id="insertMemSMS">
 		insert into notification (sender_user,noti_type,message,noti_date)
-	            values (1, #{noti_type}, #{message}, DATE_ADD(#{noti_date}, INTERVAL 9 HOUR))
+	            values (#{sender_user}, #{noti_type}, #{message}, DATE_ADD(#{noti_date}, INTERVAL 9 HOUR))
 	</insert>
 	
 	<insert id="insertMemReceiver">

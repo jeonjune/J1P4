@@ -472,7 +472,22 @@ logger.debug(" downloadGET() 실행 ");
 	// 디지털 마케팅 페이지 - 발송 메시지 조회 및 페이징 처리
 	@GetMapping(value="/message")
 	public void messageGET(Model model,Criteria cri) throws Exception {
+		
 		logger.info(" messageGET(model,cri) 실행 ");
+		
+			if(cri.getKeyword() != null) {
+			
+			List<RecipientVO> msgList = sService.searchMSG(cri);
+			// 하단 페이징처리 정보
+			PageVO pageVO = new PageVO();
+			pageVO.setCri(cri);
+			pageVO.setTotalCount(sService.getMSGCount(cri));
+			// 연결된 뷰페이지로 정보 전달
+			model.addAttribute("SMS", msgList);
+			model.addAttribute("pageVO",pageVO);
+			
+			return;
+		}
 		
 		// 전체 조회이므로 조회를 위해 전달받을 값은 없으며
 		// 페이징을 위해 cri를 전달 후 model 객체에 담아서 뷰페이지 전달

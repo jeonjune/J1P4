@@ -16,6 +16,7 @@ import com.itwillbs.domain.EquipManageVO;
 import com.itwillbs.domain.EquipmentVO;
 import com.itwillbs.domain.FacilityManagementVO;
 import com.itwillbs.domain.MemberVO;
+import com.itwillbs.domain.RecipientVO;
 
 @Repository
 public class SearchDAOImpl implements SearchDAO {
@@ -69,6 +70,17 @@ public class SearchDAOImpl implements SearchDAO {
 		return sqlSession.selectOne(NAMESPACE+"totalFacilityCount",cri);
 	}
 
+	@Override
+	public List<RecipientVO> searchMSG(Criteria cri) throws Exception {
+		return sqlSession.selectList(NAMESPACE + "searchMSG", cri);
+	}
+
+	@Override
+	public int getMSGCount(Criteria cri) throws Exception {
+		return sqlSession.selectOne(NAMESPACE+"totalMSGCount",cri);
+	}
+
+	
 	
 	
 }

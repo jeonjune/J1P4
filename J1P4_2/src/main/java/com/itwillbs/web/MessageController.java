@@ -65,7 +65,7 @@ public class MessageController {
 		String api_key = "NCSD9O2CTBIE4GSB";
 		String api_secret = "JMEBX3LIRV6ABZBOECOBFSATC56Z5JYW";
 		
-		DefaultMessageService messageService = NurigoApp.INSTANCE.initialize(api_key, api_secret, "https://api-static.coolsms.co.kr");
+		DefaultMessageService messageService = NurigoApp.INSTANCE.initialize(api_key, api_secret, "https://api.coolsms.co.kr");
 		
 		// 수신번호와 전송내용을 변수에 담음 (수신번호는 여러개 담길 경우 split 함수로 쪼개줌)
 		String[] phoneNum = vo.getRecipient_mem().split(",");

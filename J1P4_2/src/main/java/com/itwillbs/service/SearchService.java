@@ -9,6 +9,7 @@ import com.itwillbs.domain.EquipManageVO;
 import com.itwillbs.domain.EquipmentVO;
 import com.itwillbs.domain.FacilityManagementVO;
 import com.itwillbs.domain.MemberVO;
+import com.itwillbs.domain.RecipientVO;
 
 public interface SearchService {
 	
@@ -27,4 +28,9 @@ public interface SearchService {
 	public List<FacilityManagementVO> searchFacility(Criteria cri) throws Exception;
 	
 	public int getFacilityCount(Criteria cri) throws Exception;
+	
+	public List<RecipientVO> searchMSG(Criteria cri) throws Exception;
+	
+	public int getMSGCount(Criteria cri) throws Exception;
+	
 }
