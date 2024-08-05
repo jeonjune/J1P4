@@ -156,6 +156,16 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 		return sqlSession.selectOne(NAMESPACE+"countAtt", user_no);
 	}
 
+	@Override
+	public Integer appCount(int user_no) throws Exception {
+		return sqlSession.selectOne(NAMESPACE+"appCount", user_no);
+	}
+
+	@Override
+	public Integer appHCount(int user_no) throws Exception {
+		return sqlSession.selectOne(NAMESPACE+"appHCount", user_no);
+	}
+
 	
 	
 	

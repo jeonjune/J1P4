@@ -1,10 +1,12 @@
 package com.itwillbs.web;
 
 import java.security.Principal;
+import java.sql.Date;
 import java.util.List;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -58,12 +60,51 @@ public class VacationController {
 			logger.info("@@@@@@@@@@@@@@principal.getName()@@@@@@@@@@@ :"+principal.getName());
 			int user_no = empService.user_no(principal.getName());
 			logger.info("vo :"+vo);
-			int countVa = empService.yearCountVa(user_no);
-			int countHalf = empService.yearCountHalf(user_no);
-			double leftVa = 12 - countVa - (countHalf / 2.0);
-			if(leftVa <= 0) {
+			Integer countVa = empService.yearCountVa(user_no);
+			Integer countHalf = empService.yearCountHalf(user_no);
+			if(countVa != null) {
+				if(countHalf != null) {
+					double leftVa = 12 - countVa - (countHalf / 2.0);
+					if(leftVa <= 0) {
+						return "endVa";
+					}
+				}else {
+					double leftVa = 12 - countVa;
+					if(leftVa <= 0) {
+						return "endVa";
+					}
+				}
+				
+			}else if(countHalf != null) {
+				double leftVa = 12 - (countHalf / 2.0);
+				if(leftVa <= 0) {
+					return "endVa";
+				}
+			}
+			
+			// 반려 안된 휴가 신청수가 12개 넘을시 신청 못하게
+			Integer appCount = empService.appCount(user_no);
+			Integer appHCount = empService.appHCount(user_no);
+			logger.info("@@@@@@@@@@@@@@appCount@@@@@@@@@@@ :"+appCount);
+			logger.info("@@@@@@@@@@@@@@appHCount@@@@@@@@@@@ :"+appHCount);
+
+			Integer appCVa = (appCount*2) +appHCount;
+			
+			// 시작 날짜와 종료 날짜 가져오기
+	        Date vacationStart = vo.getVacation_start();
+	        Date vacationEnd = vo.getVacation_end();
+
+	        // 두 날짜의 차이를 밀리초 단위로 계산
+	        long diffInMillies = vacationEnd.getTime() - vacationStart.getTime();
+
+	        // 밀리초를 일 단위로 변환
+	        long diffInDays = diffInMillies / (1000 * 60 * 60 * 24);
+	        logger.info("@@@@@@@@@@@@@@diffInDayst@@@@@@@@@@@ :"+diffInDays);
+			
+	        if(appCVa+(diffInDays*2) > 24) {
 				return "endVa";
 			}
+			
 			String v_name = eService.getName(user_no);
 			vo.setUser_no(user_no);
 			vo.setV_name(v_name);
@@ -76,10 +117,19 @@ public class VacationController {
 	
 	// 신청한 휴가 목록
 	@RequestMapping(value = "/vacList", method = RequestMethod.GET)
-	public void vacList(Model model) throws Exception {
+	public void vacList(HttpSession session, Model model) throws Exception {
 		logger.info("신청중인 휴가목록@@@@");
-		List<EmpAttendanceVO> reqList = eService.reqVaca();
-		model.addAttribute("reqList", reqList);
+		String sess_job = (String) session.getAttribute("sess_job");
+		logger.info("sess_job@@@@"+sess_job);
+		if(!sess_job.equals("관리자")) {
+			// 직무별로 보는 쿼리 만들기
+			List<EmpAttendanceVO> reqList = eService.reqJob(sess_job);
+			model.addAttribute("reqList", reqList);			
+			
+		}else {
+			List<EmpAttendanceVO> reqList = eService.reqVaca();
+			model.addAttribute("reqList", reqList);			
+		}
 		
 		
 	}
@@ -115,6 +165,7 @@ public class VacationController {
 	@RequestMapping(value = "yVac",method = RequestMethod.POST)
 	public String yVac(@RequestParam("empAttend_no") int empAttend_no,@RequestParam("user_no") int user_no) throws Exception {
 		logger.info("휴가 승인@@@@"+ empAttend_no);
+		logger.info("휴가 승인@@@@"+ user_no);
 		eService.yVa(empAttend_no);
 		
 		return "redirect:/vacation/vacList";
