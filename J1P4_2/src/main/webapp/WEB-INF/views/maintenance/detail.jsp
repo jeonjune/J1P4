@@ -12,7 +12,7 @@
 
 <div class="content-wrapper" style="min-height: 831px;">
 
-<h1>장비신청상세페이지 - detail</h1>
+<h1>장비신청상세페이지 - 팀장님페이지 detail</h1>
 
 <form action=""  method="post" id="detailForm"  accept-charset="UTF-8" >
 <input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
@@ -29,52 +29,52 @@
 						<label>담당자</label> <input type="text" name="name"
 							class="form-control" value="${resultVO.name}" readonly="readonly"/>
 					</div>
-					
+					 
 					<div class="form-group">
 						<label>작성날짜</label> <input type="date" name="report_date"
-							class="form-control" value="${resultVO.report_date }"/>
+							class="form-control" value="${resultVO.report_date }" readonly="readonly"/>
 					</div>
 					
 					<div class="form-group">
 						<label>장비신청유형</label> <input type="text" name="e_repair_type"
-							class="form-control" value="${resultVO.e_repair_type }"/>
+							class="form-control" value="${resultVO.e_repair_type }" readonly="readonly"/>
 					</div>
 					
 					
 					<div class="form-group">
 						<label>분야</label> <input type="text" name="field"
-							class="form-control" value="${resultVO.field }" />
+							class="form-control" value="${resultVO.field }" readonly="readonly"/>
 					</div>
 					
 					
 					<div class="form-group">
 						<label>신청장비이름</label> <input type="text" name="equipment_name"
-							class="form-control" value="${resultVO.equipment_name }" />
+							class="form-control" value="${resultVO.equipment_name }" readonly="readonly"/>
 					</div>
 					
 					<div class="form-group">
 						<label>제조사</label> <input type="text" name="manufacturer"
-							class="form-control" value="${resultVO.manufacturer }"/>
+							class="form-control" value="${resultVO.manufacturer }" readonly="readonly"/>
 					</div>
 
 					<div class="form-group">
 						<label>개수</label> <input type="text" name="count"
-							class="form-control" value="${resultVO.count }"/>
+							class="form-control" value="${resultVO.count }" readonly="readonly"/>
 					</div>
 					
 					<div class="form-group">
 						<label>가격</label> <input type="text" name="cost"
-							class="form-control" value="${resultVO.cost }" />
+							class="form-control" value="${resultVO.cost }" readonly="readonly"/>
 					</div>
 					
 					<div class="form-group">
 						<label>총 가격</label> <input type="text" name="total"
-							class="form-control" value="${resultVO.total }"/>
+							class="form-control" value="${resultVO.total }" readonly="readonly"/>
 					</div>
 					
 					<div class="form-group">
 						<label>유지보수이유</label><br>
-						<textarea id="comment" name="repair_reason" rows="5" cols="100"
+						<textarea id="comment" name="repair_reason" rows="5" cols="100" readonly="readonly"
 							placeholder="입력하세요.">${resultVO.repair_reason }</textarea>
 					</div>
 
@@ -87,7 +87,6 @@
 
 					</div>
 
-					<button type="button" class="btn btn-primary" id="updateBut">수정</button>
 					<button type="button" class="btn btn-primary" id="submitBut">승인</button>
 			         <button type="button" class="btn btn-primary" data-bs-toggle="modal" onclick="showReject()"
 			         data-bs-target="#submitButt">반려</button>
@@ -95,6 +94,7 @@
 
 		</div>
 </form>
+
 
 	
 	<!-------------------------- 반려사유 입력 모달창 시작 ----------------------------------->

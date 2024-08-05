@@ -120,6 +120,12 @@ public class EquipManageDAOImpl implements EquipManageDAO {
 		return sqlSession.selectOne(NAMESPACE+"getReject", eno);
 	}
 	
+	//장비신청 상세페이지 수정 (사원)
+	@Override
+	public void updateDetail(EquipManageVO vo) throws Exception {
+		sqlSession.update(NAMESPACE+"updateDetail", vo);
+	}
+	
 	
 	
 	

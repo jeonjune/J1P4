@@ -172,7 +172,7 @@
 					<div class="form-group">
 						<label> 유지보수유형 </label> <select id="select_type"
 							name="repair_type" size="1">
-							<option>선택하세요.</option>
+							<option value="">선택하세요.</option>
 							<option value="청소">청소</option>
 							<option value="점검">점검</option>
 							<option value="방역">방역</option>
@@ -181,18 +181,18 @@
 
 					<div class="form-group">
 						<label>특이사항</label><br>
-						<textarea id="comment" name="repair_status" rows="3"
+						<textarea id="comment" name="repair_status" rows="3" 
 							placeholder="20자이내입력" onkeyup="up()"></textarea>
 						<p>글자수 <span id="length">0</span><p>
 					</div>
 
 					<div class="form-group">
-						<label>유지보수날짜</label> <input type="date" name="repair_date"
+						<label>유지보수날짜</label> <input type="date" name="repair_date" id="repair_date"
 							class="form-control" />
 					</div>
 
 					<div class="form-group">
-						<label>담당자</label> <input type="text" name="name"
+						<label>담당자</label> <input type="text" name="name" id="name"
 							class="form-control" />
 					</div>
 
@@ -211,6 +211,22 @@
  	$(function() {
 		$("#submitButt").click(function() {
 			console.log($("#fm1").serialize());
+			
+			//빈칸검사
+			  var comment = $('#comment').val();
+		      var repair_date = $('#repair_date').val();
+		      var name = $('#name').val();
+			        
+	        if (comment == "" || repair_date == "" || name == "") {
+	            alert("빈칸을 모두 입력해주세요.");
+	            return;
+	        }
+	       
+	        if($('#select_type').val() == ""){
+	        	   alert("선택하지 않은 필드를 선택해주세요.");
+	            return;
+	          } 
+			
 			$.ajax({
 				url : "/maintenance/read",
 				type : "POST",

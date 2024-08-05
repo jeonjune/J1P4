@@ -40,7 +40,6 @@ import com.itwillbs.service.CommonCodeService;
 import com.itwillbs.service.EquipManageService;
 import com.itwillbs.service.SearchService;
 
-import net.coobird.thumbnailator.Thumbnails;
 
 @Controller
 @RequestMapping(value = "/maintenance/*")
@@ -210,7 +209,7 @@ logger.debug(" downloadGET() 실행 ");
 		}
     }
 	
-	
+	//------------------------------------------------------------------------
 	
 	//반려내역
 	//http://localhost:8088/maintenance/reject
@@ -288,6 +287,7 @@ logger.debug(" downloadGET() 실행 ");
 	}
 	
 	
+	
 	//장비내역 상세페이지 - 여기서 추가구매/수리/폐기 수정 후 신청내역으로 이동
 		//http://localhost:8088/maintenance/equipdetail
 		@GetMapping(value = "/equipdetail")
@@ -339,6 +339,45 @@ logger.debug(" downloadGET() 실행 ");
 		
 		return reject;
 	}
+	
+	
+	//장비신청 상세페이지 조회
+	// 장비신청 상세페이지 조회
+	@GetMapping(value = "/updateDetail")
+	public String updateDetail(Model model, @RequestParam("equipment_no") int eno) throws Exception {
+	    // 전달 정보 저장
+	    logger.info("####eno##### :" + eno);
+
+	    // DAO 저장된 정보 가져오기
+	    Map<String, Object> resultVO = eService.equipDetail(eno);
+	    logger.info("resultVO :" + resultVO);
+	    logger.info("resultVO :" + resultVO.get("fileVO"));
+
+	    // EquipManageVO 객체를 모델에 추가
+	    model.addAttribute("resultVO", resultVO.get("EquipManageVO"));
+	    // 파일 리스트 추가
+	    model.addAttribute("fileList", resultVO.get("fileVO"));
+	    // fields 리스트 추가
+	    model.addAttribute("fields", commonCodeService.getCommonCodeDetailsByCodeId("FIELD"));
+
+	    return "/maintenance/updateDetail"; // JSP 페이지 이름
+	}
+
+	
+	//장비신청 상세페이지 수정 (사원)
+	@PostMapping(value = "/updateDetail")
+	public void updateDetailPOST(EquipManageVO vo) throws Exception{
+			eService.updateDetail(vo);
+			logger.info("상세페이지 수정완료");
+			
+		}
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	

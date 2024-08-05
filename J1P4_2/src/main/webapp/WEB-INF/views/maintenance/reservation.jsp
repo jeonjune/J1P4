@@ -139,6 +139,7 @@
                      <div class="textRight">
 					 	<label style="text-align: left; display: block;">요일</label>
 						<select name="rsv_day" id="rsv_day" class="form-control">
+							<option value="">선택하세요.</option>
 							<option value="월요일">월요일</option>
 							<option value="화요일">화요일</option>
 							<option value="수요일">수요일</option>
@@ -153,6 +154,7 @@
 					 	<div class="mb-3">
                                 <label for="startTime" class="form-label">시작 시간</label>
                                 <form:select path="start_time" id="start_time" class="form-control">
+                                	<form:option value="">선택하세요.</form:option>
                                     <form:options items="${times}" itemValue="codeValue" itemLabel="codeValueName"/>
                                 </form:select>
                                    
@@ -161,6 +163,7 @@
                             <div class="mb-3">
                                 <label for="endTime" class="form-label">종료 시간</label>
                                 <form:select path="end_time" id="end_time" class="form-control">
+                                	<form:option value="">선택하세요.</form:option>
                                     <form:options items="${times}" itemValue="codeValue" itemLabel="codeValueName"/>
                                 </form:select>
                             </div>
@@ -169,6 +172,7 @@
 					<div class="textRight">
 					 	<label style="text-align: left; display: block;">예약시설</label>
 						<select name="facility_name" id="facility_name" class="form-control">
+							<option value="">선택하세요.</option>
 							<option value="수영장">수영장</option>
 							<option value="다목적체육관">다목적체육관</option>
 							<option value="다목적강의실A">다목적강의실A</option>
@@ -180,6 +184,7 @@
 					<div class="form-group">
                             <label>분야</label>
                             <form:select path="field" class="form-control" id="field"> 
+                            	<form:option value="">선택하세요.</form:option>
                                 <form:options items="${fields}" itemValue="codeValue" itemLabel="codeValueName"/>
                             </form:select>
                     </div>
@@ -187,12 +192,12 @@
 					</div>
 					
 					<div class="form-group">
-						<label>인원 수</label> <input type="text" name="count_people" id="count_people"
+						<label>인원 수</label> <input type="number" name="count_people" id="count_people"
 							class="form-control" />
 					</div>
 					
 					<div class="form-group">
-							<label>연락처</label> <input type="text" name="rsv_phone" id="rsv_phone"
+							<label>연락처</label> <input type="number" name="rsv_phone" id="rsv_phone"
 							class="form-control" maxlength="13" > 
 						</div>
 
@@ -203,7 +208,7 @@
 				<!-- 모달창 푸터 -->
 				<div class="modal-footer">
 					<button type="button" class="btn btn-primary vaSendBtn"
-						data-bs-dismiss="modal">예약등록</button>
+						data-bs-dismiss="modal">예약하기</button>
 				</div>
 						
 
@@ -420,6 +425,25 @@
    $(document).ready(function(){
 		$('.vaSendBtn').click(function(){
 			
+			//빈칸검사
+		    var rsv_name = $('#rsv_name').val();
+	        var rsv_date = $('#rsv_date').val();
+	        var count_people = $('#count_people').val();
+	        var rsv_phone = $('#rsv_phone').val();
+	      
+		        
+		        if (rsv_name == "" || rsv_date == "" || count_people == "" || rsv_phone == "") {
+		            alert("빈칸을 모두 입력해주세요.");
+		            return;
+		        }
+		       
+		        if($('#end_time ').val() == "" || $('#rsv_day').val() == "" || $('#start_time').val() == "" ||
+		        		$('#facility_name').val() == "" || $('#field').val() == ""){
+		        	   alert("선택하지 않은 필드를 선택해주세요.");
+		            return;
+		           } 
+			
+			
 			$.ajax({
 				url : "/maintenance/reservation",
 				type : "POST",
@@ -433,6 +457,7 @@
 					alert("오류발생");
 				}
 			});
+
 		});
 	});
    

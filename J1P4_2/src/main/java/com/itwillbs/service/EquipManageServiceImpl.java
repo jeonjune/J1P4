@@ -112,6 +112,12 @@ public class EquipManageServiceImpl implements EquipManageService {
 		return edao.getReject(eno);
 	}
 	
+	//장비신청 상세페이지 수정 (사원)
+	@Override
+	public void updateDetail(EquipManageVO vo) throws Exception {
+		edao.updateDetail(vo);
+	}
+	
 	
 	
 	
