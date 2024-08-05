@@ -127,32 +127,32 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 	}
 
 	@Override
-	public int countLate(int user_no) throws Exception {
+	public Integer countLate(int user_no) throws Exception {
 		return sqlSession.selectOne(NAMESPACE+"countLate", user_no);
 	}
 
 	@Override
-	public int countVa(int user_no) throws Exception {
+	public Integer countVa(int user_no) throws Exception {
 		return sqlSession.selectOne(NAMESPACE+"countVa", user_no);
 	}
 
 	@Override
-	public int countHalf(int user_no) throws Exception {
+	public Integer countHalf(int user_no) throws Exception {
 		return sqlSession.selectOne(NAMESPACE+"countHalf", user_no);
 	}
 
 	@Override
-	public int yearCountVa(int user_no) throws Exception {
+	public Integer yearCountVa(int user_no) throws Exception {
 		return sqlSession.selectOne(NAMESPACE+"yearCountVa", user_no);
 	}
 
 	@Override
-	public int yearCountHalf(int user_no) throws Exception {
+	public Integer yearCountHalf(int user_no) throws Exception {
 		return sqlSession.selectOne(NAMESPACE+"yearCountHalf", user_no);
 	}
 
 	@Override
-	public int countAtt(int user_no) throws Exception {
+	public Integer countAtt(int user_no) throws Exception {
 		return sqlSession.selectOne(NAMESPACE+"countAtt", user_no);
 	}
 

@@ -59,22 +59,22 @@ public interface EmployeeDAO {
 	public int getTotalEmpCount() throws Exception;
 
 	// 지각 카운트
-	public int countLate(int user_no) throws Exception;
+	public Integer countLate(int user_no) throws Exception;
 	
 	// 휴가 카운트
-	public int countVa(int user_no) throws Exception;
+	public Integer countVa(int user_no) throws Exception;
 	
 	// 반차 카운트
-	public int countHalf(int user_no) throws Exception;
+	public Integer countHalf(int user_no) throws Exception;
 
 	// 올해 휴가 카운트
-	public int yearCountVa(int user_no) throws Exception;
+	public Integer yearCountVa(int user_no) throws Exception;
 	
 	// 올해 반차 카운트
-	public int yearCountHalf(int user_no) throws Exception;
+	public Integer yearCountHalf(int user_no) throws Exception;
 	
 	// 이번달 출석일
-	public int countAtt(int user_no) throws Exception;
+	public Integer countAtt(int user_no) throws Exception;
 	
 
 }

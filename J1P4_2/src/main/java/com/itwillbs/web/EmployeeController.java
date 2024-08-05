@@ -426,6 +426,30 @@ public List<String> fileProcess(MultipartHttpServletRequest multiRequest) throws
 		eService.empUpdate(vo);
 		
 	}
+
+	// 직원수정
+	@ResponseBody
+	@PostMapping(value = "/myUpdate")
+	public void myUpdatePOST(EmployeeVO vo, AuthVO avo) throws Exception {
+		logger.info("@@@@@@@@@@@@@@모달창으로 직원 수정(컨트롤러)");
+		
+		logger.info("vo :"+vo);
+		
+		// 직원 권한부여
+		avo.setUser_id(vo.getUser_id());
+		if(vo.getJob_rank().equals("관리자")) {
+			avo.setAuth("ROLE_ADMIN");
+		}else if(vo.getJob_rank().equals("팀장")) {
+			avo.setAuth("ROLE_MANAGER");			
+		}else if(vo.getJob_rank().equals("사원")) {
+			avo.setAuth("ROLE_MEMBER");						
+		}
+		eService.authUpdate(avo);
+		logger.info("avo :"+avo);
+		
+		eService.myUpdate(vo);
+		
+	}
 	
 	// 직원 삭제(퇴사)
 	@GetMapping(value = "/reEmp")
@@ -469,13 +493,20 @@ public List<String> fileProcess(MultipartHttpServletRequest multiRequest) throws
 					logger.info("@@@@@@@@@@@@@@principal.getName()@@@@@@@@@@@ :"+principal.getName());
 					user_no = eService.user_no(principal.getName());
 					List<EmpAttendanceVO> result =  eService.monthWork(user_no);
-					int countVa = eService.countVa(user_no);
+					Integer countVa = eService.countVa(user_no);
+					logger.info("@@@@@@@@@@@@@@countVa()@@@@@@@@@@@ :");
+					
+					// countVa가 null인 경우 0으로 설정
+			        if(countVa == null) {
+			            countVa = 0;
+			        }
+			        
 					model.addAttribute("monthWork", result);
 					model.addAttribute("countLate", eService.countLate(user_no));
 					model.addAttribute("countVa", countVa);
 					model.addAttribute("countHalf", eService.countHalf(user_no));
 					
-					int countAtt = eService.countAtt(user_no)+countVa;
+					Integer countAtt = eService.countAtt(user_no)+countVa;
 					model.addAttribute("countAtt", countAtt);
 					
 					logger.info("@@@@@@@@@@@@@@출결확인ㅇㅇㅇㅇ@@@@@@@@@@@ :"+result);
@@ -495,12 +526,28 @@ public List<String> fileProcess(MultipartHttpServletRequest multiRequest) throws
 			logger.info("@@@@@@@@@@@@@@principal.getName()@@@@@@@@@@@ :"+principal.getName());
 			user_no = eService.user_no(principal.getName());
 			List<EmpAttendanceVO> myVaca = vaService.myVaca(user_no);
-			int countVa = eService.yearCountVa(user_no);
-			int countHalf = eService.yearCountHalf(user_no);
-			double leftVa = 12 - countVa - (countHalf / 2.0);
+			Integer countVa = eService.yearCountVa(user_no);
+			Integer countHalf = eService.yearCountHalf(user_no);
+			if(countVa != null) {
+				if(countHalf != null) {
+					double leftVa = 12 - countVa - (countHalf / 2.0);
+					model.addAttribute("leftVa",leftVa);					
+				}else {
+					double leftVa = 12 - countVa;
+					model.addAttribute("leftVa",leftVa);										
+				}
+				
+			}else if(countHalf != null) {
+				double leftVa = 12 - (countHalf / 2.0);
+				model.addAttribute("leftVa",leftVa);					
+			}
+			
+			// countVa가 null인 경우 0으로 설정
+	        if(countVa == null) {
+	            countVa = 0;
+	        }
 			model.addAttribute("countVa", countVa);
 			model.addAttribute("countHalf",countHalf);
-			model.addAttribute("leftVa",leftVa);
 			model.addAttribute("myVaca", myVaca);
 		}
 		

@@ -110,6 +110,14 @@ public class EmployeeServiceImpl implements EmployeeService {
 	}
 
 	@Override
+	public void myUpdate(EmployeeVO vo) throws Exception {
+		//비밀번호 암호화
+		String pw = pwEncoder.encode(vo.getUser_pw());
+		vo.setUser_pw(pw);
+		edao.empUpdate(vo);
+	}
+
+	@Override
 	public void authUpdate(AuthVO vo) throws Exception {
 		edao.authUpdate(vo);
 	}
@@ -125,32 +133,32 @@ public class EmployeeServiceImpl implements EmployeeService {
 	}
 
 	@Override
-	public int countLate(int user_no) throws Exception {
+	public Integer countLate(int user_no) throws Exception {
 		return edao.countLate(user_no);
 	}
 
 	@Override
-	public int countVa(int user_no) throws Exception {
+	public Integer countVa(int user_no) throws Exception {
 		return edao.countVa(user_no);
 	}
 
 	@Override
-	public int countHalf(int user_no) throws Exception {
+	public Integer countHalf(int user_no) throws Exception {
 		return edao.countHalf(user_no);
 	}
 
 	@Override
-	public int yearCountVa(int user_no) throws Exception {
+	public Integer yearCountVa(int user_no) throws Exception {
 		return edao.yearCountVa(user_no);
 	}
 
 	@Override
-	public int yearCountHalf(int user_no) throws Exception {
+	public Integer yearCountHalf(int user_no) throws Exception {
 		return edao.yearCountHalf(user_no);
 	}
 
 	@Override
-	public int countAtt(int user_no) throws Exception {
+	public Integer countAtt(int user_no) throws Exception {
 		return edao.countAtt(user_no);
 	}
 	

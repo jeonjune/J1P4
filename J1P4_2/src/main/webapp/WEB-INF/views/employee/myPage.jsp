@@ -256,7 +256,7 @@
 	$(function() {
 		$("#submitButt").click(function() {
 			$.ajax({
-				url : "/employee/empUpdate",
+				url : "/employee/myUpdate",
 				type : "POST",
 				data : $("#fm1").serialize(),
 				success : function(data) {
