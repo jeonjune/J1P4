@@ -1,6 +1,8 @@
 package com.itwillbs.persistence;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -23,6 +25,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 	private SqlSession sqlSession;
 	
 	private static final String NAMESPACE = "com.itwillbs.mapper.employeeMapper.";
+	private static final String NAMESPACEFILE = "com.itwillbs.mapper.FileUploadMapper.";
 
 	@Override
 	public List<EmployeeVO> empList(Criteria cri) throws Exception {
@@ -85,8 +88,14 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 	}
 
 	@Override
-	public EmployeeVO empDetail(int user_no) throws Exception {
-		return sqlSession.selectOne(NAMESPACE+"empDetail",user_no);
+	public Map<String, Object> empDetail(int user_no) throws Exception {
+		
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		resultMap.put("EmployeeVO",sqlSession.selectOne(NAMESPACE+"empDetail", user_no));
+		resultMap.put("fileVO",sqlSession.selectOne(NAMESPACEFILE+"selectEmpFile", user_no));
+		
+		return resultMap;
+		
 	}
 	
 	// 직원 수정

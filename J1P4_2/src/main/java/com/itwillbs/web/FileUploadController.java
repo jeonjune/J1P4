@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
-import net.coobird.thumbnailator.Thumbnails;
+//import net.coobird.thumbnailator.Thumbnails;
 
 @Controller
 public class FileUploadController {
@@ -162,7 +162,7 @@ public class FileUploadController {
 				//Thumbnails.of(file).size(50, 50).outputFormat("png").toFile(thumbnail); //다운로드 받아야 할 파일의 썸네일을 파일형태로 만들겠다
 				
 				//썸네일을 출력 
-				Thumbnails.of(file).size(100, 100).outputFormat("png").toOutputStream(out);
+//				Thumbnails.of(file).size(100, 100).outputFormat("png").toOutputStream(out);
 				
 			}
 			

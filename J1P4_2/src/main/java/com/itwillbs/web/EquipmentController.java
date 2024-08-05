@@ -40,7 +40,6 @@ import com.itwillbs.service.CommonCodeService;
 import com.itwillbs.service.EquipManageService;
 import com.itwillbs.service.SearchService;
 
-import net.coobird.thumbnailator.Thumbnails;
 
 @Controller
 @RequestMapping(value = "/maintenance/*")

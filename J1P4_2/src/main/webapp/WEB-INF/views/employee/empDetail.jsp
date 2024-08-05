@@ -11,6 +11,7 @@
 
 <div class="content-wrapper" style="min-height: 831px;">
 
+
 	<div class="card cardCustom">
 		<div class="card-header" style="margin-bottom: 30px">
 			<h2 class="card-title" style="margin-left: 150px;">직원 기본정보</h2>
@@ -58,6 +59,16 @@
 							<br> <br>출결, 휴가 넣을 예정
 						</div>
 					</div>
+					<c:if test="${empty fileList }">
+					<img src="${pageContext.request.contextPath }/resources/img/default_profile.png" height="200px">
+					</c:if>
+					<c:if test="${not empty fileList }">
+					<p class="text-muted cardMy">
+					<c:set var="tmp" value="${fileList.file_name.substring(fileList.file_name.lastIndexOf('.')) }"/>
+					<c:if test="${tmp=='.png' or tmp=='.jpg'}">
+					<img src = "/download?fileName=${fileList.file_name }" height="200px">
+					</c:if>
+					</c:if>
 				</div>
 			</div>
 		</div>
@@ -214,6 +225,7 @@
 <script>
 	$(function() {
 		$("#submitButt").click(function() {
+			
 			$.ajax({
 				url : "/employee/empUpdate",
 				type : "POST",
