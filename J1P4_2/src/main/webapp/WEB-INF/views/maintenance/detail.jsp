@@ -6,6 +6,7 @@
 
 <%@ include file="../include/header.jsp"%>
 <%@ include file="../include/sidemenu.jsp"%>
+<%@ include file="../include/equipMenu.jsp"%>
 
 
 
@@ -86,6 +87,7 @@
 
 					</div>
 
+					<button type="button" class="btn btn-primary" id="updateBut">수정</button>
 					<button type="button" class="btn btn-primary" id="submitBut">승인</button>
 			         <button type="button" class="btn btn-primary" data-bs-toggle="modal" onclick="showReject()"
 			         data-bs-target="#submitButt">반려</button>
@@ -95,7 +97,7 @@
 </form>
 
 	
-	<!-- 반려사유 입력 모달창 시작 -->
+	<!-------------------------- 반려사유 입력 모달창 시작 ----------------------------------->
    <div class="modal fade" id="rejectModal" tabindex="-1"
       aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog">
