@@ -32,6 +32,11 @@ public class FileUploadServiceImpl implements FileUploadService {
 		fDao.fileEmpAdd(vo);
 	}
 
+	@Override
+	public void updateEmpFile(fileVO vo) throws Exception {
+		fDao.updateEmpFile(vo);
+	}
+
 
 
 	

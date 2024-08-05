@@ -14,4 +14,6 @@ public interface FileUploadService {
 		
 	public void fileEmpAdd(fileVO vo) throws Exception;
 	
+	// 직원 사진수정
+	public void updateEmpFile(fileVO vo) throws Exception;
 }

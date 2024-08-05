@@ -17,7 +17,8 @@
 
         <div class="card">
             <div class="card-body">
-                <div style="position: absolute; right: 30px;">
+            <div class="card">
+                <div style="position: absolute; right: 15px; top:15px;">
                     <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">수정하기</button>
                 </div>
                 <div class="p-3">
@@ -35,22 +36,33 @@
                     <c:if test="${myP.job_rank == '팀장' || myP.job_rank == '사원' }">(${myP.job } ${myP.job_rank })</c:if>
                 </h2>
                 </div>
+                </div>
 
                 <div class="d-flex flex-wrap align-items-start">
                     <div id="profile" class="me-3 m-3" style="flex: 0 0 200px; width: 200px; height: 270px;">
-    <c:if test="${empty fileList }">
+    <c:if test="${empty fileList}">
         <img src="${pageContext.request.contextPath }/resources/img/default_profile.png" style="width: 100%; height: 100%; object-fit: cover;">
     </c:if>
-    <c:if test="${not empty fileList }">
+    <c:if test="${not empty fileList}">
+    <c:if test='${not empty fileList.file_name }'>
         <p class="text-muted cardMy">
             <c:set var="tmp" value="${fileList.file_name.substring(fileList.file_name.lastIndexOf('.')) }"/>
-            <c:if test="${tmp=='.png' or tmp=='.jpg'}">
+            <c:if test="${tmp=='.png' or tmp=='.jpg' or tmp=='.jpeg'}">
                 <img src="/download?fileName=${fileList.file_name }" style="width: 100%; height: 100%; object-fit: cover;">
             </c:if>
         </p>
-    </c:if>
-    <button type="button" class="btn btn-primary btn-sm" style="position: absolute; left: 100px;">사진변경
+        </c:if>
+		<c:if test='${empty fileList.file_name }'>
+        <img src="${pageContext.request.contextPath }/resources/img/default_profile.png" style="width: 100%; height: 100%; object-fit: cover;">
+		</c:if>
+		</c:if>
+		<div  style="position: absolute; left: 70px;">
+    <button type="button" class="btn btn-primary btn-sm"
+    data-bs-toggle="modal" data-bs-target="#profileModal">사진변경
     </button>
+    <button type="button" class="btn btn-outline-primary btn-sm fileDelete"
+						data-bs-dismiss="modal">사진삭제</button>
+		</div>
 </div>
 
                     <div class="d-flex flex-column flex-fill" style="flex: 1; min-width: 0;">
@@ -115,6 +127,42 @@
 
 
 	</div>
+	
+	<!-- 사진 업로드 모달창 시작 -->
+<form action="" method="post" id="fm2" name="fm2">	
+	<div class="modal fade" id="profileModal" tabindex="-1"
+		aria-labelledby="profileModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+
+				<!-- 사진 업로드 필터 모달창 헤더 -->
+				<div class="modal-header">
+					<h5 class="modal-title" id="profileModalLabel">사진변경</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal"
+						aria-label="Close"></button>
+				</div>
+
+				<!-- 사진 업로드 모달창 바디(본문) -->
+				<div class="modal-body">
+				<input type="hidden" name="user_id" class="form-control" id="user_id" value="${myP.user_id }">
+					<input type="file" name="file" class="form-control" id="fileInput">
+					<img id="preview" alt="미리보기" src="">	
+				</div>
+
+				<!-- 사진 업로드 모달창 푸터 -->
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary"
+						data-bs-dismiss="modal">취소</button>
+					<button type="button" class="btn btn-primary fileUpdate"
+						data-bs-dismiss="modal">변경하기</button>
+					
+				</div>
+
+			</div>
+		</div>
+	</div>
+</form>	
+	<!-- 사진 업로드 모달창 끝 -->
 
 <!-- 정보 수정창 (모달) -->
 <form action="" method="post" id="fm1" name="fm1">
@@ -208,7 +256,6 @@
 	
 		</form>
 
-</div>
 
 <script>
 	$(function() {
@@ -227,6 +274,70 @@
 					alert("오류발생");
 				}
 			});
+		});
+	});
+	
+	$(function() {
+		$(".fileUpdate").click(function(event) {
+			
+			const token = $("meta[name='_csrf']").attr("content")
+			const header = $("meta[name='_csrf_header']").attr("content");
+						
+			var formData = new FormData($("#fm2")[0]);
+			
+			$.ajax({
+				url : "/file/upload",
+				type : "POST",
+				data : formData,
+				contentType: false, //필수
+	            processData: false, //필수
+	            beforeSend: function(xhr) { //header.jsp에 있는 토큰때문에 써주는 것
+	                xhr.setRequestHeader(header, token);
+	            },
+				success : function(data) {
+					alert("사진이 수정 되었습니다.");
+
+					history.go(0);
+
+				},
+				error : function() {
+					alert("오류발생");
+				}
+			});
+		});
+	});
+	$(function() {
+		$(".fileDelete").click(function(event) {
+			
+			const token = $("meta[name='_csrf']").attr("content")
+			const header = $("meta[name='_csrf_header']").attr("content");
+						
+			var formData = new FormData($("#fm2")[0]);
+			
+			if(confirm("등록된 사진을 삭제하시겠습니까?")){
+			$.ajax({
+				url : "/file/upload",
+				type : "POST",
+				data : formData,
+				contentType: false, //필수
+	            processData: false, //필수
+	            beforeSend: function(xhr) { //header.jsp에 있는 토큰때문에 써주는 것
+	                xhr.setRequestHeader(header, token);
+	            },
+				success : function(data) {
+
+					history.go(0);
+
+				},
+				error : function() {
+					alert("오류발생");
+				}
+			});
+			alert("삭제되었습니다.");
+			
+			}else{
+				alert("취소되었습니다.");
+			}
 		});
 	});
 
@@ -304,6 +415,24 @@
 						});
 	});
 
+	  document.getElementById('fileInput').addEventListener('change', function(event) {
+          const file = event.target.files[0];
+          const preview = document.getElementById('preview');
+
+          if (file) {
+              const reader = new FileReader();
+              
+              reader.onload = function(e) {
+                  preview.src = e.target.result;
+                  preview.style.display = 'block';
+              }
+
+              reader.readAsDataURL(file);
+          } else {
+              preview.src = '';
+              preview.style.display = 'none';
+          }
+      });
 	
 </script>
 

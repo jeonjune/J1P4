@@ -37,9 +37,11 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.itwillbs.domain.BaseVO;
 import com.itwillbs.domain.Criteria;
+import com.itwillbs.domain.EquipManageVO;
 import com.itwillbs.domain.HealthMonitorVO;
 import com.itwillbs.domain.MemberVO;
 import com.itwillbs.domain.PageVO;
+import com.itwillbs.domain.RecipientVO;
 import com.itwillbs.domain.RegistrationVO;
 import com.itwillbs.domain.fileVO;
 import com.itwillbs.service.MemberService;
@@ -482,6 +484,16 @@ logger.debug(" downloadGET() 실행 ");
 		pageVO.setTotalCount(mService.getTotalSMS());
 		model.addAttribute("pageVO",pageVO);
 		
+	}
+	
+	//수신번호 가져오기
+	@ResponseBody
+	@GetMapping(value = "/phoneNum")
+	public RecipientVO getReject(@RequestParam("noti_no")int noti_no) throws Exception {
+		RecipientVO rvo = mService.selectPhone(noti_no);
+		
+		
+		return rvo;
 	}
 	
 	

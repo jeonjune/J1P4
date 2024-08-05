@@ -156,7 +156,9 @@ public class EmployeeController {
         logger.debug("@@@@@@ 난 이제 지쳤어요 땡벌땡벌 "+ fvo.getFile_name());
         
         eService.empAuth(avo);
-        fService.fileEmpAdd(fvo);
+        if(fvo.getFile_name().equals(null)) {
+        	fService.fileEmpAdd(fvo);        	
+        }
 		
 		// insert로 회원 등록 실행 (return 값 없음)
 	

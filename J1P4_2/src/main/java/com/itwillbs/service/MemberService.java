@@ -68,4 +68,7 @@ public interface MemberService {
 	//파일등록
 	public void fileMemAdd(fileVO vo) throws Exception;
 	
+	//수신번호 가져오기
+	public RecipientVO selectPhone(int noti_no) throws Exception;
+	
 }

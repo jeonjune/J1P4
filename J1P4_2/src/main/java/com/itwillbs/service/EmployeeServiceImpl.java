@@ -104,8 +104,8 @@ public class EmployeeServiceImpl implements EmployeeService {
 	@Override
 	public void empUpdate(EmployeeVO vo) throws Exception {
 		//비밀번호 암호화
-		String pw = pwEncoder.encode(vo.getUser_pw());
-		vo.setUser_pw(pw);
+//		String pw = pwEncoder.encode(vo.getUser_pw());
+//		vo.setUser_pw(pw);
 		edao.empUpdate(vo);
 	}
 
