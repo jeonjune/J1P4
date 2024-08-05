@@ -9,7 +9,7 @@
 	<!-- 장비신청 -->
    	<insert id="equipAdd">
    	insert into equipmentManagement(name,report_date,e_repair_type,field,equipment_name, manufacturer,count,cost,total,repair_reason,manager_no)
-   	values(#{name},#{report_date},#{e_repair_type},#{field},#{equipment_name},#{manufacturer},#{count},#{cost},#{total},#{repair_reason},#{manager_no})
+   	values(#{name},#{report_date},#{e_repair_type},#{field},#{equipment_name},#{manufacturer},#{count},#{cost},#{count} * #{cost},#{repair_reason},#{manager_no})
    	</insert>
 	
 	<!-- 장비신청내역 -->
@@ -25,13 +25,6 @@
 	where equipment_no=#{equipment_no}
 	and status='대기'
 	</select>
-	
-	<!--특정 장비신청내역 상세페이지 수정 -->
-<!-- 	<update id=""> -->
-<!-- 	update equipmentManagement -->
-<!-- 	set report_date=#{report_date},field=#{field },equipment_name=#{equipment_name},manufacturer=#{manufacturer}, -->
-<!-- 	count=#{count},cost=#{cost},total=#{total},repair_reason=#{repair_reason}   -->
-<!-- 	</update> -->
 
 	<!-- 첨부파일 업로드 -->
 	<insert id="fileAdd" parameterType="fileVO">
@@ -105,7 +98,7 @@
 	<!-- 추가구매/수리/폐기 수정  -->
 	<update id="equipUpdate">
 	update equipmentManagement
-	set status='대기', e_repair_type=#{e_repair_type},count=#{count},cost=#{cost},total=#{total},repair_reason=#{repair_reason},report_date=#{report_date}
+	set status='대기', e_repair_type=#{e_repair_type},count=#{count},cost=#{cost},total=#{count}*#{cost},repair_reason=#{repair_reason},report_date=#{report_date}
 	where equipment_no=#{equipment_no}
 	</update>
 	
@@ -124,9 +117,11 @@
 	
 	
 	<!-- 장비신청상세페이지 수정(사원) -->
-	<update id="">
+	<update id="updateDetail">
 	update equipmentManagement
-	set 
+	set report_date=#{report_date}, e_repair_type=#{e_repair_type}, field=#{field}, equipment_name=#{equipment_name},
+	manufacturer=#{manufacturer},count=#{count},cost=#{cost},total=#{count}*#{cost},repair_reason=#{repair_reason}
+	where equipment_no=#{equipment_no} and status ='대기'
 	</update>
 		
   </mapper>
