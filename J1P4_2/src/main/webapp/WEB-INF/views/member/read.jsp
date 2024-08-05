@@ -145,6 +145,10 @@
 						계약서</strong>
 					<p class="text-muted cardMy">
 					<a href="/maintenance/download?fileName=${fileList.file_name }">${fileList.file_name }</a></p>
+					<c:set var="tmp" value="${fileList.file_name.substring(fileList.file_name.lastIndexOf('.')) }"/>
+					<c:if test="${tmp=='.png' or tmp=='.gif'}">
+					<img src = "/download?fileName=${fileList.file_name }">
+					</c:if>
 				</div>
 
 			</div>
