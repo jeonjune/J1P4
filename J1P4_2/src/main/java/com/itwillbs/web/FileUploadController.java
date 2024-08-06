@@ -113,58 +113,48 @@ public class FileUploadController {
 		
 	}
 	
-	//파일 업로드 모듈(메서드)
-		public List<String> fileProcess(MultipartHttpServletRequest multiRequest) throws Exception{
-			logger.debug("fileProcess : 파일 업로드 처리 시작!");
-		
-			//업로드 된 파일 정보를 저장하는 List
-			List<String> fileNameList = new ArrayList<String>();
-			
-			//전달된 파일의 정보를 저장(input-file 태그의 이름) 
-			Iterator<String> fileNames = multiRequest.getFileNames();
-			while(fileNames.hasNext()) {
-				String fileName = fileNames.next();
-				logger.debug("fileName : " + fileName);
-				
-				//파일 파라메터 이름을 사용해서 파일을 (임시)저장
-				MultipartFile mFile = multiRequest.getFile(fileName);
-				
-				//파일의 원본 이름을 리스트에 저장
-				String oFileName = mFile.getOriginalFilename(); //파일의 이름을 뽑아내서 리스트에 저장 
-				fileNameList.add(oFileName);
-				
-				//파일 업로드
-				//파일 생성(java.io 패키지)
-				/* File file = new File("C:\\upload"+"\\"+fileName); (X)*/
-				/* File file = new File("C:\\upload"+"\\"+oFileName); */ //실제 확장자와 데이터가 불러와져서 저장됨
-				
-				File file = new File(multiRequest.getRealPath(FAKE_PATH)+"\\"+oFileName); //프로젝트 내부에 있는 upload 폴더
-			
-				if(mFile.getSize() != 0) { //첨부했던 첨부파일이 있을 때 
-					if(!file.exists()) {
-						//-> file의 해당경로에 파일이 없으면 해당 디렉토리를 생성 후 진행 할 수 있도록 만든다
-						//=> 즉, 만들어 놓은 upload 파일이 없으면 파일 만들겠다는 소리
-						
-						if(file.getParentFile().mkdirs()) {
-							//파일을 생성
-							file .createNewFile();
-						}
-					}
-					//임시 생성 파일을 실제 파일의 정보로 전달
-					mFile.transferTo(file); 
-				}
-				//파일 업로드 완료!!!
-			
-			}//while문 끝
-			
-			logger.debug("fileNameList : {}", fileNameList);
-			logger.debug("파일 업로드 완료!!, 파일 이름 저장 완료!#");
-			
-			
-			//파일 이름 저장 완료!!
-			
-			return fileNameList;
-		}//fileProcess
+	public List<String> fileProcess(MultipartHttpServletRequest multiRequest) throws Exception {
+	    logger.debug("fileProcess : 파일 업로드 처리 시작!");
+
+	    List<String> fileNameList = new ArrayList<>();
+	    Iterator<String> fileNames = multiRequest.getFileNames();
+	    while (fileNames.hasNext()) {
+	        String fileName = fileNames.next();
+	        MultipartFile mFile = multiRequest.getFile(fileName);
+	        String oFileName = mFile.getOriginalFilename();
+	        
+	        // 중복 체크 및 파일명 수정
+	        File file = new File(multiRequest.getRealPath(FAKE_PATH) + "\\" + oFileName);
+	        String newFileName = oFileName;
+	        int count = 1;
+	        
+	        while (file.exists()) {
+	            int dotIndex = oFileName.lastIndexOf('.');
+	            if (dotIndex != -1) {
+	                newFileName = oFileName.substring(0, dotIndex) + "(" + count + ")" + oFileName.substring(dotIndex);
+	            } else {
+	                newFileName = oFileName + "(" + count + ")";
+	            }
+	            file = new File(multiRequest.getRealPath(FAKE_PATH) + "\\" + newFileName);
+	            count++;
+	        }
+
+	        fileNameList.add(newFileName);
+
+	        if (mFile.getSize() != 0) {
+	            if (!file.exists()) {
+	                if (file.getParentFile().mkdirs()) {
+	                    file.createNewFile();
+	                }
+	            }
+	            mFile.transferTo(file);
+	        }
+	    }
+	    logger.debug("fileNameList : {}", fileNameList);
+	    logger.debug("파일 업로드 완료!!, 파일 이름 저장 완료!");
+
+	    return fileNameList;
+	}
 		
 		//파일 다운로드
 		@RequestMapping(value = "/download", method = RequestMethod.GET)
