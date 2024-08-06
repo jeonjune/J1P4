@@ -143,55 +143,57 @@
             </section>
         </div>
 
-        <!-- 스케줄 모달 -->
-        <div class="modal fade" id="scheduleModal" tabindex="-1" aria-labelledby="scheduleModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="scheduleModalLabel">일정 등록</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <form:form id="scheduleForm" method="post" action="${pageContext.request.contextPath}/schedules/save" modelAttribute="scheduleVO">
-                            <form:hidden path="scheduleId" />
-                            <form:hidden path="classNo" id="scheduleClassNo" value="${classVO.classNo}"/>
-                            <div class="mb-3">
-                                <label for="startDate" class="form-label">시작 날짜</label>
-                                <form:input path="startDate" class="form-control" type="date" id="startDate"/>
-                            </div>
-                            <div class="mb-3">
-                                <label for="endDate" class="form-label">종료 날짜</label>
-                                <form:input path="endDate" class="form-control" type="date" id="endDate"/>
-                            </div>
-                            <div class="mb-3">
-                                <label for="startTime" class="form-label">시작 시간</label>
-                                <form:select path="startTimeCode" id="startTime" class="form-control">
-                                    <form:options items="${times}" itemValue="codeValue" itemLabel="codeValueName"/>
-                                </form:select>
-                            </div>
-                            <div class="mb-3">
-                                <label for="endTime" class="form-label">종료 시간</label>
-                                <form:select path="endTimeCode" id="endTime" class="form-control">
-                                    <form:options items="${times}" itemValue="codeValue" itemLabel="codeValueName"/>
-                                </form:select>
-                            </div>
-                            <div class="mb-3">
-                                <label for="recurrenceDays" class="form-label">요일</label>
-                                <form:select path="recurrenceDays" multiple="multiple" class="form-control" id="recurrenceDays">
-                                    <option value="월">월요일</option>
-                                    <option value="화">화요일</option>
-                                    <option value="수">수요일</option>
-                                    <option value="목">목요일</option>
-                                    <option value="금">금요일</option>
-                                    <option value="토">토요일</option>
-                                </form:select>
-                            </div>
-                            <button type="submit" class="btn btn-primary">저장</button>
-                        </form:form>
-                    </div>
-                </div>
-            </div>
-        </div>
+		        <!-- 스케줄 모달 -->
+		<div class="modal fade" id="scheduleModal" tabindex="-1" aria-labelledby="scheduleModalLabel" aria-hidden="true">
+		    <div class="modal-dialog">
+		        <div class="modal-content">
+		            <div class="modal-header">
+		                <h5 class="modal-title" id="scheduleModalLabel">일정 등록</h5>
+		                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+		            </div>
+		            <div class="modal-body">
+		                <form:form id="scheduleForm" method="post" action="${pageContext.request.contextPath}/schedules/save" modelAttribute="scheduleVO">
+		                    <form:hidden path="scheduleId" />
+		                    <form:hidden path="classNo" id="scheduleClassNo" value="${classVO.classNo}"/>
+		                    <form:hidden path="status" id="status" />  <!-- 추가된 부분 -->
+		                    <div class="mb-3">
+		                        <label for="startDate" class="form-label">시작 날짜</label>
+		                        <form:input path="startDate" class="form-control" type="date" id="startDate"/>
+		                    </div>
+		                    <div class="mb-3">
+		                        <label for="endDate" class="form-label">종료 날짜</label>
+		                        <form:input path="endDate" class="form-control" type="date" id="endDate"/>
+		                    </div>
+		                    <div class="mb-3">
+		                        <label for="startTime" class="form-label">시작 시간</label>
+		                        <form:select path="startTimeCode" id="startTime" class="form-control">
+		                            <form:options items="${times}" itemValue="codeValue" itemLabel="codeValueName"/>
+		                        </form:select>
+		                    </div>
+		                    <div class="mb-3">
+		                        <label for="endTime" class="form-label">종료 시간</label>
+		                        <form:select path="endTimeCode" id="endTime" class="form-control">
+		                            <form:options items="${times}" itemValue="codeValue" itemLabel="codeValueName"/>
+		                        </form:select>
+		                    </div>
+		                    <div class="mb-3">
+		                        <label for="recurrenceDays" class="form-label">요일</label>
+		                        <form:select path="recurrenceDays" multiple="multiple" class="form-control" id="recurrenceDays">
+		                            <option value="월">월요일</option>
+		                            <option value="화">화요일</option>
+		                            <option value="수">수요일</option>
+		                            <option value="목">목요일</option>
+		                            <option value="금">금요일</option>
+		                            <option value="토">토요일</option>
+		                        </form:select>
+		                    </div>
+		                    <button type="submit" class="btn btn-primary">저장</button>
+		                </form:form>
+		            </div>
+		        </div>
+		    </div>
+		</div>
+
 
                 <!-- Instructor Modal -->
         <div class="modal fade" id="instructorModal" tabindex="-1" aria-labelledby="instructorModalLabel" aria-hidden="true">
@@ -460,10 +462,12 @@
             $('#endTime').val(data.endTimeCode);
             $('#recurrencePattern').val(data.recurrencePattern);
             $('#recurrenceDays').val(data.recurrenceDays);
+            $('#status').val(data.status);  
             $('#scheduleModalLabel').text('Edit Schedule');
             $('#scheduleModal').modal('show');
         });
     }
+
 
     function deleteSchedule(scheduleId) {
         if (confirm('Are you sure you want to delete this schedule?')) {

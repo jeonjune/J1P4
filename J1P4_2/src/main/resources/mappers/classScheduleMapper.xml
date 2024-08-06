@@ -36,6 +36,10 @@
         SELECT * FROM classSchedule WHERE class_no = #{classNo}
     </select>
 
+    <select id="getNormalSchedulesByClassId" parameterType="int" resultMap="scheduleResultMap">
+        SELECT * FROM classSchedule WHERE class_no = #{classNo} AND status = '정상'
+    </select>
+
     <select id="getScheduleById" parameterType="int" resultMap="scheduleResultMap">
         SELECT * FROM classSchedule WHERE schedule_id = #{scheduleId}
     </select>
