@@ -28,8 +28,8 @@
 
 	<!-- 첨부파일 업로드 -->
 	<insert id="fileAdd" parameterType="fileVO">
-	insert into file(equipment_no,cvt_name,file_date,file_name)
-	values((select max(equipment_no) from equipmentManagement),#{cvt_name},#{file_date},#{file_name})
+	insert into file(equipment_no,file_date,file_name)
+	values((select max(equipment_no) from equipmentManagement),#{file_date},#{file_name})
 	</insert>
 	
 	<!--첨부파일 조회  -->
@@ -40,22 +40,22 @@
 	
 	<!--(승인)장비내역 리스트 -->
 	<update id="updateType">
-   UPDATE equipmentManagement
-      SET 
-       e_repair_type = CASE 
-        WHEN e_repair_type = '구입' THEN '정상' 
-        WHEN e_repair_type = '추가구입' THEN '정상'
-        WHEN e_repair_type = '수리' THEN '수리중' 
-        ELSE '폐기'
-       END,
-       approval_date = NOW(),
-       <if test="e_repair_type =='추가구입'">
-       count=count+#{count},
-       total=total+#{total},
-       </if>
-       status = '승인'
-      WHERE equipment_no = #{equipment_no};
-</update>
+  	UPDATE equipmentManagement
+  	SET 
+    e_repair_type = CASE 
+      WHEN e_repair_type = '구입' THEN '정상' 
+      WHEN e_repair_type = '추가구입' THEN '정상'
+      WHEN e_repair_type = '수리' THEN '수리중' 
+      ELSE '폐기'
+   	 END,
+    approval_date = NOW(),
+    status = '승인'
+    <if test="e_repair_type == '추가구입'">
+      ,count = count + #{addcount} 
+      ,total = total+(#{addcount} * cost)
+    </if>
+  WHERE equipment_no = #{equipment_no}
+	</update>
 	
 	<!-- 장비내역 리스트 조회 -->
 	<select id="listEquip" resultType="EquipManageVO">
@@ -102,7 +102,7 @@
 	<!-- 추가구매/수리/폐기 수정  -->
 	<update id="equipUpdate">
 	update equipmentManagement
-	set status='대기', e_repair_type=#{e_repair_type},count=#{count},cost=#{cost},total=#{count}*#{cost},repair_reason=#{repair_reason},report_date=#{report_date}
+	set status='대기', e_repair_type=#{e_repair_type},count=#{count},addcount=#{addcount},cost=#{cost},total=#{count}*#{cost},repair_reason=#{repair_reason},report_date=#{report_date}
 	where equipment_no=#{equipment_no}
 	</update>
 	
@@ -126,6 +126,14 @@
 	set report_date=#{report_date}, e_repair_type=#{e_repair_type}, field=#{field}, equipment_name=#{equipment_name},
 	manufacturer=#{manufacturer},count=#{count},cost=#{cost},total=#{count}*#{cost},repair_reason=#{repair_reason}
 	where equipment_no=#{equipment_no} and status ='대기'
+	</update>
+	
+	<!-- 반려사유 - 확인버튼 누르면 장비내역으로 돌아가기 -->
+	<update id="rejectBack">
+	update equipmentManagement
+	set e_repair_type = '정상',  repair_reason = null, addcount=0
+	WHERE equipment_no=#{equipment_no} and (e_repair_type = '추가구입' OR e_repair_type = '수리' OR e_repair_type = '폐기')
+	
 	</update>
 		
   </mapper>

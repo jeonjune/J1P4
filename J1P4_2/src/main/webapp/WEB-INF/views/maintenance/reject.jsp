@@ -203,6 +203,7 @@
 					 <c:if test="${rList.status == '반려'}">
 					 	<input type="hidden" id="eqno" value="${rList.equipment_no }">
                      	<button type="button" class="btn btn-warning" onclick="showRejectReason(${rList.equipment_no})">반려 사유 확인</button>
+                     	<button type="button" class="btn btn-primary" id="submitBut">확인완료</button>
                      </c:if>
                      </td> 						
 					</tr>

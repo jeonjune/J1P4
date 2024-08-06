@@ -125,6 +125,13 @@ public class EquipManageDAOImpl implements EquipManageDAO {
 	public void updateDetail(EquipManageVO vo) throws Exception {
 		sqlSession.update(NAMESPACE+"updateDetail", vo);
 	}
+
+	//반려내역- 확인 누르면 장비내역으로 복귀
+	@Override
+	public void rejectBack(EquipManageVO vo) throws Exception {
+	sqlSession.update(NAMESPACE+"rejectBack", vo);
+		
+	}
 	
 	
 	

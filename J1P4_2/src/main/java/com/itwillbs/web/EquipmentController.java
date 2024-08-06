@@ -264,7 +264,7 @@ logger.debug(" downloadGET() 실행 ");
 	//장비신청 상세페이지 업데이트 - 승인
 	@ResponseBody
 	@PostMapping(value = "/detail")
-	public String updateType(@RequestParam("equipment_no")int eq,EquipManageVO vo) throws Exception{
+	public String updateType(@RequestParam("equipment_no")int eq, EquipManageVO vo) throws Exception{
 		logger.info("#### eq ##### :"+ eq);
 		logger.info("#### vo ##### :"+ vo);
 		vo.setEquipment_no(eq);
@@ -342,8 +342,7 @@ logger.debug(" downloadGET() 실행 ");
 	}
 	
 	
-	//장비신청 상세페이지 조회
-	// 장비신청 상세페이지 조회
+	// 장비신청 상세페이지 조회(사원페이지)
 	@GetMapping(value = "/updateDetail")
 	public String updateDetail(Model model, @RequestParam("equipment_no") int eno) throws Exception {
 	    // 전달 정보 저장
@@ -374,7 +373,11 @@ logger.debug(" downloadGET() 실행 ");
 		}
 	
 	
-	
+	//반려내역 - 장비내역으로 복귀
+	@PostMapping(value = "/rejectBack")
+	public void rejectBackPOST(EquipManageVO vo) throws Exception {
+		eService.rejectBack(vo);
+	} 
 	
 	
 	
