@@ -1,6 +1,7 @@
 package com.itwillbs.persistence;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -81,9 +82,15 @@ public class EmpAttendanceDAOImpl implements EmpAttendanceDAO {
 	}
 
 	@Override
-	public List<EmpAttendanceVO> myVaca(int user_no) throws Exception {
+	public List<EmpAttendanceVO> myVaca(Map<String, Object> user_no) throws Exception {
 		return sqlSession.selectList(NAMESPACE+"myVaca" , user_no);
 	}
+
+	@Override
+	public List<EmpAttendanceVO> userYear(int user_no) throws Exception {
+		return sqlSession.selectList(NAMESPACE+"userYear",user_no);
+	}
+	
 	
 	
 

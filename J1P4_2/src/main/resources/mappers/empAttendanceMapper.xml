@@ -142,12 +142,24 @@
  	
  	<!-- 내 휴가 목록 -->
  	<select id="myVaca" resultType="EmpAttendanceVO">
- 		select user_no, vacation_status, vacation_start, vacation_end, vacation_reason, vacation_approval,reject_reason
-		from empAttendance
-		where vacation_status is not null and user_no = #{user_no} AND
-		vacation_start >= DATE_FORMAT(CURDATE(), '%Y-01-01')
+	<![CDATA[
+	   	SELECT user_no, vacation_status, vacation_start, vacation_end, vacation_reason, vacation_approval, reject_reason
+	    FROM empAttendance
+	    WHERE vacation_status IS NOT NULL
+	    AND user_no = #{user_no}
+	    AND vacation_start >= CAST(CONCAT(#{date}, '-01-01') AS DATE)
+	    AND vacation_start < CAST(CONCAT(DATE_ADD(CAST(CONCAT(#{date}, '-01-01') AS DATE), INTERVAL 1 YEAR), '-01-01') AS DATE)
+ 	]]>
  	</select>
  	
+ 	<select id="userYear" resultType="EmpAttendanceVO">
+ 		SELECT DATE_FORMAT(vacation_start, '%Y') AS formatted_date
+	    FROM empAttendance
+	    WHERE user_no = #{user_no}
+	     AND vacation_start IS NOT NULL
+	    GROUP BY formatted_date
+	    ORDER BY formatted_date DESC;
+ 	</select>
  	
  	
  </mapper>

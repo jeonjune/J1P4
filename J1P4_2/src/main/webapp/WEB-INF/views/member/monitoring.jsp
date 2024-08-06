@@ -16,7 +16,7 @@
 			<!-- 회원 이름 & 운동 목표 카드-->
 			<div class="card">
 				<!-- 페이징 처리 -->
-	                    <div class="card-tools d-flex justify-content-between align-items-center">
+	                    <div class="card-tools d-flex justify-content-between align-items-center m-3">
 	                    <form action="" method="get" class="inbodyForm">
 	                    <div class="form-inline">
 	                    <input type="hidden" value="${param.mem_no }" name="mem_no">

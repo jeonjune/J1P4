@@ -1,6 +1,7 @@
 package com.itwillbs.service;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -74,8 +75,13 @@ public class EmpAttendanceServiceImpl implements EmpAttendanceService {
 	}
 
 	@Override
-	public List<EmpAttendanceVO> myVaca(int user_no) throws Exception {
+	public List<EmpAttendanceVO> myVaca(Map<String, Object> user_no) throws Exception {
 		return edao.myVaca(user_no);
+	}
+
+	@Override
+	public List<EmpAttendanceVO> userYear(int user_no) throws Exception {
+		return edao.userYear(user_no);
 	}
 	
 	

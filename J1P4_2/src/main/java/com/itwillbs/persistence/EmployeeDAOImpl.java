@@ -116,10 +116,16 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 	}
 
 	@Override
-	public List<EmpAttendanceVO> monthWork(int user_no) throws Exception {
+	public List<EmpAttendanceVO> monthWork(Map<String, Object> user_no) throws Exception {
 		return sqlSession.selectList(NAMESPACE+"monthWork", user_no);
 	}
 	
+	
+	@Override
+	public List<EmpAttendanceVO> userMonth(int user_no) throws Exception {
+		return sqlSession.selectList(NAMESPACE+"userMonth",user_no);
+	}
+
 	// 페이징
 	@Override
 	public int getTotalEmpCount() throws Exception {
@@ -127,17 +133,17 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 	}
 
 	@Override
-	public Integer countLate(int user_no) throws Exception {
+	public Integer countLate(Map<String, Object> user_no) throws Exception {
 		return sqlSession.selectOne(NAMESPACE+"countLate", user_no);
 	}
 
 	@Override
-	public Integer countVa(int user_no) throws Exception {
+	public Integer countVa(Map<String, Object> user_no) throws Exception {
 		return sqlSession.selectOne(NAMESPACE+"countVa", user_no);
 	}
 
 	@Override
-	public Integer countHalf(int user_no) throws Exception {
+	public Integer countHalf(Map<String, Object> user_no) throws Exception {
 		return sqlSession.selectOne(NAMESPACE+"countHalf", user_no);
 	}
 
@@ -152,7 +158,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 	}
 
 	@Override
-	public Integer countAtt(int user_no) throws Exception {
+	public Integer countAtt(Map<String, Object> user_no) throws Exception {
 		return sqlSession.selectOne(NAMESPACE+"countAtt", user_no);
 	}
 

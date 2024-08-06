@@ -38,7 +38,21 @@
 				<div class="card-body">
 					<div style="position: absolute; right: 30px;">
 						
-						
+									<!-- 페이징 처리 -->
+			
+	                  <div class="card-tools justify-content-end m-3">
+	                    <form action="" method="get" class="myDateForm">
+	                    <div class="form-inline">
+	                    <c:if test="${not empty date }">
+	                    <select class="form-control" id="selectMyDate" name="date">
+	                    	<c:forEach items="${date }" var="date">
+							<option value="${date.formatted_date }">${date.formatted_date }</option>
+						</c:forEach>
+	                    </select>
+	                    </c:if>
+	                    </div>
+	                    </form>
+	            	    </div>
 						
 					</div>
 					<c:if test="${myP.job_rank == '관리자'}">
@@ -133,6 +147,13 @@
 
 
 </div>
+<script>
+$("#selectMyDate").change(function() {
 
+	$(".myDateForm").submit();
+});
+
+$("#selectMyDate").val("${param.date }");
+</script>
 
 <%@ include file="../include/footer.jsp"%>

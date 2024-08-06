@@ -908,7 +908,19 @@
 	/* 메시지 일반전송 시 현재 시간을 hidden에 담아서 전송 */
 	
     
- 	document.getElementById('currentDatetime').value= new Date().toISOString().slice(0, -1);
+function getKoreanTimeISO() {
+    const now = new Date();
+    // 한국 시간으로 변환
+    const offset = 9 * 60 * 60 * 1000; // 9시간을 밀리초로 변환
+    const kst = new Date(now.getTime() + offset);
+
+    // ISO 8601 형식으로 변환 (마지막 'Z' 제거)
+    const isoString = kst.toISOString().slice(0, -1);
+
+    return isoString;
+}
+
+document.getElementById('currentDatetime').value = getKoreanTimeISO();
  	
  	
 	/* 예약전송 클릭 시 시간선택 추가 */
@@ -920,48 +932,23 @@
 	            		'<input type="datetime-local" class="form-control" id="datetime-input">'+
 	                                ' <p id="adjusted-time"></p><input type="hidden" name="noti_type" value="예약전송">'
 	                                +'<input type="hidden" id="hidden-noti-date" name="noti_date">');
+				 $('#datetime-input').on('change', function() {
+			         // 선택한 날짜와 시간 값 가져오기
+			         const selectedDateTime = $(this).val();
+			         
+			         // hidden 필드에 값 설정
+			         $('#hidden-noti-date').val(selectedDateTime);
+			     });
 	        } else {
 	        	
 	            // 체크 해제된 경우
-	            $("#sendDate").html('<input type="hidden" name="noti_date" value="'+new Date().toISOString().slice(0, -1)+'">'
+	            $("#sendDate").html('<input type="hidden" name="noti_date" value="'+getKoreanTimeISO()+'">'
 	            		+'<input type="hidden" name="noti_type" value="일반전송">');
 	        }
 	    });
 
 	});
 	
-	$(document).on('change', '#datetime-input', function() {
-        // 입력값을 가져와서
-        var datetimeInput = $(this).val();
-
-        if (datetimeInput) {
-            // Date 객체로 변환해
-            var datetime = new Date(datetimeInput);
-
-            // 9시간을 빼줍니다 (9 * 60 * 60 * 1000 밀리초)
-            datetime.setTime(datetime.getTime() - (9 * 60 * 60 * 1000));
-
-            // 조정된 날짜와 시간을 다시 형식에 맞게 변환해
-             var year = datetime.getFullYear();
-        var month = String(datetime.getMonth() + 1).padStart(2, '0'); // 월은 0부터 시작
-        var day = String(datetime.getDate()).padStart(2, '0');
-        var hours = String(datetime.getHours()).padStart(2, '0');
-        var minutes = String(datetime.getMinutes()).padStart(2, '0');
-        var seconds = String(datetime.getSeconds()).padStart(2, '0');
-        var milliseconds = String(datetime.getMilliseconds()).padStart(3, '0');
-
-        // 원하는 형식으로 조합
-        var adjustedDatetime = `${year}-${month}-${day}T${hours}:${minutes}:${seconds}.${milliseconds}`;
-
-            // 결과를 화면에 표시하고
-            $('#adjusted-time').text('조정된 시간: ' + adjustedDatetime);
-
-            // 숨겨진 필드에 조정된 값을 저장
-            $('#hidden-noti-date').val(adjustedDatetime);
-        } else {
-            alert('날짜와 시간을 선택하세요.');
-        }
-    });
 </script>
 
 <%@ include file="../include/footer.jsp"%>

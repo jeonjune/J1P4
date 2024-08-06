@@ -470,6 +470,9 @@ public List<String> fileProcess(MultipartHttpServletRequest multiRequest) throws
 		if (principal != null) {
 			logger.info("@@@@@@@@@@@@@@principal.getName()@@@@@@@@@@@ :"+principal.getName());
 			user_no = eService.user_no(principal.getName());
+			List<EmpAttendanceVO> dateResult =  eService.userMonth(user_no);
+			model.addAttribute("date",dateResult);		        
+			logger.info("@@@@@@@@@@@@@@date@@@@@@@@@@@ :"+dateResult);
 		}
 
 		
@@ -485,15 +488,19 @@ public List<String> fileProcess(MultipartHttpServletRequest multiRequest) throws
 	
 	// 출결확인 페이지
 	@GetMapping(value = "/attend")
-	public void attend(Model model,Principal principal) throws Exception{
+	public void attend(Model model,Principal principal,@RequestParam("date") String date) throws Exception{
 		// user_id로 user_no 구하기
 				int user_no = 0;
 
 				if (principal != null) {
 					logger.info("@@@@@@@@@@@@@@principal.getName()@@@@@@@@@@@ :"+principal.getName());
 					user_no = eService.user_no(principal.getName());
-					List<EmpAttendanceVO> result =  eService.monthWork(user_no);
-					Integer countVa = eService.countVa(user_no);
+					Map<String, Object> attendMap = new HashMap<String, Object>();
+					attendMap.put("user_no", user_no);
+					attendMap.put("date", date);
+					List<EmpAttendanceVO> result =  eService.monthWork(attendMap);
+					List<EmpAttendanceVO> dateResult =  eService.userMonth(user_no);
+					Integer countVa = eService.countVa(attendMap);
 					logger.info("@@@@@@@@@@@@@@countVa()@@@@@@@@@@@ :");
 					
 					// countVa가 null인 경우 0으로 설정
@@ -501,12 +508,15 @@ public List<String> fileProcess(MultipartHttpServletRequest multiRequest) throws
 			            countVa = 0;
 			        }
 			        
+			        model.addAttribute("date",dateResult);		        
+			        logger.info("@@@@@@@@@@@@@@date@@@@@@@@@@@ :"+dateResult);
+			        
 					model.addAttribute("monthWork", result);
-					model.addAttribute("countLate", eService.countLate(user_no));
+					model.addAttribute("countLate", eService.countLate(attendMap));
 					model.addAttribute("countVa", countVa);
-					model.addAttribute("countHalf", eService.countHalf(user_no));
+					model.addAttribute("countHalf", eService.countHalf(attendMap));
 					
-					Integer countAtt = eService.countAtt(user_no)+countVa;
+					Integer countAtt = eService.countAtt(attendMap)+countVa;
 					model.addAttribute("countAtt", countAtt);
 					
 					logger.info("@@@@@@@@@@@@@@출결확인ㅇㅇㅇㅇ@@@@@@@@@@@ :"+result);
@@ -518,14 +528,26 @@ public List<String> fileProcess(MultipartHttpServletRequest multiRequest) throws
 
 	// 휴가관리 페이지
 	@GetMapping(value = "/myVacation")
-	public void myVacation(Model model,Principal principal) throws Exception{
+	public void myVacation(Model model,Principal principal,@RequestParam("date") String date) throws Exception{
 		// user_id로 user_no 구하기
 		int user_no = 0;
 		
 		if (principal != null) {
 			logger.info("@@@@@@@@@@@@@@principal.getName()@@@@@@@@@@@ :"+principal.getName());
 			user_no = eService.user_no(principal.getName());
-			List<EmpAttendanceVO> myVaca = vaService.myVaca(user_no);
+			
+			Map<String, Object> vaMap = new HashMap<String, Object>();
+			vaMap.put("user_no", user_no);
+			vaMap.put("date", date);
+			List<EmpAttendanceVO> myVaca = vaService.myVaca(vaMap);
+			
+			List<EmpAttendanceVO> yearResult =  vaService.userYear(user_no);
+			model.addAttribute("year",yearResult);		   
+			
+			List<EmpAttendanceVO> dateResult =  eService.userMonth(user_no);
+			model.addAttribute("date",dateResult);	
+			
+			logger.info("@@@@@@@@@@@@@@date@@@@@@@@@@@ :"+dateResult);
 			Integer countVa = eService.yearCountVa(user_no);
 			Integer countHalf = eService.yearCountHalf(user_no);
 			if(countVa != null) {

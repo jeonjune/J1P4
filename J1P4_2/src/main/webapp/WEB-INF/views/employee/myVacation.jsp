@@ -36,6 +36,20 @@
 			<div class="card">
 				<div class="card-body">
 					<div style="position: absolute; right: 30px;">
+					<!-- 페이징 처리 -->
+	                  <div class="card-tools justify-content-end m-3">
+	                    <form action="" method="get" class="myDateForm">
+	                    <div class="form-inline">
+	                    <c:if test="${not empty year }">
+	                    <select class="form-control" id="selectMyDate" name="date">
+	                    	<c:forEach items="${year}" var="item">
+    						<option value="${item.formatted_date}">${item.formatted_date}</option>
+						</c:forEach>
+	                    </select>
+	                    </c:if>
+	                    </div>
+	                    </form>
+	            	    </div>
 						
 					<button class="btn btn-primary" type="button"
 							 data-bs-toggle="modal" data-bs-target="#vaModal">휴가신청</button>	
@@ -232,6 +246,13 @@ $(document).ready(function(){
 			len.textContent = 500; //제한 후 글자수 업데이트
 		}
 	}
+	
+	$("#selectMyDate").change(function() {
+
+		$(".myDateForm").submit();
+	});
+
+	$("#selectMyDate").val("${param.date }");
 
 </script>
 

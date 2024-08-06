@@ -134,8 +134,8 @@
 		select empAttend_no, attend_date, commute_time, quitting_time, work_status, check_status, vacation_status, vacation_start, vacation_end
 		from empAttendance
 		where user_no = #{user_no} and (vacation_approval = '승인' or commute_time is not null) AND (
-        attend_date >= DATE_FORMAT(CURDATE(), '%Y-%m-01')
-        AND attend_date < DATE_FORMAT(DATE_ADD(CURDATE(),INTERVAL 1 MONTH), '%Y-%m-01'))
+        attend_date >= DATE_FORMAT(CONCAT(#{date}, '-01'), '%Y-%m-%d')
+        AND attend_date < DATE_FORMAT(DATE_ADD(CONCAT(#{date}, '-01'), INTERVAL 1 MONTH), '%Y-%m-%d'))
         ORDER BY 
 		  CASE 
 		    WHEN vacation_status IS NULL THEN attend_date
@@ -144,14 +144,22 @@
 	]]>
 	</select>
 	
+	<select id="userMonth" resultType="EmpAttendanceVO">
+ 	SELECT DATE_FORMAT(attend_date, '%Y-%m') AS formatted_date
+    FROM empAttendance
+    WHERE user_no = #{user_no}
+    GROUP BY formatted_date
+    ORDER BY formatted_date DESC;
+</select>
+	
 	<!-- 지각 카운트 -->
 	<select id="countLate" resultType="int">
 		<![CDATA[
 		select count(check_status)
 		from empAttendance
 		where check_status = '지각' and user_no = #{user_no} AND (
-        attend_date >= DATE_FORMAT(CURDATE(), '%Y-%m-01')
-        AND attend_date < DATE_FORMAT(DATE_ADD(CURDATE(),INTERVAL 1 MONTH), '%Y-%m-01'))
+        attend_date >= DATE_FORMAT(CONCAT(#{date}, '-01'), '%Y-%m-%d')
+        AND attend_date < DATE_FORMAT(DATE_ADD(CONCAT(#{date}, '-01'), INTERVAL 1 MONTH), '%Y-%m-%d'))
 		]]>
 	</select>
 	<!-- 휴가 카운트 -->
@@ -163,8 +171,8 @@
     	)) AS total_vacation_days
 		from empAttendance
 		where (vacation_status = '휴가' or vacation_status = '기타') and vacation_approval = '승인' and user_no = #{user_no} AND (
-        vacation_start < DATE_FORMAT(DATE_ADD(CURDATE(), INTERVAL 1 MONTH), '%Y-%m-01')
-        AND vacation_end >= DATE_FORMAT(CURDATE(), '%Y-%m-01'))
+        vacation_start < DATE_FORMAT(DATE_ADD(CONCAT(#{date}, '-01'), INTERVAL 1 MONTH), '%Y-%m-%d')
+        AND vacation_end >= DATE_FORMAT(CONCAT(#{date}, '-01'), '%Y-%m-%d'))
 		]]>
 	</select>
 	<!-- 반차 카운트 -->
@@ -173,8 +181,8 @@
 		select count(*)
 		from empAttendance
 		where (vacation_status = '오전반차' or vacation_status = '오후반차') and vacation_approval = '승인' and user_no = #{user_no} AND (
-        vacation_start < DATE_FORMAT(DATE_ADD(CURDATE(), INTERVAL 1 MONTH), '%Y-%m-01')
-        AND vacation_end >= DATE_FORMAT(CURDATE(), '%Y-%m-01'))
+        vacation_start < DATE_FORMAT(DATE_ADD(CONCAT(#{date}, '-01'), INTERVAL 1 MONTH), '%Y-%m-%d')
+        AND vacation_end >= DATE_FORMAT(CONCAT(#{date}, '-01'), '%Y-%m-%d'))
 		]]>
 	</select>
 	
@@ -207,8 +215,8 @@
 		<![CDATA[
 		select count(*)
 		from empAttendance
-		where user_no = #{user_no} and work_status is not null and ( attend_date >= DATE_FORMAT(CURDATE(), '%Y-%m-01')
-	    AND attend_date < DATE_FORMAT(DATE_ADD(CURDATE(),INTERVAL 1 MONTH), '%Y-%m-01'))
+		where user_no = #{user_no} and work_status is not null and ( attend_date >= DATE_FORMAT(CONCAT(#{date}, '-01'), '%Y-%m-%d')
+	    AND attend_date < DATE_FORMAT(DATE_ADD(CONCAT(#{date}, '-01'), INTERVAL 1 MONTH), '%Y-%m-%d'))
 	    ]]>
 	</select>
 	
