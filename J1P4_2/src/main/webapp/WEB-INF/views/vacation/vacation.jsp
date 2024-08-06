@@ -73,6 +73,7 @@
 
     </script>
   <div class="content-wrapper" style="min-height: 831px;">
+  
     <div id='calendar'></div>
     
     
