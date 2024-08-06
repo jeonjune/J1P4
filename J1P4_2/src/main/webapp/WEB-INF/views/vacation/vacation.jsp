@@ -9,6 +9,7 @@
 <%@page import="java.util.List"%>
 <%@ page import="java.sql.*" %>
 <%@page import="com.itwillbs.domain.EmpAttendanceVO"%>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.css">
 
@@ -146,14 +147,24 @@ $(document).ready(function(){
 			success : function(data) {
 				console.log(data);
 				if(data === "endVa"){
-				alert("남은 휴가가 없습니다.");					
+				Swal.fire({
+					  icon: "error",
+					  title: "휴가소진",
+					  text: "올해 휴가를 다 썼군요!",
+					});
+// 				alert("남은 휴가가 없습니다.");					
 				}else if(data === "overVa"){
-				alert("남은 휴가보다 많이 신청했습니다.");
+				Swal.fire({
+					  icon: "error",
+					  title: "휴가부족",
+					  text: "남은 휴가보다 많이 신청했습니다!",
+					});
+// 				alert("남은 휴가보다 많이 신청했습니다.");
 					
 				}else {					
 				alert("휴가 신청완료 되었습니다.");
-				}
 				window.location.href = '/employee/myVacation';
+				}
 			},
 			error : function() {
 				alert("오류발생");

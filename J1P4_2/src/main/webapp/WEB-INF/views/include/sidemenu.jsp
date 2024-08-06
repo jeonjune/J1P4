@@ -313,33 +313,33 @@
         </div>
         
       </div>
-			  <div class="dropdown" id="commute-div">
-			    <c:choose>  
-				<c:when test="${checkW eq '출근'}"> 
-			  <button class="btn btn-success dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false" style="width:100px;">
-					퇴근하기
-			  </button>
-				</c:when> 
-				<c:when test="${checkW eq '퇴근'}"> 
-			  <button class="btn btn-success" type="button" id="dropdownMenuButton1" aria-expanded="false" style="width:100px;">
-					퇴근했어요
-			  </button>
-				</c:when> 
-				<c:when test="${checkW eq '외출'}"> 
-			  <button class="btn btn-success dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false" style="width:100px;">
-					복귀하기
-			  </button>
-				</c:when> 
-				<c:otherwise> 
-			  <button class="btn btn-success dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false" style="width:100px;">
-					출근하기
-			  </button>
-				</c:otherwise> 
-			</c:choose>
-			  <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-			    <li><a class="dropdown-item" id="start_work">출근하기</a></li>
-			  </ul>
-			</div>
+<!-- 			  <div class="dropdown" id="commute-div"> -->
+<%-- 			    <c:choose>   --%>
+<%-- 				<c:when test="${checkW eq '출근'}">  --%>
+<!-- 			  <button class="btn btn-success dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false" style="width:100px;"> -->
+<!-- 					퇴근하기 -->
+<!-- 			  </button> -->
+<%-- 				</c:when>  --%>
+<%-- 				<c:when test="${checkW eq '퇴근'}">  --%>
+<!-- 			  <button class="btn btn-success" type="button" id="dropdownMenuButton1" aria-expanded="false" style="width:100px;"> -->
+<!-- 					퇴근했어요 -->
+<!-- 			  </button> -->
+<%-- 				</c:when>  --%>
+<%-- 				<c:when test="${checkW eq '외출'}">  --%>
+<!-- 			  <button class="btn btn-success dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false" style="width:100px;"> -->
+<!-- 					복귀하기 -->
+<!-- 			  </button> -->
+<%-- 				</c:when>  --%>
+<%-- 				<c:otherwise>  --%>
+<!-- 			  <button class="btn btn-success dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false" style="width:100px;"> -->
+<!-- 					출근하기 -->
+<!-- 			  </button> -->
+<%-- 				</c:otherwise>  --%>
+<%-- 			</c:choose> --%>
+<!-- 			  <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1"> -->
+<!-- 			    <li><a class="dropdown-item" id="start_work">출근하기</a></li> -->
+<!-- 			  </ul> -->
+<!-- 			</div> -->
   
   
 

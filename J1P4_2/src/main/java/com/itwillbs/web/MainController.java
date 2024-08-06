@@ -40,6 +40,7 @@ public class MainController {
 				session.setAttribute("sess_name", vo.getName());
 				session.setAttribute("sess_job", vo.getJob());
 				session.setAttribute("sess_user_no", vo.getUser_no());
+				session.setAttribute("sess_rank", vo.getJob_rank());
 				logger.info("@@@@@@@@@@@@@@file_name@@@@@@@@@@@ :"+session.getAttribute("sess_pic"));
 			} catch (Exception e) {
 				e.printStackTrace();
