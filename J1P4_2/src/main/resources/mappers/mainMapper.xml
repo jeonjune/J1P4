@@ -6,7 +6,7 @@
  <mapper namespace="com.itwillbs.mapper.mainMapper">
  
  <select id="logInfo" resultType="EmployeeVO">
- 	select user_no, name, job
+ 	select user_no, name, job, job_rank
  	from employee
  	where user_id = #{user_id}
  </select>

@@ -50,7 +50,7 @@
   </div>
 
   <!-- Navbar -->
-  <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+  <nav class="main-header navbar navbar-expand navbar-white navbar-light" >
 <!--     Left navbar links -->
     <ul class="navbar-nav">
       <li class="nav-item">
@@ -61,7 +61,7 @@
     <!-- Right navbar links -->
     <ul class="navbar-nav ml-auto">
       <!-- Navbar Search -->
-			  <div class="dropdown" id="commute-div" style="z-index:99999" >
+			  <div class="dropdown" id="commute-div" style="z-index:1050;" >
 			    <c:choose>  
 				<c:when test="${checkW eq '출근'}"> 
 			  <button class="btn btn-success dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false" style="width:100px;">
@@ -89,14 +89,36 @@
 			  </ul>
 			</div>
       <!-- 로그아웃!!! -->
-	    <form action="/customLogout" method="post">
+	    <form  id="logoutForm"  action="/customLogout" method="post">
 			<input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
 	    <i class="fa-solid fa-arrow-right-from-bracket">
 	    </i>
-			<input type="submit" class="btn btn-primary" value="로그아웃">
+			<input type="button" class="btn btn-primary" value="로그아웃" id="logOut">
 		</form>
       <!-- 로그아웃!!! -->
-
+<script>
+$(document).on("click","#logOut", function(){
+	Swal.fire({
+		   title: '로그아웃하시겠습니까?',
+		   text: "퇴근은 하셨나요?",
+		   icon: 'warning',
+		   
+		   showCancelButton: true, // cancel버튼 보이기. 기본은 원래 없음
+		   confirmButtonColor: '#3085d6', // confrim 버튼 색깔 지정
+		   cancelButtonColor: '#d33', // cancel 버튼 색깔 지정
+		   confirmButtonText: '승인', // confirm 버튼 텍스트 지정
+		   cancelButtonText: '취소', // cancel 버튼 텍스트 지정
+		   
+		   reverseButtons: true, // 버튼 순서 거꾸로
+		   
+		}).then((result) => {
+			  if (result.isConfirmed) {
+				 document.getElementById('logoutForm').submit(); // 폼을 제출합니다.
+			 }
+		});
+			  
+});
+</script>
       <li class="nav-item">
         <a class="nav-link" data-widget="navbar-search" href="#" role="button">
           <i class="fas fa-search"></i>
