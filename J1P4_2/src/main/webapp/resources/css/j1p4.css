@@ -1,0 +1,66 @@
+@charset "UTF-8";
+
+.cardCustom {
+	padding-bottom: 50px;
+}
+
+.cardMx {
+	margin-bottom: 15px;
+}
+
+.cardMy {
+	margin-left: 5px;
+}
+
+.badgeCustom {
+	color: #000;
+	margin-left: 7px;
+	"
+}
+
+.chkboxCustom {
+	font-weight: normal !important;
+	margin-top: 5px;
+	display: flex;
+	justify-content: flex-end;
+}
+
+.memListSort {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.textRight {
+	text-align: right;
+}
+
+#sortRight {
+	display: flex;
+	margin-left: auto;
+	align-items: center;
+}
+
+#selectType {
+	width: 90px;
+}
+
+.charts-container {
+  display: flex;
+  gap: 40px; /* 차트 간의 간격 조정 */
+}
+
+.canvasChart {
+	height: 400px; display: block; width: 900px;
+}
+
+.cardMargin {
+	margin-left: 150px; margin-top: 30px; margin-bottom: 10px
+}
+
+ #preview {
+            display: none;
+            margin-top: 10px;
+            max-width: 40%;
+            height: auto;
+        }

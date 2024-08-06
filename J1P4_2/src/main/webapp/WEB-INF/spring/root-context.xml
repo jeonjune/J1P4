@@ -1,8 +1,61 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd">
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:task="http://www.springframework.org/schema/task"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd">
 	
 	<!-- Root Context: defines shared resources visible to all other web components -->
+	
+	<!-- DataSource 디비연결정보 객체(CP) -->
+	<bean id="hikariConfig"
+		  class="com.zaxxer.hikari.HikariConfig">
+		  <property name="driverClassName" value="net.sf.log4jdbc.sql.jdbcapi.DriverSpy"/>
+		  <property name="jdbcUrl" value="jdbc:log4jdbc:mysql://itwillbs.com:3306/c7d2402t1_2"/>
+		  <property name="username" value="c7d2402t1_2"/>
+		  <property name="password" value="1234"/>
+	</bean>
+	
+	<bean id="dataSource"
+		  class="com.zaxxer.hikari.HikariDataSource"
+		  destroy-method="close">
+		  <constructor-arg ref="hikariConfig" />
+	</bean>
+	<!-- DataSource 디비연결정보 객체(CP) -->
+
+	<!-- SqlSessionFactory - 디비연결, sql 처리, mybatis 설정 -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource"/>
+		<property name="configLocation" value="classpath:/mybatis-config.xml"/>
+		<property name="mapperLocations" value="classpath:mappers/**/*Mapper.xml"/>
+	</bean>	
+	<!-- SqlSessionFactory - 디비연결, sql 처리, mybatis 설정 -->
+	
+	<!-- SqlSession - 디비연결(자동), sql 처리, mybatis 설정, 자원해제 -->	
+	<bean id="sqlSession" 
+		  class="org.mybatis.spring.SqlSessionTemplate"
+		  destroy-method="clearCache">
+		  
+		<constructor-arg name="sqlSessionFactory" ref="sqlSessionFactory"/>
 		
+	</bean>
+	<!-- SqlSession - 디비연결(자동), sql 처리, mybatis 설정, 자원해제 -->	
+	
+	<!-- DAO 객체 인식 -->
+	<context:component-scan base-package="com.itwillbs.persistence"></context:component-scan>
+	
+ 	<!-- Service 객체 인식 -->
+	<context:component-scan base-package="com.itwillbs.service"></context:component-scan>
+	
+	<!-- 스케줄러 설정 추가 -->
+    <task:annotation-driven scheduler="taskScheduler"/>
+    
+    <bean id="taskScheduler" class="org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler">
+        <property name="poolSize" value="10"/>
+    </bean>
+
+    <bean id="scheduleStatusUpdater" class="com.itwillbs.service.ScheduleStatusUpdater" />
+
 </beans>

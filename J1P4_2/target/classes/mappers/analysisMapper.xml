@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.itwillbs.mapper.analysisMapper">
+
+	<!-- 총 회원 수 -->
+	<select id="totalMemCount" resultType="int">
+		select count(mem_no) from member
+	</select>
+	
+	<!-- 이번 달 신규 회원 수 -->
+	<select id="newMemCount" resultType="int">
+		SELECT count(mem_no)
+		FROM member
+		WHERE MONTH(reg_date) = MONTH(CURRENT_DATE)
+		  AND YEAR(reg_date) = YEAR(CURRENT_DATE);
+	</select>
+	
+	<!-- 이번 달 등록 회원 수 -->
+	<select id="regMemCount" resultType="int">
+		select count(registration_no)
+		from registration
+		where month(registration_date) = month(current_date)
+		and  year(registration_date) = year(current_date);
+	</select>
+
+	<!-- 이번 달 등록 회원 수 / 총 회원 수 -->
+	<select id="rmcTmc" resultType="double">
+		select round(
+		    (select count(registration_no) 
+		     from registration 
+		     where month(registration_date) = month(current_date)
+		       and year(registration_date) = year(current_date)) / 
+		    (select count(mem_no) 
+		     from member) * 100, 1) as rmcTmc
+	</select>		
+	
+	<!-- 6개월간 월 별 신규 회원 수 -->
+	<select id="new6MemCount" resultType="map">
+	<![CDATA[
+		select date_format(reg_date, '%y-%m') as month,
+		       coalesce(count(mem_no), 0) as new_members
+		from member
+		where reg_date >= date_sub(current_date, interval 6 month)
+		  and reg_date < date_add(current_date, interval 1 month)
+		group by month
+		order by month
+	]]>		
+	</select>
+</mapper>

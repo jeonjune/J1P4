@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.itwillbs.mapper.ClassMapper">
+    <resultMap id="classResultMap" type="com.itwillbs.domain.ClassVO">
+        <id property="classNo" column="class_no"/>
+        <result property="className" column="class_name"/>
+        <result property="description" column="description"/>
+        <result property="fieldCode" column="field_code"/>
+        <result property="divisionCode" column="division_code"/>
+        <result property="levelCode" column="level_code"/>
+        <result property="minCapacity" column="min_capacity"/>
+        <result property="maxCapacity" column="max_capacity"/>
+        <result property="instructorNo" column="instructor_no"/>
+        <result property="instructorName" column="instructor_name"/>
+    </resultMap>
+
+    <select id="getAllClasses" resultMap="classResultMap">
+        SELECT 
+            c.class_no,
+            c.class_name,
+            c.description,
+            c.field_code,
+            c.division_code,
+            c.level_code,
+            c.min_capacity,
+            c.max_capacity,
+            c.instructor_no,
+            e.name AS instructor_name
+        FROM class c
+        LEFT JOIN instructor i ON c.instructor_no = i.instructor_no
+        LEFT JOIN employee e ON i.user_no = e.user_no
+    </select>
+
+    <select id="getClassById" parameterType="int" resultMap="classResultMap">
+        SELECT 
+            c.class_no,
+            c.class_name,
+            c.description,
+            c.field_code,
+            c.division_code,
+            c.level_code,
+            c.min_capacity,
+            c.max_capacity,
+            c.instructor_no,
+            e.name AS instructor_name
+        FROM class c
+        LEFT JOIN instructor i ON c.instructor_no = i.instructor_no
+        LEFT JOIN employee e ON i.user_no = e.user_no
+        WHERE c.class_no = #{classNo}
+    </select>
+
+    <insert id="addClass" parameterType="com.itwillbs.domain.ClassVO">
+        INSERT INTO class (class_name, description, field_code, division_code, level_code, min_capacity, max_capacity, instructor_no)
+        VALUES (#{className}, #{description}, #{fieldCode}, #{divisionCode}, #{levelCode}, #{minCapacity}, #{maxCapacity}, #{instructorNo})
+    </insert>
+
+    <update id="editClass" parameterType="com.itwillbs.domain.ClassVO">
+        UPDATE class
+        SET class_name = #{className},
+            description = #{description},
+            field_code = #{fieldCode},
+            division_code = #{divisionCode},
+            level_code = #{levelCode},
+            min_capacity = #{minCapacity},
+            max_capacity = #{maxCapacity},
+            instructor_no = #{instructorNo}
+        WHERE class_no = #{classNo}
+    </update>
+
+    <delete id="deleteClass" parameterType="int">
+        DELETE FROM class WHERE class_no = #{classNo}
+    </delete>
+
+</mapper>

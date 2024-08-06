@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.itwillbs.mapper.FileUploadMapper">
+
+	<insert id="fileEmpAdd">
+		insert into file(user_no,file_date,file_name)
+		values((select max(user_no) from employee),#{file_date},#{file_name})
+	</insert>
+	
+	<!--첨부파일 조회  -->
+	<select id="selectEmpFile" resultType="fileVO">
+		SELECT IFNULL(
+    	(select file_name from file
+		where user_no = #{user_no}), 'no'
+		) AS file_name;
+	</select>	
+	
+	<update id="updateEmpFile">
+		UPDATE file 
+		SET file_name = #{file_name}
+		WHERE user_no = #{user_no}
+	</update>
+	
+	<insert id="fileProfAdd">
+		insert into file(user_no,file_date,file_name)
+		values(#{user_no},#{file_date},#{file_name})
+	</insert>
+
+</mapper>

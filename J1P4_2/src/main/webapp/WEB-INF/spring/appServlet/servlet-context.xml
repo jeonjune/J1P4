@@ -3,7 +3,9 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:beans="http://www.springframework.org/schema/beans"
 	xmlns:context="http://www.springframework.org/schema/context"
-	xsi:schemaLocation="http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd
+	xmlns:websocket="http://www.springframework.org/schema/websocket"
+	xsi:schemaLocation="http://www.springframework.org/schema/websocket http://www.springframework.org/schema/websocket/spring-websocket-4.3.xsd
+		http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd
 		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
 
@@ -20,6 +22,27 @@
 		<beans:property name="prefix" value="/WEB-INF/views/" />
 		<beans:property name="suffix" value=".jsp" />
 	</beans:bean>
+
+	<!-- websocket handler -->
+	
+	<beans:bean id="myHandler" class="com.itwillbs.handler.EchoHandler" />
+	<websocket:handlers>
+		<websocket:mapping handler="myHandler" path="/alram" />
+		<websocket:handshake-interceptors>
+	         <beans:bean class="org.springframework.web.socket.server.support.HttpSessionHandshakeInterceptor"/>
+	      </websocket:handshake-interceptors>
+		<websocket:sockjs websocket-enabled="true"/>
+	</websocket:handlers>
+	
+	<!-- 파일업로드 설정 -->
+	<beans:bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+			
+		<beans:property name="maxUploadSize" value="52428800"/> <!-- 업로드 할때 최대파일 설정 50kb -->
+		<beans:property name="maxInMemorySize" value="1000000"/> <!-- 임시 메모리 공간 할당 -->
+		<beans:property name="defaultEncoding" value="UTF-8"/> 
+		
+	</beans:bean>
+	
 	
 	<context:component-scan base-package="com.itwillbs.web" />
 	

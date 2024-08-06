@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+  <mapper namespace="com.itwillbs.mapper.equipmentMapper">
+	
+	<!-- 장비신청 -->
+   	<insert id="equipAdd">
+   	insert into equipmentManagement(name,report_date,e_repair_type,field,equipment_name, manufacturer,count,cost,total,repair_reason,manager_no)
+   	values(#{name},#{report_date},#{e_repair_type},#{field},#{equipment_name},#{manufacturer},#{count},#{cost},#{count} * #{cost},#{repair_reason},#{manager_no})
+   	</insert>
+	
+	<!-- 장비신청내역 -->
+	<select id="equipList" resultType="EquipManageVO">
+	select * from equipmentManagement
+	where status='대기'
+	
+	</select>
+	
+	<!-- 특정 장비신청 내역 상세페이지 조회 -->
+	<select id="equipDetail" resultType="EquipManageVO">
+	select * from equipmentManagement 
+	where equipment_no=#{equipment_no}
+	and status='대기'
+	</select>
+
+	<!-- 첨부파일 업로드 -->
+	<insert id="fileAdd" parameterType="fileVO">
+	insert into file(equipment_no,cvt_name,file_date,file_name)
+	values((select max(equipment_no) from equipmentManagement),#{cvt_name},#{file_date},#{file_name})
+	</insert>
+	
+	<!--첨부파일 조회  -->
+	<select id="selectFile" resultType="fileVO">
+	SELECT IFNULL(
+    (select file_name from file where equipment_no=#{equipment_no}) ,'no') AS file_name
+	</select>	
+	
+	<!--(승인)장비내역 리스트 -->
+	<update id="updateType">
+		UPDATE equipmentManagement
+		SET 
+    	e_repair_type = CASE 
+        WHEN e_repair_type = '구입' THEN '정상' 
+        WHEN e_repair_type = '추가구입' THEN '정상'
+        WHEN e_repair_type = '수리' THEN '수리중' 
+        ELSE '폐기'
+    	END,
+    	status = '승인',
+    	approval_date = NOW()
+		WHERE equipment_no = #{equipment_no};
+	</update>
+	
+	<!-- 장비내역 리스트 조회 -->
+	<select id="listEquip" resultType="EquipManageVO">
+	select * from equipmentManagement
+	where status='승인'
+	order by equipment_no desc
+	limit #{pageStart},${pageSize}
+	</select>
+	
+	<!-- 장비내역 리스트 개수(페이징처리) -->
+	<select id="equipListCount" resultType="int">
+		select count(equipment_no) from equipmentManagement
+		where status='승인'
+	</select>
+	
+	<!-- (반려)장비내역 리스트 -->
+	<update id="updateReject">
+	update equipmentManagement
+	set status='반려',approval_date=now(),equipment_reject=#{equipment_reject}
+	where equipment_no=#{equipment_no}
+	</update>	
+	
+	<!-- 반려내역 리스트 조회 -->
+	<select id="rejectList" resultType="EquipManageVO">
+	select * from equipmentManagement
+	where status='반려'
+	order by equipment_no desc
+	limit #{pageStart},${pageSize}
+	</select>
+	
+	<!-- 장비내역 리스트 개수(페이징처리) -->
+	<select id="rejectListCount" resultType="int">
+		select count(equipment_no) from equipmentManagement
+		where status='반려'
+	</select>
+	
+	<!-- 장비내역 상세페이지 조회 -->
+	<select id="equipDetailGet" resultType="EquipManageVO">
+	select * from equipmentManagement 
+	where equipment_no=#{equipment_no}
+	
+	</select>
+	
+	<!-- 추가구매/수리/폐기 수정  -->
+	<update id="equipUpdate">
+	update equipmentManagement
+	set status='대기', e_repair_type=#{e_repair_type},count=#{count},cost=#{cost},total=#{count}*#{cost},repair_reason=#{repair_reason},report_date=#{report_date}
+	where equipment_no=#{equipment_no}
+	</update>
+	
+	<!-- 수리중 -> 정상으로 수정 -->
+	<update id="repairOk">
+	update equipmentManagement
+	set e_repair_type='정상'
+	where equipment_no=#{equipment_no}
+	</update>
+	
+	<!-- 반려사유 가져오기  -->
+	<select id="getReject" resultType="EquipManageVO" parameterType="int">
+	select * from equipmentManagement
+	where equipment_no=#{equipment_no}
+	</select>
+	
+	
+	<!-- 장비신청상세페이지 수정(사원) -->
+	<update id="updateDetail">
+	update equipmentManagement
+	set report_date=#{report_date}, e_repair_type=#{e_repair_type}, field=#{field}, equipment_name=#{equipment_name},
+	manufacturer=#{manufacturer},count=#{count},cost=#{cost},total=#{count}*#{cost},repair_reason=#{repair_reason}
+	where equipment_no=#{equipment_no} and status ='대기'
+	</update>
+		
+  </mapper>

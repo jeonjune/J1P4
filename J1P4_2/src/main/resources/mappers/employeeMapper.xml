@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  <mapper namespace="com.itwillbs.mapper.employeeMapper">
+  
+  	<!-- 테이블의 컬럼명과 VO객체의 정보를 매핑 -->
+  	<resultMap type="com.itwillbs.domain.EmployeeVO"
+  	           id="employeeMap">
+  	    <id property="user_no" column="user_no" />
+  	    <result property="user_no" column="user_no"/>
+  	    <result property="user_id" column="user_id"/>
+  	    <result property="user_pw" column="user_pw"/>
+  	    <result property="job_rank" column="job_rank"/>
+  	    <result property="job" column="job"/>
+  	    <result property="name" column="name"/>
+  	    <result property="birth_date" column="birth_date"/>
+  	    <result property="gender" column="gender"/>
+  	    <result property="phone_no" column="phone_no"/>
+  	    <result property="email" column="email"/>
+  	    <result property="emp_date" column="emp_date"/>
+  	    <result property="retire_status" column="retire_status"/>
+  	    <result property="retire_date" column="retire_date"/>
+  	    <result property="zip_code" column="zip_code"/>
+  	    <result property="addr1" column="addr1"/>
+  	    <result property="addr2" column="addr2"/>
+  	    <result property="enabled" column="enabled"/>
+		
+		<collection property="authList" resultMap="authMap"></collection>
+  	</resultMap>
+  	
+  	<resultMap type="com.itwillbs.domain.AuthVO" id="authMap">
+  		<result property="user_id" column="user_id"/>
+  		<result property="auth" column="auth"/>  	
+  	</resultMap>
+  	
+  	<!-- 직원리스트 -->
+	<select id="empList" resultType="EmployeeVO">
+		select * from employee
+		where user_no > 0 and retire_status = 0
+		order by user_no desc
+		limit #{pageStart},${pageSize}
+	</select>
+	
+	<!-- 직원리스트 개수(페이징처리) -->
+	<select id="totalEmpCount" resultType="int">
+		select count(user_no) from employee
+		where retire_status = 0
+	</select>
+  	 
+  	 <!-- 직원등록 -->
+  	 <insert id="empJoin" >
+  	 	insert into employee (user_id,user_pw,job_rank,job,name,birth_date,gender,phone_no,email,emp_date,zip_code,addr1,addr2) 
+ 		values(#{user_id},#{user_pw},#{job_rank},#{job},#{name},#{birth_date},#{gender},#{phone_no},#{email},#{emp_date},#{zip_code},#{addr1},#{addr2})
+  	 </insert>
+  	 
+  	 <!-- 직원 권한등록 -->
+  	 <insert id="empAuth" parameterType="com.itwillbs.domain.AuthVO">
+  	 	insert into employee_auth (user_id, auth)
+  	 	values(#{user_id},#{auth})
+  	 </insert>
+  	 
+  	<!-- 중복된 아이디가 있는지 조회 -->
+  	<select id="selectId" parameterType="string" resultType="int" >
+  		select count(user_id) from employee where user_id=#{user_id}
+  	</select>
+	
+	<!-- user_no 구하기 -->
+	<select id="getUN" resultType="int" >
+		select user_no from employee where user_id=#{user_id}
+	</select>
+	<!-- 출근 --> 
+	<insert id="workStart" parameterType="EmpAttendanceVO">
+		insert into empAttendance(user_no, commute_time,work_status,check_status)
+		values(#{user_no},now(),'출근',#{check_status})
+	</insert>
+	
+	<!-- 출근상태 확인 -->
+	<select id="checkWork" resultType="string">
+		select work_status from empAttendance where user_no=#{user_no} and attend_date=DATE(now()) and commute_time is not null
+	</select>
+	
+	<!-- 퇴근하기 -->
+	<update id="endWork">
+		update empAttendance
+		set work_status='퇴근',quitting_time=now()
+		where user_no=#{user_no} and attend_date=DATE(now())
+	</update>
+
+	<!-- 외출하기 -->
+	<update id="outWork">
+		update empAttendance
+		set work_status='외출'
+		where user_no=#{user_no}
+	</update>
+
+	<!-- 복귀하기 -->
+	<update id="inWork">
+		update empAttendance
+		set work_status='출근'
+		where user_no=#{user_no}
+	</update>
+	
+	<!-- 직원 상세페이지 -->
+	<select id="empDetail" resultType="EmployeeVO">
+		select * from employee
+		where user_no = #{user_no}
+	</select>
+	
+	<!-- 직원 수정 -->
+  	<update id="empUpdate">
+  	 	update employee set job=#{job}, job_rank=#{job_rank}, phone_no=#{phone_no},
+  	 	 email=#{email}, zip_code=#{zip_code}, addr1=#{addr1}, addr2=#{addr2}
+  	 	 <if test="user_pw != null">
+			,user_pw = #{user_pw}
+		</if>
+		where user_id = #{user_id}
+  	</update>
+  	<!-- 직원 권한 수정  -->
+	<update id="authUpdate">
+		update employee_auth set auth=#{auth}
+		where user_id = #{user_id}
+	</update>
+	<!-- 직원 퇴사 -->
+	<update id="reEmp">
+		update employee set retire_status=1, retire_date=now()
+		where user_id = #{user_id}
+	</update>
+	
+	<!-- 출결 확인 -->
+	<select id="monthWork" resultType="EmpAttendanceVO">
+	<![CDATA[
+		select empAttend_no, attend_date, commute_time, quitting_time, work_status, check_status, vacation_status, vacation_start, vacation_end
+		from empAttendance
+		where user_no = #{user_no} and (vacation_approval = '승인' or commute_time is not null) AND (
+        attend_date >= DATE_FORMAT(CURDATE(), '%Y-%m-01')
+        AND attend_date < DATE_FORMAT(DATE_ADD(CURDATE(),INTERVAL 1 MONTH), '%Y-%m-01'))
+        ORDER BY 
+		  CASE 
+		    WHEN vacation_status IS NULL THEN attend_date
+		    ELSE vacation_start
+		  END
+	]]>
+	</select>
+	
+	<!-- 지각 카운트 -->
+	<select id="countLate" resultType="int">
+		<![CDATA[
+		select count(check_status)
+		from empAttendance
+		where check_status = '지각' and user_no = #{user_no} AND (
+        attend_date >= DATE_FORMAT(CURDATE(), '%Y-%m-01')
+        AND attend_date < DATE_FORMAT(DATE_ADD(CURDATE(),INTERVAL 1 MONTH), '%Y-%m-01'))
+		]]>
+	</select>
+	<!-- 휴가 카운트 -->
+	<select id="countVa" resultType="int">
+		<![CDATA[
+		select SUM(DATEDIFF(
+        LEAST(vacation_end, LAST_DAY(CURDATE())),
+        GREATEST(vacation_start, DATE_FORMAT(CURDATE(), '%Y-%m-01'))
+    	)) AS total_vacation_days
+		from empAttendance
+		where (vacation_status = '휴가' or vacation_status = '기타') and vacation_approval = '승인' and user_no = #{user_no} AND (
+        vacation_start < DATE_FORMAT(DATE_ADD(CURDATE(), INTERVAL 1 MONTH), '%Y-%m-01')
+        AND vacation_end >= DATE_FORMAT(CURDATE(), '%Y-%m-01'))
+		]]>
+	</select>
+	<!-- 반차 카운트 -->
+	<select id="countHalf" resultType="int">
+		<![CDATA[
+		select count(*)
+		from empAttendance
+		where (vacation_status = '오전반차' or vacation_status = '오후반차') and vacation_approval = '승인' and user_no = #{user_no} AND (
+        vacation_start < DATE_FORMAT(DATE_ADD(CURDATE(), INTERVAL 1 MONTH), '%Y-%m-01')
+        AND vacation_end >= DATE_FORMAT(CURDATE(), '%Y-%m-01'))
+		]]>
+	</select>
+	
+	<!-- 올해 휴가 카운트 -->
+	<select id="yearCountVa" resultType="int">
+		<![CDATA[
+		select SUM(DATEDIFF(
+        LEAST(vacation_end, LAST_DAY(CURDATE())),
+        GREATEST(vacation_start, DATE_FORMAT(CURDATE(), '%Y-%m-01'))
+    	)) AS total_vacation_days
+		from empAttendance
+		where (vacation_status = '휴가' or vacation_status = '기타') and vacation_approval = '승인' and user_no = #{user_no} AND (
+        vacation_start <= DATE_FORMAT(CURDATE(), '%Y-12-31') 
+      	AND vacation_end >= DATE_FORMAT(CURDATE(), '%Y-01-01'))
+		]]>
+	</select>
+	<!-- 올해 반차 카운트 -->
+	<select id="yearCountHalf" resultType="int">
+		<![CDATA[
+		select count(*)
+		from empAttendance
+		where (vacation_status = '오전반차' or vacation_status = '오후반차') and vacation_approval = '승인' and user_no = #{user_no} AND (
+        vacation_start <= DATE_FORMAT(CURDATE(), '%Y-12-31') 
+      	AND vacation_end >= DATE_FORMAT(CURDATE(), '%Y-01-01'))
+		]]>
+	</select>
+	
+	<!-- 이번달 출석일 -->
+	<select id="countAtt" resultType="int">
+		<![CDATA[
+		select count(*)
+		from empAttendance
+		where user_no = #{user_no} and work_status is not null and ( attend_date >= DATE_FORMAT(CURDATE(), '%Y-%m-01')
+	    AND attend_date < DATE_FORMAT(DATE_ADD(CURDATE(),INTERVAL 1 MONTH), '%Y-%m-01'))
+	    ]]>
+	</select>
+	
+	<!-- 반려안된 휴가 수 -->
+	<select id="appCount" resultType="int">
+		<![CDATA[
+		select SUM(DATEDIFF(
+        LEAST(vacation_end, LAST_DAY(CURDATE())),
+        GREATEST(vacation_start, DATE_FORMAT(CURDATE(), '%Y-%m-01'))
+    	)) AS total_vacation_days
+		from empAttendance
+		where (vacation_status ='휴가' or vacation_status='기타') and vacation_approval !='반려'  and user_no = #{user_no} AND (
+        vacation_start <= DATE_FORMAT(CURDATE(), '%Y-12-31') 
+      	AND vacation_end >= DATE_FORMAT(CURDATE(), '%Y-01-01'))
+		]]>
+	</select>
+	
+	<!-- 반려안된 반차 수 -->
+		<select id="appHCount" resultType="int">
+		<![CDATA[
+		select count(*)
+		from empAttendance
+		where vacation_status like '%반차' and vacation_approval !='반려'  and user_no = #{user_no} AND (
+        vacation_start <= DATE_FORMAT(CURDATE(), '%Y-12-31') 
+      	AND vacation_end >= DATE_FORMAT(CURDATE(), '%Y-01-01'))
+		]]>
+	</select>
+	
+	 <!-- 회원정보와 인증정보를 한번에 조회(Join) -->
+<!-- 	 <select id="readMemberAuth" resultMap="memberMap"> -->
+<!-- 	 	select  -->
+<!-- 			mem.userid, userpw, username, enabled, regdate, updatedate, auth  -->
+<!--  		from  -->
+<!--    			tbl_member mem join tbl_member_auth auth on mem.userid = auth.userid  -->
+<!--  		where  -->
+<!-- 			mem.userid = #{userid} -->
+<!-- 	 </select> -->
+	 
+  	 
+  
+  
+  </mapper>

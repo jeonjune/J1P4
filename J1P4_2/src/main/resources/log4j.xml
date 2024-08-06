@@ -12,7 +12,19 @@
 	
 	<!-- Application Loggers -->
 	<logger name="com.itwillbs.web">
-		<level value="info" />
+		<level value="debug" />
+	</logger>
+	<logger name="com.itwillbs.security">
+		<level value="debug" />
+	</logger>
+	<logger name="com.itwillbs.persistence">
+		<level value="debug" />
+	</logger>
+	<logger name="com.itwillbs.service">
+		<level value="debug" />
+	</logger>	
+	<logger name="com.itwillbs.fileupload">
+		<level value="debug" />
 	</logger>
 	
 	<!-- 3rdparty Loggers -->

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.itwillbs.mapper.ClassScheduleMapper">
+    <resultMap id="scheduleResultMap" type="com.itwillbs.domain.ClassScheduleVO">
+        <id property="scheduleId" column="schedule_id"/>
+        <result property="classNo" column="class_no"/>
+        <result property="startDate" column="start_date"/>
+        <result property="endDate" column="end_date"/>
+        <result property="startTimeCode" column="start_time_code"/>
+        <result property="endTimeCode" column="end_time_code"/>
+        <result property="recurrenceDays" column="recurrence_days"/>
+        <result property="currentEnrollment" column="current_enrollment"/>
+        <result property="status" column="status"/>
+    </resultMap>
+
+    <insert id="insertSchedule" parameterType="com.itwillbs.domain.ClassScheduleVO">
+        INSERT INTO classSchedule (class_no, start_date, end_date, start_time_code, end_time_code, recurrence_days)
+        VALUES (#{classNo}, #{startDate}, #{endDate}, #{startTimeCode}, #{endTimeCode}, #{recurrenceDays})
+    </insert>
+
+    <update id="updateSchedule" parameterType="com.itwillbs.domain.ClassScheduleVO">
+        UPDATE classSchedule
+        SET start_date = #{startDate},
+            end_date = #{endDate},
+            start_time_code = #{startTimeCode},
+            end_time_code = #{endTimeCode},
+            recurrence_days = #{recurrenceDays},
+            status = #{status}
+        WHERE schedule_id = #{scheduleId}
+    </update>
+
+    <select id="getSchedulesByClassId" parameterType="int" resultMap="scheduleResultMap">
+        SELECT * FROM classSchedule WHERE class_no = #{classNo}
+    </select>
+
+    <select id="getScheduleById" parameterType="int" resultMap="scheduleResultMap">
+        SELECT * FROM classSchedule WHERE schedule_id = #{scheduleId}
+    </select>
+
+    <delete id="deleteSchedule" parameterType="int">
+        DELETE FROM classSchedule WHERE schedule_id = #{scheduleId}
+    </delete>
+    
+    <update id="updateCurrentEnrollment" parameterType="com.itwillbs.domain.ClassScheduleVO">
+        UPDATE classSchedule
+        SET current_enrollment = #{currentEnrollment}
+        WHERE schedule_id = #{scheduleId}
+    </update>
+    
+    <select id="getAllSchedules" resultMap="scheduleResultMap">
+        SELECT * FROM classSchedule
+    </select>
+
+    <update id="updateScheduleStatus" parameterType="com.itwillbs.domain.ClassScheduleVO">
+        UPDATE classSchedule
+        SET status = #{status}
+        WHERE schedule_id = #{scheduleId}
+    </update>
+    
+    <select id="getRecruitmentSchedules" resultMap="scheduleResultMap">
+        SELECT * FROM classSchedule WHERE status = '모집'
+    </select>
+</mapper>
