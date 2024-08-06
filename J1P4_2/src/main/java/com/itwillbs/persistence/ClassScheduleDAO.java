@@ -27,6 +27,10 @@ public class ClassScheduleDAO {
         return sqlSession.selectList(NAMESPACE + ".getSchedulesByClassId", classNo);
     }
 
+    public List<ClassScheduleVO> getNormalSchedulesByClassId(int classNo) {
+        return sqlSession.selectList(NAMESPACE + ".getNormalSchedulesByClassId", classNo);
+    }
+
     public ClassScheduleVO getScheduleById(int scheduleId) {
         return sqlSession.selectOne(NAMESPACE + ".getScheduleById", scheduleId);
     }
@@ -34,11 +38,11 @@ public class ClassScheduleDAO {
     public void deleteSchedule(int scheduleId) {
         sqlSession.delete(NAMESPACE + ".deleteSchedule", scheduleId);
     }
-    
+
     public void updateCurrentEnrollment(ClassScheduleVO schedule) {
         sqlSession.update(NAMESPACE + ".updateCurrentEnrollment", schedule);
     }
-    
+
     public List<ClassScheduleVO> getAllSchedules() {
         return sqlSession.selectList(NAMESPACE + ".getAllSchedules");
     }
@@ -46,8 +50,7 @@ public class ClassScheduleDAO {
     public void updateScheduleStatus(ClassScheduleVO schedule) {
         sqlSession.update(NAMESPACE + ".updateScheduleStatus", schedule);
     }
-    
-    // 새로운 메소드 추가
+
     public List<ClassScheduleVO> getRecruitmentSchedules() {
         return sqlSession.selectList(NAMESPACE + ".getRecruitmentSchedules");
     }

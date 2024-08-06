@@ -22,6 +22,10 @@ public class ClassScheduleService {
         return classScheduleDAO.getSchedulesByClassId(classNo);
     }
 
+    public List<ClassScheduleVO> getNormalSchedulesByClassId(int classNo) {
+        return classScheduleDAO.getNormalSchedulesByClassId(classNo);
+    }
+
     public ClassScheduleVO getScheduleById(int scheduleId) {
         return classScheduleDAO.getScheduleById(scheduleId);
     }

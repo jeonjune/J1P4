@@ -19,10 +19,13 @@
         VALUES (#{classSchedule_no}, #{mem_no}, #{totalClasses}, #{attendedClasses})
     </insert>
 
-    <select id="getAttendanceByScheduleAndMember" parameterType="map" resultType="com.itwillbs.domain.ClassAttendanceVO">
-        SELECT * FROM classAttendance 
-        WHERE classSchedule_no = #{classScheduleNo} AND mem_no = #{memNo}
-    </select>
+	 <select id="getAttendanceByScheduleAndMember" parameterType="map" resultType="com.itwillbs.domain.ClassAttendanceVO">
+	    SELECT ca.*, m.mem_name, m.mem_phone
+	    FROM classAttendance ca
+	    JOIN member m ON ca.mem_no = m.mem_no
+	    WHERE ca.classSchedule_no = #{scheduleId} AND ca.mem_no = #{memNo}
+	</select>
+
 
     <select id="getStudentsBySchedule" parameterType="int" resultMap="attendanceResultMap">
         SELECT ca.*, m.mem_name, m.mem_phone
@@ -32,10 +35,10 @@
     </select>
 
     <update id="updateAttendance" parameterType="com.itwillbs.domain.ClassAttendanceVO">
-        UPDATE classAttendance
-        SET total_classes = #{totalClasses}, attended_classes = #{attendedClasses}
-        WHERE classSchedule_no = #{classSchedule_no} AND mem_no = #{mem_no}
-    </update>
+	    UPDATE classAttendance
+	    SET attended_classes = #{attendedClasses}
+	    WHERE classSchedule_no = #{classSchedule_no} AND mem_no = #{mem_no}
+	</update>
     
     <!-- DailyAttendance 관련 쿼리 -->
     <insert id="saveDailyAttendance" parameterType="com.itwillbs.domain.DailyAttendanceVO">
@@ -45,7 +48,7 @@
 
     <select id="getDailyAttendanceByScheduleAndMember" resultType="com.itwillbs.domain.DailyAttendanceVO">
         SELECT * FROM dailyAttendance 
-        WHERE classSchedule_no = #{classSchedule_no} AND mem_no = #{mem_no}
+        WHERE classSchedule_no = #{classSchedule_no} AND mem_no = #{mem_no} 
     </select>
     
     <select id="getDailyAttendanceBySchedule" resultType="com.itwillbs.domain.DailyAttendanceVO">

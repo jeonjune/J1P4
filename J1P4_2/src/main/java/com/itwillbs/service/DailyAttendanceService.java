@@ -24,4 +24,10 @@ public class DailyAttendanceService {
     public List<DailyAttendanceVO> getDailyAttendanceByScheduleAndMember(int scheduleId, int memNo) {
         return dailyAttendanceDAO.getDailyAttendanceByScheduleAndMember(scheduleId, memNo);
     }
+    
+    public void recordAttendance(int studentId, int classScheduleId) {
+        DailyAttendanceVO dailyAttendance = new DailyAttendanceVO(classScheduleId, studentId);
+        dailyAttendance.setAttendance_date(new java.sql.Date(System.currentTimeMillis()));
+        dailyAttendanceDAO.saveDailyAttendance(dailyAttendance);
+    }
 }

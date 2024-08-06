@@ -29,11 +29,15 @@ public class ClassAttendanceDAO {
         sqlSession.update(NAMESPACE + ".updateAttendance", attendance);
     }
 
-    public ClassAttendanceVO getAttendanceByScheduleAndMember(int classScheduleNo, int memNo) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("classScheduleNo", classScheduleNo);
-        params.put("memNo", memNo);
-        return sqlSession.selectOne("com.itwillbs.mapper.ClassAttendanceMapper.getAttendanceByScheduleAndMember", params);
+    public ClassAttendanceVO getAttendanceByScheduleAndMember(int classSchedule_no, int mem_no) {
+        Map<String, Integer> params = new HashMap<>();
+        params.put("scheduleId", classSchedule_no);
+        params.put("memNo", mem_no);
+        ClassAttendanceVO attendance = sqlSession.selectOne(NAMESPACE + ".getAttendanceByScheduleAndMember", params);
+        if (attendance == null) {
+            throw new RuntimeException("Attendance record not found for scheduleId: " + classSchedule_no + ", memNo: " + mem_no);
+        }
+        return attendance;
     }
 
     
