@@ -5,12 +5,13 @@
 	<!--     Left navbar links -->
 	<ul class="navbar-nav">
 		<li class="nav-item"><a class="nav-link"
-			href="/employee/empList"
-			role="button"><i class="fas">직원리스트</i></a></li>
-		<li class="nav-item"><a class="nav-link"
 			href="/vacation/vacation"
 			role="button"><i class="fas">직원일정</i></a></li>
-			
+		<c:if test="${sess_job.equals('관리자') }">	
+			<li class="nav-item"><a class="nav-link"
+				href="/employee/empList"
+				role="button"><i class="fas">직원리스트</i></a></li>
+		</c:if>
 		<li class="dropdown">
 		    <button class="btn nav-item dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="color: rgba(0, 0, 0, .5);">
 		     <i class="fas">휴가관리</i>

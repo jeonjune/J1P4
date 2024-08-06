@@ -372,7 +372,7 @@
           </li>
          <li class="nav-header">Management</li>
           <li class="nav-item"> 
-            <a href="/employee/empList" class="nav-link">
+            <a href="/vacation/vacation" class="nav-link">
               <i class="nav-icon fas fa-user"></i>
               <p>
                 직원 관리
