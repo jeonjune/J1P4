@@ -22,6 +22,14 @@
         var calendarEl = document.getElementById('calendar');
         
         var calendar = new FullCalendar.Calendar(calendarEl, {
+        	
+       	dateClick: function(info) {
+//        	    alert('Date: ' + info.dateStr);
+       	 	const vaModal = new bootstrap.Modal('#vaModal', {});
+   			vaModal.show();
+   			$('#vacation_start').val(info.dateStr);
+       	  },
+        
        	 headerToolbar: {
        	      right: 'custom1 today prev,next'
        	    },
@@ -32,6 +40,7 @@
                   click: function() {
                 	  const vaModal = new bootstrap.Modal('#vaModal', {});
                 	  vaModal.show();
+                	  $('#vacation_start').val('');
 //                 	  $('#vaModal').modal(); 
                   }
                 }
@@ -97,7 +106,7 @@
 					</div>
 					<div class="form-group">
 						<label>휴가 시작일</label> 
-						<input type="date" name="vacation_start" class="form-control" />
+						<input type="date" name="vacation_start" class="form-control" id="vacation_start" />
 					</div>
 					<div class="form-group">
 						<label>휴가 종료일(출근일)</label>
@@ -134,8 +143,11 @@ $(document).ready(function(){
 			type : "POST",
 			data : $("#fm1").serialize(),
 			success : function(data) {
+				console.log(data);
 				if(data === "endVa"){
-				alert("남은 휴가가 없습니다.");
+				alert("남은 휴가가 없습니다.");					
+				}else if(data === "overVa"){
+				alert("남은 휴가보다 많이 신청했습니다.");
 					
 				}else {					
 				alert("휴가 신청완료 되었습니다.");

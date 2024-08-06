@@ -202,7 +202,9 @@ $(document).ready(function(){
 			data : $("#fm1").serialize(),
 			success : function(data) {
 				if(data === "endVa"){
-					alert("남은 휴가가 없습니다.");
+					alert("남은 휴가가 없습니다.");					
+					}else if(data === "overVa"){
+					alert("남은 휴가보다 많이 신청했습니다.");
 						
 					}else {					
 					alert("휴가 신청완료 되었습니다.");
