@@ -40,7 +40,7 @@
 <!-- 					</div> -->
 					
 					<div class="form-group">
-						<label> 장비신청유형 </label> <select id="select_type"
+						<label> 장비신청유형 </label> <select id="select_type" class="form-control"
 							name="e_repair_type" size="1">
 							<option>선택하세요.</option>
 							<option value="추가구입">추가구입</option>
@@ -83,7 +83,7 @@
 					
 					<div class="form-group">
 						<label>유지보수이유</label><br>
-						<textarea id="comment" name="repair_reason" rows="5" cols="100"
+						<textarea id="comment" name="repair_reason" rows="5" cols="100" class="form-control"
 							placeholder="입력하세요.">${resultVO.repair_reason }</textarea>
 					</div>
 

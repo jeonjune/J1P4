@@ -266,6 +266,7 @@ logger.debug(" downloadGET() 실행 ");
 	@PostMapping(value = "/detail")
 	public String updateType(@RequestParam("equipment_no")int eq,EquipManageVO vo) throws Exception{
 		logger.info("#### eq ##### :"+ eq);
+		logger.info("#### vo ##### :"+ vo);
 		vo.setEquipment_no(eq);
 		eService.updateType(vo);
 		

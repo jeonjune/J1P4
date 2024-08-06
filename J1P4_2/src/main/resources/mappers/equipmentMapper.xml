@@ -35,23 +35,27 @@
 	<!--첨부파일 조회  -->
 	<select id="selectFile" resultType="fileVO">
 	SELECT IFNULL(
-    (select file_name from file where equipment_no=equipment_no) ,'no') AS file_name
+    (select file_name from file where equipment_no=#{equipment_no}) ,'no') AS file_name
 	</select>	
 	
 	<!--(승인)장비내역 리스트 -->
 	<update id="updateType">
-		UPDATE equipmentManagement
-		SET 
-    	e_repair_type = CASE 
+   UPDATE equipmentManagement
+      SET 
+       e_repair_type = CASE 
         WHEN e_repair_type = '구입' THEN '정상' 
         WHEN e_repair_type = '추가구입' THEN '정상'
         WHEN e_repair_type = '수리' THEN '수리중' 
         ELSE '폐기'
-    	END,
-    	status = '승인',
-    	approval_date = NOW()
-		WHERE equipment_no = #{equipment_no};
-	</update>
+       END,
+       approval_date = NOW(),
+       <if test="e_repair_type =='추가구입'">
+       count=count+#{count},
+       total=total+#{total},
+       </if>
+       status = '승인'
+      WHERE equipment_no = #{equipment_no};
+</update>
 	
 	<!-- 장비내역 리스트 조회 -->
 	<select id="listEquip" resultType="EquipManageVO">
