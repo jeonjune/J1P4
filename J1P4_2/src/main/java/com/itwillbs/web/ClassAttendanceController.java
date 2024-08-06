@@ -1,5 +1,8 @@
 package com.itwillbs.web;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -13,9 +16,11 @@ import org.springframework.web.bind.annotation.*;
 import com.itwillbs.domain.ClassAttendanceVO;
 import com.itwillbs.domain.ClassScheduleVO;
 import com.itwillbs.domain.ClassVO;
+import com.itwillbs.domain.DailyAttendanceVO;
 import com.itwillbs.service.ClassAttendanceService;
 import com.itwillbs.service.ClassScheduleService;
 import com.itwillbs.service.ClassService;
+import com.itwillbs.service.DailyAttendanceService;
 
 @Controller
 @RequestMapping("/attendance")
@@ -29,6 +34,9 @@ public class ClassAttendanceController {
 
     @Autowired
     private ClassAttendanceService classAttendanceService;
+    
+    @Autowired
+    private DailyAttendanceService dailyAttendanceService;
 
 	private static final Logger logger = LoggerFactory.getLogger(ClassAttendanceController.class);
     
@@ -69,4 +77,29 @@ public class ClassAttendanceController {
         classAttendanceService.updateAttendance(attendance);
         return ResponseEntity.ok("success");
     }
+    
+    @GetMapping("/daily-check/{scheduleId}")
+    @ResponseBody
+    public ResponseEntity<List<ClassAttendanceVO>> getDailyAttendance(@PathVariable("scheduleId") int scheduleId) {
+        List<ClassAttendanceVO> students = classAttendanceService.getStudentsBySchedule(scheduleId);
+        return ResponseEntity.ok(students);
+    }
+
+
+    @PostMapping("/daily-check/update")
+    @ResponseBody
+    public ResponseEntity<String> updateDailyAttendance(@RequestBody DailyAttendanceVO dailyAttendance) {
+        dailyAttendance.setAttendance_date(java.sql.Date.valueOf(LocalDate.now())); // Ensure correct date format
+        dailyAttendanceService.saveDailyAttendance(dailyAttendance);
+        return ResponseEntity.ok("success");
+    }
+
+    @GetMapping("/daily-attendance/{mem_no}/{scheduleId}")
+    public String viewDailyAttendance(@PathVariable("mem_no") int memNo, @PathVariable("scheduleId") int scheduleId, Model model) {
+        List<DailyAttendanceVO> dailyAttendanceList = dailyAttendanceService.getDailyAttendanceByScheduleAndMember(scheduleId, memNo);
+        model.addAttribute("dailyAttendanceList", dailyAttendanceList);
+        return "class/daily-attendance";
+    }
+    
+
 }

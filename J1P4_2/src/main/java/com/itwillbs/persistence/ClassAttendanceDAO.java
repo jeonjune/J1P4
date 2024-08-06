@@ -1,6 +1,8 @@
 package com.itwillbs.persistence;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,10 +29,12 @@ public class ClassAttendanceDAO {
         sqlSession.update(NAMESPACE + ".updateAttendance", attendance);
     }
 
-    public ClassAttendanceVO getAttendanceByScheduleAndMember(int scheduleId, int memNo) {
-        ClassAttendanceVO params = new ClassAttendanceVO();
-        params.setClassSchedule_no(scheduleId);
-        params.setMem_no(memNo);
-        return sqlSession.selectOne(NAMESPACE + ".getAttendanceByScheduleAndMember", params);
+    public ClassAttendanceVO getAttendanceByScheduleAndMember(int classScheduleNo, int memNo) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("classScheduleNo", classScheduleNo);
+        params.put("memNo", memNo);
+        return sqlSession.selectOne("com.itwillbs.mapper.ClassAttendanceMapper.getAttendanceByScheduleAndMember", params);
     }
+
+    
 }
