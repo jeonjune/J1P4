@@ -11,7 +11,7 @@
 			href="/employee/attend?date=${date[0].formatted_date }"
 			role="button">출석정보</a></li>
 		<li class="nav-item"><a class="nav-link"
-			href="/employee/myVacation"
+			href="/employee/myVacation?date=${year[0].formatted_date }"
 			role="button">휴가관리</a></li>
 	</ul>
 	

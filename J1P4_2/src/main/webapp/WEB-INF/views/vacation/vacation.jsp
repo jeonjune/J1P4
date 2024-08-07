@@ -74,7 +74,7 @@
     </script>
   <div class="content-wrapper" style="min-height: 831px;">
   
-    <div id='calendar'></div>
+    <div id='calendar' style="background: #fff"></div>
     
     
     <!-- 휴가 모달창 시작 -->

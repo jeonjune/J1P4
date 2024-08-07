@@ -39,7 +39,7 @@
 					<!-- 페이징 처리 -->
 	                  <div class="card-tools justify-content-end m-3">
 	                    <form action="" method="get" class="myDateForm">
-	                    <div class="form-inline">
+	                    <div class="form-inline" style="display: inline-block;">
 	                    <c:if test="${not empty year }">
 	                    <select class="form-control" id="selectMyDate" name="date">
 	                    	<c:forEach items="${year}" var="item">
@@ -48,11 +48,11 @@
 	                    </select>
 	                    </c:if>
 	                    </div>
+					<button class="btn btn-primary" type="button" style="display: inline-block;"
+							 data-bs-toggle="modal" data-bs-target="#vaModal">휴가신청</button>	
 	                    </form>
 	            	    </div>
 						
-					<button class="btn btn-primary" type="button"
-							 data-bs-toggle="modal" data-bs-target="#vaModal">휴가신청</button>	
 							 
 					</div>
 					<c:if test="${myP.job_rank == '관리자'}">
@@ -79,7 +79,7 @@
 					</h2>
 					<div class="card" style="margin-top: 20px;">
 						<div class="card-body">
-							<strong><i class="far fa-file-alt mr-1 cardMy"></i> 올 해 연차 현황 </strong>
+							<strong><i class="far fa-calendar mr-1 cardMy"></i> 올 해 연차 현황 </strong>
 							<br> <br>
 							<div class="centered-circle"><span>총 연차 <br>12</span></div>
 							

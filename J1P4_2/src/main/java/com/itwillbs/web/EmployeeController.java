@@ -471,7 +471,9 @@ public List<String> fileProcess(MultipartHttpServletRequest multiRequest) throws
 			logger.info("@@@@@@@@@@@@@@principal.getName()@@@@@@@@@@@ :"+principal.getName());
 			user_no = eService.user_no(principal.getName());
 			List<EmpAttendanceVO> dateResult =  eService.userMonth(user_no);
-			model.addAttribute("date",dateResult);		        
+			model.addAttribute("date",dateResult);
+			List<EmpAttendanceVO> yearResult =  vaService.userYear(user_no);
+			model.addAttribute("year",yearResult);	
 			logger.info("@@@@@@@@@@@@@@date@@@@@@@@@@@ :"+dateResult);
 		}
 
@@ -500,6 +502,8 @@ public List<String> fileProcess(MultipartHttpServletRequest multiRequest) throws
 					attendMap.put("date", date);
 					List<EmpAttendanceVO> result =  eService.monthWork(attendMap);
 					List<EmpAttendanceVO> dateResult =  eService.userMonth(user_no);
+					List<EmpAttendanceVO> yearResult =  vaService.userYear(user_no);
+					model.addAttribute("year",yearResult);	
 					Integer countVa = eService.countVa(attendMap);
 					logger.info("@@@@@@@@@@@@@@countVa()@@@@@@@@@@@ :");
 					

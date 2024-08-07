@@ -79,7 +79,8 @@
 					</h2>
 					<div class="card" style="margin-top: 20px;">
 						<div class="card-body">
-							<strong><i class="far fa-file-alt mr-1 cardMy"></i> 이번달 출근 현황 </strong>
+							<strong><i class="far fa-calendar mr-1 cardMy"></i> 
+								${param.date } 출근 현황 </strong>
 							<br> <br>
 							<div class="centered-circle"><span>출근일 수 <br>${countAtt }</span></div>
 							
