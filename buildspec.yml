@@ -10,11 +10,12 @@ phases:
   pre_build:
     commands:
       - echo Build started on `date`
+      - cd ExProject
       - mvn clean install
   build:
     commands:
       - echo Packaging application
-      - mv target/controller-1.0.0-BUILD-SNAPSHOT.war myapp.war
+      - mv target/controller-1.0.0-BUILD-SNAPSHOT.war ../myapp.war
   post_build:
     commands:
       - echo Build completed on `date`
