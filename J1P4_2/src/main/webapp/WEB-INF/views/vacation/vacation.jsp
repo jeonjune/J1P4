@@ -71,6 +71,33 @@
 
       });
 
+      
+      // 휴가시작 종료일 반차일때 같은날로 고정하기
+ 		function syncAndLockDate(status) {
+            var startDate = document.getElementById("vacation_start").value;
+            if (startDate) {
+                var start = new Date(startDate);
+                if (status === "오후반차") {
+                    start.setDate(start.getDate() + 1); // 오후 반차인 경우 하루를 더함
+                }
+                var endDate = document.getElementById("vacation_end");
+                endDate.value = start.toISOString().split('T')[0]; // 날짜를 YYYY-MM-DD 형식으로 설정
+                endDate.readOnly = true;
+            }
+        }
+
+        // 휴가 상태를 확인하고 날짜를 동기화 및 고정하는 함수
+        function checkVacationStatus() {
+            var status = document.getElementById("vacation_status").value;
+            if (status === "오전반차" || status === "오후반차") {
+                syncAndLockDate(status);
+            } else {
+                var endDate = document.getElementById("vacation_end");
+                endDate.value = "";
+                endDate.readOnly = false;
+            }
+        }
+
 
     </script>
   <div class="content-wrapper" style="min-height: 831px;">
@@ -98,7 +125,7 @@
 					<div class="m-2">
 					<div class="accordion-item">
 					<div class="textRight">
-						<select name="vacation_status" id="vacation_status" class="form-control">
+						<select name="vacation_status" id="vacation_status" class="form-control" onchange="checkVacationStatus()">
 							<option value="휴가">휴가</option>
 							<option value="오전반차">오전 반차</option>
 							<option value="오후반차">오후 반차</option>
@@ -108,11 +135,11 @@
 					</div>
 					<div class="form-group">
 						<label>휴가 시작일</label> 
-						<input type="date" name="vacation_start" class="form-control" id="vacation_start" />
+						<input type="date" name="vacation_start" class="form-control" id="vacation_start"  onchange="checkVacationStatus()" />
 					</div>
 					<div class="form-group">
 						<label>휴가 종료일(출근일)</label>
-						<input type="date" name="vacation_end" class="form-control" />
+						<input type="date" name="vacation_end" class="form-control" id="vacation_end" />
 					</div>
 					<p><span id="length">0</span> / 500자<p>
 					<textarea rows="20" cols="200" name="vacation_reason" id="vacation_reason" 
@@ -183,7 +210,7 @@ function up(){
 	
 	//글자수 제한
 	if(val.length>500){
-		com.value = val.substring(0,5000);
+		com.value = val.substring(0,500);
 		len.textContent = 500; //제한 후 글자수 업데이트
 	}
 }
