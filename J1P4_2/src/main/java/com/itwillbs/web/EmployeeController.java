@@ -121,6 +121,9 @@ public class EmployeeController {
 		logger.info("모달창으로 직원 등록(컨트롤러)");
 		
 		logger.info("vo :"+vo);
+		if(vo.getJob().equals("관리자")) {
+			vo.setJob_rank("관리자");
+		}
 
 		//DAO에 동작 호출
 		eService.empJoin(vo);
@@ -434,6 +437,9 @@ public List<String> fileProcess(MultipartHttpServletRequest multiRequest) throws
 		logger.info("@@@@@@@@@@@@@@모달창으로 직원 수정(컨트롤러)");
 		
 		logger.info("vo :"+vo);
+		if(vo.getJob().equals("관리자")) {
+			vo.setJob_rank("관리자");
+		}
 		
 		// 직원 권한부여
 		avo.setUser_id(vo.getUser_id());
@@ -511,6 +517,9 @@ public List<String> fileProcess(MultipartHttpServletRequest multiRequest) throws
 			        if(countVa == null) {
 			            countVa = 0;
 			        }
+			        
+			        
+			        
 			        
 			        model.addAttribute("date",dateResult);		        
 			        logger.info("@@@@@@@@@@@@@@date@@@@@@@@@@@ :"+dateResult);
