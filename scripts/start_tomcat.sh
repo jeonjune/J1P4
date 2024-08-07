@@ -6,4 +6,5 @@ rm -f /usr/local/tomcat/webapps/ROOT.war
 mv /usr/local/tomcat/webapps/myapp.war /usr/local/tomcat/webapps/ROOT.war
 
 # Tomcat 재시작 (시스템에 따라 명령어가 다를 수 있음)
-sudo systemctl restart tomcat9
+#sudo systemctl restart tomcat9
+sudo sh /usr/local/tomcat/bin/startup.sh
