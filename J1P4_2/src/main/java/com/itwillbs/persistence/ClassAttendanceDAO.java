@@ -1,6 +1,8 @@
 package com.itwillbs.persistence;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,10 +29,16 @@ public class ClassAttendanceDAO {
         sqlSession.update(NAMESPACE + ".updateAttendance", attendance);
     }
 
-    public ClassAttendanceVO getAttendanceByScheduleAndMember(int scheduleId, int memNo) {
-        ClassAttendanceVO params = new ClassAttendanceVO();
-        params.setClassSchedule_no(scheduleId);
-        params.setMem_no(memNo);
-        return sqlSession.selectOne(NAMESPACE + ".getAttendanceByScheduleAndMember", params);
+    public ClassAttendanceVO getAttendanceByScheduleAndMember(int classSchedule_no, int mem_no) {
+        Map<String, Integer> params = new HashMap<>();
+        params.put("scheduleId", classSchedule_no);
+        params.put("memNo", mem_no);
+        ClassAttendanceVO attendance = sqlSession.selectOne(NAMESPACE + ".getAttendanceByScheduleAndMember", params);
+        if (attendance == null) {
+            throw new RuntimeException("Attendance record not found for scheduleId: " + classSchedule_no + ", memNo: " + mem_no);
+        }
+        return attendance;
     }
+
+    
 }

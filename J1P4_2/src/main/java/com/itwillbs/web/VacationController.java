@@ -87,8 +87,16 @@ public class VacationController {
 			Integer appHCount = empService.appHCount(user_no);
 			logger.info("@@@@@@@@@@@@@@appCount@@@@@@@@@@@ :"+appCount);
 			logger.info("@@@@@@@@@@@@@@appHCount@@@@@@@@@@@ :"+appHCount);
+			if(appCount == null) {
+				appCount = 0;
+			}
+			if(appHCount == null) {
+				appHCount = 0;
+			}
 
 			Integer appCVa = (appCount*2) +appHCount;
+			logger.info("@@@@@@@@@@@@@@appCVa@@@@@@@@@@@ :"+appCVa);
+			
 			
 			// 시작 날짜와 종료 날짜 가져오기
 	        Date vacationStart = vo.getVacation_start();
@@ -99,10 +107,11 @@ public class VacationController {
 
 	        // 밀리초를 일 단위로 변환
 	        long diffInDays = diffInMillies / (1000 * 60 * 60 * 24);
-	        logger.info("@@@@@@@@@@@@@@diffInDayst@@@@@@@@@@@ :"+diffInDays);
+	        logger.info("@@@@@@@@@@@@@@diffInDays@@@@@@@@@@@ :"+diffInDays);
 			
 	        if(appCVa+(diffInDays*2) > 24) {
-				return "endVa";
+	        	logger.info("@@@@@@@@@@@@@@diffInDays@@@@@@@@@@@ :"+diffInDays);
+				return "overVa";
 			}
 			
 			String v_name = eService.getName(user_no);
@@ -119,29 +128,44 @@ public class VacationController {
 	@RequestMapping(value = "/vacList", method = RequestMethod.GET)
 	public void vacList(HttpSession session, Model model) throws Exception {
 		logger.info("신청중인 휴가목록@@@@");
-		String sess_job = (String) session.getAttribute("sess_job");
-		logger.info("sess_job@@@@"+sess_job);
-		if(!sess_job.equals("관리자")) {
-			// 직무별로 보는 쿼리 만들기
-			List<EmpAttendanceVO> reqList = eService.reqJob(sess_job);
-			model.addAttribute("reqList", reqList);			
+		if(session.getAttribute("sess_job")!=null) {
 			
-		}else {
-			List<EmpAttendanceVO> reqList = eService.reqVaca();
-			model.addAttribute("reqList", reqList);			
+			String sess_job = (String) session.getAttribute("sess_job");
+			logger.info("sess_job@@@@"+sess_job);
+			if(!sess_job.equals("관리자")) {
+				// 직무별로 보는 쿼리 만들기
+				List<EmpAttendanceVO> reqList = eService.reqJob(sess_job);
+				model.addAttribute("reqList", reqList);			
+				
+			}else {
+				List<EmpAttendanceVO> reqList = eService.reqVaca();
+				model.addAttribute("reqList", reqList);			
+			}
+			
 		}
-		
 		
 	}
 	
 	// 승인된 휴가 목록
 	@RequestMapping(value = "/yVacList", method = RequestMethod.GET)
-	public void yVacList(Model model) throws Exception{
+	public void yVacList(HttpSession session, Model model) throws Exception{
 		logger.info("승인된 휴가목록@@@@");
-		List<EmpAttendanceVO> yList = eService.yVaca();
-		model.addAttribute("yList", yList);
 		
+		if(session.getAttribute("sess_job")!=null) {
+			
+			String sess_job = (String) session.getAttribute("sess_job");
+			logger.info("sess_job@@@@"+sess_job);
+			if(!sess_job.equals("관리자")) {
+				// 직무별로 보는 쿼리 만들기
+				List<EmpAttendanceVO> yList = eService.yVaJob(sess_job);
+				model.addAttribute("yList", yList);
+				
+			}else {
+				List<EmpAttendanceVO> yList = eService.yVaca();
+				model.addAttribute("yList", yList);
+			}
 		
+		}
 	}
 	
 	// 휴가 반려
@@ -154,10 +178,25 @@ public class VacationController {
 	
 	// 반려된 휴가 목록
 	@RequestMapping(value = "/nVacList", method = RequestMethod.GET)
-	public void nVacList(Model model) throws Exception {
+	public void nVacList(HttpSession session, Model model) throws Exception {
 		logger.info("반려된 휴가목록@@@@");
-		List<EmpAttendanceVO> nList = eService.nVaca();
-		model.addAttribute("nList", nList);
+		
+		if(session.getAttribute("sess_job")!=null) {
+			
+			String sess_job = (String) session.getAttribute("sess_job");
+			logger.info("sess_job@@@@"+sess_job);
+			if(!sess_job.equals("관리자")) {
+				// 직무별로 보는 쿼리 만들기
+				List<EmpAttendanceVO> nList = eService.nVaJob(sess_job);
+				model.addAttribute("nList", nList);
+				
+			}else {
+				List<EmpAttendanceVO> nList = eService.nVaca();
+				model.addAttribute("nList", nList);
+			}
+		
+		}
+		
 		 
 	}
 	
