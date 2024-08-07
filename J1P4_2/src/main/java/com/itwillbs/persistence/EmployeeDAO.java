@@ -53,19 +53,22 @@ public interface EmployeeDAO {
 	public void reEmp(String user_id) throws Exception;
 	
 	// 내 출근 확인
-	public List<EmpAttendanceVO> monthWork(int user_no) throws Exception;
+	public List<EmpAttendanceVO> monthWork(Map<String, Object> user_no) throws Exception;
+	
+	// 내 출근 확인2
+	public List<EmpAttendanceVO> userMonth(int user_no) throws Exception;
 	
 	// 직원리스트 개수 (페이징)
 	public int getTotalEmpCount() throws Exception;
 
 	// 지각 카운트
-	public Integer countLate(int user_no) throws Exception;
+	public Integer countLate(Map<String, Object> user_no) throws Exception;
 	
 	// 휴가 카운트
-	public Integer countVa(int user_no) throws Exception;
+	public Integer countVa(Map<String, Object> user_no) throws Exception;
 	
 	// 반차 카운트
-	public Integer countHalf(int user_no) throws Exception;
+	public Integer countHalf(Map<String, Object> user_no) throws Exception;
 
 	// 올해 휴가 카운트
 	public Integer yearCountVa(int user_no) throws Exception;
@@ -74,7 +77,7 @@ public interface EmployeeDAO {
 	public Integer yearCountHalf(int user_no) throws Exception;
 	
 	// 이번달 출석일
-	public Integer countAtt(int user_no) throws Exception;
+	public Integer countAtt(Map<String, Object> user_no) throws Exception;
 	
 	// 반려안된 총 휴가수
 	public Integer appCount(int user_no) throws Exception;
