@@ -549,7 +549,10 @@ $(function() {
 	       var sample6_address = $('#sample6_address').val();
 	       var sample6_detailAddress = $('#sample6_detailAddress').val();
 	      
-	     
+	     	if(pw1!=pw2){
+	     		alert("비밀번호를 다시 확인해주세요.");
+	     		 return;
+	     	}
 	        
 	        if (user_id == "" || name == "" || pw1 == "" || pw2 == "" || emp_date=="" ||
 	        	birth_date ==""	|| gender == undefined || phone_no =="" || email=="" || sample6_postcode =="" ||
@@ -581,7 +584,7 @@ $(function() {
 				
 			},
 			error : function() {
-				alert("오류발생");
+				alert("이메일 또는 전화번호가 중복된 정보입니다.");
 			}
 		});
 	});

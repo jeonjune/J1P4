@@ -242,65 +242,65 @@
 					<div class="container-fluid">
 						<label>키</label> 
 						<div class="form-group input-group">
-							<input type="number" name="height"
+							<input type="number" name="height" id="height"
 								value="${healthInfo.height}" class="form-control">
 								<span class="input-group-text" id="basic-addon2">cm</span>
 						</div>
 						<label>체중</label> 
 						<div class="form-group input-group">
-							<input type="number" name="weight"
+							<input type="number" name="weight" id="weight"
 								value="${healthInfo.weight}" class="form-control" />
 								<span class="input-group-text" id="basic-addon2">kg</span>
 						</div>
 						<label>체지방량</label> 
 						<div class="form-group input-group">
-							<input type="number" name="fat"
+							<input type="number" name="fat" id="fat"
 								value="${healthInfo.fat}" class="form-control" />
 								<span class="input-group-text" id="basic-addon2">kg</span>
 						</div>
 						<label>체지방률</label> 
 						<div class="form-group input-group">
-							<input type="number" name="fat_mass"
+							<input type="number" name="fat_mass" id="fat_mass"
 								value="${healthInfo.fat_mass}" class="form-control" />
 								<span class="input-group-text" id="basic-addon2">%</span>
 						</div>
 						<label>골격근량</label> 
 						<div class="form-group input-group">
-							<input type="number" name="muscle"
+							<input type="number" name="muscle" id="muscle"
 								value="${healthInfo.muscle}" class="form-control" />
 								<span class="input-group-text" id="basic-addon2">kg</span>
 						</div>
 						<label>골격근율</label> 
 						<div class="form-group input-group">
-							<input type="number" name="muscle_mass"
+							<input type="number" name="muscle_mass" id="muscle_mass"
 								value="${healthInfo.muscle_mass}" class="form-control" />
 								<span class="input-group-text" id="basic-addon2">%</span>
 						</div>
 						<label>BMI</label> 
 						<div class="form-group input-group">
-							<input type="number" name="bmi"
+							<input type="number" name="bmi" id="bmi"
 								value="${healthInfo.bmi}" class="form-control" />
 								<span class="input-group-text" id="basic-addon2"></span>
 						</div>
 						<label>기초대사량</label> 
 						<div class="form-group input-group">
-							<input type="number" name="bmr"
+							<input type="number" name="bmr" id="bmr"
 								value="${healthInfo.bmr}" class="form-control" />
 								<span class="input-group-text" id="basic-addon2">kcal</span>
 						</div>
 						<label>복부비만율</label> 
 						<div class="form-group input-group">
-							<input type="number" name="belly_fat"
+							<input type="number" name="belly_fat" id="belly_fat"
 								value="${healthInfo.belly_fat}" class="form-control" />
 								<span class="input-group-text" id="basic-addon2"></span>
 						</div>
 						<label>운동목표</label>
 						<div class="form-group input-group">
-							<textarea rows="5" cols="38" name="exercise_goal">${healthInfo.exercise_goal}</textarea>
+							<textarea rows="5" cols="38" name="exercise_goal" id="exercise_goal">${healthInfo.exercise_goal}</textarea>
 						</div>
 						<label>상담내용</label>
 						<div class="form-group input-group">
-							<textarea rows="5" cols="38" name="consult_content">${healthInfo.consult_content}</textarea>
+							<textarea rows="5" cols="38" name="consult_content" id="consult_content">${healthInfo.consult_content}</textarea>
 						</div>
 
 						<button type="button" class="btn btn-primary" id="updateButt">수정하기</button>
@@ -330,51 +330,51 @@
 					<div class="container-fluid">
 						<label>등록일</label> 
 						<div class="form-group input-group">
-							<input type="date" name="inbody_date" class="form-control">
+							<input type="date" name="inbody_date" class="form-control" id="inbody_date2">
 						</div>
 						<label>키</label> 
 						<div class="form-group input-group">
-							<input type="number" name="height" class="form-control">
+							<input type="number" name="height" class="form-control" id="height2">
 								<span class="input-group-text" id="basic-addon2">cm</span>
 						</div>
 						<label>체중</label> 
 						<div class="form-group input-group">
-							<input type="number" name="weight" class="form-control" />
+							<input type="number" name="weight" class="form-control" id="weight2" />
 								<span class="input-group-text" id="basic-addon2">kg</span>
 						</div>
 						<label>체지방량</label> 
 						<div class="form-group input-group">
-							<input type="number" name="fat" class="form-control" />
+							<input type="number" name="fat" class="form-control" id="fat2" />
 								<span class="input-group-text" id="basic-addon2">kg</span>
 						</div>
 						<label>체지방률</label> 
 						<div class="form-group input-group">
-							<input type="number" name="fat_mass" class="form-control" />
+							<input type="number" name="fat_mass" class="form-control" id="fat_mass2"/>
 								<span class="input-group-text" id="basic-addon2">%</span>
 						</div>
 						<label>골격근량</label> 
 						<div class="form-group input-group">
-							<input type="number" name="muscle" class="form-control" />
+							<input type="number" name="muscle" class="form-control" id="muscle2"/>
 								<span class="input-group-text" id="basic-addon2">kg</span>
 						</div>
 						<label>골격근율</label> 
 						<div class="form-group input-group">
-							<input type="number" name="muscle_mass" class="form-control" />
+							<input type="number" name="muscle_mass" class="form-control" id="muscle_mass2" />
 								<span class="input-group-text" id="basic-addon2">%</span>
 						</div>
 						<label>BMI</label> 
 						<div class="form-group input-group">
-							<input type="number" name="bmi" class="form-control" />
+							<input type="number" name="bmi" class="form-control" id="bmi2"/>
 								<span class="input-group-text" id="basic-addon2"></span>
 						</div>
 						<label>기초대사량</label> 
 						<div class="form-group input-group">
-							<input type="number" name="bmr" class="form-control" />
+							<input type="number" name="bmr" class="form-control" id="bmr2"/>
 								<span class="input-group-text" id="basic-addon2">kcal</span>
 						</div>
 						<label>복부비만율</label> 
 						<div class="form-group input-group">
-							<input type="number" name="belly_fat" class="form-control" />
+							<input type="number" name="belly_fat" class="form-control" id="belly_fat2" />
 								<span class="input-group-text" id="basic-addon2"></span>
 						</div>
 						<label>운동목표</label>
@@ -559,7 +559,25 @@
     
     $(function() {
 		$("#updateButt").click(function() {
-				
+			
+			//빈칸검사
+			var inbody_date = $('#inbody_date').val();
+			var height = $('#height').val();
+			var weight = $('#weight').val();
+			var fat = $('#fat').val();
+			var fat_mass = $('#fat_mass').val();
+			var muscle = $('#muscle').val();
+			var muscle_mass = $('#muscle_mass').val();
+			var bmi = $('#bmi').val();
+			var bmr = $('#bmr').val();
+			var belly_fat = $('#belly_fat').val();
+			
+			if (inbody_date == "" || height == "" || weight == "" || fat == "" || fat_mass == "" ||
+			    muscle == "" || muscle_mass == "" || bmi == "" || bmr == "" || belly_fat == "") {
+			    alert("인바디 정보를 모두 입력해주세요.");
+			    return;
+			}
+			
 			$.ajax({
 				url : "/member/updateInbody",
 				type : "POST",
@@ -579,6 +597,24 @@
     $(function() {
 		$("#submitButt").click(function() {
 				
+			//빈칸검사
+			var inbody_date = $('#inbody_date2').val();
+			var height = $('#height2').val();
+			var weight = $('#weight2').val();
+			var fat = $('#fat2').val();
+			var fat_mass = $('#fat_mass2').val();
+			var muscle = $('#muscle2').val();
+			var muscle_mass = $('#muscle_mass2').val();
+			var bmi = $('#bmi2').val();
+			var bmr = $('#bmr2').val();
+			var belly_fat = $('#belly_fat2').val();
+			
+			if (inbody_date == "" || height == "" || weight == "" || fat == "" || fat_mass == "" ||
+			    muscle == "" || muscle_mass == "" || bmi == "" || bmr == "" || belly_fat == "") {
+			    alert("인바디 정보를 모두 입력해주세요.");
+			    return;
+			}
+			
 			$.ajax({
 				url : "/member/insertInbody",
 				type : "POST",

@@ -449,11 +449,11 @@
 				<section class="content">
 					<div class="container-fluid">
 						<div class="form-group">
-							<label>이름</label> <input type="text" name="mem_name"
+							<label>이름</label> <input type="text" name="mem_name" id="mem_name"
 								class="form-control">
 						</div>
 						<div class="form-group">
-							<label>생일</label> <input type="date" name="mem_birth"
+							<label>생일</label> <input type="date" name="mem_birth" id="mem_birth"
 								class="form-control" />
 						</div>
 
@@ -468,7 +468,7 @@
 						</div>
 
 						<div class="form-group">
-							<label>전화번호</label> <input type="text" name="mem_phone"
+							<label>전화번호</label> <input type="text" name="mem_phone" id="mem_phone"
 								class="form-control" maxlength="13" oninput="formatPhoneNumber(this)"> <label class="chkboxCustom">
 								<input type="checkbox" name="sms_opt"
 								style="accent-color: #cdb4db;" value="1">&nbsp;sms 수신 동의
@@ -476,7 +476,7 @@
 						</div>
 
 						<div class="form-group">
-							<label>이메일</label> <input type="email" name="mem_email"
+							<label>이메일</label> <input type="email" name="mem_email" id="mem_email"
 								class="form-control"> <label class="chkboxCustom">
 								<input type="checkbox" style="accent-color: #cdb4db;"
 								name="email_opt" value="1">&nbsp;이메일 수신 동의
@@ -484,7 +484,7 @@
 						</div>
 						<div class="form-group">
 							<label>메모</label> <br>
-							<textarea class="form-control" name="mem_note" rows="5" cols="38"></textarea>
+							<textarea class="form-control" name="mem_note" id="mem_note" rows="5" cols="38"></textarea>
 						</div>
 						<div class="form-group">
 							<label>주소</label>
@@ -609,6 +609,23 @@
 	/* 회원등록 Ajax */
 	$(function() {
 		$("#submitButt").click(function(event) {
+			
+			//빈칸검사
+			   var mem_name = $('#mem_name').val();
+		       var mem_birth = $('#mem_birth').val();
+		       var mem_gender = $('input[name="mem_gender"]:checked').val();
+		       var mem_phone = $('#mem_phone').val();
+		       var mem_email = $('#mem_email').val();
+		       var mem_note = $('#mem_note').val();
+		       var sample6_address = $('#sample6_address').val();
+		       var sample6_detailAddress = $('#sample6_detailAddress').val();
+		       
+		        if (mem_name == "" || mem_birth == "" || mem_phone =="" ||
+		        	mem_email ==""	|| mem_gender == undefined || mem_note =="" || 
+		        	sample6_address =="" || sample6_detailAddress == "") {
+		            alert("빈칸을 모두 입력해주세요.");
+		            return;
+		        }
 			
 			const token = $("meta[name='_csrf']").attr("content")
 			const header = $("meta[name='_csrf_header']").attr("content");
@@ -900,7 +917,7 @@
  		
  		//글자수 제한
  		if(val.length>500){
- 			com.value = val.substring(0,5000);
+ 			com.value = val.substring(0,500);
  			len.textContent = 500; //제한 후 글자수 업데이트
  		}
  	}
