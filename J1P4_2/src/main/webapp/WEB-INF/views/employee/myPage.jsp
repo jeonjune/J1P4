@@ -218,7 +218,7 @@
  
                         <div class="form-group">
                             <label>전화번호</label>
-                            <input type="text" name="phone_no"  class="form-control" value="${myP.phone_no }">
+                            <input type="text" name="phone_no"  maxlength="13" oninput="formatPhoneNumber(this)" class="form-control" value="${myP.phone_no }">
                         </div>
                       
                         <div class="form-group">
@@ -429,6 +429,25 @@
           }
       });
 	
+	  
+	// 연락처 입력 시 자동으로 하이픈 추가
+		function formatPhoneNumber(input) {
+			let value = input.value.replace(/\D/g, ''); // 숫자 이외의 문자 제거
+	        let formattedValue = '';
+	        
+	        if (value.length <= 3) {
+	            formattedValue = value;
+	        } else if (value.length <= 7) {
+	            formattedValue = value.replace(/(\d{3})(\d{0,4})/, '$1-$2');
+	        } else {
+	            formattedValue = value.replace(/(\d{3})(\d{4})(\d{0,4})/, '$1-$2-$3');
+	        }
+	        
+	        input.value = formattedValue;
+	    }
+		
+	  
+	  
 </script>
 
 
