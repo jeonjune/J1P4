@@ -209,7 +209,7 @@ ${rList }
 					 <c:if test="${rList.status == '반려'}">
 					 	<input type="hidden" id="eqno" value="${rList.equipment_no }">
                      	<button type="button" class="btn btn-warning" onclick="showRejectReason(${rList.equipment_no})">반려 사유 확인</button>
-                     	<button type="button" class="btn btn-primary" id="submitBut" class="btn btn-primary submitBut" 
+                     	<button type="button" class="btn btn-primary submitBut"  class="btn btn-primary submitBut" 
                      	data-equipment_no="${rList.equipment_no}" data-e_repair_type="${rList.e_repair_type}" data-addcount="${rList.addcount}">확인완료</button>
                      </c:if>
                      </td> 						
@@ -410,8 +410,8 @@ $("#selectType").val("${param.searchType}");
 
 //반려내역 - 장비내역으로 돌리기
 $(document).ready(function() {
-    $('#submitBut').on('click', function() {
-    	//alert("클릭");
+    $('.submitBut').on('click', function() {
+    	alert("클릭");
         var equipment_no = $(this).data('equipment_no');
         var e_repair_type = $(this).data('e_repair_type');
         var addcount = $(this).data('addcount');
@@ -425,8 +425,8 @@ $(document).ready(function() {
         // CSRF 토큰 값을 메타 태그에서 가져오기
         var token = $("meta[name='_csrf']").attr("content");
         var header = $("meta[name='_csrf_header']").attr("content");
-		//alert(equipment_no);	
-		//alert( e_repair_type);	
+		alert(equipment_no);	
+		alert( e_repair_type);	
         $.ajax({
             url: '/maintenance/rejectBack',
             type: 'POST',
