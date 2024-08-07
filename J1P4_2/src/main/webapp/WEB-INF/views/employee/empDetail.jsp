@@ -169,12 +169,12 @@
  
                         <div class="form-group">
                             <label>전화번호</label>
-                            <input type="text" name="phone_no"  class="form-control" value="${empDt.phone_no }">
+                            <input type="text" name="phone_no"  class="form-control" value="${empDt.phone_no }" id="phone_no" oninput="formatPhoneNumber(this)">
                         </div>
                       
                         <div class="form-group">
                             <label>이메일</label>
-                            <input type="text" name="email"  class="form-control" value="${empDt.email }">
+                            <input type="text" name="email"  class="form-control" value="${empDt.email }" id="email">
                         </div>
                        
                         <div class="form-group">
@@ -207,6 +207,23 @@
 <script>
 	$(function() {
 		$("#submitButt").click(function() {
+			
+		   //빈칸검사
+	       var phone_no = $('#phone_no').val();
+	       var email = $('#email').val();
+	       var sample6_postcode = $('#sample6_postcode').val();
+	       var sample6_address = $('#sample6_address').val();
+	       var sample6_detailAddress = $('#sample6_detailAddress').val();
+	      
+	     
+	        
+	        if (phone_no =="" || email=="" || sample6_postcode =="" ||
+	        	sample6_address =="" || sample6_detailAddress == "" ) {
+	            alert("빈칸을 모두 입력해주세요.");
+	            return;
+	        }
+			
+			
 			
 			$.ajax({
 				url : "/employee/empUpdate",
@@ -264,6 +281,25 @@
 	function goBack() {
         window.history.back();
     }
+	
+	
+	// 연락처 입력 시 자동으로 하이픈 추가
+	function formatPhoneNumber(input) {
+		let value = input.value.replace(/\D/g, ''); // 숫자 이외의 문자 제거
+        let formattedValue = '';
+        
+        if (value.length <= 3) {
+            formattedValue = value;
+        } else if (value.length <= 7) {
+            formattedValue = value.replace(/(\d{3})(\d{0,4})/, '$1-$2');
+        } else {
+            formattedValue = value.replace(/(\d{3})(\d{4})(\d{0,4})/, '$1-$2-$3');
+        }
+        
+        input.value = formattedValue;
+    }
+	
+	
 </script>
 
 

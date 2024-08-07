@@ -443,7 +443,7 @@ document.addEventListener("DOMContentLoaded", function() {
                         
                         <div class="form-group">
                             <label>이름</label>
-                            <input type="text" name="name"  class="form-control" >
+                            <input type="text" name="name"  class="form-control" id="name">
                         </div>
 
                         <div class="form-group" >
@@ -474,12 +474,12 @@ document.addEventListener("DOMContentLoaded", function() {
                         </form:form>
                      
 						<div class="form-group">
-							<label>입사일</label> <input type="date" name="emp_date"
+							<label>입사일</label> <input type="date" name="emp_date" id="emp_date"
 								class="form-control" />
 						</div>
 						
 						<div class="form-group">
-							<label>생일</label> <input type="date" name="birth_date"
+							<label>생일</label> <input type="date" name="birth_date" id="birth_date"
 								class="form-control" />
 						</div>
                       
@@ -491,12 +491,12 @@ document.addEventListener("DOMContentLoaded", function() {
  
                         <div class="form-group">
                             <label>전화번호</label>
-                            <input type="text" name="phone_no"  class="form-control"  maxlength="13" oninput="formatPhoneNumber(this)">
+                            <input type="text" name="phone_no"  class="form-control"  maxlength="13" oninput="formatPhoneNumber(this)" id="phone_no">
                         </div>
                       
                         <div class="form-group">
                             <label>이메일</label>
-                            <input type="text" name="email"  class="form-control" >
+                            <input type="text" name="email"  class="form-control" id="email">
                         </div>
                        
                         <div class="form-group">
@@ -534,6 +534,31 @@ document.addEventListener("DOMContentLoaded", function() {
 
 $(function() {
 	$("#submitButt").click(function() {
+		
+		//빈칸검사
+		   var user_id = $('#user_id').val();
+	       var name = $('#name').val();
+	       var pw1 = $('#pw1').val();
+	       var pw2 = $('#pw2').val();
+	       var emp_date = $('#emp_date').val();
+	       var birth_date = $('#birth_date').val();
+	       var gender = $('input[name="gender"]:checked').val();
+	       var phone_no = $('#phone_no').val();
+	       var email = $('#email').val();
+	       var sample6_postcode = $('#sample6_postcode').val();
+	       var sample6_address = $('#sample6_address').val();
+	       var sample6_detailAddress = $('#sample6_detailAddress').val();
+	      
+	     
+	        
+	        if (user_id == "" || name == "" || pw1 == "" || pw2 == "" || emp_date=="" ||
+	        	birth_date ==""	|| gender == undefined || phone_no =="" || email=="" || sample6_postcode =="" ||
+	        	sample6_address =="" || sample6_detailAddress == "" ) {
+	            alert("빈칸을 모두 입력해주세요.");
+	            return;
+	        }
+		
+		
 		const token = $("meta[name='_csrf']").attr("content")
 		const header = $("meta[name='_csrf_header']").attr("content");
 		
@@ -1131,6 +1156,8 @@ $(function() {
         
         input.value = formattedValue;
     }
+	   
+       
 	
 
 </script>

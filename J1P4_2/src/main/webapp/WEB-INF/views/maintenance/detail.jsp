@@ -73,7 +73,7 @@
 					</div>
 					
 					<div class="form-group">
-						<label>총 가격</label> <input type="text" name="total"
+						<label>추가구입 전 총 가격</label> <input type="text" name="total"
 							class="form-control" value="${resultVO.total }" readonly="readonly"/>
 					</div>
 					

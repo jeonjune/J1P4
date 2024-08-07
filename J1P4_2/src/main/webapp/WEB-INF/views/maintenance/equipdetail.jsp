@@ -6,6 +6,7 @@
 
 <%@ include file="../include/header.jsp"%>
 <%@ include file="../include/sidemenu.jsp"%>
+<%@ include file="../include/equipMenu.jsp"%>
 
 
 
