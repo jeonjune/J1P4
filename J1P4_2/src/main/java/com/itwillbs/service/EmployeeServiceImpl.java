@@ -128,22 +128,29 @@ public class EmployeeServiceImpl implements EmployeeService {
 	}
 
 	@Override
-	public List<EmpAttendanceVO> monthWork(int user_no) throws Exception {
+	public List<EmpAttendanceVO> monthWork(Map<String, Object> user_no) throws Exception {
 		return edao.monthWork(user_no);
 	}
 
+	
+	
 	@Override
-	public Integer countLate(int user_no) throws Exception {
+	public List<EmpAttendanceVO> userMonth(int user_no) throws Exception {
+		return edao.userMonth(user_no);
+	}
+
+	@Override
+	public Integer countLate(Map<String, Object> user_no) throws Exception {
 		return edao.countLate(user_no);
 	}
 
 	@Override
-	public Integer countVa(int user_no) throws Exception {
+	public Integer countVa(Map<String, Object> user_no) throws Exception {
 		return edao.countVa(user_no);
 	}
 
 	@Override
-	public Integer countHalf(int user_no) throws Exception {
+	public Integer countHalf(Map<String, Object> user_no) throws Exception {
 		return edao.countHalf(user_no);
 	}
 
@@ -158,7 +165,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 	}
 
 	@Override
-	public Integer countAtt(int user_no) throws Exception {
+	public Integer countAtt(Map<String, Object> user_no) throws Exception {
 		return edao.countAtt(user_no);
 	}
 

@@ -26,6 +26,6 @@ public class EmpAttendanceVO {
 	
 	// 캘린더 출력용 이름
 	public String v_name;
-	
+	public String formatted_date;
 
 }

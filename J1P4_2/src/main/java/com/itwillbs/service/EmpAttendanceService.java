@@ -1,6 +1,7 @@
 package com.itwillbs.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.itwillbs.domain.EmpAttendanceVO;
 
@@ -42,8 +43,10 @@ public interface EmpAttendanceService {
 	public String getName(int user_no) throws Exception;
 	
 	// 내 휴가 리스트
-	public List<EmpAttendanceVO> myVaca(int user_no) throws Exception;
+	public List<EmpAttendanceVO> myVaca(Map<String, Object> user_no) throws Exception;
 	
+	// 내 휴가 리스트2
+	public List<EmpAttendanceVO> userYear(int user_no) throws Exception;
 	
 
 }
