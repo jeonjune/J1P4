@@ -373,10 +373,16 @@ logger.debug(" downloadGET() 실행 ");
 		}
 	
 	
-	//반려내역 - 장비내역으로 복귀
+	//반려사유 확인 후() - 장비내역으로 복귀
+	@ResponseBody
 	@PostMapping(value = "/rejectBack")
-	public void rejectBackPOST(EquipManageVO vo) throws Exception {
+	public String rejectBackPOST(@RequestBody EquipManageVO vo) throws Exception {
+		logger.info("%%%%% eno %%%% :" + vo.getEquipment_no());
 		eService.rejectBack(vo);
+		
+		return "redirect:/maintenance/equipment";
+		
+		
 	} 
 	
 	
