@@ -32,6 +32,16 @@
         FROM class c
         LEFT JOIN instructor i ON c.instructor_no = i.instructor_no
         LEFT JOIN employee e ON i.user_no = e.user_no
+        ORDER BY c.class_no DESC
+        LIMIT #{pageStart}, #{pageSize}
+    </select>
+    
+    <select id="getClassesCount" resultType="int">
+        SELECT 
+            count(c.class_no)
+        FROM class c
+        LEFT JOIN instructor i ON c.instructor_no = i.instructor_no
+        LEFT JOIN employee e ON i.user_no = e.user_no
     </select>
 
     <select id="getClassById" parameterType="int" resultMap="classResultMap">

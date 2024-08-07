@@ -11,79 +11,97 @@
 
 
 <div class="content-wrapper" style="min-height: 831px;">
-
-<h1>장비신청상세페이지 - 팀장님페이지 detail</h1>
-
 <form action=""  method="post" id="detailForm"  accept-charset="UTF-8" >
+<div class="col-md-8" style="margin-left: 300px; padding-top: 20px; padding-bottom: 50px;">
+
 <input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
 <input type="hidden" name="equipment_no" value="${param.equipment_no }">
-	<div>
-
-					
-					<div class="form-group">
+	<div class="card">
+		<div class="card m-4">
+			<div class="card-body">
+			<div class="form-group">
+				<div class="p-1">
+				<h2>장비신청 승인</h2>
+				</div>
+				<div class="d-flex justify-content-between p-1">
+					<div class="form-group col-md-4">
 						<label>장비번호</label> <input type="text" name="equipment_no"
 							class="form-control" value="${resultVO.equipment_no }" readonly="readonly"/>
 					</div>
-					
-					<div class="form-group">
+					<div class="form-group col-md-4">
 						<label>담당자</label> <input type="text" name="name"
 							class="form-control" value="${resultVO.name}" readonly="readonly"/>
 					</div>
 					 
-					<div class="form-group">
+					<div class="form-group col-md-4">
 						<label>작성날짜</label> <input type="date" name="report_date"
 							class="form-control" value="${resultVO.report_date }" readonly="readonly"/>
 					</div>
+				</div>
+					</div>
+			</div>
+		</div>
+				<div class="card-body">
+
 					
-					<div class="form-group">
+					<div class="d-flex justify-content-between p-1">
+					<div class="form-group col-md-6">
 						<label>장비신청유형</label> <input type="text" name="e_repair_type"
 							class="form-control" value="${resultVO.e_repair_type }" readonly="readonly"/>
 					</div>
 					
 					
-					<div class="form-group">
+					<div class="form-group col-md-6">
 						<label>분야</label> <input type="text" name="field"
 							class="form-control" value="${resultVO.field }" readonly="readonly"/>
 					</div>
+					</div>
 					
-					
-					<div class="form-group">
+					<div class="d-flex justify-content-between p-1">
+					<div class="form-group col-md-6">
 						<label>신청장비이름</label> <input type="text" name="equipment_name"
 							class="form-control" value="${resultVO.equipment_name }" readonly="readonly"/>
 					</div>
 					
-					<div class="form-group">
+					<div class="form-group col-md-6">
 						<label>제조사</label> <input type="text" name="manufacturer"
 							class="form-control" value="${resultVO.manufacturer }" readonly="readonly"/>
 					</div>
+					</div>
 
-					<div class="form-group">
-						<label>개수</label> <input type="text" name="count"
+					<div class="d-flex justify-content-between p-1">
+					<div class="form-group col-md-3">
+						<label>현재 개수</label> <input type="text" name="count"
 							class="form-control" value="${resultVO.count }" readonly="readonly"/>
 					</div>
+
 					
-					<div class="form-group">
+					<div class="form-group col-md-3">
 						<label>추가구입 개수</label> <input type="text" name="addcount"
 							class="form-control" value="${resultVO.addcount }" readonly="readonly"/>
 					</div>
 					
-					<div class="form-group">
+					<div class="form-group col-md-3">
 						<label>가격</label> <input type="text" name="cost"
 							class="form-control" value="${resultVO.cost }" readonly="readonly"/>
 					</div>
 					
-					<div class="form-group">
+					<div class="form-group col-md-3">
 						<label>총 가격</label> <input type="text" name="total"
 							class="form-control" value="${resultVO.total }" readonly="readonly"/>
 					</div>
 					
-					<div class="form-group">
+					
+					
+					</div>
+					
+					<div class="form-group p-2">
 						<label>유지보수이유</label><br>
 						<textarea id="comment" name="repair_reason" rows="5" cols="100" readonly="readonly"
-							placeholder="입력하세요.">${resultVO.repair_reason }</textarea>
+							placeholder="입력하세요." class="form-control">${resultVO.repair_reason } </textarea>
 					</div>
 
-					<div class="form-group">
+					<div class="form-group p-2">
 						<label>첨부파일</label>
 					
 						
@@ -94,12 +112,15 @@
 						
 
 					</div>
-
-					<button type="button" class="btn btn-primary" id="submitBut">승인</button>
-			         <button type="button" class="btn btn-primary" data-bs-toggle="modal" onclick="showReject()"
+					<div class="p-2" style="text-align: right;">
+			         <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" onclick="showReject()"
 			         data-bs-target="#submitButt">반려</button>
+					<button type="button" class="btn btn-primary" id="submitBut">승인</button>
+					</div>
 
 
+</div>
+</div>
 		</div>
 </form>
 

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.itwillbs.domain.ClassVO;
+import com.itwillbs.domain.Criteria;
 
 @Repository
 public class ClassDAO {
@@ -15,8 +16,12 @@ public class ClassDAO {
     @Autowired
     private SqlSession sqlSession;
 
-    public List<ClassVO> getAllClasses() {
-        return sqlSession.selectList(NAMESPACE + ".getAllClasses");
+    public List<ClassVO> getAllClasses(Criteria cri) {
+        return sqlSession.selectList(NAMESPACE + ".getAllClasses", cri);
+    }
+    
+    public int getClassesCount() {
+    	return sqlSession.selectOne(NAMESPACE + ".getClassesCount");
     }
 
     public ClassVO getClassById(int classNo) {

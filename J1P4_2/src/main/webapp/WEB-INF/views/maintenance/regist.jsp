@@ -6,40 +6,44 @@
 
 <%@ include file="../include/header.jsp"%>
 <%@ include file="../include/sidemenu.jsp"%>
+<%@ include file="../include/equipMenu.jsp"%>
 <%-- <%@ include file="../include/equipMenu.jsp"%> --%>
 
 
 
 <div class="content-wrapper" style="min-height: 831px;">
-
-<h1>장비신청페이지 - regist</h1>
 <form action=""  method="post" id="registForm"  accept-charset="UTF-8" enctype="multipart/form-data">
+	<div class="col-md-8" style="margin-left: 300px; padding-top: 20px; padding-bottom: 50px;">
 <input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
-	<div>
-
-					
-					<div class="form-group">
-						<label>담당자</label> <input type="text" name="name" id="name"
-							class="form-control" />
+	<div class="card">
+		<div class="card m-4">
+			<div class="card-body">
+				<h2>장비신청</h2>
+			</div>
+		</div>
+				<div class="card-body">
+					<div class="d-flex justify-content-between p-1">
+					<div class="form-group col-md-6">
+						<label>담당자</label> <input type="text" name="name" id="name" value="${sess_name }"
+							readonly="readonly" class="form-control" />
 					</div>
 					
-					<div class="form-group">
+					<div class="form-group col-md-6">
 						<label>작성날짜</label> <input type="date" name="report_date" id="report_date"
 							class="form-control" />
 					</div>
 					
-					
-					<div class="form-group">
+					</div>
+					<div class="d-flex justify-content-between p-1">
+					<div class="form-group col-md-6">
 						<label> 장비신청유형 </label> <select id="select_type" required="required" class="form-control"
 							name="e_repair_type" size="1">
-							<option value="">선택하세요.</option>
+							<option value="" selected disabled>선택하세요.</option>
 							<option value="구입">구입</option>
-<!-- 							<option value="수리">수리</option> -->
-<!-- 							<option value="폐기">폐기</option> -->
 						</select>
 					</div>
 					
-					<div class="form-group">
+					<div class="form-group col-md-6">
                             <label>분야</label>
 					<form:form method="post" modelAttribute="EquipManageVO">
                             <form:select path="field" class="form-control" id="field">
@@ -47,46 +51,49 @@
                             </form:select>
                     </form:form>
                     </div>
-					
-					<div class="form-group">
+					</div>
+					<div class="d-flex justify-content-between p-1">
+					<div class="form-group col-md-6">
 						<label>신청장비이름</label> <input type="text" name="equipment_name" id="equipment_name"
 							class="form-control" />
 					</div>
 					
-					<div class="form-group">
+					<div class="form-group col-md-6">
 						<label>제조사</label> <input type="text" name="manufacturer" id="manufacturer"
 							class="form-control" />
 					</div>
-
-					<div class="form-group">
+					</div>
+					<div class="d-flex justify-content-between p-1">
+					<div class="form-group col-md-4">
 						<label>개수</label> <input type="text" name="count" id="count"
 							class="form-control" />
 					</div>
 					
-					<div class="form-group">
+					<div class="form-group col-md-4">
 						<label>가격</label> <input type="text" name="cost" id="cost"
 							class="form-control" />
 					</div>
-					
-					<div class="form-group">
+					<div class="form-group col-md-4">
 						<label>총 가격</label> <input type="text" name="total" id="total"
-							class="form-control" />
+							class="form-control" readonly="readonly" />
+					</div>
 					</div>
 					
-					<div class="form-group">
+					<div class="form-group p-2">
 						<label>유지보수이유</label><br>
 						<textarea id="comment" name="repair_reason" rows="5" cols="100" class="form-control"
 							placeholder="입력하세요."></textarea>
 					</div>
-
-					<div class="form-group fileDiv">
+					<div class="form-group fileDiv p-2"">
 						<label for="exampleInputFile">첨부파일</label> <input type="file" name="file"
 						 class="form-control" />
 					</div>
-
+					<div class="p-2" style="text-align: right;">
 					<button type="button" class="btn btn-primary" id="submitButt">등록</button>
+					</div>
 
-
+</div>
+</div>
 		</div>
 </form>
 
@@ -151,6 +158,23 @@ $(document).ready(function() {
            }
        });
     });
+});
+
+$(document).ready(function() {
+    function calculateTotal() {
+        var count = $('#count').val();
+        var cost = $('#cost').val();
+        var total = $('#total');
+        
+        // 개수와 가격이 입력된 경우에만 계산
+        if(count && cost) {
+            total.val(count * cost);
+        } else {
+            total.val('');
+        }
+    }
+
+    $('#count, #cost').on('input', calculateTotal);
 });
 </script>
 

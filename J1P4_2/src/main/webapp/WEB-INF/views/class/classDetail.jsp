@@ -98,13 +98,35 @@
 						            <h3 class="card-title">수정 / 등록</h3>
 						        </div>
 						        <div class="card-body">
+					<div class="d-flex justify-content-between align-items-center" style="height: 45px;">
+						        <form action="/classes/search" method="get" class='actionForm'>
+						        <div style="padding-top: 22px;">
+						<input type="radio" value="" class="btn-check btn-check-type" name="status"
+							id="radioStatus0" checked> <label
+							class="btn btn-outline-dark radioField" for="radioStatus0">전체</label>
+						<input type="radio" value="정상" class="btn-check btn-check-type" name="status"
+							id="radioStatus1"> <label
+							class="btn btn-outline-dark radioField" for="radioStatus1">정상</label>
+						<input type="radio" value="종료" class="btn-check btn-check-type" name="status"
+							id="radioStatus2"> <label
+							class="btn btn-outline-dark radioField" for="radioStatus2">종료</label>
+						<input type="radio" value="모집" class="btn-check btn-check-type" name="status"
+							id="radioStatus3"> <label
+							class="btn btn-outline-dark radioField" for="radioStatus3">모집</label>
+						<input type="radio" value="폐강" class="btn-check btn-check-type" name="status"
+							id="radioStatus4"> <label
+							class="btn btn-outline-dark radioField" for="radioStatus4">폐강</label>
+					</div>
+					</form>
+					<div>
 						            <button type="button" class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#scheduleModal" onclick="initScheduleForm()">
 						                일정 등록
 						            </button>
 						            <button type="button" class="btn btn-primary mt-3" onclick="openAddStudentModal()">회원 등록</button>
 						            <button type="button" class="btn btn-primary mt-3" onclick="editSelectedSchedules()">수정</button>
 						            <button type="button" class="btn btn-danger mt-3" onclick="deleteSelectedSchedules()">삭제</button>
-						            
+					</div>
+						            </div>
 						            <table class="table table-bordered mt-3">
 						                <thead>
 						                    <tr>
@@ -559,6 +581,68 @@
 
         $('#addStudentModal').modal('show');
     }
+    
+ 	$(function() {
+		$('.btn-check-type')
+				.click(
+						function() {
+							var status = $("input[name='status']:checked").val();
+							var classNo = ${classVO.classNo};
+							$.ajax({
+								url : "/classes/search",
+								type : "GET",
+								data : {
+									status : status,
+									classNo : classNo
+								},
+								success : function(data) {
+									
+							        const scheduleTableBody = $('#scheduleTableBody');
+							        scheduleTableBody.empty();
+			                        data.forEach(function(item) {
+			                            const row = '<tr>' +
+			                                        '<td><input type="checkbox" name="scheduleCheckbox" value="' + item.scheduleId + '"></td>' +
+			                                        '<td>' + convertTimestampToDate(item.startDate) + '</td>' +
+			                                        '<td>' + convertTimestampToDate(item.endDate) + '</td>' +
+			                                        '<td>' + item.startTimeCode + '</td>' +
+			                                        '<td>' + item.endTimeCode + '</td>' +
+			                                        '<td>' + item.recurrenceDays + '</td>' +
+			                                        '<td>' + item.currentEnrollment + '</td>' +
+			                                        '<td>' + item.status + '</td>' +
+			                                     '</tr>';
+	                                     scheduleTableBody.append(row);
+			                        });
+
+
+								},
+								error : function() {
+									alert("오류발생");
+								}
+							});
+
+						});
+
+	});
+ 	
+ 	$(function() {
+		$('.btn-check-all')
+				.click(
+						function() {
+							
+							window.location.href = '/classes/detail/${classVO.classNo}';
+
+						});
+
+	});
+ 	
+ 	$(function() {
+	 	if ('${param.repair_type}' == '${pageVO.cri.repair_type}') {
+	 		if ('${param.repair_type}'=='') {
+	 			$(".btn-check-all").attr('checked', true);
+	 		}
+	 		$(":radio[name='repair_type'][value='${param.repair_type}']").attr('checked', true);
+	 	}
+ 	});    
 </script>
 
 </body>

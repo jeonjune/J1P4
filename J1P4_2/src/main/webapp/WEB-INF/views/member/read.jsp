@@ -156,7 +156,7 @@
 	<form action="" method="post" id="fm1" name="fm1">
 		<input type="hidden" name="${_csrf.parameterName}"
 			value="${_csrf.token}" /> <input type="hidden" name="mem_no"
-			value="${param.mem_no}" />
+			value="${readMem.mem_no}" />
 		<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight"
 			aria-labelledby="offcanvasRightLabel">
 			<div class="offcanvas-header">

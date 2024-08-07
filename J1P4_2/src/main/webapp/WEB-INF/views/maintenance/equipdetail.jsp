@@ -31,7 +31,7 @@
 					
 					<div class="form-group">
 						<label>작성날짜</label> <input type="date" name="report_date" id="date"
-							class="form-control" value="${resultVO.report_date }"/>
+							class="form-control"/>
 					</div>
 					
 <!-- 					<div class="form-group"> -->
@@ -68,20 +68,24 @@
 							class="form-control" value="${resultVO.manufacturer }" readonly="readonly"/>
 					</div>
 
-					<div class="form-group">
-						<label>개수</label> <input type="text" name="count" id="count"
-							class="form-control" value="${resultVO.count }"/>
-					</div>
-					
-					<div class="form-group">
-						<label>가격</label> <input type="text" name="cost" id="cost"
-							class="form-control" value="${resultVO.cost }" />
-					</div>
-					
-					<div class="form-group">
-						<label>총 가격</label> <input type="text" name="total" id="total"
-							class="form-control" value="${resultVO.total }"/>
-					</div>
+					  <div class="form-group">
+        <label>현재 개수</label> 
+        <input type="text" name="count" id="count" readonly="readonly" class="form-control" value="${resultVO.count }"/>
+    </div>
+    
+    <div class="form-group">
+        <label>개당 가격</label> 
+        <input type="text" name="cost" id="cost" readonly="readonly" class="form-control" value="${resultVO.cost }" />
+    </div>
+    
+    <div class="form-group">
+        <label>현재 총 가격</label> 
+        <input type="text" name="total" id="total" readonly="readonly" class="form-control" value="${resultVO.total }"/>
+    </div>
+
+    <div class="new-values">
+        <!-- 새 개수, 새 총 가격, 최종 총 가격 필드가 여기 추가됨 -->
+    </div>
 					
 					<div class="form-group">
 						<label>유지보수이유</label><br>
@@ -156,18 +160,47 @@ $(document).ready(function() {
     
     
     
-    
-  
-document.querySelector("#select_type").addEventListener("change", function() {
-	  let type = this.value;
-	  let addCountDiv = document.querySelector(".addcount");
+$(document).ready(function() {
+    function updateValues() {
+        var originalCount = parseInt($('#count').val()) || 0;
+        var originalCost = parseFloat($('#cost').val()) || 0;
+        var originalTotal = parseFloat($('#total').val()) || 0;
 
-	  if (type == "추가구입") {
-	    addCountDiv.innerHTML = '<label>추가구입 개수</label><input id="addcount" type="number" name="addcount" class="form-control">';
-	  } else {
-	    addCountDiv.innerHTML = ''; // 다른 옵션을 선택했을 때 input 창을 숨김
-	  }
-	});
+        var addCount = parseInt($('#addcount').val()) || 0;
+
+        var newCount = originalCount + addCount;
+        var newTotal = newCount * originalCost;
+        var finalTotal = originalTotal + (addCount * originalCost);
+
+        $('#newCount').val(newCount);
+        $('#newTotal').val(newTotal);
+        $('#finalTotal').val(finalTotal);
+    }
+
+    $('#select_type').on('change', function() {
+        let type = $(this).val();
+        let addCountDiv = $('.addcount');
+        let newValuesDiv = $('.new-values');
+
+        if (type === "추가구입") {
+            addCountDiv.html('<label>추가구입 개수</label><input id="addcount" type="number" name="addcount" class="form-control">');
+            newValuesDiv.html(`
+                <div class="form-group">
+                    <label>총 개수</label> 
+                    <input type="text" id="newCount" readonly="readonly" class="form-control"/>
+                </div>
+                <div class="form-group">
+                    <label>최종 가격</label> 
+                    <input type="text" id="finalTotal" readonly="readonly" class="form-control"/>
+                </div>
+            `);
+            $('#addcount').on('input', updateValues);
+        } else {
+            addCountDiv.html(''); // 다른 옵션을 선택했을 때 input 창을 숨김
+            newValuesDiv.html(''); // 다른 옵션을 선택했을 때 새 값들을 숨김
+        }
+    });
+});
 
 
     

@@ -315,8 +315,10 @@
 							name="mem_no" class="chkGrp" value="${vo.mem_no }"
 							style="accent-color: #a2d2ff;"></td>
 						<td class="dtr-control" tabindex="0">${vo.mem_no }</td>
-						<td class=""><a
-							href="/member/read?mem_no=${vo.mem_no }&page=${param.page==null? 1:param.page}">${vo.mem_name }</a></td>
+						<td class="">
+							<a href="${pageContext.request.contextPath}/member/detail/${vo.mem_no}">${vo.mem_name }</a>
+							
+							</td>
 						<td class="mem_phone">${vo.formatted_mem_phone}</td>
 						<td>${vo.mem_rank }</td>
 						<td>${vo.reg_date }</td>

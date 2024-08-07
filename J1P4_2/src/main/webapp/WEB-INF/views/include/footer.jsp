@@ -143,5 +143,30 @@ function connectWs(){
 //소켓끝
 </script>
 
+<script>
+function convertTimestampToDate(timestamp) {
+    // 밀리초 단위의 타임스탬프를 Date 객체로 변환
+    var date = new Date(timestamp);
+    
+    // 연, 월, 일 구하기
+    var year = date.getFullYear();
+    var month = date.getMonth() + 1; // 월은 0부터 시작하므로 1을 추가
+    var day = date.getDate();
+    
+    // 월과 일이 한 자리 숫자인 경우 0을 추가하여 두 자리로 만들기
+    if (month < 10) {
+        month = '0' + month;
+    }
+    if (day < 10) {
+        day = '0' + day;
+    }
+    
+    // 원하는 형식으로 날짜를 포맷팅
+    var formattedDate = year + '-' + month + '-' + day;
+    
+    return formattedDate;
+}
+</script>
+
 </body>
 </html>

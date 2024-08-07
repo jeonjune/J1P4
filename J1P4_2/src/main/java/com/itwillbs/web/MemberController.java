@@ -100,8 +100,8 @@ public class MemberController {
 	}
 	
 	// 회원 기본 페이지 연결
-	@GetMapping(value = "/read")
-	public void readGET(Model model,@RequestParam int mem_no,Criteria cri) throws Exception{
+	@GetMapping("/detail/{mem_no}")
+	public String readGET(Model model,@PathVariable("mem_no") int mem_no,Criteria cri) throws Exception{
 		logger.debug(" readGET() 실행 ");
 		
 		Map<String, Object> resultVO = mService.readMem(mem_no);
@@ -114,15 +114,17 @@ public class MemberController {
 		model.addAttribute("counting",mService.countingMemClass(mem_no));
 		model.addAttribute("pageInfo",cri);
 		
+		 return "member/read";
+		
 	}
 	
 	// 회원 상세 페이지 연결
-	@GetMapping(value = "/details")
-	public void detailsGET(Criteria cri,@RequestParam("mem_no") int mem_no, Model model) throws Exception{
+	@GetMapping("/check/{mem_no}")
+	public String detailsGET(Criteria cri,@PathVariable("mem_no") int mem_no, Model model) throws Exception{
 		logger.debug(" detailsGET() 실행 ");
 		
 		List<Map<String, Object>> countClassResult = mService.countClass(mem_no);
-		
+		Map<String, Object> resultVO = mService.readMem(mem_no);
 		ObjectMapper mapper = new ObjectMapper();
         String countClassJSON = "";
         try {
@@ -147,9 +149,11 @@ public class MemberController {
         model.addAttribute("recruitCount",mService.getTotalDetailCount(statusRecruit));
         model.addAttribute("statusRecruit",mService.detailClass(statusRecruit));
         logger.debug(" ╰(*°▽°*)╯ 수강 신청 강의 개수 : "+mService.getTotalDetailCount(statusRecruit));
-        
+        model.addAttribute("readMem", resultVO.get("MemberVO"));
 		model.addAttribute("vo", countClassJSON);
 		model.addAttribute("pageInfo",cri);
+		
+		return "member/details";
 		
 	}
 	
@@ -247,33 +251,36 @@ public class MemberController {
 	
 	
 	// 회원 건강 모니터링 페이지 연결
-	@GetMapping(value = "/monitoring")
-	public void monitoringGET(@RequestParam int mem_no,@RequestParam int pageStart,Model model) throws Exception{
-		logger.debug(" monitoringGET() 실행 ");
-		
-		Map<String, Object> health = new HashMap<String, Object>();
-		health.put("mem_no", mem_no);
-		health.put("pageStart", pageStart);
-		model.addAttribute("healthInfo",mService.getHealthMonitor(health));
-		
-		logger.debug(" (●'◡'●) 특정 회원 건강 정보 : "+mService.getHealthMonitor(health));
-		
-		List<Map<String, Object>> bodyDataResult = mService.getChangeBody(mem_no);
-		
-		ObjectMapper mapper = new ObjectMapper();
-        String bodyDataJSON = "";
-        try {
-        	bodyDataJSON = mapper.writeValueAsString(bodyDataResult);
-        } catch (Exception e) {
-            logger.error("new6MemCount을 JSON으로 변환하는데 실패하였습니다.", e);
-        }
-        
-        List<Map<String, Object>> inbodyList = mService.getChangeBody(mem_no);
-        Collections.reverse(inbodyList); 
-        
-        model.addAttribute("bodyDataJSON", bodyDataJSON);
-        model.addAttribute("inbodyDate", inbodyList);
-		
+	@GetMapping("/monitoring/{mem_no}")
+	public String monitoringGET(@PathVariable("mem_no") int mem_no, @RequestParam("pageStart") int pageStart, Model model) throws Exception {
+	    logger.debug(" monitoringGET() 실행 ");
+	    
+	    Map<String, Object> resultVO = mService.readMem(mem_no);
+	    Map<String, Object> health = new HashMap<>();
+	    health.put("mem_no", mem_no);
+	    health.put("pageStart", pageStart);
+	    model.addAttribute("healthInfo", mService.getHealthMonitor(health));
+	    
+	    logger.debug(" (●'◡'●) 특정 회원 건강 정보 : " + mService.getHealthMonitor(health));
+	    
+	    List<Map<String, Object>> bodyDataResult = mService.getChangeBody(mem_no);
+	    
+	    ObjectMapper mapper = new ObjectMapper();
+	    String bodyDataJSON = "";
+	    try {
+	        bodyDataJSON = mapper.writeValueAsString(bodyDataResult);
+	    } catch (Exception e) {
+	        logger.error("bodyDataResult을 JSON으로 변환하는데 실패하였습니다.", e);
+	    }
+	    
+	    List<Map<String, Object>> inbodyList = mService.getChangeBody(mem_no);
+	    Collections.reverse(inbodyList);
+	    model.addAttribute("readMem", resultVO.get("MemberVO"));
+	    model.addAttribute("bodyDataJSON", bodyDataJSON);
+	    model.addAttribute("inbodyDate", inbodyList);
+	    model.addAttribute("pageStart", pageStart);
+	    
+	    return "member/monitoring";
 	}
 	
 	@ResponseBody

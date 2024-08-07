@@ -31,13 +31,157 @@
                     </div>
                 </div>
             </section>
+            
+            <form action="" method="get" class='actionForm'>
+
+		<div class="form-inline">
+		
+			<!-- 검색 -->
+			<div class="input-group mb-3">
+			
+				<!-- 검색 타입 선택 -->
+				<div class="input-group-prepend">
+					<select name="searchType" id="selectType" class="form-control">
+						<option value="searchAll" selected="selected">전체</option>
+						<option value="searchClass">강의명</option>
+						<option value="searchInstructor">강사이름</option>
+					</select>
+				</div>
+				
+				<!-- 검색 입력창 -->
+				<input class="form-control" type="search" name="keyword"
+					value="${param.keyword }" placeholder="Search" aria-label="Search">
+				
+				<!-- 검색 버튼 -->	
+				<div class="input-group-append">
+					<button class="btn" type="submit" id="submitBtn"
+						onclick="toggleSpinner()">
+						<i class="fas fa-search fa-fw"></i>
+					</button>
+				</div>
+				
+			</div>
+			
+		</div>
+		<div style="display: inline-block;">
+		<!-- 필터 모달창 버튼 -->
+			<button type="button" class="btn btn-primary" data-bs-toggle="modal"
+				data-bs-target="#filterModal">
+				<i class="fas fa-filter fa-fw"></i>
+			</button>
+
+			<!-- 필터 지우기 버튼 -->
+			<button type="button" class="btn btn-info" id="resetFilters">
+				<i class="fas fa-trash fa-fw"></i>
+			</button>
+		</div>
+		
+		<!-- 사용자가 선택한 필터를 보여주는 공간 -->
+		<div style="padding-left: 10px; display: inline-block;">
+		<div class="filter1" style="display: inline-block;">
+			<div class="deleteFilter">
+				<!-- 사용자가 필터를 사용하여 검색했을 때 선택한 필터를 보여주는 공간 -->
+				<c:if test="${not empty param.field }">
+					<h5>
+						<span class="badge badge-warning p-2" style="color: #000;">
+							<input type="hidden" name="field" value="${param.field }">${param.field }
+							<button class="removeFi btn-close btn-xs" aria-label="Close"
+								style="margin-left: 7px;"></button>
+						</span>
+					</h5>
+				</c:if>
+			</div>
+		</div>
+		
+		<div class="filter2" style="display: inline-block;">
+			<div class="deleteFilter">
+				<c:if test="${not empty param.division }">
+					<h5>
+						<span class="badge badge-warning p-2" style="color: #000;">
+							<input type="hidden" name="division" value="${param.division }">${param.division }
+							<button class="removeFi btn-close btn-xs" aria-label="Close"
+								style="margin-left: 7px;"></button>
+						</span>
+					</h5>
+				</c:if>
+			</div>
+		</div>
+		</div>
+
+		<!-- 테이블 커스텀 (정렬 / 행 개수) -->
+		<div class="content memListSort">
+		
+			<div>검색결과 : ${pageVO.totalCount }명</div>
+			
+		</div>
+
+	</form>
+	<!-- 검색 / 필터 / 정렬 / 행 개수 데이터 전송 -->
+
+	<!-- 필터 모달창 시작 -->
+	<div class="modal fade" id="filterModal" tabindex="-1"
+		aria-labelledby="filterModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+
+				<!-- 필터 모달창 헤더 -->
+				<div class="modal-header">
+					<h5 class="modal-title" id="filterModalLabel">필터하기</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal"
+						aria-label="Close"></button>
+				</div>
+
+				<!-- 필터 모달창 바디(본문) -->
+				<div class="modal-body">
+
+					<h5>분야코드</h5>
+					<div class="content">
+						<select class="form-control" name="field">
+							<option selected disabled>=== 선택 ===</option>
+							<option value="AEROBICS">에어로빅</option>
+							<option value="BADMINTON">배드민턴</option>
+							<option value="FITNESS">피트니스</option>
+							<option value="PILATES">필라테스</option>
+							<option value="SWIMMING">수영</option>
+							<option value="TABLETENNIS">탁구</option>
+							<option value="VOLLEYBALL">배구</option>
+							<option value="YOGA">요가</option>
+						</select>
+					</div>
+					<hr>
+					<h5>구분코드</h5>
+					<div class="content">
+						<select class="form-control" name="division">
+							<option selected disabled>=== 선택 ===</option>
+							<option value="ADULT">ADULT</option>
+							<option value="CHILD">CHILD</option>
+							<option value="HOBBY">HOBBY</option>
+							<option value="WORK">WORK</option>
+						</select>
+					</div>
+					
+
+				</div>
+
+				<!-- 필터 모달창 푸터 -->
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary"
+						data-bs-dismiss="modal">취소</button>
+					<button type="button" class="btn btn-primary filterBtn"
+						data-bs-dismiss="modal">필터 추가</button>
+				</div>
+
+			</div>
+		</div>
+	</div>
+	<!-- 필터 모달창 끝 -->
 
             <section class="content">
                 <div class="container-fluid">
-                    <table class="table table-bordered">
+                    <table class="table table-bordered" style="background: #fff">
                         <thead>
                             <tr>
-                                <th><input type="checkbox" id="selectAll" onclick="toggleSelectAll()"></th>
+                                <th><input type="checkbox" id="selectAll" onclick="toggleSelectAll()" ></th>
 					            <th>강의번호</th>
 					            <th>강의명</th>
 					            <th>설명</th>
@@ -64,9 +208,71 @@
                             </c:forEach>
                         </tbody>
                     </table>
-                    <div>
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#classModal" onclick="openModal()">등록</button>
-                        <button type="button" class="btn btn-danger" onclick="deleteSelectedClasses()">삭제</button>
+                    <div class="col-sm-12">
+					<div class="d-flex justify-content-between align-items-center">
+	                    <div>
+	                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#classModal" onclick="openModal()">등록</button>
+	                        <button type="button" class="btn btn-danger" onclick="deleteSelectedClasses()">삭제</button>
+	                    </div>
+	                    <ul class="pagination" >
+							<c:if test="${pageVO.prev }">
+								<li class="paginate_button page-item previous"
+									id="example1_previous">
+									<!-- 검색을 하지 않았을 때 페이징 처리 -->
+									<c:if test="${empty param.searchType }">
+										<a
+											href="/classes/list/?page=${pageVO.startPage-1 }"
+											aria-controls="example1" data-dt-idx="0" tabindex="0"
+											class="page-link">«</a>
+									</c:if> <!-- 검색을 했을 때 페이징 처리 --> 
+									<c:if test="${not empty param.searchType }">
+										<a
+											href="/classes/list/?searchType=${pageVO.cri.searchType }&keyword=${pageVO.cri.keyword }
+											&field=${pageVO.cri.field }&division=${pageVO.cri.division }&page=${pageVO.startPage-1 }"
+											aria-controls="example1" data-dt-idx="0" tabindex="0"
+											class="page-link">«</a>
+									</c:if>
+								</li>
+							</c:if>
+							<c:forEach var="i" begin="${pageVO.startPage }"
+								end="${pageVO.endPage }" step="1">
+								<li
+									class="paginate_button page-item ${pageVO.cri.page == i ? 'active':'' }">
+									<!-- 검색을 하지 않았을 때 페이징 처리 --> 
+									<c:if test="${empty param.searchType }">
+										<a href="/classes/list/?page=${i }"
+											aria-controls="example1" data-dt-idx="1" tabindex="0"
+											class="page-link">${i }</a>
+									</c:if> 
+									<c:if test="${not empty param.searchType }">
+										<a
+											href="/classes/list/?searchType=${pageVO.cri.searchType }&keyword=${pageVO.cri.keyword }
+											&field=${pageVO.cri.field }&division=${pageVO.cri.division }&page=${i }"
+											aria-controls="example1" data-dt-idx="1" tabindex="0"
+											class="page-link">${i }</a>
+									</c:if>
+								</li>
+							</c:forEach>
+							<c:if test="${pageVO.next && pageVO.endPage > 0 }">
+								<li class="paginate_button page-item next" id="example1_next">
+									<!-- 검색을 하지 않았을 때 페이징 처리 -->
+									<c:if test="${empty param.searchType }">
+										<a
+											href="/classes/list/?page=${pageVO.endPage+1 }"
+											aria-controls="example1" data-dt-idx="7" tabindex="0"
+											class="page-link">»</a>
+									</c:if> <!-- 검색을 했을 때 페이징 처리 -->
+									<c:if test="${not empty param.searchType }">
+										<a
+											href="/classes/list/?searchType=${pageVO.cri.searchType }&keyword=${pageVO.cri.keyword }
+											&field=${pageVO.cri.field }&division=${pageVO.cri.division }&page=${pageVO.endPage+1 }"
+											aria-controls="example1" data-dt-idx="7" tabindex="0"
+											class="page-link">»</a>
+									</c:if>
+								</li>
+							</c:if>
+						</ul>
+                    </div>
                     </div>
                 </div>
             </section>
@@ -359,6 +565,62 @@
             });
         }
     }
+    
+    /* 사용자가 선택한 필터 출력 */
+    $(function() {
+    	$('.filterBtn')
+    			.click(
+    					function() {
+
+    						let field = $('select[name="field"]').val();
+    						let division = $('select[name="division"]').val();
+
+    						/* 분야별 필터를 선택했을 때 */
+    						if (field != undefined) {
+    							$('.filter1')
+    									.html(
+    											'<div class="deleteFilter"><h5><span class="badge badge-warning p-2" style="color: #000;">'
+    													+ '<input type="hidden" name="field" value="'+field+'">'
+    													+ field
+    													+ '<button class="removeFi btn-close btn-xs" aria-label="Close" style="margin-left: 7px;">'
+    													+ '</button></span></h5></div>');
+    						}
+
+    						/* 유지보수유형을 선택했을 때 */
+    						if (division != undefined) {
+    							$('.filter2')
+    									.html(
+    											'<div class="deleteFilter"><h5><span class="badge badge-warning p-2" style="color: #000;">'
+    													+ '<input type="hidden" name="division" value="'+division+'">'
+    													+ division
+    													+ '<button class="removeFi btn-close btn-xs" aria-label="Close" style="margin-left: 7px;">'
+    													+ '</button></span></h5></div>');
+    						}
+
+
+    					});
+
+    });
+
+    /* 선택한 필터 개별 삭제 */
+    $(document).on('click', '.removeFi', function() {
+    	$(this).parent().remove()
+    });
+
+    /* 선택한 필터 전체 삭제 */
+    $(document).ready(function() {
+    	$('#resetFilters').click(function() {
+    		if (confirm("필터를 삭제하시겠습니까?")) {
+    			$('.deleteFilter').empty();
+    		}
+    	});
+    });
+
+    if ('${param.searchType}' == '${pageVO.cri.searchType}'
+    	&& '${pageVO.cri.searchType}' != '') {
+    $("#selectType").val("${param.searchType}");
+    }
+
 </script>
 
 

@@ -249,7 +249,7 @@
 	                var index = activePoints[0].index;
 	                var label = ageChart.data.labels[index];
 	                var value = ageChart.data.datasets[0].data[index];
-	                var memNo = ${param.mem_no};
+	                var memNo = ${readMem.mem_no};
 	                
 	                // 클릭된 데이터 항목에 대한 상세 정보 출력
 	                console.log('선택 항목:', label);
@@ -360,7 +360,7 @@
 	$(document).ready(function() {
 		
 	    var url = '/member/detailsAjax';
-	    var mem_no = '${param.mem_no}';
+	    var mem_no = '${readMem.mem_no}';
 	    var status = '정상';
 		let page = 0;
 	
@@ -489,7 +489,7 @@
 	$(document).ready(function() {
 		
 	    var url = '/member/detailsAjax';
-	    var mem_no = '${param.mem_no}';
+	    var mem_no = '${readMem.mem_no}';
 	    var status = '모집';
 		let page = 0;
 	
@@ -615,15 +615,7 @@
 	});
 	
 	
-	function convertTimestampToDate(timestamp) {
-        // 밀리초 단위의 타임스탬프를 Date 객체로 변환
-        var date = new Date(timestamp);
-        
-        // 날짜를 사람이 읽을 수 있는 형식으로 변환
-        var formattedDate = date.toLocaleDateString();
-        
-        return formattedDate;
-    }
+	
     
     function TimeCodeChange(code) {
     	if(code=='T09') return '09:00';

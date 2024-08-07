@@ -1,6 +1,7 @@
 package com.itwillbs.persistence;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -10,6 +11,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import com.itwillbs.domain.BaseVO;
+import com.itwillbs.domain.ClassScheduleVO;
+import com.itwillbs.domain.ClassVO;
 import com.itwillbs.domain.Criteria;
 import com.itwillbs.domain.EmployeeVO;
 import com.itwillbs.domain.EquipManageVO;
@@ -78,6 +81,26 @@ public class SearchDAOImpl implements SearchDAO {
 	@Override
 	public int getMSGCount(Criteria cri) throws Exception {
 		return sqlSession.selectOne(NAMESPACE+"totalMSGCount",cri);
+	}
+
+	@Override
+	public List<ClassVO> searchClass(Criteria cri) throws Exception {
+		return sqlSession.selectList(NAMESPACE + "searchClass", cri);
+	}
+
+	@Override
+	public int getClassCount(Criteria cri) throws Exception {
+		return sqlSession.selectOne(NAMESPACE+"totalClassCount",cri);
+	}
+
+	@Override
+	public List<ClassScheduleVO> searchClassDetail(Map<String, Object> search) throws Exception {
+		return sqlSession.selectList(NAMESPACE + "searchClassDetail", search);
+	}
+
+	@Override
+	public int getClassDetailCount(Criteria cri) throws Exception {
+		return sqlSession.selectOne(NAMESPACE+"totalClassDetailCount",cri);
 	}
 
 	
