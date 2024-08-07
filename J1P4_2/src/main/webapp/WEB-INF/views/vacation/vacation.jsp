@@ -167,6 +167,14 @@
 <script>
 $(document).ready(function(){
 	$('.vaSendBtn').click(function(){
+		
+		function getCurrentYear() {
+		    const date = new Date();
+		    return date.getFullYear();
+		}
+		
+		var year = getCurrentYear();
+				
 		$.ajax({
 			url : "/vacation/vacation",
 			type : "POST",
@@ -190,7 +198,7 @@ $(document).ready(function(){
 					
 				}else {					
 				alert("휴가 신청완료 되었습니다.");
-				window.location.href = '/employee/myVacation';
+				window.location.href = '/employee/myVacation?date='+year;
 				}
 			},
 			error : function() {

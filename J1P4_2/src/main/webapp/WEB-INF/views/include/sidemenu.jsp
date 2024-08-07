@@ -301,11 +301,11 @@
         <c:if test="${!sess_pic.equals('no') }">
         <c:set var="tmp" value="${sess_pic.substring(sess_pic.lastIndexOf('.')) }"/>
             <c:if test="${tmp=='.png' or tmp=='.jpg' or tmp=='.jpeg'}">
-                <img src="/download?fileName=${sess_pic }" class="img-circle elevation-2" alt="User Image">
+                <a href="/employee/myPage" class="d-block"><img src="/download?fileName=${sess_pic }" class="img-circle elevation-2" alt="User Image"></a>
             </c:if>
         </c:if>
         <c:if test="${sess_pic.equals('no') }">
-          <img src="${pageContext.request.contextPath }/resources/img/default_profile.png" class="img-circle elevation-2" alt="User Image">
+          <a href="/employee/myPage" class="d-block"><img src="${pageContext.request.contextPath }/resources/img/default_profile.png" class="img-circle elevation-2" alt="User Image"></a>
         </c:if>
         </div>
         <div class="info">
@@ -443,18 +443,6 @@
                 <a href="/attendance/list" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>출석관리</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="pages/UI/buttons.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>채우십</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="pages/UI/sliders.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>쇼</p>
                 </a>
               </li>
             </ul>

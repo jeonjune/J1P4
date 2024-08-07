@@ -191,7 +191,7 @@
 			AND job_rank = #{job_rank}
 		</if>
 		<if test="filter != null and filter != ''">
-			AND user_no in (select user_no from empAttendance where work_status = '출근')
+			AND user_no in (select user_no from empAttendance where work_status = '출근' and attend_date = curdate())
 		</if>
     </where>
 	</select>

@@ -18,9 +18,7 @@
 			<div class="card">
 				<div class="card-body">
 					<div style="position: absolute; right: 30px;">
-						<a href="/member/list">
-							<button type="button" class="btn btn-light">뒤로가기</button>
-						</a>
+							<button type="button" class="btn btn-light" onclick="goBack()">뒤로가기</button>
 						<button class="btn btn-primary" type="button"
 							data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight"
 							aria-controls="offcanvasRight">수정하기</button>
@@ -298,7 +296,9 @@
         
         input.value = formattedValue;
     }
-	
+	function goBack() {
+        window.history.back();
+    }
 
 </script>
 
