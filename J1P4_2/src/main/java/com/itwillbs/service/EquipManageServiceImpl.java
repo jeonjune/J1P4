@@ -117,6 +117,12 @@ public class EquipManageServiceImpl implements EquipManageService {
 	public void updateDetail(EquipManageVO vo) throws Exception {
 		edao.updateDetail(vo);
 	}
+
+	//반려내역- 확인 누르면 장비내역으로 복귀
+	@Override
+	public void rejectBack(EquipManageVO vo) throws Exception {
+		edao.rejectBack(vo);
+	}
 	
 	
 	

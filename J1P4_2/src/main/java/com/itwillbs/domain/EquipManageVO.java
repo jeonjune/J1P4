@@ -14,6 +14,7 @@ public class EquipManageVO {
 	private Integer total; //총 비용
 	private String manufacturer; //제조사
 	private Integer count; //장비개수
+	private Integer addcount; //추가구입개수
 	private String equipment_status; //장비상태
 	private Date approval_date; //승인날짜
 	private Date report_date; //작성날짜

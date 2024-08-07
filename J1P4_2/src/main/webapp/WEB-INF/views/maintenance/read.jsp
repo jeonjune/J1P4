@@ -170,7 +170,7 @@
 			<section class="content">
 				<div class="container-fluid">
 					<div class="form-group">
-						<label> 유지보수유형 </label> <select id="select_type"
+						<label> 유지보수유형 </label> <select id="select_type" class="form-control"
 							name="repair_type" size="1">
 							<option value="">선택하세요.</option>
 							<option value="청소">청소</option>
@@ -181,7 +181,7 @@
 
 					<div class="form-group">
 						<label>특이사항</label><br>
-						<textarea id="comment" name="repair_status" rows="3" 
+						<textarea class="form-control" id="comment" name="repair_status" rows="3" 
 							placeholder="20자이내입력" onkeyup="up()"></textarea>
 						<p>글자수 <span id="length">0</span><p>
 					</div>

@@ -54,4 +54,7 @@ public interface EquipManageDAO {
 	//장비신청 상세페이지 수정 (사원)
 	public void updateDetail(EquipManageVO vo) throws Exception;
 	
+	//반려내역- 확인 누르면 장비내역으로 복귀
+	public void rejectBack(EquipManageVO vo) throws Exception;
+	
 }

@@ -40,13 +40,15 @@
 <!-- 					</div> -->
 					
 					<div class="form-group">
-						<label> 장비신청유형 </label> <select id="select_type"
+						<label> 장비신청유형 </label> <select id="select_type" class="form-control"
 							name="e_repair_type" size="1">
 							<option>선택하세요.</option>
 							<option value="추가구입">추가구입</option>
 							<option value="수리">수리</option>
 							<option value="폐기">폐기</option>
 						</select>
+						<br>
+					<div class="addcount"></div>
 					</div>
 					
 					
@@ -83,7 +85,7 @@
 					
 					<div class="form-group">
 						<label>유지보수이유</label><br>
-						<textarea id="comment" name="repair_reason" rows="5" cols="100"
+						<textarea id="comment" name="repair_reason" rows="5" cols="100" class="form-control"
 							placeholder="입력하세요.">${resultVO.repair_reason }</textarea>
 					</div>
 
@@ -118,11 +120,11 @@ $(document).ready(function() {
         var formData = new FormData($('#registForm')[0]);
         var type = $('#select_type').val();
         var count = $('#count').val();
+        var addcount = $('#addcount').val();
         var cost = $('#cost').val();
         var total = $('#total').val();
         var date = $('#date').val();
         var content = $('#comment').val();
-        
         // CSRF 토큰 값을 메타 태그에서 가져오기
         var token = $("meta[name='_csrf']").attr("content");
         var header = $("meta[name='_csrf_header']").attr("content");
@@ -135,7 +137,8 @@ $(document).ready(function() {
             	cost : cost,
             	total : total,
             	repair_reason : content,
-            	report_date : date},
+            	report_date : date,
+            	addcount : addcount},
             beforeSend: function(xhr) { //header.jsp에 있는 토큰때문에 써주는 것
                 xhr.setRequestHeader(header, token);
             },
@@ -143,8 +146,9 @@ $(document).ready(function() {
                 alert("등록완료@@!");
                 window.location.href = '/maintenance/list';
             },
-            error: function(xhr, status, error) {
-                alert('등록실패 ' + error);
+            error: function(error) {
+                alert('등록실패 ');
+                console.log(error);
             }
         });
     });
@@ -152,10 +156,20 @@ $(document).ready(function() {
     
     
     
+    
+  
+document.querySelector("#select_type").addEventListener("change", function() {
+	  let type = this.value;
+	  let addCountDiv = document.querySelector(".addcount");
+
+	  if (type == "추가구입") {
+	    addCountDiv.innerHTML = '<label>추가구입 개수</label><input id="addcount" type="number" name="addcount" class="form-control">';
+	  } else {
+	    addCountDiv.innerHTML = ''; // 다른 옵션을 선택했을 때 input 창을 숨김
+	  }
+	});
 
 
-    
-    
     
 </script>
 

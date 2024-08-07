@@ -30,7 +30,7 @@
 
             <div class="form-group">
                 <label>장비신청유형</label>
-                <select id="select_type" name="e_repair_type" size="1">
+                <select id="select_type" name="e_repair_type" size="1" class="form-control">
                     <option>선택하세요.</option>
                     <option value="구입" ${resultVO.e_repair_type == '구입' ? 'selected' : ''}>구입</option>
                     <option value="추가구입" ${resultVO.e_repair_type == '추가구입' ? 'selected' : ''}>추가구입</option>
@@ -75,7 +75,7 @@
 
             <div class="form-group">
                 <label>유지보수이유</label><br>
-                <textarea id="comment" name="repair_reason" rows="5" cols="100" placeholder="입력하세요.">${resultVO.repair_reason}</textarea>
+                <textarea class="form-control" id="comment" name="repair_reason" rows="5" cols="100" placeholder="입력하세요.">${resultVO.repair_reason}</textarea>
             </div>
 
            	 <div class="form-group">
