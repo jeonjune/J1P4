@@ -40,14 +40,14 @@ public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler {
 		
 		// 관리자 - ROLE_ADMIN
 		if(roleNames.contains("ROLE_ADMIN")) {
-			logger.info(" ROLE_ADMIN 권한 -> admin 페이지로 이동 ");
+			logger.info(" ROLE_ADMIN 권한 -> main 페이지로 이동 ");
 			response.sendRedirect("/main/home");
 			return;
 		}
 		
 		// 사용자 - ROLE_MEMBER
 		if(roleNames.contains("ROLE_MEMBER")) {
-			logger.info(" ROLE_MEMBER 권한 -> member 페이지로 이동 ");
+			logger.info(" ROLE_MEMBER 권한 -> main 페이지로 이동 ");
 			response.sendRedirect("/main/home");
 			return;
 		}

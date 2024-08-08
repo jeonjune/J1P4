@@ -1,6 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <!-- Navbar -->
+
+<nav class="main-header navbar navbar-expand navbar-white navbar-light" style="z-index: 3;">
+
 		 <style>
        .navbar-nav .nav-link {
             color: black; /* 기본 색상 */
@@ -26,7 +29,7 @@
             width: 80%; /* 활성화된 메뉴의 밑줄 길이 조정 */
         }
     </style>
-<nav class="main-header navbar navbar-expand navbar-white navbar-light" style="z-index: 2;">
+
 	<!--     Left navbar links -->
 	<ul class="navbar-nav">
 		<li class="nav-item"><a class="nav-link"
