@@ -5,6 +5,7 @@ import lombok.Data;
 @Data
 public class ClassVO {
     private int classNo;
+    private int price;
     private String className;
     private String description;
     private String fieldCode;
