@@ -297,16 +297,16 @@
 			style="background: #fff; height: 100px;" aria-describedby="example1_info">
 			<thead>
 				<tr>
-					<th class="sorting"><input type="checkbox" class="chkGrp"
+					<th width="3%"><input type="checkbox" class="chkGrp"
 						id="chkAll" style="accent-color: #cdb4db;" ></th>
-					<th class="sorting">NO</th>
-					<th class="sorting">회원이름</th>
-					<th class="sorting">연락처</th>
-					<th class="sorting">회원등급</th>
-					<th class="sorting">등록일</th>
-					<th class="sorting">강의 누적 기간</th>
-					<th class="sorting">현재 수강상태</th>
-					<th class="sorting">메모</th>
+					<th width="3%">NO</th>
+					<th width="13%">회원이름</th>
+					<th>연락처</th>
+					<th>회원등급</th>
+					<th>등록일</th>
+					<th>강의 누적 기간</th>
+					<th>현재 수강상태</th>
+					<th width="30%">메모</th>
 				</tr>
 			</thead>
 			<tbody class="test">
@@ -316,8 +316,10 @@
 							name="mem_no" class="chkGrp" value="${vo.mem_no }"
 							style="accent-color: #a2d2ff;"></td>
 						<td class="dtr-control" tabindex="0">${vo.mem_no }</td>
-						<td class=""><a
-							href="/member/read?mem_no=${vo.mem_no }&page=${param.page==null? 1:param.page}">${vo.mem_name }</a></td>
+						<td class="">
+							<a href="${pageContext.request.contextPath}/member/detail/${vo.mem_no}">${vo.mem_name }</a>
+							
+							</td>
 						<td class="mem_phone">${vo.formatted_mem_phone}</td>
 						<td>${vo.mem_rank }</td>
 						<td>${vo.reg_date }</td>

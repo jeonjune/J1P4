@@ -424,8 +424,8 @@
               </li>
             </ul>
           </li>
-          <li class="nav-item">
-            <a href="#" class="nav-link">
+          <li class="nav-item" id="centerClass">
+            <a href="#" class="nav-link" id="classMenu">
               <i class="nav-icon fas fa-book"></i>
               <p>
                 수강 관리

@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import com.itwillbs.domain.ClassAttendanceVO;
 import com.itwillbs.domain.ClassScheduleVO;
 import com.itwillbs.domain.ClassVO;
+import com.itwillbs.domain.Criteria;
 import com.itwillbs.domain.DailyAttendanceVO;
 import com.itwillbs.service.ClassAttendanceService;
 import com.itwillbs.service.ClassScheduleService;
@@ -43,8 +44,8 @@ public class ClassAttendanceController {
     private static final Logger logger = LoggerFactory.getLogger(ClassAttendanceController.class);
     
     @GetMapping("/list")
-    public String attendancePage(Model model) {
-        List<ClassVO> classes = classService.getAllClasses();
+    public String attendancePage(Model model,Criteria cri) {
+        List<ClassVO> classes = classService.getAllClasses(cri);
         model.addAttribute("classes", classes);
         return "class/attendance";
     }

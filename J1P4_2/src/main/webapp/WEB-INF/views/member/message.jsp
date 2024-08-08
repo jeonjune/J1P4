@@ -5,21 +5,12 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ include file="../include/header.jsp"%>
 <%@ include file="../include/sidemenu.jsp"%>
-<style>
-        .more-content {
-            display: none;
-        }
-        .show-more {
-            color: #cdb4db;
-            cursor: pointer;
-        }
-    </style>
 <!-- 바디 시작 -->
-<div class="content-wrapper" style="min-height: 831px; padding-top:20px;">
+<div class="content-wrapper p-3" style="min-height: 831px; padding-top:20px;">
 
 	<!-- 검색 / 필터 / 정렬 / 행 개수 데이터 전송 -->
 	<form action="" method="get" class='actionForm'>
-
+<div class="d-flex justify-content-between align-items-center">
 		<div class="form-inline">
 		
 			<!-- 검색 -->
@@ -61,20 +52,21 @@
 							id="radioMSGtype2"> <label
 							class="btn btn-outline-dark radioField" for="radioMSGtype2">일반전송</label>
 					</div>
+					</div>
 	</form>
 	<!-- 검색 / 필터 / 정렬 / 행 개수 데이터 전송 -->
 	
-
+<div class="my-1" >
 <table id="example1" class="table table-bordered table-hover"
-			style="background: #fff; height: 100px;" aria-describedby="example1_info">
+			style="background: #fff;" aria-describedby="example1_info">
 			<thead>
 				<tr>
-					<th class="sorting" style="width: 20px;">NO</th>
-					<th class="sorting" style="width: 30px;">담당자</th>
-					<th class="sorting" style="width: 100px;">전송유형</th>
-					<th class="sorting" style="width: 400px;">전송내용</th>
-					<th class="sorting" style="width: 150px;">수신번호</th>
-					<th class="sorting" style="width: 150px;">전송날짜</th>
+					<th class="sorting" style="width: 3%">NO</th>
+					<th class="sorting" style="width: 10%">담당자</th>
+					<th class="sorting" style="width: 10%">전송유형</th>
+					<th class="sorting" style="width: 55%">전송내용</th>
+					<th class="sorting" style="width: 8%">수신번호</th>
+					<th class="sorting" style="width: 14%">전송날짜</th>
 				</tr>
 			</thead>
 			<tbody class="test">
@@ -86,7 +78,7 @@
 						<td>${sms.message }</td>
 						<td>
 						<input type="hidden" id="noti_no" value="${sms.noti_no }">
-                     	<button type="button" class="btn btn-warning" onclick="showMemPhone(${sms.noti_no })">수신 번호 확인</button>
+                     	<button type="button" class="btn btn-warning btn-sm" onclick="showMemPhone(${sms.noti_no })">수신 번호 확인</button>
                     </td>
 						<td>${sms.noti_date }</td>
 
@@ -94,18 +86,13 @@
 				</c:forEach>
 			</tbody>
 		</table>
-		
+		</div>
 		
 		<div class="col-sm-12">
 		<div class="d-flex justify-content-between align-items-center">
 		
 	<!-- 하단 버튼 모음 -->	
 	<div>
-		<!-- 메시지 전송 버튼 -->
-		<button type="button" class="btn btn-danger smsBtn" data-bs-toggle="modal"
-			data-bs-target="#smsModal">
-			<i class="fas fa-envelope fa-fw" style="color: #fff"></i> 메시지 발송
-		</button>
 
 	</div>
 	
@@ -117,22 +104,14 @@
 
             <!-- 모달창 헤더 -->
             <div class="modal-header">
-               <h5 class="modal-title" id="exampleModalLabel">반려사유</h5>
+               <h5 class="modal-title" id="exampleModalLabel">수신 번호 확인</h5>
                <button type="button" class="btn-close" data-bs-dismiss="modal"
                   aria-label="Close"></button>
             </div>
 
             <!-- 모달창 바디(본문) -->
             <div class="modal-body">
-			   
-			   <h5>담당자</h5> <!-- 로그인한 팀장 이름 담기 -->
-			   	<div class="form-group">
-<!-- 					<input type="text" name="name"  -->
-<%-- 					class="form-control" value="${resultVO.name}" readonly="readonly"/> --%>
-				<p id="rejectNameText"></p>
-				</div>
-               
-               <h5>반려사유</h5>
+			                  
                <div class="content">
                   <div class="form-group">
 						 <p id="rejectReasonText"></p>
@@ -239,17 +218,24 @@ $(document).ready(function() {
 function showMemPhone(noti_no){
 	
 	$.ajax({
-		url: '/member/phoneNum',
-        method: 'GET',
-        data: {noti_no : noti_no},
-        success: function(response) {
-            document.getElementById('rejectReasonText').innerText = response.recipient_mem;
-            
-            $('#phoneModal').modal('show');
-        },
-        error: function() {
-            alert('반려 사유를 가져오는데 실패했습니다.');
-        }
+	    url: '/member/phoneNum',
+	    method: 'GET',
+	    data: { noti_no: noti_no },
+	    success: function(response) {
+	        // 콤마로 구분된 문자열을 배열로 변환
+	        var lines = response.recipient_mem.split(',');
+
+	        // 배열의 각 요소를 <br> 태그로 결합
+	        var formattedText = lines.join('<br>');
+
+	        // 포맷된 텍스트를 HTML로 설정
+	        document.getElementById('rejectReasonText').innerHTML = formattedText;
+
+	        $('#phoneModal').modal('show');
+	    },
+	    error: function() {
+	        alert('반려 사유를 가져오는데 실패했습니다.');
+	    }
 	});
 }
 

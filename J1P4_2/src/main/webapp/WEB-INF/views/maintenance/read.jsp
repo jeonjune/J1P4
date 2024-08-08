@@ -6,43 +6,55 @@
 <%@ include file="../include/sidemenu.jsp"%>
 <%@ include file="../include/facMenu.jsp"%>
 
+<div class="content-wrapper p-3" style="min-height: 831px;">
 
-
-<style type="text/css">
-
-.centered-circle {
-  width: 100px;
-  height: 100px;
-  background-color: #a2d2ff;
-  border-radius: 50%;
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
-  color: #ffffff; 
-  font-size: 24px;
-  font-weight: bold;
-  text-align : center;
-}
-</style>
-
-
-
-<div class="content-wrapper" style="min-height: 831px;">
-
-	<h1>read</h1>
-	 <div class="centered-circle"><span>출근일 수 <br>${countAtt }</span></div>
-	<h2 style="margin-top: 10px;">${name}
-						</h2>
-					<div class="card" style="margin-top: 20px;">
+<!-- 	<h1>read</h1> -->
+	 
+					<div class="card" style="margin-bottom: 30px;">
 						<div class="card-body">
-							<strong><i class="far fa-file-alt mr-1 cardMy"></i> 월 유지보수 현황 </strong>
-							<br> <br><div style="white-space:pre;">
-							<c:out value="${count[0].repair_type}"></c:out>
-							<c:out value="${count[0].count}"></c:out>
-							<c:out value="${count[1].repair_type}"></c:out>
-							<c:out value="${count[1].count}"></c:out>
-							<c:out value="${count[2].repair_type}"></c:out>
-							<c:out value="${count[2].count}"></c:out>
+							<div class="d-flex justify-content-between">
+							<div><h2 class="p-1 mx-1">${name}</h2></div>
+							<div>	<button class="btn btn-primary" type="button"
+		data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight"
+		aria-controls="offcanvasRight">내역 추가</button></div>
+		</div>
+							<div class="card my-2" >
+							<div class="card-body">
+							<strong><i class="far fa-file-alt mr-1 cardMy"></i> 이번달 유지보수 현황 </strong><br>
+							<div class="my-3 mx-2">
+							<c:if test="${not empty count}">
+							<c:if test="${not empty count[0].count}">
+							${count[0].repair_type} ${count[0].count}번 |
+							</c:if>
+							<c:if test="${not empty count[1].count}">
+							${count[1].repair_type} ${count[1].count}번 |
+							</c:if>
+							<c:if test="${not empty count[2].count}">
+							${count[2].repair_type} ${count[2].count}번 <br>
+							</c:if>
+							</c:if>
+							<c:if test="${empty count}">
+							이번달 내역이 없습니다.<br>
+							</c:if>
+							<div class="my-3">
+							<c:if test="${not empty fac}">
+							<c:if test="${not empty fac[0].repair_date}">
+							최근 ${fac[0].repair_type}
+							${fac[0].repair_date}<br>
+							</c:if>
+							<c:if test="${not empty fac[1].repair_date}">
+							최근 ${fac[1].repair_type}
+							${fac[1].repair_date}
+							</c:if>
+							</c:if>
+							<c:if test="${empty fac}">
+							최근 내역이 없습니다.<br>
+							</c:if>
+							</div>
+							</div>
+							</div>
+							</div>
+
 							
 							<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-virus2" viewBox="0 0 16 16">
   <path d="M8 0a1 1 0 0 0-1 1v1.143c0 .557-.407 1.025-.921 1.24-.514.214-1.12.162-1.513-.231l-.809-.809a1 1 0 1 0-1.414 1.414l.809.809c.394.394.445.999.23 1.513C3.169 6.593 2.7 7 2.144 7H1a1 1 0 0 0 0 2h1.143c.557 0 1.025.407 1.24.921.214.514.163 1.12-.231 1.513l-.809.809a1 1 0 0 0 1.414 1.414l.809-.809c.394-.394.999-.445 1.513-.23.514.214.921.682.921 1.24V15a1 1 0 1 0 2 0v-1.143c0-.557.407-1.025.921-1.24.514-.214 1.12-.162 1.513.231l.809.809a1 1 0 0 0 1.414-1.414l-.809-.809c-.393-.394-.445-.999-.23-1.513.214-.514.682-.921 1.24-.921H15a1 1 0 1 0 0-2h-1.143c-.557 0-1.025-.407-1.24-.921-.214-.514-.162-1.12.231-1.513l.809-.809a1 1 0 0 0-1.414-1.414l-.809.809c-.394.393-.999.445-1.513.23-.514-.214-.92-.682-.92-1.24V1a1 1 0 0 0-1-1Zm2 5a1 1 0 1 1-2 0 1 1 0 0 1 2 0M7 7a1 1 0 1 1-2 0 1 1 0 0 1 2 0m1 5a1 1 0 1 1 0-2 1 1 0 0 1 0 2m4-4a1 1 0 1 1-2 0 1 1 0 0 1 2 0"/>
@@ -54,7 +66,6 @@
 							<c:out value="${fac[1].repair_date}"></c:out>
 							</div>
 						</div>
-					</div>
 
 	<form action="" method="get" class='actionForm'>
 	<input type="hidden" value="${param.facility_no }" name="facility_no">
@@ -73,34 +84,21 @@
 							class="btn btn-outline-dark radioField" for="radioRepair3">청소</label>
 					</div>
 	</form>				
-	
-	<button class="btn btn-primary" type="button"
-		data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight"
-		aria-controls="offcanvasRight">상세페이지 등록</button>
+
 		
 
-	<div class="col-sm-12">
+	<div class="my-2">
 		<table id="example1"
 			class="table table-bordered table-hover"
 			style="background: #fff"
 			aria-describedby="example1_info">
 			<thead>
 				<tr>
-					<th class="sorting" tabindex="0" aria-controls="example1"
-						rowspan="1" colspan="1"
-						aria-label="Rendering engine: activate to sort column ascending">시설번호</th>
-					<th class="sorting" tabindex="0" aria-controls="example1"
-						rowspan="1" colspan="1"
-						aria-label="Rendering engine: activate to sort column ascending">유지보수유형</th>
-					<th class="sorting" tabindex="0" aria-controls="example1"
-						rowspan="1" colspan="1"
-						aria-label="Rendering engine: activate to sort column ascending">특이사항</th>
-					<th class="sorting" tabindex="0" aria-controls="example1"
-						rowspan="1" colspan="1"
-						aria-label="Browser: activate to sort column ascending">유지보수날짜</th>
-					<th class="sorting" tabindex="0" aria-controls="example1"
-						rowspan="1" colspan="1"
-						aria-label="Browser: activate to sort column ascending">담당자</th>
+					<th width="4%">번호</th>
+					<th width="15%">유지보수유형</th>
+					<th width="51%">특이사항</th>
+					<th width="15%">유지보수날짜</th>
+					<th width="15%">담당자</th>
 
 				</tr>
 			</thead>
@@ -119,6 +117,11 @@
 		</table>
 	</div>
 	<!-- 페이징 처리 -->
+		<div class="d-flex justify-content-between">
+		<div>
+
+		</div>
+		
 			<ul class="pagination" >
 				<c:if test="${pageVO.prev }">
 					<li class="paginate_button page-item previous"
@@ -174,6 +177,7 @@
 					</li>
 				</c:if>
 			</ul>
+			</div>
 
 </div>
 
@@ -185,7 +189,7 @@
 	<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight"
 		aria-labelledby="offcanvasRightLabel">
 		<div class="offcanvas-header">
-			<h5 id="offcanvasRightLabel">시설상세페이지</h5>
+			<h5 id="offcanvasRightLabel">유지보수 내역 추가</h5>
 			<button type="button" class="btn-close text-reset"
 				data-bs-dismiss="offcanvas" aria-label="Close"></button>
 		</div>
@@ -197,7 +201,7 @@
 					<div class="form-group">
 						<label> 유지보수유형 </label> <select id="select_type" class="form-control"
 							name="repair_type" size="1">
-							<option value="">선택하세요.</option>
+							<option value="" selected disabled>선택하세요.</option>
 							<option value="청소">청소</option>
 							<option value="점검">점검</option>
 							<option value="방역">방역</option>
@@ -207,8 +211,8 @@
 					<div class="form-group">
 						<label>특이사항</label><br>
 						<textarea class="form-control" id="comment" name="repair_status" rows="3" 
-							placeholder="20자이내입력" onkeyup="up()"></textarea>
-						<p>글자수 <span id="length">0</span><p>
+							placeholder="20자 이내 입력" onkeyup="up()"></textarea>
+						<p style="text-align: right;"><span id="length">0</span> / 20자<p>
 					</div>
 
 					<div class="form-group">
@@ -218,10 +222,10 @@
 
 					<div class="form-group">
 						<label>담당자</label> <input type="text" name="name" id="name"
-							class="form-control" />
+							class="form-control" value="${sess_name }"/>
 					</div>
 
-					<button type="button" class="btn btn-primary" id="submitButt">등록</button>
+					<button type="button" class="btn btn-primary" id="submitButt">추가</button>
 
 				</div>
 			</section>

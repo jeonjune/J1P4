@@ -1,6 +1,8 @@
 package com.itwillbs.web;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,13 +13,18 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.itwillbs.domain.ClassVO;
+import com.itwillbs.domain.Criteria;
+import com.itwillbs.domain.MemberVO;
+import com.itwillbs.domain.PageVO;
 import com.itwillbs.domain.ClassScheduleVO;
 import com.itwillbs.service.ClassService;
 import com.itwillbs.service.ClassScheduleService;
 import com.itwillbs.service.CommonCodeService;
+import com.itwillbs.service.SearchService;
 
 @Controller
 @RequestMapping("/classes/*")
@@ -31,10 +38,32 @@ public class ClassController {
 
     @Autowired
     private CommonCodeService commonCodeService;
+    
+    @Autowired
+    private SearchService sService;
 
     @GetMapping("/list")
-    public String listClasses(Model model) {
-        List<ClassVO> classList = classService.getAllClasses();
+    public String listClasses(Model model,Criteria cri) throws Exception {
+    	
+    	List<ClassVO> classList;
+    	PageVO pageVO = new PageVO();
+    	
+    	if(cri.getKeyword() != null) {
+			
+    		classList = sService.searchClass(cri);
+			// 하단 페이징처리 정보
+			pageVO.setCri(cri);
+			pageVO.setTotalCount(sService.getClassCount(cri));
+
+    	} else {
+			
+    		classList = classService.getAllClasses(cri);
+    		// 하단 페이징처리 정보
+    		pageVO.setCri(cri);
+    		pageVO.setTotalCount(classService.getClassesCount());
+		}
+    	
+     	// 연결된 뷰페이지로 정보 전달
         model.addAttribute("classList", classList);
         model.addAttribute("classVO", new ClassVO());
         model.addAttribute("scheduleVO", new ClassScheduleVO());
@@ -42,6 +71,8 @@ public class ClassController {
         model.addAttribute("divisions", commonCodeService.getCommonCodeDetailsByCodeId("DIVISION"));
         model.addAttribute("levels", commonCodeService.getCommonCodeDetailsByCodeId("LEVEL"));
         model.addAttribute("times", commonCodeService.getCommonCodeDetailsByCodeId("TIME"));
+        model.addAttribute("pageVO",pageVO);
+        
         return "class/classList";
     }
 
@@ -82,5 +113,17 @@ public class ClassController {
         model.addAttribute("levels", commonCodeService.getCommonCodeDetailsByCodeId("LEVEL"));
         model.addAttribute("times", commonCodeService.getCommonCodeDetailsByCodeId("TIME"));
         return "class/classDetail"; // JSP 파일 경로
+    }
+    
+    @GetMapping("/search")
+    @ResponseBody
+    public List<ClassScheduleVO> classSearch(@RequestParam("status") String status, @RequestParam("classNo") String classNo,  Model model) throws Exception {
+    	
+    	Map<String, Object> search = new HashMap<String, Object>();
+    	search.put("status", status);
+    	search.put("classNo", classNo);
+    	List<ClassScheduleVO> result = sService.searchClassDetail(search);
+    	
+    	return result;
     }
 }

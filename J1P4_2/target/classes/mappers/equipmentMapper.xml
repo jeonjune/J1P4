@@ -9,7 +9,7 @@
 	<!-- 장비신청 -->
    	<insert id="equipAdd">
    	insert into equipmentManagement(name,report_date,e_repair_type,field,equipment_name, manufacturer,count,cost,total,repair_reason,manager_no)
-   	values(#{name},#{report_date},#{e_repair_type},#{field},#{equipment_name},#{manufacturer},#{count},#{cost},#{count} * #{cost},#{repair_reason},#{manager_no})
+   	values(#{name},#{report_date},#{e_repair_type},#{field},#{equipment_name},#{manufacturer},#{count},#{cost},#{total},#{repair_reason},#{manager_no})
    	</insert>
 	
 	<!-- 장비신청내역 -->
