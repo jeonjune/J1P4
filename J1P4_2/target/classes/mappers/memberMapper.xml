@@ -214,11 +214,11 @@
 	</select>
 	
 	<update id="updateInbody">
-		update healthMonitor set exercise_goal = #{exercise_goal},
+		update healthMonitor set exercise_goal = #{exercise_goal}, manager_no = #{manager_no},
 		height = #{height}, weight = #{weight}, fat=#{fat}, fat_mass=#{fat_mass},
 		muscle=#{muscle}, muscle_mass=#{muscle_mass}, belly_fat=#{belly_fat}, bmi=#{bmi},
 		bmr=#{bmr}, consult_content=#{consult_content}
-		where inbody_no = #{inbody_no} and manager_no = #{manager_no};
+		where inbody_no = #{inbody_no};
 	</update>
 	
 	<insert id="insertInbody">
