@@ -5,32 +5,18 @@
 <%@ include file="../include/header.jsp"%>
 <%@ include file="../include/sidemenu.jsp"%>
 <%@ include file="../include/facMenu.jsp"%>
-<div class="content-wrapper" style="min-height: 831px;">
+<div class="content-wrapper p-3" style="min-height: 831px; padding-top: 20px;">
 
-
-	<h1>facility</h1>
-	<%-- ${facList} <br> --%>
-
-
-	<button class="btn btn-primary" type="button"
-		data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight"
-		aria-controls="offcanvasRight">등록하기</button>
-	<div class="col-sm-12">
+	<div class="my-1" >
 		<table id="example1"
 			class="table table-bordered table-hover"
 			style="background: #fff"
 			aria-describedby="example1_info">
 			<thead>
 				<tr>
-					<th class="sorting" tabindex="0" aria-controls="example1"
-						rowspan="1" colspan="1"
-						aria-label="Rendering engine: activate to sort column ascending">시설번호</th>
-					<th class="sorting" tabindex="0" aria-controls="example1"
-						rowspan="1" colspan="1"
-						aria-label="Rendering engine: activate to sort column ascending">시설이름</th>
-					<th class="sorting" tabindex="0" aria-controls="example1"
-						rowspan="1" colspan="1"
-						aria-label="Browser: activate to sort column ascending">담당자</th>
+					<th width="4%">번호</th>
+					<th width="48%">시설이름</th>
+					<th width="48%">담당자</th>
 
 				</tr>
 			</thead>
@@ -47,7 +33,12 @@
 
 		</table>
 	</div>
-
+<div class="d-flex justify-content-between align-items-center">
+<div></div>
+	<button class="btn btn-primary" type="button"
+		data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight"
+		aria-controls="offcanvasRight">등록</button>
+</div>
 </div>
 
 
@@ -74,10 +65,10 @@
 
 					<div class="form-group">
 						<label>담당자</label> <input type="text" name="name" id="name"
-							class="form-control" />
+							value="${sess_name }" class="form-control" />
 					</div>
 
-					<button type="button" class="btn btn-primary" id="submitButt">등록</button>
+					<button type="button" class="btn btn-primary" id="submitButt" >등록</button>
 
 				</div>
 			</section>

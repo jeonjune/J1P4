@@ -24,6 +24,7 @@ public class Criteria  {
 	private String repair_type;
 	private String status;
 	private Integer facility_no;
+	private String division;
 
 
 	public Criteria() {

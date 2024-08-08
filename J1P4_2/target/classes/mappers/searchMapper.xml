@@ -5,6 +5,31 @@
 
 <mapper namespace="com.itwillbs.mapper.SearchMapper">
 
+<resultMap id="classResultMap" type="com.itwillbs.domain.ClassVO">
+        <id property="classNo" column="class_no"/>
+        <result property="className" column="class_name"/>
+        <result property="description" column="description"/>
+        <result property="fieldCode" column="field_code"/>
+        <result property="divisionCode" column="division_code"/>
+        <result property="levelCode" column="level_code"/>
+        <result property="minCapacity" column="min_capacity"/>
+        <result property="maxCapacity" column="max_capacity"/>
+        <result property="instructorNo" column="instructor_no"/>
+        <result property="instructorName" column="instructor_name"/>
+    </resultMap>
+    
+    <resultMap id="scheduleResultMap" type="com.itwillbs.domain.ClassScheduleVO">
+        <id property="scheduleId" column="schedule_id"/>
+        <result property="classNo" column="class_no"/>
+        <result property="startDate" column="start_date"/>
+        <result property="endDate" column="end_date"/>
+        <result property="startTimeCode" column="start_time_code"/>
+        <result property="endTimeCode" column="end_time_code"/>
+        <result property="recurrenceDays" column="recurrence_days"/>
+        <result property="currentEnrollment" column="current_enrollment"/>
+        <result property="status" column="status"/>
+    </resultMap>
+
 	<!-- 회원 검색 결과 리스트 목록 ( 페이징 처리 ) -->
 	<select id="searchMem" resultType="MemberVO">
 		SELECT *, CONCAT(
@@ -329,6 +354,85 @@
 	    SELECT count(facility_no) from facilityManagement
 	    where repair_type=#{repair_type} and facility_no=#{facility_no}
 	</select>
+	
+	<!-- 클래스 목록 검색 결과 리스트 목록 (페이징 처리) -->
+	<select id="searchClass" resultMap="classResultMap">
+		SELECT 
+	            c.class_no,
+	            c.class_name,
+	            c.description,
+	            c.field_code,
+	            c.division_code,
+	            c.level_code,
+	            c.min_capacity,
+	            c.max_capacity,
+	            c.instructor_no,
+	            e.name AS instructor_name
+	        FROM class c
+	        LEFT JOIN instructor i ON c.instructor_no = i.instructor_no
+	        LEFT JOIN employee e ON i.user_no = e.user_no
+	        <if test="searchType == 'searchAll'">
+	        WHERE (c.class_name like CONCAT('%', #{keyword}, '%')
+	        OR e.name LIKE CONCAT('%', #{keyword}, '%'))
+	        </if>
+	        <if test="searchType == 'searchClass'">
+	        WHERE (c.class_name like CONCAT('%', #{keyword}, '%'))
+	        </if>
+	        <if test="searchType == 'searchInstructor'">
+	        WHERE (e.name like CONCAT('%', #{keyword}, '%'))
+	        </if>
+	        <if test="field != null and field != ''">
+			AND field_code = #{field}
+			</if>
+			<if test="division != null and division != ''">
+			AND division_code = #{division}
+			</if>
+			order by c.class_no desc
+            limit #{pageStart}, #{pageSize}
+	</select>
+	
+	<!-- 클래스 목록 검색 결과 리스트 개수 (페이징 처리) -->
+	<select id="totalClassCount" resultType="int">
+    	SELECT count(c.class_no) FROM class c
+	    LEFT JOIN instructor i ON c.instructor_no = i.instructor_no
+	    LEFT JOIN employee e ON i.user_no = e.user_no
+    <where>
+        <choose>
+            <when test="searchType == 'searchAll'">
+            	(c.class_name like CONCAT('%', #{keyword}, '%')
+				OR e.name LIKE CONCAT('%', #{keyword}, '%'))
+            </when>
+            <when test="searchType == 'searchClass'">
+                c.class_name like CONCAT('%', #{keyword}, '%')
+            </when>
+            <when test="searchType == 'searchInstructor'">
+                e.name like CONCAT('%', #{keyword}, '%')
+            </when>
+        </choose>
+		<if test="field != null and field != ''">
+			AND field_code = #{field}
+			</if>
+		<if test="division != null and division != ''">
+		AND division_code = #{division}
+		</if>
+    </where>
+	</select>
+	
+	<!-- 클래스 일정 검색 결과 리스트 목록 ( 페이징 처리) -->
+	<select id="searchClassDetail" parameterType="string" resultMap="scheduleResultMap">
+		SELECT *
+		FROM classSchedule
+		WHERE class_no = #{classNo}
+		<if test="status != null and status !=''">
+		AND status = #{status}
+		</if>
+		ORDER BY start_date ASC;
+	</select>
 
+	<!-- 클래스 일정 검색 결과 리스트 개수 ( 페이징 처리 ) -->
+	<select id="totalClassDetailCount" resultType="int">
+	    SELECT count(schedule_id) from classSchedule
+	    WHERE status = #{status}
+	</select>
 
 </mapper>

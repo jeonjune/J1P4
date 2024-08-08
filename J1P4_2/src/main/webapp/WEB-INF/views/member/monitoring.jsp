@@ -19,7 +19,6 @@
 	                    <div class="card-tools d-flex justify-content-between align-items-center m-3">
 	                    <form action="" method="get" class="inbodyForm">
 	                    <div class="form-inline">
-	                    <input type="hidden" value="${param.mem_no }" name="mem_no">
 	                    <c:if test="${not empty healthInfo.inbody_no }">
 	                    <select class="form-control" id="selectInbody" name="pageStart">
 	                    	<c:forEach items="${inbodyDate }" var="test" varStatus="i">
@@ -315,7 +314,7 @@
 	<form id="fm2" name="fm2">
 		<input type="hidden" name="${_csrf.parameterName}"
 			value="${_csrf.token}" /> <input type="hidden" name="mem_no"
-			value="${param.mem_no}" />
+			value="${readMem.mem_no}" />
 			<input type="hidden" name="manager_no" value="1" />
 		<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight2"
 			aria-labelledby="offcanvasRightLabel">
@@ -551,11 +550,14 @@
         }
     });
     
+    
     $("#selectInbody").change(function() {
-
+       $(".inbodyForm").attr("action","/member/monitoring/${mem_no}");
 		$(".inbodyForm").submit();
 	});
-    $("#selectInbody").val("${param.pageStart }");
+    
+    
+    $("#selectInbody").val("${pageStart }");
     
     $(function() {
 		$("#updateButt").click(function() {
@@ -622,7 +624,7 @@
 				success : function(data) {
 					alert("인바디 정보가 등록되었습니다.");
 
-					window.location.href = '/member/monitoring?mem_no=${param.mem_no }&pageStart=0';
+					history.go(0);
 				},
 				error : function() {
 					alert("오류발생");

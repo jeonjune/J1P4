@@ -11,79 +11,97 @@
 
 
 <div class="content-wrapper" style="min-height: 831px;">
-
-<h1>장비신청상세페이지 - 팀장님페이지 detail</h1>
-
 <form action=""  method="post" id="detailForm"  accept-charset="UTF-8" >
+<div class="col-md-8" style="margin-left: 300px; padding-top: 20px; padding-bottom: 50px;">
+
 <input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
 <input type="hidden" name="equipment_no" value="${param.equipment_no }">
-	<div>
-
-					
-					<div class="form-group">
+	<div class="card">
+		<div class="card m-4">
+			<div class="card-body">
+			<div class="form-group">
+				<div class="p-1">
+				<h2>장비신청 승인</h2>
+				</div>
+				<div class="d-flex justify-content-between my-3">
+					<div class="form-group col-md-4">
 						<label>장비번호</label> <input type="text" name="equipment_no"
 							class="form-control" value="${resultVO.equipment_no }" readonly="readonly"/>
 					</div>
-					
-					<div class="form-group">
+					<div class="form-group col-md-4">
 						<label>담당자</label> <input type="text" name="name"
 							class="form-control" value="${resultVO.name}" readonly="readonly"/>
 					</div>
 					 
-					<div class="form-group">
-						<label>작성날짜</label> <input type="date" name="report_date"
+					<div class="form-group col-md-4">
+						<label>작성 날짜</label> <input type="date" name="report_date"
 							class="form-control" value="${resultVO.report_date }" readonly="readonly"/>
 					</div>
+				</div>
+					</div>
+			</div>
+		</div>
+				<div class="card-body">
+
 					
-					<div class="form-group">
-						<label>장비신청유형</label> <input type="text" name="e_repair_type"
+					<div class="d-flex justify-content-between p-1" >
+					<div class="form-group col-md-6">
+						<label>장비신청 유형</label> <input type="text" name="e_repair_type"
 							class="form-control" value="${resultVO.e_repair_type }" readonly="readonly"/>
 					</div>
 					
 					
-					<div class="form-group">
+					<div class="form-group col-md-6">
 						<label>분야</label> <input type="text" name="field"
 							class="form-control" value="${resultVO.field }" readonly="readonly"/>
 					</div>
+					</div>
 					
-					
-					<div class="form-group">
-						<label>신청장비이름</label> <input type="text" name="equipment_name"
+					<div class="d-flex justify-content-between p-1">
+					<div class="form-group col-md-6">
+						<label>신청장비 이름</label> <input type="text" name="equipment_name"
 							class="form-control" value="${resultVO.equipment_name }" readonly="readonly"/>
 					</div>
 					
-					<div class="form-group">
+					<div class="form-group col-md-6">
 						<label>제조사</label> <input type="text" name="manufacturer"
 							class="form-control" value="${resultVO.manufacturer }" readonly="readonly"/>
 					</div>
+					</div>
 
-					<div class="form-group">
-						<label>개수</label> <input type="text" name="count"
+					<div class="d-flex justify-content-between p-1">
+					<div class="form-group col-md-3">
+						<label>현재 개수</label> <input type="text" name="count"
 							class="form-control" value="${resultVO.count }" readonly="readonly"/>
 					</div>
+
 					
-					<div class="form-group">
+					<div class="form-group col-md-3">
 						<label>추가구입 개수</label> <input type="text" name="addcount"
 							class="form-control" value="${resultVO.addcount }" readonly="readonly"/>
 					</div>
 					
-					<div class="form-group">
+					<div class="form-group col-md-3">
 						<label>가격</label> <input type="text" name="cost"
 							class="form-control" value="${resultVO.cost }" readonly="readonly"/>
 					</div>
 					
-					<div class="form-group">
-						<label>추가구입 전 총 가격</label> <input type="text" name="total"
+					<div class="form-group col-md-3">
+						<label>총 가격</label> <input type="text" name="total"
 							class="form-control" value="${resultVO.total }" readonly="readonly"/>
 					</div>
 					
-					<div class="form-group">
-						<label>유지보수이유</label><br>
+					
+					
+					</div>
+					
+					<div class="form-group p-2">
+						<label>유지보수 이유</label><br>
 						<textarea id="comment" name="repair_reason" rows="5" cols="100" readonly="readonly"
-							placeholder="입력하세요.">${resultVO.repair_reason }</textarea>
+							placeholder="입력하세요." class="form-control">${resultVO.repair_reason } </textarea>
 					</div>
 
-					<div class="form-group">
+					<div class="form-group p-2">
 						<label>첨부파일</label>
 					
 						
@@ -94,12 +112,15 @@
 						
 
 					</div>
-
-					<button type="button" class="btn btn-primary" id="submitBut">승인</button>
-			         <button type="button" class="btn btn-primary" data-bs-toggle="modal" onclick="showReject()"
+					<div class="p-2" style="text-align: right;">
+			         <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" onclick="showReject()"
 			         data-bs-target="#submitButt">반려</button>
+					<button type="button" class="btn btn-primary" id="submitBut">승인</button>
+					</div>
 
 
+</div>
+</div>
 		</div>
 </form>
 
@@ -126,17 +147,17 @@
 					<input type="text" name="name"
 					class="form-control" value="${resultVO.name}" readonly="readonly"/>
 				</div>
+               <hr>
                
                <h5>반려사유</h5>
                <div class="content">
                   <div class="form-group">
 						<textarea id="comment2" name="equipment_reject" rows="5" cols="55"
-							placeholder="입력하세요."></textarea>
+							class="form-control" placeholder="입력하세요."></textarea>
 					</div>
                  
                </div>
              
-               <hr>
 <!--                <h5>연도별</h5> -->
 <!--                <input type="month" id="monthInput">년 -->
 
@@ -169,7 +190,7 @@ $(document).ready(function() {
     $('#submitBut').on('click', function() {
         var formData = new FormData($('#registForm')[0]);
         
-        alert("${resultVO.e_repair_type }");
+//         alert("${resultVO.e_repair_type }");
         
         // CSRF 토큰 값을 메타 태그에서 가져오기
         var token = $("meta[name='_csrf']").attr("content");
@@ -186,7 +207,7 @@ $(document).ready(function() {
                 xhr.setRequestHeader(header, token);
             },
             success: function(response) {
-                alert("승인완료!");
+                alert("장비 유지보수 신청이 승인되었습니다.");
                 window.location.href = '/maintenance/equipment';
             },
             error: function(xhr, status, error) {
@@ -221,7 +242,7 @@ $(document).ready(function() {
                 xhr.setRequestHeader(header, token);
             },
             success: function(response) {
-                alert("반려되었습니다.");
+                alert("장비 유지보수 신청이 반려되었습니다.");
                 window.location.href = '/maintenance/reject';
             },
             error: function(xhr, status, error) {

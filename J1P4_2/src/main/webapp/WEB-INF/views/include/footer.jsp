@@ -57,31 +57,46 @@ $(function () {
     // Check if the current path starts with /member/
     if (pathname.startsWith('/member/')) {
         // Add active class to the member management link
+        if (!pathname.startsWith('/member/message')) {
         $('ul.nav-sidebar a[href="/member/list"]').addClass('active');
+        	
+        }
     }
-    if (pathname.startsWith('/maintenance/facility')) {
+    if (pathname.startsWith('/employee/') || pathname.startsWith('/vacation/')) {
         // Add active class to the member management link
-        $('ul.nav-sidebar a[href="/maintenance/facility"]').addClass('active');
+        if (!pathname.startsWith('/employee/myPage') && !pathname.startsWith('/employee/attend') && !pathname.startsWith('/employee/myVacation')){
+        $('ul.nav-sidebar a[href="/vacation/vacation"]').addClass('active');
+        	
+        }
     }
-    if (pathname.startsWith('/maintenance/read')) {
+    
+    
+    if (pathname.startsWith('/maintenance/read') || pathname.startsWith('/maintenance/reservation')) {
         // Add active class to the member management link
         $('ul.nav-sidebar #centerLi').addClass('menu-is-opening menu-open');
         $('ul.nav-sidebar #center').addClass('active');
         $('ul.nav-sidebar a[href="/maintenance/facility"]').addClass('active');
     }
-    if (pathname.startsWith('/maintenance/request')) {
-        // Add active class to the member management link
-        $('ul.nav-sidebar #centerLi').addClass('menu-is-opening menu-open');
-        $('ul.nav-sidebar #center').addClass('active');
-        $('ul.nav-sidebar a[href="/maintenance/equipment"]').addClass('active');
-    }
-    if (pathname.startsWith('/maintenance/reject')) {
+    if (pathname.startsWith('/maintenance/equipdetail') || pathname.startsWith('/maintenance/detail') || pathname.startsWith('/maintenance/list') || pathname.startsWith('/maintenance/reject')) {
         // Add active class to the member management link
         $('ul.nav-sidebar #centerLi').addClass('menu-is-opening menu-open');
         $('ul.nav-sidebar #center').addClass('active');
         $('ul.nav-sidebar a[href="/maintenance/equipment"]').addClass('active');
     }
 
+    if (pathname.startsWith('/classes/')) {
+        // Add active class to the member management link
+        $('ul.nav-sidebar #centerClass').addClass('menu-is-opening menu-open');
+        $('ul.nav-sidebar #classMenu').addClass('active');
+        $('ul.nav-sidebar a[href="/classes/list"]').addClass('active');
+    }
+    if (pathname.startsWith('/member/message')) {
+        // Add active class to the member management link
+        $('ul.nav-sidebar #centerLi').addClass('menu-is-opening menu-open');
+        $('ul.nav-sidebar #center').addClass('active');
+        $('ul.nav-sidebar a[href="/member/message"]').addClass('active');
+    }
+    
     // for single sidebar menu
     $('ul.nav-sidebar a').filter(function () {
         return this.href == window.location.origin + pathname;
@@ -141,6 +156,31 @@ function connectWs(){
 };
 
 //소켓끝
+</script>
+
+<script>
+function convertTimestampToDate(timestamp) {
+    // 밀리초 단위의 타임스탬프를 Date 객체로 변환
+    var date = new Date(timestamp);
+    
+    // 연, 월, 일 구하기
+    var year = date.getFullYear();
+    var month = date.getMonth() + 1; // 월은 0부터 시작하므로 1을 추가
+    var day = date.getDate();
+    
+    // 월과 일이 한 자리 숫자인 경우 0을 추가하여 두 자리로 만들기
+    if (month < 10) {
+        month = '0' + month;
+    }
+    if (day < 10) {
+        day = '0' + day;
+    }
+    
+    // 원하는 형식으로 날짜를 포맷팅
+    var formattedDate = year + '-' + month + '-' + day;
+    
+    return formattedDate;
+}
 </script>
 
 </body>

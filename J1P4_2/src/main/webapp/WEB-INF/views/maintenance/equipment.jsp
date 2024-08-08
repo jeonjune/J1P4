@@ -8,9 +8,8 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 
-<div class="content-wrapper" style="min-height: 831px;">
+<div class="content-wrapper p-3" style="min-height: 831px; padding-top: 20px;">
 
-<h1>승인된 장비 내역 페이지- equipment</h1>
 
 <!-- 검색 / 필터 / 정렬 / 행 개수 데이터 전송 -->
 	<form action="" method="get" class='actionForm'>
@@ -109,10 +108,10 @@
 				<!-- 필터 모달창 바디(본문) -->
 				<div class="modal-body">
 
-					<h5>분야별</h5>
-					<div class="content">
+					<h5 class="my-1">분야코드</h5>
+					<div class="content my-4">
 						<select class="form-control" name="field">
-							<option selected disabled>=== 선택 ===</option>
+							<option selected disabled>선택하세요.</option>
 							<option value="AEROBICS">에어로빅</option>
 							<option value="BADMINTON">배드민턴</option>
 							<option value="FITNESS">피트니스</option>
@@ -123,8 +122,8 @@
 							<option value="YOGA">요가</option>
 						</select>
 					</div>
-					<hr>
-					<h5>장비보수유형별</h5>
+					<hr class="my-4">
+					<h5 class="my-3">장비보수유형</h5>
 					<div class="content">
 						<input type="radio" value="정상" class="btn-check" name="e_repair_type"
 							id="radioRepair1"> <label
@@ -158,40 +157,22 @@
 <!-- 		aria-controls="offcanvasRight">버튼</button> -->
 
 	
-	<div class="col-sm-12">
+	<div class="my-3" >
 		<table id="example1"
 			class="table table-bordered table-hover"
 			style="background: #fff"
 			aria-describedby="example1_info">
 			<thead>
 				<tr>
-					<th class="sorting" tabindex="0" aria-controls="example1"
-						rowspan="1" colspan="1"
-						aria-label="Rendering engine: activate to sort column ascending">장비번호</th>
-					<th class="sorting" tabindex="0" aria-controls="example1"
-						rowspan="1" colspan="1"
-						aria-label="Rendering engine: activate to sort column ascending">분야</th>
-					<th class="sorting" tabindex="0" aria-controls="example1"
-						rowspan="1" colspan="1"
-						aria-label="Rendering engine: activate to sort column ascending">장비보수유형</th>
-					<th class="sorting" tabindex="0" aria-controls="example1"
-						rowspan="1" colspan="1"
-						aria-label="Browser: activate to sort column ascending">장비이름</th>
-					<th class="sorting" tabindex="0" aria-controls="example1"
-						rowspan="1" colspan="1"
-						aria-label="Browser: activate to sort column ascending">제조사</th>
-					<th class="sorting" tabindex="0" aria-controls="example1"
-						rowspan="1" colspan="1"
-						aria-label="Browser: activate to sort column ascending">가격</th>
-					<th class="sorting" tabindex="0" aria-controls="example1"
-						rowspan="1" colspan="1"
-						aria-label="Browser: activate to sort column ascending">수량</th>
-					<th class="sorting" tabindex="0" aria-controls="example1"
-						rowspan="1" colspan="1"
-						aria-label="Browser: activate to sort column ascending">담당자</th>
-					<th class="sorting" tabindex="0" aria-controls="example1"
-						rowspan="1" colspan="1"
-						aria-label="Browser: activate to sort column ascending">날짜</th>
+					<th width="4%">번호</th>
+					<th width="12%">분야</th>
+					<th width="12%">장비보수유형</th>
+					<th width="12%">장비이름</th>
+					<th width="12%">제조사</th>
+					<th width="12%">가격</th>
+					<th width="12%">수량</th>
+					<th width="12%">담당자</th>
+					<th width="12%">날짜</th>
 
 				</tr>
 			</thead>
@@ -203,10 +184,11 @@
 						<td>
 						<c:if test="${eList.e_repair_type eq '수리중'}">
 							<div class="dropdown" id="commute-div">
-							<button class="btn btn-success dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false" style="width:100px;">
+							<button class="btn btn-sm btn-success dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false" style="width:100px;">
 							수리중
   							</button>
-  							<ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+  							<ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1" style="padding: 0px 5px !important;
+    font-size: 15px !important;">
 						    <li><a class="dropdown-item" id="repairButt" >수리완료
 								<input type="hidden" id="eqno" value="${eList.equipment_no }">
 						    	</a>
@@ -233,7 +215,9 @@
 	</div>
 
 	<!-- 페이징 처리 -->
-			<ul class="pagination" >
+	<div class="d-flex justify-content-between">
+	<div></div>
+			<ul class="pagination">
 				<c:if test="${pageVO.prev }">
 					<li class="paginate_button page-item previous"
 						id="example1_previous">
@@ -288,6 +272,7 @@
 					</li>
 				</c:if>
 			</ul>
+			</div>
 
 </div>
 
@@ -297,9 +282,9 @@ $(document).ready(function(){
 	
 	$(document).on("click","#repairButt",function(){
 		 var type = $('#eqno').val();
-		alert(type);
+// 		alert(type);
 		Swal.fire({
-			   title: '수리가 끝났습니다.',
+			   title: '장비 수리가 끝났습니까?',
 			   icon: 'warning',
 			   
 			   showCancelButton: true, // cancel버튼 보이기. 기본은 원래 없음

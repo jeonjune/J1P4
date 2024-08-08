@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.itwillbs.domain.ClassVO;
+import com.itwillbs.domain.Criteria;
 import com.itwillbs.persistence.ClassDAO;
 
 @Service
@@ -14,8 +15,12 @@ public class ClassService {
     @Autowired
     private ClassDAO classDAO;
 
-    public List<ClassVO> getAllClasses() {
-        return classDAO.getAllClasses();
+    public List<ClassVO> getAllClasses(Criteria cri) {
+        return classDAO.getAllClasses(cri);
+    }
+    
+    public int getClassesCount() {
+    	return classDAO.getClassesCount();
     }
 
     public ClassVO getClassById(int classNo) {

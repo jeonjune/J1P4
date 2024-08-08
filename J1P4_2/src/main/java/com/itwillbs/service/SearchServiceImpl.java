@@ -1,6 +1,7 @@
 package com.itwillbs.service;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -10,6 +11,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
 import com.itwillbs.domain.BaseVO;
+import com.itwillbs.domain.ClassScheduleVO;
+import com.itwillbs.domain.ClassVO;
 import com.itwillbs.domain.Criteria;
 import com.itwillbs.domain.EmployeeVO;
 import com.itwillbs.domain.EquipManageVO;
@@ -84,6 +87,26 @@ public class SearchServiceImpl implements SearchService {
 	@Override
 	public int getMSGCount(Criteria cri) throws Exception {
 		return sDao.getMSGCount(cri);
+	}
+
+	@Override
+	public List<ClassVO> searchClass(Criteria cri) throws Exception {
+		return sDao.searchClass(cri);
+	}
+
+	@Override
+	public int getClassCount(Criteria cri) throws Exception {
+		return sDao.getClassCount(cri);
+	}
+
+	@Override
+	public List<ClassScheduleVO> searchClassDetail(Map<String, Object> search) throws Exception {
+		return sDao.searchClassDetail(search);
+	}
+
+	@Override
+	public int getClassDetailCount(Criteria cri) throws Exception {
+		return sDao.getClassDetailCount(cri);
 	}
 	
 	
