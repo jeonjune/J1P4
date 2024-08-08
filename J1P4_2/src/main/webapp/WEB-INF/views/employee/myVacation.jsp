@@ -168,7 +168,7 @@
 		
 	</div>
 
-   <!-- 휴가 모달창 시작 -->
+    <!-- 휴가 모달창 시작 -->
 	<div class="modal fade" id="vaModal" tabindex="-1"
 		aria-labelledby="vaModalLabel" aria-hidden="true">
 		<div class="modal-dialog modal-lg">
@@ -208,7 +208,7 @@
 					<textarea rows="20" cols="200" name="vacation_reason" id="vacation_reason" 
 					class="form-control" onkeyup="up()" placeholder="휴가 사유를 입력하세요."></textarea>
 					</div>
-
+				 <span id="checkModal" style="font-size: 14px;"></span>	
 				</div>
 				</form>
 
@@ -217,7 +217,7 @@
 					<button type="button" class="btn btn-secondary"
 						data-bs-dismiss="modal">취소</button>
 					<button type="button" class="btn btn-primary vaSendBtn"
-						data-bs-dismiss="modal">전송하기</button>
+						>전송하기</button>
 				</div>
 
 			</div>
@@ -238,6 +238,23 @@
 <script>
 $(document).ready(function(){
 	$('.vaSendBtn').click(function(){
+		
+		
+		//빈칸검사
+	    var vacation_start = $('#vacation_start').val();
+        var vacation_end = $('#vacation_end').val();
+        var vacation_reason = $('#vacation_reason').val();
+        
+        if (vacation_start == "" || vacation_end == "" || vacation_reason == "") {
+        	  $('#checkModal')
+				.html(
+					 '빈칸을 모두 입력해주세요.')
+				.css('color', 'red');
+	            return;
+	        }else {
+	        	 $('#varModal').modal('hide');
+        	}
+		
 		
 		function getCurrentYear() {
 		    const date = new Date();

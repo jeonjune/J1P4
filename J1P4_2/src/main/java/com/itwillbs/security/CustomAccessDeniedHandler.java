@@ -26,7 +26,7 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
 		logger.info("CustomAccessDeniedHanlen_handle() 실행 ");
 		
 		// 페이지 이동 - 접근권한 처리하는 에러 페이지로 이동
-		response.sendRedirect("/accessErr");
+		response.sendRedirect("/main/home?accessDenied=true");
 		
 	}
 	

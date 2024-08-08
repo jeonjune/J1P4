@@ -17,6 +17,16 @@
 	href="${pageContext.request.contextPath }/resources/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
 
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/dist/css/adminlte.min.css?v=3.2.0">
+<script>
+        window.onload = function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const error = urlParams.get('error');
+            if (error === 'true') {
+                document.getElementById('error-message').textContent = '아이디 또는 비밀번호가 잘못 되었습니다. 아이디와 비밀번호를 정확히 입력해 주세요.';
+                document.getElementById('error-message').style.display = 'block';
+            }
+        }
+    </script>
 </head>
 <body class="login-page" style="min-height: 496.781px;">
 	<div class="login-box" style=" ">
@@ -45,16 +55,17 @@
 							</div>
 						</div>
 					</div>
+					<p id="error-message" style="color: red; display: none;"></p>
 					<div class="row">
-						<div class="col-8">
-							<div class="icheck-primary">
-								<input type="checkbox" id="remember"> <label
-									for="remember"> Remember Me </label>
-							</div>
-						</div>
+<!-- 						<div class="col-8"> -->
+<!-- 							<div class="icheck-primary"> -->
+<!-- 								<input type="checkbox" id="remember"> <label -->
+<!-- 									for="remember"> Remember Me </label> -->
+<!-- 							</div> -->
+<!-- 						</div> -->
 
 						<div class="col-4">
-							<input type="submit" class="btn btn-primary btn-block" value="Sing in">
+							<input type="submit" class="btn btn-primary btn-block" value="Sign in">
 						</div>
 
 					</div>

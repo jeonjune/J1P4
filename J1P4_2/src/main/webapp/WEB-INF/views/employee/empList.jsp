@@ -102,7 +102,7 @@ document.addEventListener("DOMContentLoaded", function() {
 				<div class="input-group-append">
 					<button class="btn" type="submit" id="submitBtn"
 						onclick="toggleSpinner()">
-						<i class="fas fa-search fa-fw"></i>
+						<i class="fas fa-search fa-fw" ></i>
 					</button>
 				</div>
 				
