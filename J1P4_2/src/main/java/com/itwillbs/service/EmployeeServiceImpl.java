@@ -111,9 +111,11 @@ public class EmployeeServiceImpl implements EmployeeService {
 
 	@Override
 	public void myUpdate(EmployeeVO vo) throws Exception {
-		//비밀번호 암호화
-		String pw = pwEncoder.encode(vo.getUser_pw());
-		vo.setUser_pw(pw);
+		if(vo.getUser_pw()!=null) {
+			//비밀번호 암호화
+			String pw = pwEncoder.encode(vo.getUser_pw());
+			vo.setUser_pw(pw);			
+		}
 		edao.empUpdate(vo);
 	}
 
@@ -177,6 +179,20 @@ public class EmployeeServiceImpl implements EmployeeService {
 	@Override
 	public Integer appHCount(int user_no) throws Exception {
 		return edao.appHCount(user_no);
+	}
+
+	//이메일 중복체크
+	@Override
+	public int emailCheck(String email) throws Exception {
+		int result = edao.emailCheck(email);
+		return result;
+	}
+
+	//전화번호 중복체크
+	@Override
+	public int phoneCheck(String phone_no) throws Exception {
+		int result = edao.phoneCheck(phone_no);
+		return result;
 	}
 	
 	

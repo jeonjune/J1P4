@@ -7,6 +7,17 @@
 <%@ include file="../include/header.jsp"%>
 <%@ include file="../include/sidemenu.jsp"%>
 <%@ include file="../include/empMenu.jsp"%>
+
+<style>
+        #emailOk, #emailExists, #emailError {
+            display: none;
+            font-size: 14px;
+        }
+        #emailOk { color: green; }
+        #emailExists, #emailError { color: red; }
+</style>
+
+
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 	<!-- 카카오 우편번호 -->
 	<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
@@ -443,7 +454,7 @@ document.addEventListener("DOMContentLoaded", function() {
                         
                         <div class="form-group">
                             <label>이름</label>
-                            <input type="text" name="name"  class="form-control" >
+                            <input type="text" name="name"  class="form-control" id="name">
                         </div>
 
                         <div class="form-group" >
@@ -474,12 +485,12 @@ document.addEventListener("DOMContentLoaded", function() {
                         </form:form>
                      
 						<div class="form-group">
-							<label>입사일</label> <input type="date" name="emp_date"
+							<label>입사일</label> <input type="date" name="emp_date" id="emp_date"
 								class="form-control" />
 						</div>
 						
 						<div class="form-group">
-							<label>생일</label> <input type="date" name="birth_date"
+							<label>생일</label> <input type="date" name="birth_date" id="birth_date"
 								class="form-control" />
 						</div>
                       
@@ -491,13 +502,19 @@ document.addEventListener("DOMContentLoaded", function() {
  
                         <div class="form-group">
                             <label>전화번호</label>
-                            <input type="text" name="phone_no"  class="form-control"  maxlength="13" oninput="formatPhoneNumber(this)">
+                            <input type="text" name="phone_no"  class="form-control"  maxlength="13" oninput="formatPhoneNumber(this)" id="phone_no">
                         </div>
+                         <span id="phoneOk" style="font-size: 14px;"></span>	
+                         <span id="phoneExists" style="font-size: 14px;"></span>	
+                         <span id="phoneError" style="font-size: 14px;"></span>	
                       
                         <div class="form-group">
                             <label>이메일</label>
-                            <input type="text" name="email"  class="form-control" >
+                            <input type="text" name="email"  class="form-control" id="email">
                         </div>
+                         <span id="emailOk" style="font-size: 14px;">사용 가능한 이메일입니다.</span>	
+                         <span id="emailExists" style="font-size: 14px;">이미 사용 중인 이메일입니다.</span>	
+                         <span id="emailError" style="font-size: 14px;">유효하지 않은 이메일 형식입니다.</span>	
                        
                         <div class="form-group">
                             <label>우편번호</label>
@@ -534,6 +551,34 @@ document.addEventListener("DOMContentLoaded", function() {
 
 $(function() {
 	$("#submitButt").click(function() {
+		
+		//빈칸검사
+		   var user_id = $('#user_id').val();
+	       var name = $('#name').val();
+	       var pw1 = $('#pw1').val();
+	       var pw2 = $('#pw2').val();
+	       var emp_date = $('#emp_date').val();
+	       var birth_date = $('#birth_date').val();
+	       var gender = $('input[name="gender"]:checked').val();
+	       var phone_no = $('#phone_no').val();
+	       var email = $('#email').val();
+	       var sample6_postcode = $('#sample6_postcode').val();
+	       var sample6_address = $('#sample6_address').val();
+	       var sample6_detailAddress = $('#sample6_detailAddress').val();
+	      
+	     	if(pw1!=pw2){
+	     		alert("비밀번호를 다시 확인해주세요.");
+	     		 return;
+	     	}
+	        
+	        if (user_id == "" || name == "" || pw1 == "" || pw2 == "" || emp_date=="" ||
+	        	birth_date ==""	|| gender == undefined || phone_no =="" || email=="" || sample6_postcode =="" ||
+	        	sample6_address =="" || sample6_detailAddress == "" ) {
+	            alert("빈칸을 모두 입력해주세요.");
+	            return;
+	        }
+		
+		
 		const token = $("meta[name='_csrf']").attr("content")
 		const header = $("meta[name='_csrf_header']").attr("content");
 		
@@ -556,7 +601,7 @@ $(function() {
 				
 			},
 			error : function() {
-				alert("오류발생");
+				alert("이메일 또는 전화번호가 중복된 정보입니다.");
 			}
 		});
 	});
@@ -1131,6 +1176,60 @@ $(function() {
         
         input.value = formattedValue;
     }
+	   
+   
+	//이메일 전화번호 중복체크
+	 // 유효성 검사 함수들
+ 	function regMemberEmail(email) {
+      var regExp = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+      return regExp.test(email);
+    }
+
+	// 유효성 검사 로직
+	$('#email').on('input', function() {
+        validateEmail();
+	});   
+
+	// 폼 제출 시 모든 유효성 검사 및 중복 체크 확인
+	 function validateEmail() {
+       var email = $('#email').val();
+       var emailOk = $('#emailOk');
+       var emailExists = $('#emailExists');
+       var emailError = $('#emailError');
+
+       if (!regMemberEmail(email)) { //유효성검사 실패시
+           emailError.show();
+           emailExists.hide();
+           emailOk.hide();
+           return;
+       } else { 
+           emailError.hide();
+       }
+	
+       $.ajax({
+           url: '/employee/emailCheck',
+           type : 'GET',
+           dataType: 'json',
+           data: { email: email },
+           success: function(response) {
+               if (response === 1) { 
+                   emailExists.show(); //중복
+                   emailOk.hide(); //
+               } else {
+                   emailExists.hide();
+                   emailOk.show();
+               }
+           },
+           error: function(xhr, status, error) {
+               console.error('이메일 AJAX Error: ', status, error);
+           }
+       });
+	 
+	}
+  
+	
+	
+	
 	
 
 </script>

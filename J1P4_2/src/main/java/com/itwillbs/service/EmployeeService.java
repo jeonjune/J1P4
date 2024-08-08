@@ -88,6 +88,12 @@ public interface EmployeeService {
 	// 반려안된 총 반차 수
 	public Integer appHCount(int user_no) throws Exception;
 	
+	// 이메일 중복체크
+	public int emailCheck(String email) throws Exception;
+	
+	//전화번호 중복체크
+	public int phoneCheck(String phone_no) throws Exception;
+
 	
 
 }

@@ -136,6 +136,8 @@
 								<td>${monthWork.vacation_status }</td>
 							</tr>
 						</c:forEach>
+						
+						
 					</tbody>
 		
 				</table>
