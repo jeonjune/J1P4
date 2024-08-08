@@ -207,22 +207,8 @@
 							class="btn btn-outline-dark radioField" for="radioGen2">여자</label>
 					</div>
 					<hr>
-					<h5>수신 동의 여부</h5>
-					<div class="content">
-						<input type="radio" value="chk" class="btn-check" name="msg_opt"
-							id="radioMsg1"> <label
-							class="btn btn-outline-dark radioField" for="radioMsg1">메시지만
-							동의</label> <input type="radio" value="chk" class="btn-check"
-							name="email_opt" id="radioMsg2"> <label
-							class="btn btn-outline-dark radioField" for="radioMsg2">이메일만
-							동의</label> <input type="radio" value="chk" class="btn-check"
-							name="double_opt" id="radioMsg3"> <label
-							class="btn btn-outline-dark radioField" for="radioMsg3">모두
-							동의</label>
-					</div>
-					<hr>
-					<h5>연도별</h5>
-					<input type="month" id="monthInput">년
+					<h5>등록일</h5>
+					<input type="month" id="monthInput" class="form-control">
 
 				</div>
 
@@ -314,10 +300,9 @@
 					<th width="3%">NO</th>
 					<th width="14%">회원이름</th>
 					<th>연락처</th>
+					<th>생년월일</th>
 					<th>회원등급</th>
 					<th>등록일</th>
-					<th>강의 누적 기간</th>
-					<th>현재 수강상태</th>
 					<th width="30%">메모</th>
 				</tr>
 			</thead>
@@ -333,10 +318,9 @@
 							
 							</td>
 						<td class="mem_phone">${vo.formatted_mem_phone}</td>
+						<td class="sorting_1">${vo.mem_birth }</td>
 						<td>${vo.mem_rank }</td>
 						<td>${vo.reg_date }</td>
-						<td class="sorting_1">${vo.class_time }</td>
-						<td>${vo.class_status }</td>
 						<td>${vo.mem_note }</td>
 					</tr>
 				</c:forEach>
@@ -466,7 +450,7 @@
 								class="form-control">
 						</div>
 						<div class="form-group">
-							<label>생일</label> <input type="date" name="mem_birth" id="mem_birth"
+							<label>생년월일</label> <input type="date" name="mem_birth" id="mem_birth"
 								class="form-control" />
 						</div>
 
@@ -481,25 +465,27 @@
 						</div>
 
 						<div class="form-group">
-							<label>전화번호</label> <input type="text" name="mem_phone" id="mem_phone"
+							<label>연락처</label>
+						 <span class="mx-2" id="phoneOk" style="font-size: 14px;">사용 가능한 연락처입니다.</span>	
+                         <span class="mx-2" id="phoneExists" style="font-size: 14px;">이미 가입된 연락처입니다.</span>	
+							<input type="text" name="mem_phone" id="mem_phone"
 								class="form-control" maxlength="13" oninput="formatPhoneNumber(this)"> <label class="chkboxCustom">
 								<input type="checkbox" name="sms_opt"
 								style="accent-color: #cdb4db;" value="1">&nbsp;sms 수신 동의
 							</label>
 						</div>
-						 <span id="phoneOk" style="font-size: 14px;">사용 가능한 연락처입니다.</span>	
-                         <span id="phoneExists" style="font-size: 14px;">이미 가입된 연락처입니다.</span>	
 
 						<div class="form-group">
-							<label>이메일</label> <input type="email" name="mem_email" id="mem_email"
+							<label>이메일</label>
+						 <span class="mx-2" id="emailOk" style="font-size: 14px;">사용 가능한 이메일입니다.</span>	
+                         <span class="mx-2" id="emailExists" style="font-size: 14px;">이미 사용 중인 이메일입니다.</span>	
+                         <span class="mx-2" id="emailError" style="font-size: 14px;">유효하지 않은 이메일 형식입니다.</span>	
+							<input type="email" name="mem_email" id="mem_email"
 								class="form-control"> <label class="chkboxCustom">
 								<input type="checkbox" style="accent-color: #cdb4db;"
 								name="email_opt" value="1">&nbsp;이메일 수신 동의
 							</label>
 						</div>
-						 <span id="emailOk" style="font-size: 14px;">사용 가능한 이메일입니다.</span>	
-                         <span id="emailExists" style="font-size: 14px;">이미 사용 중인 이메일입니다.</span>	
-                         <span id="emailError" style="font-size: 14px;">유효하지 않은 이메일 형식입니다.</span>	
 						
 						<div class="form-group">
 							<label>메모</label> <br>

@@ -101,8 +101,7 @@
     </script>
     
     <div class="content-wrapper" style="min-height: 831px;">
-    <h1>시설예약</h1>
-    <div id='calendar'></div>
+    <div id='calendar' style="background: #fff;"></div>
     
       <!--시설예약 모달창 시작 -->
 	<div class="modal fade" id="vaModal" tabindex="-1"
