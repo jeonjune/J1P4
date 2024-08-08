@@ -5,6 +5,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ include file="../include/header.jsp"%>
 <%@ include file="../include/sidemenu.jsp"%>
+<%@ include file="../include/smsMenu.jsp"%>
 <!-- 바디 시작 -->
 <div class="content-wrapper p-3" style="min-height: 831px; padding-top:20px;">
 

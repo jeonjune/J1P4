@@ -4,6 +4,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ include file="../include/header.jsp"%>
 <%@ include file="../include/sidemenu.jsp"%>
+<%@ include file="../include/memListMenu.jsp"%>
 
 <style>
         #emailOk, #emailExists, #emailError,
@@ -20,8 +21,7 @@
 	src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 
 <!-- 바디 시작 -->
-<div class="content-wrapper" style="min-height: 831px; padding-top:20px;">
-	<div class="col-sm-12">
+<div class="content-wrapper p-3" style="min-height: 831px; padding-top:20px;">
 	<!-- 스피너 (검색 시 돌아가는 로딩바) -->
 	<div class="spinner-border text-primary d-none" id="spinner"
 		role="status" aria-hidden="true">
@@ -155,7 +155,7 @@
 			</div>
 			
 			<!-- 행 개수 선택 -->
-			<div class="textRight">
+			<div class="textRight" style="margin-left: 15px;">
 				<select name="pageSize" id="selectPage" class="form-control">
 					<option value="10">10개씩 보기</option>
 					<option value="50">50개씩 보기</option>
@@ -309,10 +309,10 @@
 			style="background: #fff; height: 100px;" aria-describedby="example1_info">
 			<thead>
 				<tr>
-					<th width="3%"><input type="checkbox" class="chkGrp"
+					<th width="2%"><input type="checkbox" class="chkGrp"
 						id="chkAll" style="accent-color: #cdb4db;" ></th>
 					<th width="3%">NO</th>
-					<th width="13%">회원이름</th>
+					<th width="14%">회원이름</th>
 					<th>연락처</th>
 					<th>회원등급</th>
 					<th>등록일</th>
@@ -345,7 +345,6 @@
 	
 
 
-	<div class="col-sm-12">
 		<div class="d-flex justify-content-between align-items-center">
 		
 	<!-- 하단 버튼 모음 -->	
@@ -437,7 +436,6 @@
 		
 		
 		
-	</div>
 
 
 	<!-- 회원 등록 오프캔버스 시작 -->
@@ -536,7 +534,6 @@
 	</form>
 	<!-- 회원 등록 오프캔버스 시작 -->
 
-</div>
 <!-- 바디 끝 -->
 
 <script>
