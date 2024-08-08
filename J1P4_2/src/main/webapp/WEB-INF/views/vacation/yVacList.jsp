@@ -7,10 +7,8 @@
 <%@ include file="../include/sidemenu.jsp"%>
 <%@ include file="../include/empMenu.jsp"%>
 
- <div class="content-wrapper" style="min-height: 831px;">
+ <div class="content-wrapper p-3" style="min-height: 831px;">
  
-<h2>승인된 휴가</h2>
-	<div class="col-sm-12">
 		<table id="example1"
 			class="table table-bordered table-hover"
 			style="background: #fff"
@@ -67,8 +65,41 @@
 			</tbody>
 
 		</table>
-	</div>
- 
+		<div class="d-flex justify-content-between p-1" >
+		<div></div>
+		<div>
+		<ul class="pagination" >
+							<c:if test="${pageVO.prev }">
+								<li class="paginate_button page-item previous"
+									id="example1_previous">
+									<!-- 검색을 하지 않았을 때 페이징 처리 -->
+										<a
+											href="/vacation/yVacList?page=${pageVO.startPage-1 }"
+											aria-controls="example1" data-dt-idx="0" tabindex="0"
+											class="page-link">«</a>
+								</li>
+							</c:if>
+							<c:forEach var="i" begin="${pageVO.startPage }"
+								end="${pageVO.endPage }" step="1">
+								<li
+									class="paginate_button page-item ${pageVO.cri.page == i ? 'active':'' }">
+										<a href="/vacation/yVacList?page=${i }"
+											aria-controls="example1" data-dt-idx="1" tabindex="0"
+											class="page-link">${i }</a>
+								</li>
+							</c:forEach>
+							<c:if test="${pageVO.next && pageVO.endPage > 0 }">
+								<li class="paginate_button page-item next" id="example1_next">
+									<!-- 검색을 하지 않았을 때 페이징 처리 -->
+										<a
+											href="/vacation/yVacList?page=${pageVO.endPage+1 }"
+											aria-controls="example1" data-dt-idx="7" tabindex="0"
+											class="page-link">»</a>
+								</li>
+							</c:if>
+						</ul> 
+		</div>
+		</div>
  
  
  </div>
