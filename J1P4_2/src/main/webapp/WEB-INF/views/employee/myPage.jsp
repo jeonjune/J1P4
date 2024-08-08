@@ -283,12 +283,12 @@ document.addEventListener("DOMContentLoaded", function() {
  
                         <div class="form-group">
                             <label>전화번호</label>
-                            <input type="text" name="phone_no"  maxlength="13" oninput="formatPhoneNumber(this)" class="form-control" value="${myP.phone_no }">
+                            <input type="text" name="phone_no" id="phone_no" maxlength="13" oninput="formatPhoneNumber(this)" class="form-control" value="${myP.phone_no }">
                         </div>
                       
                         <div class="form-group">
                             <label>이메일</label>
-                            <input type="text" name="email"  class="form-control" value="${myP.email }">
+                            <input type="text" name="email" id="email" class="form-control" value="${myP.email }">
                         </div>
                        
                         <div class="form-group">
@@ -320,7 +320,20 @@ document.addEventListener("DOMContentLoaded", function() {
 <script>
 	$(function() {
 		$("#submitButt").click(function() {
-			// 유효성 검사
+			//빈칸검사
+	
+       var phone_no = $('#phone_no').val();
+       var email = $('#email').val();
+       var sample6_postcode = $('#sample6_postcode').val();
+       var sample6_address = $('#sample6_address').val();
+       var sample6_detailAddress = $('#sample6_detailAddress').val();
+      
+        if (phone_no =="" || email=="" || sample6_postcode =="" ||
+        	sample6_address =="" || sample6_detailAddress == "" ) {
+            alert("빈칸을 모두 입력해주세요.");
+            return;
+        }		
+			
 		if (validateForm()) {
 			
 			$.ajax({

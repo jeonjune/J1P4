@@ -189,6 +189,9 @@ ${rList }
 						aria-label="Browser: activate to sort column ascending">담당자</th>
 					<th class="sorting" tabindex="0" aria-controls="example1"
 						rowspan="1" colspan="1"
+						aria-label="Browser: activate to sort column ascending">반려된 날짜</th>
+					<th class="sorting" tabindex="0" aria-controls="example1"
+						rowspan="1" colspan="1"
 						aria-label="Browser: activate to sort column ascending">반려사유</th>
 
 				</tr>
@@ -204,6 +207,7 @@ ${rList }
 						<td>${rList.addcount}</td>
 						<td>${rList.manufacturer }</td>
 						<td>${rList.name }</td>
+						<td>${rList.reject_date }</td>
 <%-- 						<td>${rList.equipment_reject }</td> --%>
 					 <td>
 					 <c:if test="${rList.status == '반려'}">
