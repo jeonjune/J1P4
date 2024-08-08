@@ -6,114 +6,116 @@
 
 <%@ include file="../include/header.jsp"%>
 <%@ include file="../include/sidemenu.jsp"%>
-
+<%@ include file="../include/equipMenu.jsp"%>
 
 
 <div class="content-wrapper" style="min-height: 831px;">
 
-<h1>장비내역 상세페이지(추가구매/수리/폐기) - equipdetail</h1>
-
 <form action=""  method="post" id="detailForm"  accept-charset="UTF-8" >
+<div class="col-md-8" style="margin-left: 300px; padding-top: 20px; padding-bottom: 50px;">
 <input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
 <input type="hidden" name="equipment_no" value="${param.equipment_no }">
-	<div>
-
-					
-					<div class="form-group">
+		<div class="card">
+		<div class="card m-4">
+			<div class="card-body">
+			<div class="p-1">
+				<h2>장비 유지보수</h2>
+				</div>
+			<div class="d-flex justify-content-between my-3">
+					<div class="form-group col-md-4">
 						<label>장비번호</label> <input type="text" name="equipment_no"
 							class="form-control" value="${resultVO.equipment_no }" readonly="readonly"/>
 					</div>
 					
-					<div class="form-group">
+					<div class="form-group col-md-4">
 						<label>담당자</label> <input type="text" name="name"
 							class="form-control" value="${resultVO.name}" readonly="readonly"/>
 					</div>
 					
-					<div class="form-group">
-						<label>작성날짜</label> <input type="date" name="report_date" id="date"
+					<div class="form-group col-md-4">
+						<label>작성 날짜</label> <input type="date" name="report_date" id="date"
 							class="form-control"/>
 					</div>
-					
-<!-- 					<div class="form-group"> -->
-<!-- 						<label>장비신청유형</label> <input type="text" name="e_repair_type" -->
-<%-- 							class="form-control" value="${resultVO.e_repair_type }"/> --%>
-<!-- 					</div> -->
-					
-					<div class="form-group">
-						<label> 장비신청유형 </label> <select id="select_type" class="form-control"
+			</div>
+			</div>
+		</div>
+					<div class="card-body">
+					<div class="d-flex justify-content-between p-1" >
+					<div class="form-group col-md-6" style="height:50px;">
+						<label > 장비신청 유형 </label> <select id="select_type" class="form-control"
 							name="e_repair_type" size="1">
-							<option>선택하세요.</option>
+							<option selected disabled>선택하세요.</option>
 							<option value="추가구입">추가구입</option>
 							<option value="수리">수리</option>
 							<option value="폐기">폐기</option>
 						</select>
 						<br>
-					<div class="addcount"></div>
+					
 					</div>
 					
-					
-					<div class="form-group">
+					<div class="form-group col-md-6">
 						<label>분야</label> <input type="text" name="field"
 							class="form-control" value="${resultVO.field }"  readonly="readonly"/>
 					</div>
+					</div>
 					
-					
-					<div class="form-group">
-						<label>신청장비이름</label> <input type="text" name="equipment_name"
+					<div class="d-flex justify-content-between p-1">
+					<div class="form-group col-md-6">
+						<label>신청장비 이름</label> <input type="text" name="equipment_name"
 							class="form-control" value="${resultVO.equipment_name }" readonly="readonly"/>
 					</div>
 					
-					<div class="form-group">
+					<div class="form-group col-md-6">
 						<label>제조사</label> <input type="text" name="manufacturer"
 							class="form-control" value="${resultVO.manufacturer }" readonly="readonly"/>
 					</div>
-
-					  <div class="form-group">
-        <label>현재 개수</label> 
-        <input type="text" name="count" id="count" readonly="readonly" class="form-control" value="${resultVO.count }"/>
-    </div>
-    
-    <div class="form-group">
-        <label>개당 가격</label> 
-        <input type="text" name="cost" id="cost" readonly="readonly" class="form-control" value="${resultVO.cost }" />
-    </div>
-    
-    <div class="form-group">
-        <label>현재 총 가격</label> 
-        <input type="text" name="total" id="total" readonly="readonly" class="form-control" value="${resultVO.total }"/>
-    </div>
-
-    <div class="new-values">
-        <!-- 새 개수, 새 총 가격, 최종 총 가격 필드가 여기 추가됨 -->
-    </div>
+					</div>
 					
-					<div class="form-group">
-						<label>유지보수이유</label><br>
+					  <div class="d-flex justify-content-between p-1">
+					<div class="form-group col-md-4">
+				        <label>현재 개수</label> 
+				        <input type="text" name="count" id="count" readonly="readonly" class="form-control" value="${resultVO.count }"/>
+				    </div>
+				    
+				    <div class="form-group col-md-4">
+				        <label>개당 가격</label> 
+				        <input type="text" name="cost" id="cost" readonly="readonly" class="form-control" value="${resultVO.cost }" />
+				    </div>
+				    
+				    <div class="form-group col-md-4">
+				        <label>현재 총 가격</label> 
+				        <input type="text" name="total" id="total" readonly="readonly" class="form-control" value="${resultVO.total }"/>
+				    </div>
+				    </div>
+				    
+				    <div class="d-flex justify-content-between p-1 addCount">
+					<div class="form-group col-md-4 addcount"></div>
+      				<!-- 새 개수, 새 총 가격, 최종 총 가격 필드가 여기 추가됨 -->
+    				</div>
+					
+					<div class="form-group p-2">
+						<label>유지보수 이유</label><br>
 						<textarea id="comment" name="repair_reason" rows="5" cols="100" class="form-control"
-							placeholder="입력하세요.">${resultVO.repair_reason }</textarea>
+							placeholder="입력하세요."></textarea>
 					</div>
 
-					<div class="form-group">
-						<label>첨부파일</label>
-						<c:if test="${!fileList.file_name.equals('no') }">
-					<a href="/maintenance/download?fileName=${fileList.file_name }">${fileList.file_name }</a></p>					
-					</c:if>
-
+					<div class="form-group fileDiv p-2"">
+						<label for="exampleInputFile">첨부파일</label> <input type="file" name="file"
+						 class="form-control" />
 					</div>
 
+					<div class="p-2" style="text-align: right;">
+					<a href="/maintenance/equipment"><button type="button" class="btn btn-outline-primary">취소</button></a>
 					<button type="button" class="btn btn-primary" id="submitBut">등록</button>
+					</div>
+					</div>
 			        
 
 
 		</div>
+		</div>
 </form>
 
-	
-	
-	
-	
-	
-	
 	
 
 </div>
@@ -129,13 +131,14 @@ $(document).ready(function() {
         var total = $('#total').val();
         var date = $('#date').val();
         var content = $('#comment').val();
+//         alert("${resultVO.equipment_no }");
         // CSRF 토큰 값을 메타 태그에서 가져오기
         var token = $("meta[name='_csrf']").attr("content");
         var header = $("meta[name='_csrf_header']").attr("content");
         $.ajax({
             url: '/maintenance/equipdetail',
             type: 'POST',
-            data: {"equipment_no":"${resultVO.equipment_no }",
+            data: {equipment_no:"${resultVO.equipment_no }",
             	e_repair_type:type,
             	count : count,
             	cost : cost,
@@ -147,7 +150,7 @@ $(document).ready(function() {
                 xhr.setRequestHeader(header, token);
             },
             success: function(response) {
-                alert("등록완료@@!");
+                alert("장비 유지보수 신청이 완료되었습니다.");
                 window.location.href = '/maintenance/list';
             },
             error: function(error) {
@@ -180,24 +183,23 @@ $(document).ready(function() {
     $('#select_type').on('change', function() {
         let type = $(this).val();
         let addCountDiv = $('.addcount');
-        let newValuesDiv = $('.new-values');
 
         if (type === "추가구입") {
             addCountDiv.html('<label>추가구입 개수</label><input id="addcount" type="number" name="addcount" class="form-control">');
-            newValuesDiv.html(`
-                <div class="form-group">
-                    <label>총 개수</label> 
+            $('.addCount').append(`
+                <div class="form-group col-md-4">
+                    <label>추가구입 후 총 개수</label> 
                     <input type="text" id="newCount" readonly="readonly" class="form-control"/>
                 </div>
-                <div class="form-group">
-                    <label>최종 가격</label> 
+                <div class="form-group col-md-4">
+                    <label>추가구입 후 총 가격</label> 
                     <input type="text" id="finalTotal" readonly="readonly" class="form-control"/>
                 </div>
             `);
             $('#addcount').on('input', updateValues);
         } else {
             addCountDiv.html(''); // 다른 옵션을 선택했을 때 input 창을 숨김
-            newValuesDiv.html(''); // 다른 옵션을 선택했을 때 새 값들을 숨김
+            $('.addCount').html(''); // 다른 옵션을 선택했을 때 새 값들을 숨김
         }
     });
 });

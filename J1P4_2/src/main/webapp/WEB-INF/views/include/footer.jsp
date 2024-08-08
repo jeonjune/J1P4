@@ -57,31 +57,46 @@ $(function () {
     // Check if the current path starts with /member/
     if (pathname.startsWith('/member/')) {
         // Add active class to the member management link
+        if (!pathname.startsWith('/member/message')) {
         $('ul.nav-sidebar a[href="/member/list"]').addClass('active');
+        	
+        }
     }
-    if (pathname.startsWith('/maintenance/facility')) {
+    if (pathname.startsWith('/employee/') || pathname.startsWith('/vacation/')) {
         // Add active class to the member management link
-        $('ul.nav-sidebar a[href="/maintenance/facility"]').addClass('active');
+        if (!pathname.startsWith('/employee/myPage') && !pathname.startsWith('/employee/attend') && !pathname.startsWith('/employee/myVacation')){
+        $('ul.nav-sidebar a[href="/vacation/vacation"]').addClass('active');
+        	
+        }
     }
-    if (pathname.startsWith('/maintenance/read')) {
+    
+    
+    if (pathname.startsWith('/maintenance/read') || pathname.startsWith('/maintenance/reservation')) {
         // Add active class to the member management link
         $('ul.nav-sidebar #centerLi').addClass('menu-is-opening menu-open');
         $('ul.nav-sidebar #center').addClass('active');
         $('ul.nav-sidebar a[href="/maintenance/facility"]').addClass('active');
     }
-    if (pathname.startsWith('/maintenance/request')) {
-        // Add active class to the member management link
-        $('ul.nav-sidebar #centerLi').addClass('menu-is-opening menu-open');
-        $('ul.nav-sidebar #center').addClass('active');
-        $('ul.nav-sidebar a[href="/maintenance/equipment"]').addClass('active');
-    }
-    if (pathname.startsWith('/maintenance/reject')) {
+    if (pathname.startsWith('/maintenance/equipdetail') || pathname.startsWith('/maintenance/detail') || pathname.startsWith('/maintenance/list') || pathname.startsWith('/maintenance/reject')) {
         // Add active class to the member management link
         $('ul.nav-sidebar #centerLi').addClass('menu-is-opening menu-open');
         $('ul.nav-sidebar #center').addClass('active');
         $('ul.nav-sidebar a[href="/maintenance/equipment"]').addClass('active');
     }
 
+    if (pathname.startsWith('/classes/')) {
+        // Add active class to the member management link
+        $('ul.nav-sidebar #centerClass').addClass('menu-is-opening menu-open');
+        $('ul.nav-sidebar #classMenu').addClass('active');
+        $('ul.nav-sidebar a[href="/classes/list"]').addClass('active');
+    }
+    if (pathname.startsWith('/member/message')) {
+        // Add active class to the member management link
+        $('ul.nav-sidebar #centerLi').addClass('menu-is-opening menu-open');
+        $('ul.nav-sidebar #center').addClass('active');
+        $('ul.nav-sidebar a[href="/member/message"]').addClass('active');
+    }
+    
     // for single sidebar menu
     $('ul.nav-sidebar a').filter(function () {
         return this.href == window.location.origin + pathname;

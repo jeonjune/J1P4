@@ -309,6 +309,7 @@ logger.debug(" downloadGET() 실행 ");
 	
 	
 	//장비내역 (추가구매/수리/폐기) - 수정하기
+	@ResponseBody
 	@PostMapping(value = "/equipdetail")
 	public String equipdetailPOST(EquipManageVO vo, @RequestParam("equipment_no")int eno) throws Exception {
 		logger.info("!!!! eno !!!!!!! :"+ eno);

@@ -23,7 +23,7 @@
 				<div class="p-1">
 				<h2>장비신청 승인</h2>
 				</div>
-				<div class="d-flex justify-content-between p-1">
+				<div class="d-flex justify-content-between my-3">
 					<div class="form-group col-md-4">
 						<label>장비번호</label> <input type="text" name="equipment_no"
 							class="form-control" value="${resultVO.equipment_no }" readonly="readonly"/>
@@ -34,7 +34,7 @@
 					</div>
 					 
 					<div class="form-group col-md-4">
-						<label>작성날짜</label> <input type="date" name="report_date"
+						<label>작성 날짜</label> <input type="date" name="report_date"
 							class="form-control" value="${resultVO.report_date }" readonly="readonly"/>
 					</div>
 				</div>
@@ -44,9 +44,9 @@
 				<div class="card-body">
 
 					
-					<div class="d-flex justify-content-between p-1">
+					<div class="d-flex justify-content-between p-1" >
 					<div class="form-group col-md-6">
-						<label>장비신청유형</label> <input type="text" name="e_repair_type"
+						<label>장비신청 유형</label> <input type="text" name="e_repair_type"
 							class="form-control" value="${resultVO.e_repair_type }" readonly="readonly"/>
 					</div>
 					
@@ -59,7 +59,7 @@
 					
 					<div class="d-flex justify-content-between p-1">
 					<div class="form-group col-md-6">
-						<label>신청장비이름</label> <input type="text" name="equipment_name"
+						<label>신청장비 이름</label> <input type="text" name="equipment_name"
 							class="form-control" value="${resultVO.equipment_name }" readonly="readonly"/>
 					</div>
 					
@@ -96,7 +96,7 @@
 					</div>
 					
 					<div class="form-group p-2">
-						<label>유지보수이유</label><br>
+						<label>유지보수 이유</label><br>
 						<textarea id="comment" name="repair_reason" rows="5" cols="100" readonly="readonly"
 							placeholder="입력하세요." class="form-control">${resultVO.repair_reason } </textarea>
 					</div>
@@ -147,17 +147,17 @@
 					<input type="text" name="name"
 					class="form-control" value="${resultVO.name}" readonly="readonly"/>
 				</div>
+               <hr>
                
                <h5>반려사유</h5>
                <div class="content">
                   <div class="form-group">
 						<textarea id="comment2" name="equipment_reject" rows="5" cols="55"
-							placeholder="입력하세요."></textarea>
+							class="form-control" placeholder="입력하세요."></textarea>
 					</div>
                  
                </div>
              
-               <hr>
 <!--                <h5>연도별</h5> -->
 <!--                <input type="month" id="monthInput">년 -->
 
@@ -190,7 +190,7 @@ $(document).ready(function() {
     $('#submitBut').on('click', function() {
         var formData = new FormData($('#registForm')[0]);
         
-        alert("${resultVO.e_repair_type }");
+//         alert("${resultVO.e_repair_type }");
         
         // CSRF 토큰 값을 메타 태그에서 가져오기
         var token = $("meta[name='_csrf']").attr("content");
@@ -207,7 +207,7 @@ $(document).ready(function() {
                 xhr.setRequestHeader(header, token);
             },
             success: function(response) {
-                alert("승인완료!");
+                alert("장비 유지보수 신청이 승인되었습니다.");
                 window.location.href = '/maintenance/equipment';
             },
             error: function(xhr, status, error) {
@@ -242,7 +242,7 @@ $(document).ready(function() {
                 xhr.setRequestHeader(header, token);
             },
             success: function(response) {
-                alert("반려되었습니다.");
+                alert("장비 유지보수 신청이 반려되었습니다.");
                 window.location.href = '/maintenance/reject';
             },
             error: function(xhr, status, error) {

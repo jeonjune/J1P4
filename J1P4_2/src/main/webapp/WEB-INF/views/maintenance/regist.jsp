@@ -18,25 +18,27 @@
 	<div class="card">
 		<div class="card m-4">
 			<div class="card-body">
+			<div class="p-1">
 				<h2>장비신청</h2>
 			</div>
-		</div>
-				<div class="card-body">
-					<div class="d-flex justify-content-between p-1">
+					<div class="d-flex justify-content-between my-3">
 					<div class="form-group col-md-6">
 						<label>담당자</label> <input type="text" name="name" id="name" value="${sess_name }"
 							readonly="readonly" class="form-control" />
 					</div>
 					
 					<div class="form-group col-md-6">
-						<label>작성날짜</label> <input type="date" name="report_date" id="report_date"
+						<label>작성 날짜</label> <input type="date" name="report_date" id="report_date"
 							class="form-control" />
 					</div>
 					
 					</div>
+			</div>
+		</div>
+				<div class="card-body">
 					<div class="d-flex justify-content-between p-1">
 					<div class="form-group col-md-6">
-						<label> 장비신청유형 </label> <select id="select_type" required="required" class="form-control"
+						<label> 장비신청 유형 </label> <select id="select_type" required="required" class="form-control"
 							name="e_repair_type" size="1">
 							<option value="" selected disabled>선택하세요.</option>
 							<option value="구입">구입</option>
@@ -54,7 +56,7 @@
 					</div>
 					<div class="d-flex justify-content-between p-1">
 					<div class="form-group col-md-6">
-						<label>신청장비이름</label> <input type="text" name="equipment_name" id="equipment_name"
+						<label>신청장비 이름</label> <input type="text" name="equipment_name" id="equipment_name"
 							class="form-control" />
 					</div>
 					
@@ -65,12 +67,12 @@
 					</div>
 					<div class="d-flex justify-content-between p-1">
 					<div class="form-group col-md-4">
-						<label>개수</label> <input type="text" name="count" id="count"
+						<label>개수</label> <input type="number" name="count" id="count"
 							class="form-control" />
 					</div>
 					
 					<div class="form-group col-md-4">
-						<label>가격</label> <input type="text" name="cost" id="cost"
+						<label>개당 가격</label> <input type="number" name="cost" id="cost"
 							class="form-control" />
 					</div>
 					<div class="form-group col-md-4">
@@ -80,7 +82,7 @@
 					</div>
 					
 					<div class="form-group p-2">
-						<label>유지보수이유</label><br>
+						<label>신청 이유</label><br>
 						<textarea id="comment" name="repair_reason" rows="5" cols="100" class="form-control"
 							placeholder="입력하세요."></textarea>
 					</div>
@@ -89,6 +91,7 @@
 						 class="form-control" />
 					</div>
 					<div class="p-2" style="text-align: right;">
+					<a href="/maintenance/list"><button type="button" class="btn btn-outline-primary">취소</button></a>
 					<button type="button" class="btn btn-primary" id="submitButt">등록</button>
 					</div>
 
@@ -150,7 +153,7 @@ $(document).ready(function() {
                xhr.setRequestHeader(header, token);
            },
            success: function(response) {
-               alert("등록성공!");
+               alert("장비 신청이 완료되었습니다.");
                window.location.href = '/maintenance/list';
            },
            error: function(xhr, status, error) {

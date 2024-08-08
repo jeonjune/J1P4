@@ -57,7 +57,7 @@
             <!-- 현재 수강중인 강의 카드 헤더 -->
             <div class="card-header border-0 ui-sortable-handle">
                 <h3 class="card-title">
-                    <i class="fas fa-th mr-1"></i> 현재 수강중인 강의
+                    <i class="fas fa-check mr-1"></i> 현재 수강중인 강의
                 </h3>
                 
                 <!-- 페이징 처리 -->
@@ -83,29 +83,29 @@
                     <c:forEach items="${statusNormal }" var="normal">
                         <c:forEach items="${normal.classScheduleList }" var="classList">
                             <c:forEach items="${classList.classList }" var="classDetail">
+                                <div class="card">
+                                <div class="card-body">
+                                <h5 style="display: inline-block;"><span class="badge badge-secondary">${classDetail.fieldCode }</span></h5>
+                                <h5 style="display: inline-block;"><span class="badge badge-warning">${classDetail.divisionCode }</span></h5>
+                                <h5 style="display: inline-block;"><span class="badge badge-warning">${classDetail.levelCode }</span></h5><br>
                                 <img alt="${classDetail.fieldCode }" width="70px;" src="${pageContext.request.contextPath }/resources/img/${classDetail.fieldCode }.png">
-                                강의명: ${classDetail.className }<br>
-                                상세내용: ${classDetail.description }<br>
-                                강의코드: ${classDetail.fieldCode }<br>
-                                강의수준: ${classDetail.divisionCode }<br>
-                                강의레벨: ${classDetail.levelCode }<br>
-                                최대인원: ${classDetail.maxCapacity }<br>
-                                최소인원: ${classDetail.minCapacity }<br>
-                                강사: <c:forEach items="${normal.empList }" var="empList">
+                                <h3 class="mx-3" style="display: inline-block;">${classDetail.className }</h3><br>
+                                </div>
+                                </div>
+                                <i class="fas fa-pen mr-1"></i> 설명 : ${classDetail.description }<br>
+                                <i class="fas fa-user-tie mr-1"></i> 강사 : <c:forEach items="${normal.empList }" var="empList">
                         		${empList.name }</c:forEach><br>
-                            </c:forEach>
-                            기간 : ${classList.startDate } ~ ${classList.endDate }<br>
-                            매주 ${classList.recurrenceDays }<br>
-                            시간 : ${classList.startTimeCode }~ ${classList.endTimeCode }<br>
+                            	</c:forEach>
+                            <i class="fas fa-calendar mr-1"></i> 일정 :  ${classList.startDate } ~ ${classList.endDate }<br>
+                            <i class="fas fa-clock mr-1"></i> 시간 : 매주 ${classList.recurrenceDays } ${classList.startTimeCode } ~ ${classList.endTimeCode }<br>
                         </c:forEach>
-                        
-                        등록일 : ${normal.registration_date }<br>
+                        <i class="fas fa-file mr-1"></i> 수강 등록일 : ${normal.registration_date }
                     </c:forEach>
 
                     <!-- 수강중인 강의가 없을 경우 출력 -->
                     <c:if test="${empty statusNormal }">
                         <div style="padding: 75px;">
-                            값이 없습니데이
+                            <i class="fas fa-expand mr-1"></i> 정보가 없습니다.
                         </div>
                     </c:if>
                 </div>
@@ -119,7 +119,7 @@
             <!-- 수강 신청 목록 카드 헤더 -->
             <div class="card-header border-0 ui-sortable-handle">
                 <h3 class="card-title">
-                    <i class="fas fa-th mr-1"></i> 수강 신청 목록
+                    <i class="fas fa-hourglass-start mr-1"></i> 수강 신청 목록
                 </h3>
                 
                 <!-- 페이징 처리 -->
@@ -142,31 +142,33 @@
             <div class="card-body flex-fill">
                 <!-- 수강 신청 목록 출력 -->
                 <div class="tab-content p-0 printClassRecruit">
-                    <c:forEach items="${statusRecruit }" var="recruit">
+                <c:forEach items="${statusRecruit }" var="recruit">
                         <c:forEach items="${recruit.classScheduleList }" var="classList">
                             <c:forEach items="${classList.classList }" var="classDetail">
+                                <div class="card">
+                                <div class="card-body">
+                                <h5 style="display: inline-block;"><span class="badge badge-secondary">${classDetail.fieldCode }</span></h5>
+                                <h5 style="display: inline-block;"><span class="badge badge-warning">${classDetail.divisionCode }</span></h5>
+                                <h5 style="display: inline-block;"><span class="badge badge-warning">${classDetail.levelCode }</span></h5><br>
                                 <img alt="${classDetail.fieldCode }" width="70px;" src="${pageContext.request.contextPath }/resources/img/${classDetail.fieldCode }.png">
-                                강의명: ${classDetail.className }<br>
-                                상세내용: ${classDetail.description }<br>
-                                강의코드: ${classDetail.fieldCode }<br>
-                                강의수준: ${classDetail.divisionCode }<br>
-                                강의레벨: ${classDetail.levelCode }<br>
-                                최대인원: ${classDetail.maxCapacity }<br>
-                                최소인원: ${classDetail.minCapacity }<br>
-                                강사: <c:forEach items="${recruit.empList }" var="empList">
+                                <h3 class="mx-3" style="display: inline-block;">${classDetail.className }</h3><br>
+                                </div>
+                                </div>
+                               <i class="fas fa-pen mr-1"></i> 설명 : ${classDetail.description }<br>
+                                <i class="fas fa-user-tie mr-1"></i> 강사 : <c:forEach items="${recruit.empList }" var="empList">
                         		${empList.name }</c:forEach><br>
-                            </c:forEach>
-                            기간 : ${classList.startDate } ~ ${classList.endDate }<br>
-                            매주 ${classList.recurrenceDays }<br>
-                            시간 : ${classList.startTimeCode }~ ${classList.endTimeCode }<br>
+                            	</c:forEach>
+                            <i class="fas fa-calendar mr-1"></i> 일정 :  ${classList.startDate } ~ ${classList.endDate }<br>
+                            <i class="fas fa-clock mr-1"></i> 시간 : 매주 ${classList.recurrenceDays } ${classList.startTimeCode } ~ ${classList.endTimeCode }<br>
                         </c:forEach>
-                        등록일 : ${recruit.registration_date }<br>
+                        <i class="fas fa-file mr-1"></i> 수강 등록일 : ${recruit.registration_date }
                     </c:forEach>
+                
 
                     <!-- 수강 신청 목록이 없을 경우 출력 -->
                     <c:if test="${empty statusRecruit }">
                         <div style="padding: 75px;">
-                            값이 없습니데이
+                            <i class="fas fa-expand mr-1"></i> 정보가 없습니다.
                         </div>
                     </c:if>
                 </div>
@@ -192,7 +194,7 @@
 	
 	// alert(classCountJson.trim()=='[]');
 	if(classCountJson.trim()=='[]'){
-		$('.ifNull').html("아무 값도 없습니다"+'<i class="fas fa-circle-xmark mr-1"></i>');
+		$('.ifNull').html("<i class='fas fa-expand mr-1'></i> 정보가 없습니다.");
 	}
 	
 	var field_code = data.map(function(item) { return item.field_code; });
@@ -252,10 +254,10 @@
 	                var memNo = ${readMem.mem_no};
 	                
 	                // 클릭된 데이터 항목에 대한 상세 정보 출력
-	                console.log('선택 항목:', label);
-	                console.log('선택 항목 타입:', typeof label);
-	                console.log('멤버번호:', memNo);
-	                console.log('횟수:', value);
+// 	                console.log('선택 항목:', label);
+// 	                console.log('선택 항목 타입:', typeof label);
+// 	                console.log('멤버번호:', memNo);
+// 	                console.log('횟수:', value);
 	                
 	                const token = $("meta[name='_csrf']").attr("content");
 	    			const header = $("meta[name='_csrf_header']").attr("content");
@@ -328,19 +330,18 @@
 							var temp = "";
 							
 	                        for(var i=0;i<descriptionCodes.length;i++){
-								temp += descriptionCodes[i]+" "+fieldCodes[i]+" "+
-	                    		convertTimestampToDate(registrationDate[i])+" 레벨 : "+level[i]+" 강의명 : "+
-	                    		className[i]+" 강의 수준 : "+divisionCodes[i]+" 최대 인원 : "+maxCapacity[i]+
-	                    		 " 최소 인원: "+minCapacity[i]+" 강사이름 : "+instructor[i]+" 수강기간 : "+convertTimestampToDate(startDate[i])+
-	                    		 " ~ "+convertTimestampToDate(endDate[i])+" 매주 "+recurrenceDays[i]+
-	                    		 " 시간 : "+TimeCodeChange(startTimeCode[i])+" ~ "+TimeCodeChange(EndTimeCode[i])+"<br>";
+								temp +=
+									"<div class='py-2'><h5>"+className[i]+"</h5>설명 : "+descriptionCodes[i]+"<br> 분야코드 : "+fieldCodes[i]+" | 레벨코드 : "+level[i]+" | 분야코드 : "+divisionCodes[i]+"<br>"
+									+" 강사 : "+instructor[i]+" | 수강 등록일 : "+convertTimestampToDate(registrationDate[i])+
+									"<br> 수강 일정 : "+convertTimestampToDate(startDate[i])+" ~ "+convertTimestampToDate(endDate[i])+
+									"<br> 수강 시간 : 매주 "+recurrenceDays[i]+" "+startTimeCode[i]+" ~ "+EndTimeCode[i]+"<br></div>";
 	                        }
 	                        
 	                        $('.printDetails').html( '<div class="card col-md-12" style="margin-top: 10px;">'+
 	                        '<div class="card-header border-0 ui-sortable-handle">'+
 	                        '<h3 class="card-title"><i class="fas fa-th mr-1"></i> 수강 상세내용</h3></div>'+
-	                    	'<div class="card-body"><div class="tab-content p-0">'+
-	                        temp+'</div> </div></div>');
+	                    	'<div class="card-body">'+
+	                        temp+'</div> </div>');
 	                        	
 	    				},
 	    				error : function(error) {
@@ -385,21 +386,16 @@
 		    	  console.log(data.classScheduleList);
 		    	  
                   $('.printClassNormal').html(
-                		  '<img alt='+data.classScheduleList[0].classList[0].fieldCode+' width="70px;" src="${pageContext.request.contextPath }/resources/img/'+data.classScheduleList[0].classList[0].fieldCode+'.png">'+
-                       	 '강의명: '+data.classScheduleList[0].classList[0].className+'<br>'+
-                       		'상세내용: '+data.classScheduleList[0].classList[0].description+'<br>'+
-                       		'강의코드: '+data.classScheduleList[0].classList[0].fieldCode+'<br>'+
-                       		'강의수준: '+data.classScheduleList[0].classList[0].divisionCode+'<br>'+
-                       		'강의레벨: '+data.classScheduleList[0].classList[0].levelCode+'<br>'+
-                       		'최대인원: '+data.classScheduleList[0].classList[0].maxCapacity+'<br>'+
-                       		'최소인원: '+data.classScheduleList[0].classList[0].minCapacity+'<br>'+
-                       		'강사: '+data.empList[0].name+'<br>'+
-                       		'기간 : '+convertTimestampToDate(data.classScheduleList[0].startDate)+' ~ '+
-                       		convertTimestampToDate(data.classScheduleList[0].endDate)+'<br>'+
- 	                        '매주 '+data.classScheduleList[0].recurrenceDays+'<br>'+
- 	                        '시간 : '+TimeCodeChange(data.classScheduleList[0].startTimeCode)+' ~ '+
- 	                        TimeCodeChange(data.classScheduleList[0].endTimeCode)+'<br>등록일 : '+
- 	                        convertTimestampToDate(data.registration_date)+'<br>'   		
+                		  '<div class="card"><div class="card-body"><h5 style="display: inline-block;"><span class="badge badge-secondary">'+data.classScheduleList[0].classList[0].fieldCode+
+                		  '</span></h5> <h5 style="display: inline-block;"><span class="badge badge-warning">'+data.classScheduleList[0].classList[0].divisionCode+
+                		  '</span></h5> <h5 style="display: inline-block;"><span class="badge badge-warning">'+data.classScheduleList[0].classList[0].levelCode+
+                		  '</span></h5><br><img alt='+data.classScheduleList[0].classList[0].fieldCode+' width="70px;" src="${pageContext.request.contextPath }/resources/img/'+data.classScheduleList[0].classList[0].fieldCode+
+                		  '.png"><h3 class="mx-3" style="display: inline-block;">'+data.classScheduleList[0].classList[0].className+
+                		  '</h3><br></div></div><i class="fas fa-pen mr-1"></i> 설명 : '+data.classScheduleList[0].classList[0].description+
+                		  '<br><i class="fas fa-user-tie mr-1"></i> 강사 : '+data.empList[0].name+
+                		  '<br><i class="fas fa-calendar mr-1"></i> 일정 :  '+convertTimestampToDate(data.classScheduleList[0].startDate)+' ~ '+convertTimestampToDate(data.classScheduleList[0].endDate)+
+                		  '<br><i class="fas fa-clock mr-1"></i> 시간 : 매주 '+data.classScheduleList[0].recurrenceDays+' '+data.classScheduleList[0].startTimeCode+' ~ '+data.classScheduleList[0].endTimeCode+
+                		  '<br><i class="fas fa-file mr-1"></i> 수강 등록일 : '+convertTimestampToDate(data.registration_date)	
                   );
 		    	  
 		    	  $('.prevButt').html('<a href="#" class="page-link">«</a>');
@@ -452,21 +448,16 @@
 		      success: function(data) {
 		    	  
 		    	  $('.printClassNormal').html(
-                		  '<img alt='+data.classScheduleList[0].classList[0].fieldCode+' width="70px;" src="${pageContext.request.contextPath }/resources/img/'+data.classScheduleList[0].classList[0].fieldCode+'.png">'+
-                       	 '강의명: '+data.classScheduleList[0].classList[0].className+'<br>'+
-                       		'상세내용: '+data.classScheduleList[0].classList[0].description+'<br>'+
-                       		'강의코드: '+data.classScheduleList[0].classList[0].fieldCode+'<br>'+
-                       		'강의수준: '+data.classScheduleList[0].classList[0].divisionCode+'<br>'+
-                       		'강의레벨: '+data.classScheduleList[0].classList[0].levelCode+'<br>'+
-                       		'최대인원: '+data.classScheduleList[0].classList[0].maxCapacity+'<br>'+
-                       		'최소인원: '+data.classScheduleList[0].classList[0].minCapacity+'<br>'+
-                       		'강사: '+data.empList[0].name+'<br>'+
-                       		'기간 : '+convertTimestampToDate(data.classScheduleList[0].startDate)+' ~ '+
-                       		convertTimestampToDate(data.classScheduleList[0].endDate)+'<br>'+
- 	                        '매주 '+data.classScheduleList[0].recurrenceDays+'<br>'+
- 	                        '시간 : '+TimeCodeChange(data.classScheduleList[0].startTimeCode)+' ~ '+
- 	                        TimeCodeChange(data.classScheduleList[0].endTimeCode)+'<br>등록일 : '+
- 	                        convertTimestampToDate(data.registration_date)+'<br>'   		
+		    			  '<div class="card"><div class="card-body"><h5 style="display: inline-block;"><span class="badge badge-secondary">'+data.classScheduleList[0].classList[0].fieldCode+
+		    			  '</span></h5> <h5 style="display: inline-block;"><span class="badge badge-warning">'+data.classScheduleList[0].classList[0].divisionCode+
+		    			  '</span></h5> <h5 style="display: inline-block;"><span class="badge badge-warning">'+data.classScheduleList[0].classList[0].levelCode+
+		    			  '</span></h5><br><img alt='+data.classScheduleList[0].classList[0].fieldCode+' width="70px;" src="${pageContext.request.contextPath }/resources/img/'+data.classScheduleList[0].classList[0].fieldCode+
+		    			  '.png"><h3 class="mx-3" style="display: inline-block;">'+data.classScheduleList[0].classList[0].className+
+		    			  '</h3><br></div></div><i class="fas fa-pen mr-1"></i> 설명 : '+data.classScheduleList[0].classList[0].description+
+		    			  '<br><i class="fas fa-user-tie mr-1"></i> 강사 : '+data.empList[0].name+
+		    			  '<br><i class="fas fa-calendar mr-1"></i> 일정 :  '+convertTimestampToDate(data.classScheduleList[0].startDate)+' ~ '+convertTimestampToDate(data.classScheduleList[0].endDate)+
+		    			  '<br><i class="fas fa-clock mr-1"></i> 시간 : 매주 '+data.classScheduleList[0].recurrenceDays+' '+data.classScheduleList[0].startTimeCode+' ~ '+data.classScheduleList[0].endTimeCode+
+		    			  '<br><i class="fas fa-file mr-1"></i> 수강 등록일 : '+convertTimestampToDate(data.registration_date)		
                   );
 		    	  
 		    	  $('.nextButt').html('<a href="#" class="page-link">»</a>');
@@ -512,21 +503,16 @@
 		    	  
 		    	  console.log(data);
                   $('.printClassRecruit').html(
-                		  '<img alt='+data.classScheduleList[0].classList[0].fieldCode+' width="70px;" src="${pageContext.request.contextPath }/resources/img/'+data.classScheduleList[0].classList[0].fieldCode+'.png">'+
-                       	 '강의명: '+data.classScheduleList[0].classList[0].className+'<br>'+
-                       		'상세내용: '+data.classScheduleList[0].classList[0].description+'<br>'+
-                       		'강의코드: '+data.classScheduleList[0].classList[0].fieldCode+'<br>'+
-                       		'강의수준: '+data.classScheduleList[0].classList[0].divisionCode+'<br>'+
-                       		'강의레벨: '+data.classScheduleList[0].classList[0].levelCode+'<br>'+
-                       		'최대인원: '+data.classScheduleList[0].classList[0].maxCapacity+'<br>'+
-                       		'최소인원: '+data.classScheduleList[0].classList[0].minCapacity+'<br>'+
-                       		'강사: '+data.empList[0].name+'<br>'+
-                       		'기간 : '+convertTimestampToDate(data.classScheduleList[0].startDate)+' ~ '+
-                       		convertTimestampToDate(data.classScheduleList[0].endDate)+'<br>'+
- 	                        '매주 '+data.classScheduleList[0].recurrenceDays+'<br>'+
- 	                        '시간 : '+TimeCodeChange(data.classScheduleList[0].startTimeCode)+' ~ '+
- 	                        TimeCodeChange(data.classScheduleList[0].endTimeCode)+'<br>등록일 : '+
- 	                        convertTimestampToDate(data.registration_date)+'<br>'   		
+                		  '<div class="card"><div class="card-body"><h5 style="display: inline-block;"><span class="badge badge-secondary">'+data.classScheduleList[0].classList[0].fieldCode+
+                		  '</span></h5> <h5 style="display: inline-block;"><span class="badge badge-warning">'+data.classScheduleList[0].classList[0].divisionCode+
+                		  '</span></h5> <h5 style="display: inline-block;"><span class="badge badge-warning">'+data.classScheduleList[0].classList[0].levelCode+
+                		  '</span></h5><br><img alt='+data.classScheduleList[0].classList[0].fieldCode+' width="70px;" src="${pageContext.request.contextPath }/resources/img/'+data.classScheduleList[0].classList[0].fieldCode+
+                		  '.png"><h3 class="mx-3" style="display: inline-block;">'+data.classScheduleList[0].classList[0].className+
+                		  '</h3><br></div></div><i class="fas fa-pen mr-1"></i> 설명 : '+data.classScheduleList[0].classList[0].description+
+                		  '<br><i class="fas fa-user-tie mr-1"></i> 강사 : '+data.empList[0].name+
+                		  '<br><i class="fas fa-calendar mr-1"></i> 일정 :  '+convertTimestampToDate(data.classScheduleList[0].startDate)+' ~ '+convertTimestampToDate(data.classScheduleList[0].endDate)+
+                		  '<br><i class="fas fa-clock mr-1"></i> 시간 : 매주 '+data.classScheduleList[0].recurrenceDays+' '+data.classScheduleList[0].startTimeCode+' ~ '+data.classScheduleList[0].endTimeCode+
+                		  '<br><i class="fas fa-file mr-1"></i> 수강 등록일 : '+convertTimestampToDate(data.registration_date)		
                   );
 		    	  
 		    	  $('.prevRecruitButt').html('<a href="#" class="page-link">«</a>');
@@ -580,21 +566,16 @@
 		      success: function(data) {
 		    	  
 		    	  $('.printClassRecruit').html(
-                		  '<img alt='+data.classScheduleList[0].classList[0].fieldCode+' width="70px;" src="${pageContext.request.contextPath }/resources/img/'+data.classScheduleList[0].classList[0].fieldCode+'.png">'+
-                       	 '강의명: '+data.classScheduleList[0].classList[0].className+'<br>'+
-                       		'상세내용: '+data.classScheduleList[0].classList[0].description+'<br>'+
-                       		'강의코드: '+data.classScheduleList[0].classList[0].fieldCode+'<br>'+
-                       		'강의수준: '+data.classScheduleList[0].classList[0].divisionCode+'<br>'+
-                       		'강의레벨: '+data.classScheduleList[0].classList[0].levelCode+'<br>'+
-                       		'최대인원: '+data.classScheduleList[0].classList[0].maxCapacity+'<br>'+
-                       		'최소인원: '+data.classScheduleList[0].classList[0].minCapacity+'<br>'+
-                       		'강사: '+data.empList[0].name+'<br>'+
-                       		'기간 : '+convertTimestampToDate(data.classScheduleList[0].startDate)+' ~ '+
-                       		convertTimestampToDate(data.classScheduleList[0].endDate)+'<br>'+
- 	                        '매주 '+data.classScheduleList[0].recurrenceDays+'<br>'+
- 	                        '시간 : '+TimeCodeChange(data.classScheduleList[0].startTimeCode)+' ~ '+
- 	                        TimeCodeChange(data.classScheduleList[0].endTimeCode)+'<br>등록일 : '+
- 	                        convertTimestampToDate(data.registration_date)+'<br>'   		
+		    			  '<div class="card"><div class="card-body"><h5 style="display: inline-block;"><span class="badge badge-secondary">'+data.classScheduleList[0].classList[0].fieldCode+
+		    			  '</span></h5> <h5 style="display: inline-block;"><span class="badge badge-warning">'+data.classScheduleList[0].classList[0].divisionCode+
+		    			  '</span></h5> <h5 style="display: inline-block;"><span class="badge badge-warning">'+data.classScheduleList[0].classList[0].levelCode+
+		    			  '</span></h5><br><img alt='+data.classScheduleList[0].classList[0].fieldCode+' width="70px;" src="${pageContext.request.contextPath }/resources/img/'+data.classScheduleList[0].classList[0].fieldCode+
+		    			  '.png"><h3 class="mx-3" style="display: inline-block;">'+data.classScheduleList[0].classList[0].className+
+		    			  '</h3><br></div></div><i class="fas fa-pen mr-1"></i> 설명 : '+data.classScheduleList[0].classList[0].description+
+		    			  '<br><i class="fas fa-user-tie mr-1"></i> 강사 : '+data.empList[0].name+
+		    			  '<br><i class="fas fa-calendar mr-1"></i> 일정 :  '+convertTimestampToDate(data.classScheduleList[0].startDate)+' ~ '+convertTimestampToDate(data.classScheduleList[0].endDate)+
+		    			  '<br><i class="fas fa-clock mr-1"></i> 시간 : 매주 '+data.classScheduleList[0].recurrenceDays+' '+data.classScheduleList[0].startTimeCode+' ~ '+data.classScheduleList[0].endTimeCode+
+		    			  '<br><i class="fas fa-file mr-1"></i> 수강 등록일 : '+convertTimestampToDate(data.registration_date)  		
                   );
 		    	  
 		    	  $('.nextRecruitButt').html('<a href="#" class="page-link">»</a>');

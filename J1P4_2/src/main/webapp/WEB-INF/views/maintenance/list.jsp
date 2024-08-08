@@ -6,43 +6,20 @@
 <%@ include file="../include/sidemenu.jsp"%>
 <%@ include file="../include/equipMenu.jsp"%>
 
-<div class="content-wrapper" style="min-height: 831px;">
+<div class="content-wrapper p-3" style="min-height: 831px;">
 
-
-<h1>장비신청내역 페이지 - list</h1>
-
-
-
-	<button class="btn btn-primary" type="button"
-		data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight"
-		aria-controls="offcanvasRight" onclick = "location.href = '/maintenance/regist'">장비신청</button>
-
-	<div class="col-sm-12">
 		<table id="example1"
 			class="table table-bordered table-hover"
 			style="background: #fff"
 			aria-describedby="example1_info">
 			<thead>
 				<tr>
-					<th class="sorting" tabindex="0" aria-controls="example1"
-						rowspan="1" colspan="1"
-						aria-label="Rendering engine: activate to sort column ascending">장비번호</th>
-					<th class="sorting" tabindex="0" aria-controls="example1"
-						rowspan="1" colspan="1"
-						aria-label="Rendering engine: activate to sort column ascending">분야</th>
-					<th class="sorting" tabindex="0" aria-controls="example1"
-						rowspan="1" colspan="1"
-						aria-label="Rendering engine: activate to sort column ascending">장비보수유형</th>
-					<th class="sorting" tabindex="0" aria-controls="example1"
-						rowspan="1" colspan="1"
-						aria-label="Browser: activate to sort column ascending">장비이름</th>
-				
-					<th class="sorting" tabindex="0" aria-controls="example1"
-						rowspan="1" colspan="1"
-						aria-label="Browser: activate to sort column ascending">담당자</th>
-					<th class="sorting" tabindex="0" aria-controls="example1"
-						rowspan="1" colspan="1"
-						aria-label="Browser: activate to sort column ascending">작성날짜</th>
+					<th width="3%">번호</th>
+					<th width="19.4%">분야</th>
+					<th width="19.4%">장비보수유형</th>
+					<th width="19.4%">장비이름</th>
+					<th width="19.4%">담당자</th>
+					<th width="19.4%">작성날짜</th>
 
 				</tr>
 			</thead>
@@ -62,7 +39,16 @@
 			</tbody>
 
 		</table>
-	</div>
+		
+			<div class="d-flex justify-content-between">
+		<div></div>
+
+		<div>
+			<button class="btn btn-primary" type="button"
+		data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight"
+		aria-controls="offcanvasRight" onclick = "location.href = '/maintenance/regist'">장비 신청</button>
+		</div>
+		</div>
 
 </div>
 

@@ -588,7 +588,7 @@
 				success : function(data) {
 					alert("인바디 정보가 등록되었습니다.");
 
-					window.location.href = '/member/monitoring?mem_no=${param.mem_no }&pageStart=0';
+					history.go(0);
 				},
 				error : function() {
 					alert("오류발생");
