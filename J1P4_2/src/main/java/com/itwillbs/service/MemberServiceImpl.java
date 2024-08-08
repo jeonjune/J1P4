@@ -130,6 +130,20 @@ public class MemberServiceImpl implements MemberService {
 		return mDao.selectPhone(noti_no);
 	}
 	
+	//이메일 유효성 중복 검사 
+	@Override
+	public int emailCheck(String mem_email) throws Exception {
+		int result = mDao.emailCheck(mem_email);
+		return result;
+	}
+	
+	//전화번호 중복 검사 
+	@Override
+	public int phoneCheck(String mem_phone) throws Exception {
+		int result = mDao.phoneCheck(mem_phone);
+		return result;
+	}
+	
 	
 	
 	
