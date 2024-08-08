@@ -24,6 +24,8 @@ public class EquipManageVO {
 	private String repair_reason; //유지보수사유
 	private String equipment_reject; //반려사유
 	private String status; //상태 - 대기,승인,반려
+	private String reject_date; //반려날짜
+	
 
 	
 	

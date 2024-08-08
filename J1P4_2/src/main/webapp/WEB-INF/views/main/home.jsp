@@ -3,6 +3,16 @@
 <%@ include file="../include/mainHeader.jsp" %>
 <%@ include file="../include/sidemenu.jsp" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+    <script>
+        // 페이지 로드 시 쿼리 파라미터 확인
+        window.onload = function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const accessDenied = urlParams.get('accessDenied');
+            if (accessDenied) {
+                alert('권한이 없습니다. 접근 권한이 필요합니다.');
+            }
+        }
+    </script>
 <!-- <!-- Navbar --> -->
 <!-- <nav class="main-header navbar navbar-expand navbar-white navbar-light"> -->
 <!-- 	<!--     Left navbar links --> -->

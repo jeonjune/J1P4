@@ -4,6 +4,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ include file="../include/header.jsp"%>
 <%@ include file="../include/sidemenu.jsp"%>
+<%@ include file="../include/memListMenu.jsp"%>
 
 <style>
         #emailOk, #emailExists, #emailError,
@@ -20,8 +21,7 @@
 	src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 
 <!-- 바디 시작 -->
-<div class="content-wrapper" style="min-height: 831px; padding-top:20px;">
-	<div class="col-sm-12">
+<div class="content-wrapper p-3" style="min-height: 831px; padding-top:20px;">
 	<!-- 스피너 (검색 시 돌아가는 로딩바) -->
 	<div class="spinner-border text-primary d-none" id="spinner"
 		role="status" aria-hidden="true">
@@ -155,7 +155,7 @@
 			</div>
 			
 			<!-- 행 개수 선택 -->
-			<div class="textRight">
+			<div class="textRight" style="margin-left: 15px;">
 				<select name="pageSize" id="selectPage" class="form-control">
 					<option value="10">10개씩 보기</option>
 					<option value="50">50개씩 보기</option>
@@ -207,22 +207,8 @@
 							class="btn btn-outline-dark radioField" for="radioGen2">여자</label>
 					</div>
 					<hr>
-					<h5>수신 동의 여부</h5>
-					<div class="content">
-						<input type="radio" value="chk" class="btn-check" name="msg_opt"
-							id="radioMsg1"> <label
-							class="btn btn-outline-dark radioField" for="radioMsg1">메시지만
-							동의</label> <input type="radio" value="chk" class="btn-check"
-							name="email_opt" id="radioMsg2"> <label
-							class="btn btn-outline-dark radioField" for="radioMsg2">이메일만
-							동의</label> <input type="radio" value="chk" class="btn-check"
-							name="double_opt" id="radioMsg3"> <label
-							class="btn btn-outline-dark radioField" for="radioMsg3">모두
-							동의</label>
-					</div>
-					<hr>
-					<h5>연도별</h5>
-					<input type="month" id="monthInput">년
+					<h5>등록일</h5>
+					<input type="month" id="monthInput" class="form-control">
 
 				</div>
 
@@ -309,15 +295,14 @@
 			style="background: #fff; height: 100px;" aria-describedby="example1_info">
 			<thead>
 				<tr>
-					<th width="3%"><input type="checkbox" class="chkGrp"
+					<th width="2%"><input type="checkbox" class="chkGrp"
 						id="chkAll" style="accent-color: #cdb4db;" ></th>
 					<th width="3%">NO</th>
-					<th width="13%">회원이름</th>
+					<th width="14%">회원이름</th>
 					<th>연락처</th>
+					<th>생년월일</th>
 					<th>회원등급</th>
 					<th>등록일</th>
-					<th>강의 누적 기간</th>
-					<th>현재 수강상태</th>
 					<th width="30%">메모</th>
 				</tr>
 			</thead>
@@ -333,10 +318,9 @@
 							
 							</td>
 						<td class="mem_phone">${vo.formatted_mem_phone}</td>
+						<td class="sorting_1">${vo.mem_birth }</td>
 						<td>${vo.mem_rank }</td>
 						<td>${vo.reg_date }</td>
-						<td class="sorting_1">${vo.class_time }</td>
-						<td>${vo.class_status }</td>
 						<td>${vo.mem_note }</td>
 					</tr>
 				</c:forEach>
@@ -345,7 +329,6 @@
 	
 
 
-	<div class="col-sm-12">
 		<div class="d-flex justify-content-between align-items-center">
 		
 	<!-- 하단 버튼 모음 -->	
@@ -437,7 +420,6 @@
 		
 		
 		
-	</div>
 
 
 	<!-- 회원 등록 오프캔버스 시작 -->
@@ -468,7 +450,7 @@
 								class="form-control">
 						</div>
 						<div class="form-group">
-							<label>생일</label> <input type="date" name="mem_birth" id="mem_birth"
+							<label>생년월일</label> <input type="date" name="mem_birth" id="mem_birth"
 								class="form-control" />
 						</div>
 
@@ -483,25 +465,27 @@
 						</div>
 
 						<div class="form-group">
-							<label>전화번호</label> <input type="text" name="mem_phone" id="mem_phone"
+							<label>연락처</label>
+						 <span class="mx-2" id="phoneOk" style="font-size: 14px;">사용 가능한 연락처입니다.</span>	
+                         <span class="mx-2" id="phoneExists" style="font-size: 14px;">이미 가입된 연락처입니다.</span>	
+							<input type="text" name="mem_phone" id="mem_phone"
 								class="form-control" maxlength="13" oninput="formatPhoneNumber(this)"> <label class="chkboxCustom">
 								<input type="checkbox" name="sms_opt"
 								style="accent-color: #cdb4db;" value="1">&nbsp;sms 수신 동의
 							</label>
 						</div>
-						 <span id="phoneOk" style="font-size: 14px;">사용 가능한 연락처입니다.</span>	
-                         <span id="phoneExists" style="font-size: 14px;">이미 가입된 연락처입니다.</span>	
 
 						<div class="form-group">
-							<label>이메일</label> <input type="email" name="mem_email" id="mem_email"
+							<label>이메일</label>
+						 <span class="mx-2" id="emailOk" style="font-size: 14px;">사용 가능한 이메일입니다.</span>	
+                         <span class="mx-2" id="emailExists" style="font-size: 14px;">이미 사용 중인 이메일입니다.</span>	
+                         <span class="mx-2" id="emailError" style="font-size: 14px;">유효하지 않은 이메일 형식입니다.</span>	
+							<input type="email" name="mem_email" id="mem_email"
 								class="form-control"> <label class="chkboxCustom">
 								<input type="checkbox" style="accent-color: #cdb4db;"
 								name="email_opt" value="1">&nbsp;이메일 수신 동의
 							</label>
 						</div>
-						 <span id="emailOk" style="font-size: 14px;">사용 가능한 이메일입니다.</span>	
-                         <span id="emailExists" style="font-size: 14px;">이미 사용 중인 이메일입니다.</span>	
-                         <span id="emailError" style="font-size: 14px;">유효하지 않은 이메일 형식입니다.</span>	
 						
 						<div class="form-group">
 							<label>메모</label> <br>
@@ -536,7 +520,6 @@
 	</form>
 	<!-- 회원 등록 오프캔버스 시작 -->
 
-</div>
 <!-- 바디 끝 -->
 
 <script>

@@ -38,14 +38,6 @@ public class ClassScheduleController {
         return classScheduleService.getScheduleById(scheduleId);
     }
 
-    @PostMapping("/delete/{id}")
-    @ResponseBody
-    public String deleteSchedule(@PathVariable("id") int scheduleId) {
-        ClassScheduleVO schedule = classScheduleService.getScheduleById(scheduleId);
-        classScheduleService.deleteSchedule(scheduleId);
-        return "redirect:/classes/detail/" + schedule.getClassNo();
-    }
-
     @PostMapping("/delete")
     @ResponseBody
     public String deleteSchedules(@RequestBody List<Integer> scheduleIds) {

@@ -19,12 +19,12 @@
         VALUES (#{classSchedule_no}, #{mem_no}, #{totalClasses}, #{attendedClasses})
     </insert>
 
-	 <select id="getAttendanceByScheduleAndMember" parameterType="map" resultType="com.itwillbs.domain.ClassAttendanceVO">
-	    SELECT ca.*, m.mem_name, m.mem_phone
-	    FROM classAttendance ca
-	    JOIN member m ON ca.mem_no = m.mem_no
-	    WHERE ca.classSchedule_no = #{scheduleId} AND ca.mem_no = #{memNo}
-	</select>
+	 <select id="getAttendanceByScheduleAndMember" parameterType="map" resultMap="attendanceResultMap">
+        SELECT ca.classSchedule_no, ca.mem_no, ca.total_classes, ca.attended_classes, ca.attendance_rate, m.mem_name, m.mem_phone
+        FROM classAttendance ca
+        JOIN member m ON ca.mem_no = m.mem_no
+        WHERE ca.classSchedule_no = #{scheduleId} AND ca.mem_no = #{memNo}
+    </select>
 
 
     <select id="getStudentsBySchedule" parameterType="int" resultMap="attendanceResultMap">

@@ -16,6 +16,7 @@
 	<select id="equipList" resultType="EquipManageVO">
 	select * from equipmentManagement
 	where status='대기'
+	order by equipment_no DESC
 	
 	</select>
 	
@@ -61,7 +62,7 @@
 	<select id="listEquip" resultType="EquipManageVO">
 	select * from equipmentManagement
 	where status='승인'
-	order by equipment_no desc
+	order by approval_date desc
 	limit #{pageStart},${pageSize}
 	</select>
 	
@@ -74,7 +75,7 @@
 	<!-- (반려)장비내역 리스트 -->
 	<update id="updateReject">
 	update equipmentManagement
-	set status='반려',approval_date=now(),equipment_reject=#{equipment_reject}
+	set status='반려',reject_date=now(),equipment_reject=#{equipment_reject}
 	where equipment_no=#{equipment_no}
 	</update>	
 	
@@ -82,7 +83,7 @@
 	<select id="rejectList" resultType="EquipManageVO">
 	select * from equipmentManagement
 	where status='반려'
-	order by equipment_no desc
+	order by reject_date desc
 	limit #{pageStart},${pageSize}
 	</select>
 	

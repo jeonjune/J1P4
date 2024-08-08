@@ -44,6 +44,7 @@
                                 <div class="card-body">
                                     <form:form id="classForm" method="post" action="${pageContext.request.contextPath}/classes/save" modelAttribute="classVO">
                                         <form:hidden path="classNo" />
+                                        <form:hidden path="price" id="classPrice" value="${classVO.price}" />
                                         <div class="mb-3">
                                             <label for="className" class="form-label">강의명</label>
                                             <form:input path="className" class="form-control" required="required" id="className"/>
@@ -79,7 +80,7 @@
                                             <form:input path="maxCapacity" class="form-control" type="number" required="required" id="maxCapacity"/>
                                         </div>
                                         <div class="mb-3">
-                                            <label for="instructorName" class="form-label">강의명</label>
+                                            <label for="instructorName" class="form-label">강사명</label>
                                             <div class="input-group">
                                                 <form:input path="instructorName" class="form-control" id="instructorName" readonly="readonly"/>
                                                 <form:hidden path="instructorNo" id="instructorNo"/>
@@ -151,7 +152,6 @@
 						                            <td>${schedule.recurrenceDays}</td>
 						                            <td>${schedule.currentEnrollment}</td>
 						                            <td>${schedule.status}</td>
-
 						                        </tr>
 						                    </c:forEach>
 						                </tbody>
@@ -215,7 +215,6 @@
 		        </div>
 		    </div>
 		</div>
-
 
                 <!-- Instructor Modal -->
         <div class="modal fade" id="instructorModal" tabindex="-1" aria-labelledby="instructorModalLabel" aria-hidden="true">
@@ -283,10 +282,13 @@
         </div>
     </div>
 
+<script src="https://cdn.iamport.kr/js/iamport.payment-1.1.5.js"></script>
 <script>
-    const csrfToken = $('meta[name="_csrf"]').attr('content');
-    const csrfHeader = $('meta[name="_csrf_header"]').attr('content');
-    
+	const csrfToken = $('meta[name="_csrf"]').attr('content');
+	const csrfHeader = $('meta[name="_csrf_header"]').attr('content');
+	
+    IMP.init('imp41432400'); // 고객사 식별 코드를 입력합니다.
+
     $(document).ready(function() {
         $('#classForm').on('submit', function(event) {
             event.preventDefault();
@@ -404,49 +406,75 @@
 
         $('#registerStudentsButton').on('click', function(event) {
             event.preventDefault();
-            const selectedSchedules = [];
-            $('input[name="scheduleCheckbox"]:checked').each(function() {
-                selectedSchedules.push($(this).val());
-            });
+            const selectedStudents = $('input[name="studentCheckbox"]:checked').map(function() {
+                return $(this).val();
+            }).get();
 
-            if (selectedSchedules.length === 0) {
-                alert('Please select at least one schedule.');
+            if (selectedStudents.length !== 1) {
+                alert('회원 등록을 위해 하나의 일정만 선택해야 합니다.');
                 return;
             }
 
-            const selectedStudents = [];
-            $('input[name="studentCheckbox"]:checked').each(function() {
-                selectedStudents.push($(this).val());
-            });
+            const classPrice = parseInt($('#classPrice').val(), 10);
+            const scheduleNo = parseInt($('input[name="scheduleCheckbox"]:checked').val(), 10);
+            const studentNo = parseInt(selectedStudents[0], 10);
 
-            if (selectedStudents.length === 0) {
-                alert('Please select at least one student.');
-                return;
-            }
+            IMP.request_pay({
+                pg: 'kakaopay',
+                pay_method: 'card',
+                merchant_uid: 'merchant_' + new Date().getTime(),
+                name: 'Class Registration',
+                amount: classPrice,
+                buyer_email: 'buyer@example.com',
+                buyer_name: '구매자 이름',
+                buyer_tel: '010-1234-5678',
+                buyer_addr: '서울특별시 강남구 삼성동',
+                buyer_postcode: '123-456'
+            }, function (rsp) {
+                if (rsp.success) {
+                    const paymentInfo = {
+                        amount: rsp.paid_amount,
+                        paymentStatus: 'Paid',
+                        paymentMethod: rsp.pay_method,
+                        transactionId: rsp.imp_uid,
+                        merchantId: rsp.merchant_uid
+                    };
 
-            const registrationData = selectedStudents.map(studentNo => ({
-                mem_no: studentNo,
-                schedule_no: selectedSchedules[0] // Assuming registering one schedule at a time
-            }));
+                    const registration = {
+                        mem_no: studentNo,
+                        schedule_no: scheduleNo,
+                        registration_date: new Date().toISOString().split('T')[0] // 날짜 형식 수정
+                    };
 
-            $.ajax({
-                url: '${pageContext.request.contextPath}/students/register',
-                method: 'POST',
-                data: JSON.stringify(registrationData),
-                contentType: 'application/json',
-                beforeSend: function(xhr) {
-                    xhr.setRequestHeader(csrfHeader, csrfToken);
-                },
-                success: function(response) {
-                    $('#addStudentModal').modal('hide');
-                    alert('Student(s) registered successfully.');
-                    location.reload();
-                },
-                error: function(error) {
-                    alert('Error occurred while registering student(s).');
+                    const requestData = {
+                        registration: registration,
+                        paymentInfo: paymentInfo
+                    };
+
+                    console.log("Sending request data: ", requestData); 
+
+                    $.ajax({
+                        url: '/students/register',
+                        method: 'POST',
+                        contentType: 'application/json',
+                        data: JSON.stringify(requestData),
+                        beforeSend: function(xhr) {
+                            xhr.setRequestHeader(csrfHeader, csrfToken);
+                        },
+                        success: function(response) {
+                            alert('결제가 성공적으로 완료되었습니다.');
+                            location.reload();
+                        },
+                        error: function(xhr, status, error) {
+                            alert('결제 처리 중 오류가 발생했습니다.');
+                        }
+                    });
+                } else {
+                    alert('결제에 실패하였습니다. 에러 내용: ' + rsp.error_msg);
                 }
             });
         });
+
     });
 
     function openModal() {
@@ -531,7 +559,6 @@
         editSchedule(selectedSchedules[0]);
     }
 
-    // Function to delete selected schedules
     function deleteSelectedSchedules() {
         const selectedSchedules = [];
         $('input[name="scheduleCheckbox"]:checked').each(function() {
@@ -574,9 +601,16 @@
             selectedSchedules.push($(this).val());
         });
 
-        if (selectedSchedules.length === 0) {
-            alert('Please select at least one schedule.');
-            return;
+        if (selectedSchedules.length !== 1) {
+            alert('회원 등록을 위해 하나의 일정만 선택해야 합니다.');
+            return false;
+        }
+
+        const selectedScheduleStatus = $('input[name="scheduleCheckbox"]:checked').closest('tr').find('td:last-child').text().trim();
+        
+        if (selectedScheduleStatus !== '모집') {
+            alert('모집이 마감되었습니다.');
+            return false;
         }
 
         $('#addStudentModal').modal('show');

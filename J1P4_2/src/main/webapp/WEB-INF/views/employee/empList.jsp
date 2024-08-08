@@ -77,7 +77,7 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 </script>
     	
-<div class="content-wrapper" style="min-height: 831px;">
+<div class="content-wrapper p-3" style="min-height: 831px;">
 <!-- 검색 / 필터 / 정렬 / 행 개수 데이터 전송 -->
 	<form action="" method="get" class='actionForm'>
 
@@ -104,7 +104,7 @@ document.addEventListener("DOMContentLoaded", function() {
 				<div class="input-group-append">
 					<button class="btn" type="submit" id="submitBtn"
 						onclick="toggleSpinner()">
-						<i class="fas fa-search fa-fw"></i>
+						<i class="fas fa-search fa-fw" ></i>
 					</button>
 				</div>
 				
@@ -189,7 +189,7 @@ document.addEventListener("DOMContentLoaded", function() {
 			</div>
 			
 			<!-- 행 개수 선택 -->
-			<div class="textRight">
+			<div class="textRight" style="margin-left: 15px;">
 				<select name="pageSize" id="selectPage" class="form-control">
 					<option value="10">10개씩 보기</option>
 					<option value="50">50개씩 보기</option>
@@ -272,12 +272,6 @@ document.addEventListener("DOMContentLoaded", function() {
 	</div>
 	<!-- 필터 모달창 끝 -->
 
-<a href="/main/login" class="nav-link">
-              <i class="nav-icon fas fa-user"></i>
-              <p>
-                로그인
-              </p>
-</a>
 <sec:authorize access="isAuthenticated()">
 	<sec:authentication property="principal" var="principal"/>
 </sec:authorize>
@@ -314,35 +308,18 @@ document.addEventListener("DOMContentLoaded", function() {
 <!--   </ul> -->
 <!-- </div> -->
 		
-		<button class="btn btn-primary" type="button"
-		data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight"
-		aria-controls="offcanvasRight">등록하기</button>
-	<div class="col-sm-12">
+		
 		<table id="example1" class="table table-bordered table-hover"
 			style="background: #fff" aria-describedby="example1_info">
 			<thead>
 				<tr>
-					<th class="sorting" tabindex="0" aria-controls="example1"
-						rowspan="1" colspan="1"
-						aria-label="Rendering engine: activate to sort column ascending">직원번호</th>
-					<th class="sorting" tabindex="0" aria-controls="example1"
-						rowspan="1" colspan="1"
-						aria-label="Rendering engine: activate to sort column ascending">아이디</th>
-					<th class="sorting" tabindex="0" aria-controls="example1"
-						rowspan="1" colspan="1"
-						aria-label="Rendering engine: activate to sort column ascending">이름</th>
-					<th class="sorting" tabindex="0" aria-controls="example1"
-						rowspan="1" colspan="1"
-						aria-label="Browser: activate to sort column ascending">직무</th>
-					<th class="sorting" tabindex="0" aria-controls="example1"
-						rowspan="1" colspan="1"
-						aria-label="Browser: activate to sort column ascending">직급</th>
-					<th class="sorting" tabindex="0" aria-controls="example1"
-						rowspan="1" colspan="1"
-						aria-label="Browser: activate to sort column ascending">전화번호</th>
-					<th class="sorting" tabindex="0" aria-controls="example1"
-						rowspan="1" colspan="1"
-						aria-label="Browser: activate to sort column ascending">이메일</th>
+					<th width="3%">NO</th>
+					<th width="10%">아이디</th>
+					<th width="19%">이름</th>
+					<th width="17%">직무</th>
+					<th width="17%">직급</th>
+					<th width="17%">연락처</th>
+					<th width="17%">이메일</th>
 					
 				</tr>
 			</thead>
@@ -362,8 +339,13 @@ document.addEventListener("DOMContentLoaded", function() {
 			</tbody>
 
 		</table>
-	</div>
 <!-- 페이징 처리 -->
+<div class="d-flex justify-content-between align-items-center">
+<div>
+<button class="btn btn-primary" type="button"
+		data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight"
+		aria-controls="offcanvasRight"><i class="fas fa-plus fa-fw"></i> 직원 등록</button>
+</div>
 			<ul class="pagination" >
 				<c:if test="${pageVO.prev }">
 					<li class="paginate_button page-item previous"
@@ -430,6 +412,7 @@ document.addEventListener("DOMContentLoaded", function() {
 		</ul>	
 
 </div>
+</div>
 
 
 <form action="" method="post" id="fm1" name="fm1">
@@ -492,35 +475,41 @@ document.addEventListener("DOMContentLoaded", function() {
 						</div>
 						
 						<div class="form-group">
-							<label>생일</label> <input type="date" name="birth_date" id="birth_date"
+							<label>생년월일</label> <input type="date" name="birth_date" id="birth_date"
 								class="form-control" />
 						</div>
-                      
+                        
                         <div class="form-group">
-                            <label>성별</label><br>
-                            <input type="radio" name="gender" value="0" >남 
-                			<input type="radio" name="gender" value="1" >여
-                        </div>
+							<label>성별</label><br> <label
+								style="font-weight: normal !important;"><input
+								type="radio" name="gender" style="accent-color: #cdb4db;"
+								value="0">&nbsp; 남자</label>&nbsp;&nbsp; <label
+								style="font-weight: normal !important;"><input
+								type="radio" name="gender" style="accent-color: #cdb4db;"
+								value="1">&nbsp; 여자</label>
+						</div>
  
                         <div class="form-group">
-                            <label>전화번호</label>
+                            <label>연락처</label>
+                         <span class="mx-2" id="phoneOk" style="font-size: 14px;">사용 가능한 연락처입니다.</span>	
+                         <span class="mx-2" id="phoneExists" style="font-size: 14px;">이미 가입된 연락처입니다.</span>	
                             <input type="text" name="phone_no"  class="form-control"  maxlength="13" oninput="formatPhoneNumber(this)" id="phone_no">
                         </div>
-                         <span id="phoneOk" style="font-size: 14px;">사용 가능한 연락처입니다.</span>	
-                         <span id="phoneExists" style="font-size: 14px;">이미 가입된 연락처입니다.</span>	
                       
                         <div class="form-group">
                             <label>이메일</label>
+                         <span class="mx-2" id="emailOk" style="font-size: 14px;">사용 가능한 이메일입니다.</span>	
+                         <span class="mx-2" id="emailExists" style="font-size: 14px;">이미 사용 중인 이메일입니다.</span>	
+                         <span class="mx-2" id="emailError" style="font-size: 14px;">유효하지 않은 이메일 형식입니다.</span>	
                             <input type="text" name="email"  class="form-control" id="email">
                         </div>
-                         <span id="emailOk" style="font-size: 14px;">사용 가능한 이메일입니다.</span>	
-                         <span id="emailExists" style="font-size: 14px;">이미 사용 중인 이메일입니다.</span>	
-                         <span id="emailError" style="font-size: 14px;">유효하지 않은 이메일 형식입니다.</span>	
-                       
+                                              
                         <div class="form-group">
                             <label>우편번호</label>
+                            <div class="input-group">
                             <input type="button" onclick="sample6_execDaumPostcode()" value="우편번호 찾기" class="btn btn-dark btn-sm">
                             <input type="text" id="sample6_postcode" placeholder="우편번호" name="zip_code"  class="form-control" >
+                            </div>
                         </div>
                         <div class="form-group">
                             <label>주소</label>
@@ -531,7 +520,7 @@ document.addEventListener("DOMContentLoaded", function() {
                             <input type="text" id="sample6_detailAddress" placeholder="상세주소" name="addr2"  class="form-control" >
                         </div>
                         <div class="form-group">
-                            <label>사진업로드</label>
+                            <label>사진 업로드</label>
                             <input type="file" name="file" accept="image/jpg, image/jpeg, image/png" class="form-control" >
                         </div>
                         
@@ -595,14 +584,14 @@ $(function() {
                 xhr.setRequestHeader(header, token);
             },
 			success : function(data) {
-				alert("직원이 등록 되었습니다.");
+				alert("직원 등록이 완료되었습니다.");
 				
 				history.go(0);
 
 				
 			},
 			error : function() {
-				alert("이메일 또는 전화번호가 중복된 정보입니다.");
+				alert("이메일 또는 연락처가 중복된 정보입니다.");
 			}
 		});
 	});

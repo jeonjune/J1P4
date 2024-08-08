@@ -29,9 +29,12 @@
 						<td class="dtr-control" tabindex="0">${list.equipment_no }</td>
 						<td>${list.field}</td>
 						<td>${list.e_repair_type}</td>
-					<td class="">
-					<a href="/maintenance/detail?equipment_no=${list.equipment_no}">${list.equipment_name }</a></td>
-<%--  					<a href="/maintenance/updateDetail?equipment_no=${list.equipment_no}">${list.equipment_name }</a></td>  --%>
+					<c:if test="${sess_rank.equals('팀장') }">
+					<td class=""><a href="/maintenance/detail?equipment_no=${list.equipment_no}">${list.equipment_name }</a></td>
+					</c:if>
+					<c:if test="${sess_rank.equals('사원') }">
+ 					<td><a href="/maintenance/updateDetail?equipment_no=${list.equipment_no}">${list.equipment_name }</a></td> 
+					</c:if>
 						<td>${list.name }</td>
 						<td>${list.report_date }</td>
 					</tr>

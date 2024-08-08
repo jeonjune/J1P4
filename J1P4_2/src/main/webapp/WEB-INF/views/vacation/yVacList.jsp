@@ -8,16 +8,18 @@
 <%@ include file="../include/empMenu.jsp"%>
 
  <div class="content-wrapper p-3" style="min-height: 831px;">
- 
+ 	<div class="my-2">
+ 	<h4>전체 휴가 리스트</h4>
+ 	</div>
 		<table id="example1"
-			class="table table-bordered table-hover"
+			class="table table-bordered table-hover my-2"
 			style="background: #fff"
 			aria-describedby="example1_info">
 			<thead>
 				<tr>
 					<th class="sorting" tabindex="0" aria-controls="example1"
 						rowspan="1" colspan="1"
-						aria-label="Rendering engine: activate to sort column ascending">사번</th>
+						aria-label="Rendering engine: activate to sort column ascending">NO</th>
 					<th class="sorting" tabindex="0" aria-controls="example1"
 						rowspan="1" colspan="1"
 						aria-label="Rendering engine: activate to sort column ascending">이름</th>
