@@ -6,9 +6,6 @@
 <html>
 <head>
     <title>출석 관리</title>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         const csrfToken = $('meta[name="_csrf"]').attr('content');
         const csrfHeader = $('meta[name="_csrf_header"]').attr('content');
@@ -166,11 +163,12 @@
                     // 일일 출석 기록 설정
                     let dailyAttendanceContent = '';
                     dailyAttendanceList.forEach(function(dailyAttendance) {
-                        const attendanceDate = new Date(dailyAttendance.attendance_date).toLocaleDateString();
-                        dailyAttendanceContent += `
-                            <tr>
-                                <td>${attendanceDate}</td>
-                            </tr>`;
+                        const attendanceDate = new Date(dailyAttendance.attendance_date).toLocaleDateString('ko-KR', {
+                            year: 'numeric',
+                            month: 'long',
+                            day: 'numeric'
+                        }); // 날짜를 한국어 형식으로 변환
+                        dailyAttendanceContent += '<tr><td>' + attendanceDate + '</td></tr>';
                     });
                     $('#modalDailyAttendanceList').html(dailyAttendanceContent);
 
@@ -183,6 +181,9 @@
                 }
             });
         }
+
+
+
 
 
         function updateDailyAttendance() {

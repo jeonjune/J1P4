@@ -79,7 +79,7 @@
                                             <form:input path="maxCapacity" class="form-control" type="number" required="required" id="maxCapacity"/>
                                         </div>
                                         <div class="mb-3">
-                                            <label for="instructorName" class="form-label">강의명</label>
+                                            <label for="instructorName" class="form-label">강사명</label>
                                             <div class="input-group">
                                                 <form:input path="instructorName" class="form-control" id="instructorName" readonly="readonly"/>
                                                 <form:hidden path="instructorNo" id="instructorNo"/>
@@ -404,16 +404,6 @@
 
         $('#registerStudentsButton').on('click', function(event) {
             event.preventDefault();
-            const selectedSchedules = [];
-            $('input[name="scheduleCheckbox"]:checked').each(function() {
-                selectedSchedules.push($(this).val());
-            });
-
-            if (selectedSchedules.length === 0) {
-                alert('Please select at least one schedule.');
-                return;
-            }
-
             const selectedStudents = [];
             $('input[name="studentCheckbox"]:checked').each(function() {
                 selectedStudents.push($(this).val());
@@ -426,7 +416,7 @@
 
             const registrationData = selectedStudents.map(studentNo => ({
                 mem_no: studentNo,
-                schedule_no: selectedSchedules[0] // Assuming registering one schedule at a time
+                schedule_no: $('input[name="scheduleCheckbox"]:checked').val() // 하나의 일정을 등록.
             }));
 
             $.ajax({
@@ -574,9 +564,16 @@
             selectedSchedules.push($(this).val());
         });
 
-        if (selectedSchedules.length === 0) {
-            alert('Please select at least one schedule.');
-            return;
+        if (selectedSchedules.length !== 1) {
+            alert('회원 등록을 위해 하나의 일정만 선택해야 합니다.');
+            return false;
+        }
+
+        const selectedScheduleStatus = $('input[name="scheduleCheckbox"]:checked').closest('tr').find('td:last-child').text().trim();
+        
+        if (selectedScheduleStatus !== '모집') {
+            alert('모집이 마감되었습니다.');
+            return false;
         }
 
         $('#addStudentModal').modal('show');
