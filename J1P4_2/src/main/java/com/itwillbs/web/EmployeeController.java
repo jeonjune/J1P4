@@ -592,4 +592,23 @@ public List<String> fileProcess(MultipartHttpServletRequest multiRequest) throws
 	}
 	
 
+	//이메일 중복 체크
+	@ResponseBody
+	@GetMapping(value = "/emailCheck")
+	public int emailCheckGET(@RequestParam("email")String email) throws Exception{
+		int result = eService.emailCheck(email);
+		logger.info("이메일 중복체크 :"+result);
+		return result;
+	}
+	
+	//전화번호 중복 체크
+	@ResponseBody
+	@GetMapping(value = "/phoneCheck")
+	public int phoneCheckGET(@RequestParam("phone_no")String phone_no) throws Exception {
+		int result = eService.phoneCheck(phone_no);
+		logger.info("전화번호 중복체크 :"+result);
+		return result; 
+	}
+	
+	
 }

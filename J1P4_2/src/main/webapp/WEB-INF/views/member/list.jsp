@@ -272,6 +272,7 @@
 					<p><span id="length">0</span> / 500자<p>
 					<textarea rows="20" cols="200" name="message" id="comment" 
 					class="form-control" onkeyup="up()" placeholder="메시지 내용을 입력하세요."></textarea>
+					<span id="checkModal" style="font-size: 14px;"></span>	
 					</div>
 					
 
@@ -282,7 +283,7 @@
 					<button type="button" class="btn btn-secondary"
 						data-bs-dismiss="modal">취소</button>
 					<button type="button" class="btn btn-primary smsSendBtn"
-						data-bs-dismiss="modal">전송하기</button>
+						>전송하기</button>
 				</div>
 
 			</div>
@@ -841,6 +842,18 @@
 	
 	$(document).ready(function() {
 		$('.smsSendBtn').click(function() {
+			
+			//빈칸검사			
+			var comment =$('#comment').val();
+			if (comment == "") {
+	            $('#checkModal').html('메세지 내용을 입력해주세요.')
+				.css('color', 'red');
+	            return;
+	            
+	        }else {
+	        	 $('#smsModal').modal('hide');
+	        }
+			
 			var selectedOptions = "";
 			var selectedMessage = "";
 			var selectedNotiDate = "";
