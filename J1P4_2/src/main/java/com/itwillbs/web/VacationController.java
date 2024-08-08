@@ -19,7 +19,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.itwillbs.domain.Criteria;
 import com.itwillbs.domain.EmpAttendanceVO;
+import com.itwillbs.domain.PageVO;
 import com.itwillbs.service.EmpAttendanceService;
 import com.itwillbs.service.EmployeeService;
 
@@ -148,21 +150,30 @@ public class VacationController {
 	
 	// 승인된 휴가 목록
 	@RequestMapping(value = "/yVacList", method = RequestMethod.GET)
-	public void yVacList(HttpSession session, Model model) throws Exception{
+	public void yVacList(HttpSession session, Model model,Criteria cri) throws Exception{
 		logger.info("승인된 휴가목록@@@@");
 		
 		if(session.getAttribute("sess_job")!=null) {
 			
 			String sess_job = (String) session.getAttribute("sess_job");
 			logger.info("sess_job@@@@"+sess_job);
+			cri.setJob(sess_job);
 			if(!sess_job.equals("관리자")) {
 				// 직무별로 보는 쿼리 만들기
-				List<EmpAttendanceVO> yList = eService.yVaJob(sess_job);
+				List<EmpAttendanceVO> yList = eService.yVaJob(cri);
+				PageVO pageVO = new PageVO();
+				pageVO.setCri(cri);
+				pageVO.setTotalCount(eService.getyVaJobCount());
 				model.addAttribute("yList", yList);
+				model.addAttribute("pageVO",pageVO);
 				
 			}else {
-				List<EmpAttendanceVO> yList = eService.yVaca();
+				List<EmpAttendanceVO> yList = eService.yVaca(cri);
+				PageVO pageVO = new PageVO();
+				pageVO.setCri(cri);
+				pageVO.setTotalCount(eService.getyVacaCount());
 				model.addAttribute("yList", yList);
+				model.addAttribute("pageVO",pageVO);
 			}
 		
 		}

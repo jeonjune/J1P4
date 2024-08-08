@@ -8,6 +8,7 @@ import javax.inject.Inject;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
+import com.itwillbs.domain.Criteria;
 import com.itwillbs.domain.EmpAttendanceVO;
 
 @Repository
@@ -37,9 +38,9 @@ public class EmpAttendanceDAOImpl implements EmpAttendanceDAO {
 	}
 
 	@Override
-	public List<EmpAttendanceVO> yVaca() throws Exception {
+	public List<EmpAttendanceVO> yVaca(Criteria cri) throws Exception {
 
-		return sqlSession.selectList(NAMESPACE+"yVaca");
+		return sqlSession.selectList(NAMESPACE+"yVaca",cri);
 	}
 
 	@Override
@@ -54,8 +55,8 @@ public class EmpAttendanceDAOImpl implements EmpAttendanceDAO {
 	}
 	
 	@Override
-	public List<EmpAttendanceVO> yVaJob(String job) throws Exception {
-		return sqlSession.selectList(NAMESPACE+"yVaJob", job);
+	public List<EmpAttendanceVO> yVaJob(Criteria cri) throws Exception {
+		return sqlSession.selectList(NAMESPACE+"yVaJob", cri);
 	}
 	
 	@Override
@@ -89,6 +90,16 @@ public class EmpAttendanceDAOImpl implements EmpAttendanceDAO {
 	@Override
 	public List<EmpAttendanceVO> userYear(int user_no) throws Exception {
 		return sqlSession.selectList(NAMESPACE+"userYear",user_no);
+	}
+
+	@Override
+	public int getyVacaCount() throws Exception {
+		return sqlSession.selectOne(NAMESPACE+"yVacaCount");
+	}
+
+	@Override
+	public int getyVaJobCount() throws Exception {
+		return sqlSession.selectOne(NAMESPACE+"yVaJobCount");
 	}
 	
 	

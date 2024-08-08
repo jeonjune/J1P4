@@ -7,8 +7,8 @@
 <head>
     <title>출석 관리</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         const csrfToken = $('meta[name="_csrf"]').attr('content');
         const csrfHeader = $('meta[name="_csrf_header"]').attr('content');
@@ -117,59 +117,6 @@
             $('#studentList').html(studentTable);
         }
 
-        function showDailyAttendance(memNo, scheduleId) {
-            $.ajax({
-                url: contextPath + '/attendance/daily-attendance/' + memNo + '/' + scheduleId,
-                type: 'GET',
-                beforeSend: function(xhr) {
-                    xhr.setRequestHeader(csrfHeader, csrfToken);
-                },
-                success: function(response) {
-                    console.log("모달 데이터 로드 성공: ", response);
-                    var modalContent = `
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="dailyAttendanceModalLabel">${response.classAttendance.mem_name}의 출석 기록</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <p><strong>학생 번호:</strong> ${response.classAttendance.mem_no}</p>
-                            <p><strong>전화번호:</strong> ${response.classAttendance.mem_phone}</p>
-                            <p><strong>출석한 수업:</strong> ${response.classAttendance.attendedClasses}</p>
-                            <p><strong>총 수업:</strong> ${response.classAttendance.totalClasses}</p>
-                            <p><strong>출석률:</strong> ${response.classAttendance.attendanceRate}%</p>
-                            <h5>일일 출석 기록</h5>
-                            <table class="table table-bordered">
-                                <thead>
-                                    <tr>
-                                        <th>출석 날짜</th>
-                                    </tr>
-                                </thead>
-                                <tbody>`;
-                    response.dailyAttendanceList.forEach(function(dailyAttendance) {
-                        var attendanceDate = new Date(dailyAttendance.attendance_date).toLocaleDateString();
-                        modalContent += `
-                                    <tr>
-                                        <td>${attendanceDate}</td>
-                                    </tr>`;
-                    });
-                    modalContent += `
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
-                        </div>`;
-                    $('#dailyAttendanceModal .modal-content').html(modalContent);
-                    $('#dailyAttendanceModal').modal('show');
-                },
-                error: function() {
-                    alert('출석 기록을 불러오는 데 실패했습니다.');
-                }
-            });
-        }
-
         function renderDailyCheckList(data) {
             var dailyCheckTable = '<table class="table table-bordered">' +
                                     '<thead>' +
@@ -192,6 +139,51 @@
             dailyCheckTable += '</tbody></table>';
             $('#dailyCheckList').html(dailyCheckTable);
         }
+        
+        function showDailyAttendance(memNo, scheduleId) {
+            $.ajax({
+                url: contextPath + '/attendance/daily-attendance/' + memNo + '/' + scheduleId,
+                type: 'GET',
+                beforeSend: function(xhr) {
+                    xhr.setRequestHeader(csrfHeader, csrfToken);
+                },
+                success: function(response) {
+                    console.log("모달 데이터 로드 성공: ", response);
+
+                    const classAttendance = response.classAttendance;
+                    const dailyAttendanceList = response.dailyAttendanceList;
+
+                    // 모달 제목 설정
+                    $('#dailyAttendanceModalLabel').text(classAttendance.mem_name + '의 출석 기록');
+
+                    // 모달 본문 설정
+                    $('#modalMemNo').text(classAttendance.mem_no);
+                    $('#modalMemPhone').text(classAttendance.mem_phone);
+                    $('#modalAttendedClasses').text(classAttendance.attendedClasses);
+                    $('#modalTotalClasses').text(classAttendance.totalClasses);
+                    $('#modalAttendanceRate').text(classAttendance.attendanceRate + '%');
+
+                    // 일일 출석 기록 설정
+                    let dailyAttendanceContent = '';
+                    dailyAttendanceList.forEach(function(dailyAttendance) {
+                        const attendanceDate = new Date(dailyAttendance.attendance_date).toLocaleDateString();
+                        dailyAttendanceContent += `
+                            <tr>
+                                <td>${attendanceDate}</td>
+                            </tr>`;
+                    });
+                    $('#modalDailyAttendanceList').html(dailyAttendanceContent);
+
+                    // 모달 표시
+                    var modal = new bootstrap.Modal(document.getElementById('dailyAttendanceModal'));
+                    modal.show();
+                },
+                error: function() {
+                    alert('출석 기록을 불러오는 데 실패했습니다.');
+                }
+            });
+        }
+
 
         function updateDailyAttendance() {
             const selectedCheckboxes = $('.dailyAttendanceCheckbox:checked');
@@ -326,10 +318,34 @@
     </div>
     
     <!-- Modal -->
-    <div class="modal fade" id="dailyAttendanceModal" tabindex="-1" role="dialog" aria-labelledby="dailyAttendanceModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
+    <div class="modal fade" id="dailyAttendanceModal" tabindex="-1" aria-labelledby="dailyAttendanceModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
             <div class="modal-content">
-                <!-- Modal content will be loaded here dynamically -->
+                <div class="modal-header">
+                    <h5 class="modal-title" id="dailyAttendanceModalLabel">출석 기록</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p><strong>학생 번호:</strong> <span id="modalMemNo"></span></p>
+                    <p><strong>전화번호:</strong> <span id="modalMemPhone"></span></p>
+                    <p><strong>출석한 수업:</strong> <span id="modalAttendedClasses"></span></p>
+                    <p><strong>총 수업:</strong> <span id="modalTotalClasses"></span></p>
+                    <p><strong>출석률:</strong> <span id="modalAttendanceRate"></span></p>
+                    <h5>일일 출석 기록</h5>
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>출석 날짜</th>
+                            </tr>
+                        </thead>
+                        <tbody id="modalDailyAttendanceList">
+                            <!-- 일일 출석 기록이 여기에 로드됩니다. -->
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                </div>
             </div>
         </div>
     </div>
