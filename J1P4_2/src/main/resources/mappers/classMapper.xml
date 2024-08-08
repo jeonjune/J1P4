@@ -13,6 +13,7 @@
         <result property="levelCode" column="level_code"/>
         <result property="minCapacity" column="min_capacity"/>
         <result property="maxCapacity" column="max_capacity"/>
+        <result property="price" column="price"/>
         <result property="instructorNo" column="instructor_no"/>
         <result property="instructorName" column="instructor_name"/>
     </resultMap>
@@ -55,6 +56,7 @@
             c.min_capacity,
             c.max_capacity,
             c.instructor_no,
+            c.price,
             e.name AS instructor_name
         FROM class c
         LEFT JOIN instructor i ON c.instructor_no = i.instructor_no
