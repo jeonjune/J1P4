@@ -255,7 +255,15 @@
 <!-- 			mem.userid = #{userid} -->
 <!-- 	 </select> -->
 	 
-  	 
-  
+	 <!-- 이메일 중복체크 -->
+	 <select id="emailCheck" parameterType="string" resultType="int">
+	 select count(*) from employee where email=#{email}
+	 </select>
+	 
+	 <!-- 전화번호 중복체크 -->
+  	 <select id="phoneCheck" parameterType="string" resultType="int">
+  	 select count(*) from employee where phone_no=#{phone_no}
+  	 </select>
+  	
   
   </mapper>

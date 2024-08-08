@@ -180,6 +180,20 @@ public class EmployeeServiceImpl implements EmployeeService {
 	public Integer appHCount(int user_no) throws Exception {
 		return edao.appHCount(user_no);
 	}
+
+	//이메일 중복체크
+	@Override
+	public int emailCheck(String email) throws Exception {
+		int result = edao.emailCheck(email);
+		return result;
+	}
+
+	//전화번호 중복체크
+	@Override
+	public int phoneCheck(String phone_no) throws Exception {
+		int result = edao.phoneCheck(phone_no);
+		return result;
+	}
 	
 	
 	
