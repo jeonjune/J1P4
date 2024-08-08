@@ -3,6 +3,7 @@ package com.itwillbs.persistence;
 import java.util.List;
 import java.util.Map;
 
+import com.itwillbs.domain.Criteria;
 import com.itwillbs.domain.EmpAttendanceVO;
 
 public interface EmpAttendanceDAO {
@@ -17,7 +18,7 @@ public interface EmpAttendanceDAO {
 	public List<EmpAttendanceVO> reqVaca() throws Exception;
 
 	// 승인된 휴가 리스트
-	public List<EmpAttendanceVO> yVaca() throws Exception;
+	public List<EmpAttendanceVO> yVaca(Criteria cri) throws Exception;
 
 	// 반려된 휴가 리스트
 	public List<EmpAttendanceVO> nVaca() throws Exception;
@@ -27,7 +28,7 @@ public interface EmpAttendanceDAO {
 	public List<EmpAttendanceVO> reqJob(String job) throws Exception;
 	
 	// 직무별 승인된 휴가 리스트
-	public List<EmpAttendanceVO> yVaJob(String job) throws Exception;
+	public List<EmpAttendanceVO> yVaJob(Criteria cri) throws Exception;
 	
 	// 직무별 반려된 휴가 리스트
 	public List<EmpAttendanceVO> nVaJob(String job) throws Exception;
@@ -48,5 +49,10 @@ public interface EmpAttendanceDAO {
 	// 내 휴가 리스트2
 	public List<EmpAttendanceVO> userYear(int user_no) throws Exception;
 	
+	// 승인된 휴가 리스트 페이징
+	public int getyVacaCount() throws Exception;
+	
+	// 직무별 승인된 휴가 리스트 페이징
+	public int getyVaJobCount() throws Exception;
 	
 }
