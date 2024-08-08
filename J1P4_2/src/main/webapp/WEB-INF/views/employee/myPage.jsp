@@ -100,7 +100,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 <div class="d-flex flex-wrap align-items-start">
                     <div id="profile" class="me-3 m-3" style="flex: 0 0 200px; width: 200px; height: 270px;">
     <c:if test="${fileList.file_name.equals('no') }">
-        <img src="${pageContext.request.contextPath }/resources/img/default_profile.png" style="width: 100%; height: 100%; object-fit: cover;">
+        <img src="${pageContext.request.contextPath }/resources/img/default_profile.png" style="width: 100%; height: 100%; object-fit: cover; margin-bottom: 10px;">
     </c:if>
     <c:if test="${!fileList.file_name.equals('no') }">
         <p class="text-muted cardMy">
@@ -110,17 +110,17 @@ document.addEventListener("DOMContentLoaded", function() {
             </c:if>
         </p>
         </c:if>
-		<div  style="position: absolute; left: 70px;">
-    <button type="button" class="btn btn-primary btn-sm"
+		<div  style="position: absolute; left: 65px;">
+    <button type="button" class="btn btn-warning btn-sm"
     data-bs-toggle="modal" data-bs-target="#profileModal">사진변경
     </button>
-    <button type="button" class="btn btn-outline-primary btn-sm fileDelete"
-						data-bs-dismiss="modal">사진삭제</button>
+    <button type="button" class="btn btn-outline-danger btn-sm fileDelete"
+						style="color: #000;" data-bs-dismiss="modal">사진삭제</button>
 		</div>
 </div>
 
                     <div class="d-flex flex-column flex-fill" style="flex: 1; min-width: 0;">
-                        <div class="d-flex flex-wrap" style="margin-left: 70px;">
+                        <div class="d-flex flex-wrap" style="margin-left: 30px;">
                             <div class="col-md-6" id="detail1">
                                 <div class="cardMy">
                                     <strong><i class="fas fa-phone mr-1 cardMx"></i> 연락처 </strong>
@@ -523,6 +523,21 @@ document.addEventListener("DOMContentLoaded", function() {
 	        
 	        input.value = formattedValue;
 	    }
+	
+		$(document).ready(function() {
+            $('#fileInput').on('change', function(event) {
+                const file = event.target.files[0];
+                const reader = new FileReader();
+
+                reader.onload = function(e) {
+                    $('#preview').attr('src', e.target.result).show();
+                };
+
+                if (file) {
+                    reader.readAsDataURL(file);
+                }
+            });
+        });
 		
 	  
 	  

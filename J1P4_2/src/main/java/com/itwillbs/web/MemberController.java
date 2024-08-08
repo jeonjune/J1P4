@@ -518,6 +518,26 @@ logger.debug(" downloadGET() 실행 ");
 		return rvo;
 	}
 	
+	//이메일 중복 체크
+		@ResponseBody
+		@GetMapping(value = "/emailCheck")
+		public int emailCheckGET(@RequestParam("mem_email")String mem_email) throws Exception{
+			int result = mService.emailCheck(mem_email);
+			logger.info("이메일 중복체크 :"+result);
+			
+			return result;
+		}
+		
+	//전화번호 중복 체크
+	@ResponseBody
+	@GetMapping(value = "/phoneCheck")
+	public int phoneCheckGET(@RequestParam("mem_phone")String mem_phone) throws Exception {
+		int result = mService.phoneCheck(mem_phone);
+		logger.info("전화번호 중복체크 :"+result);
+		
+		return result; 
+	}
+	
 	
 	
 }

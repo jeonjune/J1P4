@@ -214,11 +214,11 @@
 	</select>
 	
 	<update id="updateInbody">
-		update healthMonitor set exercise_goal = #{exercise_goal},
+		update healthMonitor set exercise_goal = #{exercise_goal}, manager_no = #{manager_no},
 		height = #{height}, weight = #{weight}, fat=#{fat}, fat_mass=#{fat_mass},
 		muscle=#{muscle}, muscle_mass=#{muscle_mass}, belly_fat=#{belly_fat}, bmi=#{bmi},
 		bmr=#{bmr}, consult_content=#{consult_content}
-		where inbody_no = #{inbody_no} and manager_no = #{manager_no};
+		where inbody_no = #{inbody_no};
 	</update>
 	
 	<insert id="insertInbody">
@@ -268,5 +268,17 @@ WHERE r.mem_no = #{mem_no}
         group by n.noti_no
 		order by n.noti_no desc;
 	</select>
+  	 
+  	<!-- 이메일 유효성, 중복체크 -->
+  	<select id="emailCheck" resultType="int" parameterType="string">
+  	select count(*) from member where mem_email=#{mem_email}
+  	</select>
+  	
+  	<!-- 전화번호 중복체크 --> 
+  	 <select id="phoneCheck" resultType="int" parameterType="string">
+  	select count(*) from member where mem_phone=#{mem_phone}
+  	</select>
+  	
+  	
   	 
   </mapper>

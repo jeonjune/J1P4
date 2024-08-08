@@ -58,7 +58,7 @@
 </div>
 
                     <div class="d-flex flex-column flex-fill" style="flex: 1; min-width: 0;">
-                        <div class="d-flex flex-wrap" style="margin-left: 70px;">
+                        <div class="d-flex flex-wrap" style="margin-left: 30px;">
                             <div class="col-md-6" id="detail1">
                                 <div class="cardMy">
                                     <strong><i class="fas fa-phone mr-1 cardMx"></i> 연락처 </strong>

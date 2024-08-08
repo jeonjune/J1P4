@@ -17,7 +17,7 @@
   justify-content: center;
   align-items: center;
   color: #ffffff; 
-  font-size: 24px;
+  font-size: 22px;
   font-weight: bold;
   text-align : center;
 }
@@ -109,13 +109,13 @@
 						<div class="card-body">
 							<strong><i class="far fa-calendar mr-1 cardMy"></i> 올 해 연차 현황 </strong>
 							<br> <br>
-							<div class="centered-circle"><span>총 연차 <br>12</span></div>
+							<div class="centered-circle mx-2"><span>총 연차 <br>12</span></div>
 							
-							<div class="centered-circle"><span>연차 <br>${countVa }</span></div>
+							<div class="centered-circle mx-2"><span>연차 <br>${countVa }</span></div>
 							
-							<div class="centered-circle"><span>반차 <br>${countHalf }</span></div>
+							<div class="centered-circle mx-2"><span>반차 <br>${countHalf }</span></div>
 							
-							<div class="centered-circle"><span>남은 연차 <br>${leftVa }</span></div>
+							<div class="centered-circle mx-2"><span>남은 연차 <br>${leftVa }</span></div>
 						</div>
 					</div>
 				</div>

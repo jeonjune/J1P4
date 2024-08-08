@@ -3,6 +3,8 @@ package com.itwillbs.web;
 import java.io.File;
 import java.security.Principal;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Enumeration;
@@ -10,6 +12,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
@@ -518,8 +521,62 @@ public List<String> fileProcess(MultipartHttpServletRequest multiRequest) throws
 			            countVa = 0;
 			        }
 			        
+			        List<EmpAttendanceVO> updatedResult = new ArrayList<>();
+
+			        for (EmpAttendanceVO attendance : result) {
+			            if (attendance.getVacation_start() != null && attendance.getVacation_end() != null) {
+			                LocalDate sDate = attendance.getVacation_start().toLocalDate();  // Direct conversion
+			                LocalDate eDate = attendance.getVacation_end().toLocalDate();  // Direct conversion
+
+//			                List<LocalDate> dates = sDate.datesUntil(eDate).collect(Collectors.toList());
+			               
+			                List<LocalDate> dates;
+			                if (sDate.isEqual(eDate)) {
+			                    dates = List.of(sDate);
+			                } else {
+			                    dates = sDate.datesUntil(eDate).collect(Collectors.toList());
+			                }
+			                
+			                LocalDate currentVacationStart = sDate;
+			                
+			                for (LocalDate date2 : dates) {
+			                				                	
+			                    java.sql.Date sqlDate = java.sql.Date.valueOf(date2);
+
+			                    EmpAttendanceVO eVO = new EmpAttendanceVO();
+			                    eVO.setAttend_date(sqlDate);
+			                    eVO.setEmpAttend_no(attendance.getEmpAttend_no());
+			                    eVO.setVacation_status(attendance.getVacation_status());
+			                    eVO.setVacation_start(java.sql.Date.valueOf(currentVacationStart));
+			                    eVO.setVacation_end(attendance.getVacation_end());
+			                    updatedResult.add(eVO);
+			                    
+			                    currentVacationStart = currentVacationStart.plusDays(1);
+			                }
+			            } else {
+			                EmpAttendanceVO eVO = new EmpAttendanceVO();
+			                eVO.setAttend_date(attendance.getAttend_date());
+			                eVO.setEmpAttend_no(attendance.getEmpAttend_no());
+			                eVO.setCommute_time(attendance.getCommute_time());
+			                eVO.setQuitting_time(attendance.getQuitting_time());
+			                eVO.setWork_status(attendance.getWork_status());
+			                eVO.setCheck_status(attendance.getCheck_status());
+			                eVO.setVacation_status(attendance.getVacation_status());
+			                eVO.setVacation_start(attendance.getVacation_start());
+			                eVO.setVacation_end(attendance.getVacation_end());
+			                updatedResult.add(eVO);
+			            }
+			        }
+
+			        // Replace result with updatedResult
+			        result.clear();
+			        result.addAll(updatedResult);
+
+			        logger.info("@@@@@@@@@@@@@@finalllllllllll@@@@@@@@@@@ :" + result);
 			        
 			        
+			        
+			        logger.info("@@@@@@@@@@@@@@date@@@@@@@@@@@ :"+dateResult);
 			        
 			        model.addAttribute("date",dateResult);		        
 			        logger.info("@@@@@@@@@@@@@@date@@@@@@@@@@@ :"+dateResult);

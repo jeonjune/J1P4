@@ -71,4 +71,11 @@ public interface MemberService {
 	//수신번호 가져오기
 	public RecipientVO selectPhone(int noti_no) throws Exception;
 	
+	//이메일 유효성 중복 체크
+	public int emailCheck(String mem_email) throws Exception;
+	
+	//전화번호 중복체크
+	public int phoneCheck(String mem_phone) throws Exception;
+			
+	
 }

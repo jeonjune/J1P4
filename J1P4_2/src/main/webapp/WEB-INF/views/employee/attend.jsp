@@ -18,9 +18,10 @@
   justify-content: center;
   align-items: center;
   color: #ffffff; 
-  font-size: 24px;
+  font-size: 22px;
   font-weight: bold;
   text-align : center;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
 }
 </style>
 
@@ -82,13 +83,13 @@
 							<strong><i class="far fa-calendar mr-1 cardMy"></i> 
 								${param.date } 출근 현황 </strong>
 							<br> <br>
-							<div class="centered-circle"><span>출근일 수 <br>${countAtt }</span></div>
+							<div class="centered-circle mx-2"><span>출근 <br>${countAtt }</span></div>
 							
-							<div class="centered-circle"><span>지각 <br>${countLate }</span></div>
+							<div class="centered-circle mx-2"><span>지각 <br>${countLate }</span></div>
 
-							<div class="centered-circle"><span>반차 <br>${countHalf }</span></div>
+							<div class="centered-circle mx-2"><span>반차 <br>${countHalf }</span></div>
 							
-							<div class="centered-circle"><span>연차 <br>${countVa }</span></div>
+							<div class="centered-circle mx-2"><span>연차 <br>${countVa }</span></div>
 							
 						</div>
 					</div>
@@ -128,7 +129,7 @@
 								<td class="dtr-control" tabindex="0">${monthWork.attend_date }</td>
 							 	</c:if>
 							 	<c:if test="${monthWork.vacation_status != null}">
-								<td>${monthWork.vacation_start }~${monthWork.vacation_end }</td>
+								<td>${monthWork.vacation_start }</td>
 							 	</c:if>
 								<td class="dtr-control" tabindex="0">${monthWork.commute_time }</td>
 								<td>${monthWork.quitting_time }</td>
