@@ -269,4 +269,16 @@ WHERE r.mem_no = #{mem_no}
 		order by n.noti_no desc;
 	</select>
   	 
+  	<!-- 이메일 유효성, 중복체크 -->
+  	<select id="emailCheck" resultType="int" parameterType="string">
+  	select count(*) from member where mem_email=#{mem_email}
+  	</select>
+  	
+  	<!-- 전화번호 중복체크 --> 
+  	 <select id="phoneCheck" resultType="int" parameterType="string">
+  	select count(*) from member where mem_phone=#{mem_phone}
+  	</select>
+  	
+  	
+  	 
   </mapper>
