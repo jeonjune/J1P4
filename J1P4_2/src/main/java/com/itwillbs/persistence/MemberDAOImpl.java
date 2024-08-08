@@ -141,6 +141,20 @@ public class MemberDAOImpl implements MemberDAO {
 		return sqlSession.selectOne(NAMESPACE+"selectPhone",noti_no);
 	}
 	
+	//이메일 유효성 중복 체크
+	@Override
+	public int emailCheck(String mem_email) throws Exception {
+		int result = sqlSession.selectOne(NAMESPACE+"emailCheck", mem_email);
+		return result;
+	}
+	
+	//전화번호 중복 체크
+	@Override
+	public int phoneCheck(String mem_phone) throws Exception {
+		int result = sqlSession.selectOne(NAMESPACE+"phoneCheck", mem_phone);
+		return result;
+	}
+	
 	
 	
 	

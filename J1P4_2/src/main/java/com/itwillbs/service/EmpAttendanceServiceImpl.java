@@ -7,6 +7,7 @@ import javax.inject.Inject;
 
 import org.springframework.stereotype.Service;
 
+import com.itwillbs.domain.Criteria;
 import com.itwillbs.domain.EmpAttendanceVO;
 import com.itwillbs.persistence.EmpAttendanceDAO;
 
@@ -33,8 +34,8 @@ public class EmpAttendanceServiceImpl implements EmpAttendanceService {
 	}
 
 	@Override
-	public List<EmpAttendanceVO> yVaca() throws Exception {
-		return edao.yVaca();
+	public List<EmpAttendanceVO> yVaca(Criteria cri) throws Exception {
+		return edao.yVaca(cri);
 	}
 
 	@Override
@@ -49,8 +50,8 @@ public class EmpAttendanceServiceImpl implements EmpAttendanceService {
 	}
 
 	@Override
-	public List<EmpAttendanceVO> yVaJob(String job) throws Exception {
-		return edao.yVaJob(job);
+	public List<EmpAttendanceVO> yVaJob(Criteria cri) throws Exception {
+		return edao.yVaJob(cri);
 	}
 
 	@Override
@@ -82,6 +83,16 @@ public class EmpAttendanceServiceImpl implements EmpAttendanceService {
 	@Override
 	public List<EmpAttendanceVO> userYear(int user_no) throws Exception {
 		return edao.userYear(user_no);
+	}
+
+	@Override
+	public int getyVacaCount() throws Exception {
+		return edao.getyVacaCount();
+	}
+
+	@Override
+	public int getyVaJobCount() throws Exception {
+		return edao.getyVaJobCount();
 	}
 	
 	

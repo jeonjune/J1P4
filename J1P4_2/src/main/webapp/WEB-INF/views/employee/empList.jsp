@@ -8,14 +8,16 @@
 <%@ include file="../include/sidemenu.jsp"%>
 <%@ include file="../include/empMenu.jsp"%>
 
-<style>
-        #emailOk, #emailExists, #emailError {
+ <style>
+        #emailOk, #emailExists, #emailError,
+        #phoneOk, #phoneExists {
             display: none;
             font-size: 14px;
         }
-        #emailOk { color: green; }
-        #emailExists, #emailError { color: red; }
-</style>
+        #emailOk, #phoneOk { color: green; }
+        #emailExists, #emailError, #phoneExists { color: red; }
+ </style>   
+        
 
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -504,9 +506,8 @@ document.addEventListener("DOMContentLoaded", function() {
                             <label>전화번호</label>
                             <input type="text" name="phone_no"  class="form-control"  maxlength="13" oninput="formatPhoneNumber(this)" id="phone_no">
                         </div>
-                         <span id="phoneOk" style="font-size: 14px;"></span>	
-                         <span id="phoneExists" style="font-size: 14px;"></span>	
-                         <span id="phoneError" style="font-size: 14px;"></span>	
+                         <span id="phoneOk" style="font-size: 14px;">사용 가능한 연락처입니다.</span>	
+                         <span id="phoneExists" style="font-size: 14px;">이미 가입된 연락처입니다.</span>	
                       
                         <div class="form-group">
                             <label>이메일</label>
@@ -1227,8 +1228,39 @@ $(function() {
 	 
 	}
   
+//전화번호 중복체크
+
+	// 유효성 검사 로직
+	$('#phone_no').on('input', function() {
+        validatePhone();
+	});   
+
+	// 폼 제출 시 모든 유효성 검사 및 중복 체크 확인
+	 function validatePhone() {
+       var phone_no = $('#phone_no').val();
+       var phoneOk = $('#phoneOk');
+       var phoneExists = $('#phoneExists');
 	
-	
+       $.ajax({
+           url: '/employee/phoneCheck',
+           type : 'GET',
+           dataType: 'json',
+           data: { phone_no: phone_no },
+           success: function(response) {
+               if (response === 1) { 
+            	   phoneExists.show(); //중복
+            	   phoneOk.hide(); //
+               } else {
+            	   phoneExists.hide();
+            	   phoneOk.show();
+               }
+           },
+           error: function(xhr, status, error) {
+               console.error('전화번호 AJAX Error: ', status, error);
+           }
+       });
+	 
+	}
 	
 	
 

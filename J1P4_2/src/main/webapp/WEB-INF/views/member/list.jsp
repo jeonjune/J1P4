@@ -4,6 +4,18 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ include file="../include/header.jsp"%>
 <%@ include file="../include/sidemenu.jsp"%>
+
+<style>
+        #emailOk, #emailExists, #emailError,
+        #phoneOk, #phoneExists {
+            display: none;
+            font-size: 14px;
+        }
+        #emailOk, #phoneOk { color: green; }
+        #emailExists, #emailError, #phoneExists { color: red; }
+ </style>
+
+
 <script
 	src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 
@@ -339,7 +351,7 @@
 	<!-- 하단 버튼 모음 -->	
 	<div>
 		<!-- 메시지 전송 버튼 -->
-		<button type="button" class="btn btn-danger smsBtn" data-bs-toggle="modal"
+		<button type="button" class="btn btn-danger smsBtn" 
 			data-bs-target="#smsModal">
 			<i class="fas fa-envelope fa-fw" style="color: #fff"></i> 메시지 발송
 		</button>
@@ -477,6 +489,8 @@
 								style="accent-color: #cdb4db;" value="1">&nbsp;sms 수신 동의
 							</label>
 						</div>
+						 <span id="phoneOk" style="font-size: 14px;">사용 가능한 연락처입니다.</span>	
+                         <span id="phoneExists" style="font-size: 14px;">이미 가입된 연락처입니다.</span>	
 
 						<div class="form-group">
 							<label>이메일</label> <input type="email" name="mem_email" id="mem_email"
@@ -485,6 +499,10 @@
 								name="email_opt" value="1">&nbsp;이메일 수신 동의
 							</label>
 						</div>
+						 <span id="emailOk" style="font-size: 14px;">사용 가능한 이메일입니다.</span>	
+                         <span id="emailExists" style="font-size: 14px;">이미 사용 중인 이메일입니다.</span>	
+                         <span id="emailError" style="font-size: 14px;">유효하지 않은 이메일 형식입니다.</span>	
+						
 						<div class="form-group">
 							<label>메모</label> <br>
 							<textarea class="form-control" name="mem_note" id="mem_note" rows="5" cols="38"></textarea>
@@ -788,6 +806,7 @@
 
 			$('input[name="mem_no"]:checked').each(function() {
 				selectedOptions.push(this.value);
+				$('#smsModal').modal('show');
 			});
 			
 			$.ajax({
@@ -825,6 +844,7 @@
 				},
 				error : function(error) {
 					alert("선택이 되지 않았습니다.");
+					 $('#smsModal').modal('hide');
 					return;
 				}
 			});
@@ -980,6 +1000,99 @@ document.getElementById('currentDatetime').value = getKoreanTimeISO();
 	    });
 
 	});
+	
+	
+	
+	//이메일 전화번호 중복체크
+	//이메일 유효성 검사 함수들
+	function regMemberEmail(mem_email) {
+     var regExp = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+     return regExp.test(mem_email);
+   }
+
+	// 유효성 검사 로직
+	$('#mem_email').on('input', function() {
+       validateEmail2();
+	});   
+
+	// 폼 제출 시 모든 유효성 검사 및 중복 체크 확인
+	 function validateEmail2() {
+      var mem_email = $('#mem_email').val();
+      var emailOk = $('#emailOk');
+      var emailExists = $('#emailExists');
+      var emailError = $('#emailError');
+
+      if (!regMemberEmail(mem_email)) { //유효성검사 실패시
+          emailError.show();
+          emailExists.hide();
+          emailOk.hide();
+          return;
+      } else { 
+          emailError.hide();
+      }
+	
+      $.ajax({
+          url: '/member/emailCheck',
+          type : 'GET',
+          dataType: 'json',
+          data: { mem_email: mem_email },
+          success: function(response) {
+              if (response === 1) { 
+                  emailExists.show(); //중복
+                  emailOk.hide(); //숨김
+              } else {
+                  emailExists.hide();
+                  emailOk.show();
+              }
+          },
+          error: function(xhr, status, error) {
+              console.error('이메일 AJAX Error: ', status, error);
+          }
+      });
+	 
+	}
+ 
+	//전화번호 중복체크
+	$('#mem_phone').on('input', function() {
+       validatePhone2();
+	});   
+
+	// 폼 제출 시 모든 유효성 검사 및 중복 체크 확인
+	 function validatePhone2() {
+      var mem_phone = $('#mem_phone').val().replace(/-/g, '');
+      var phoneOk = $('#phoneOk');
+      var phoneExists = $('#phoneExists');
+	
+      $.ajax({
+          url: '/member/phoneCheck',
+          type : 'GET',
+          dataType: 'json',
+          data: { mem_phone: mem_phone },
+          success: function(response) {
+              if (response === 1) { 
+           	   phoneExists.show(); //중복
+           	   phoneOk.hide(); //숨김
+              } else {
+           	   phoneExists.hide();
+           	   phoneOk.show();
+              }
+          },
+          error: function(xhr, status, error) {
+              console.error('전화번호 AJAX Error: ', status, error);
+          }
+      });
+	 
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 </script>
 

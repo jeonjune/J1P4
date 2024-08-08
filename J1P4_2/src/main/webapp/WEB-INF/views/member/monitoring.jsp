@@ -227,7 +227,7 @@
 		<input type="hidden" name="${_csrf.parameterName}"
 			value="${_csrf.token}" /> <input type="hidden" name="inbody_no"
 			value="${healthInfo.inbody_no}" />
-			<input type="hidden" name="manager_no" value="${healthInfo.manager_no}" />
+			<input type="hidden" name="manager_no" value="${sess_user_no}" />
 		<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight"
 			aria-labelledby="offcanvasRightLabel">
 			<div class="offcanvas-header">
@@ -315,7 +315,7 @@
 		<input type="hidden" name="${_csrf.parameterName}"
 			value="${_csrf.token}" /> <input type="hidden" name="mem_no"
 			value="${readMem.mem_no}" />
-			<input type="hidden" name="manager_no" value="1" />
+			<input type="hidden" name="manager_no" value="${sess_user_no }" />
 		<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight2"
 			aria-labelledby="offcanvasRightLabel">
 			<div class="offcanvas-header">

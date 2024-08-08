@@ -76,6 +76,18 @@
 		join empAttendance v on e.user_no = v.user_no
 		where vacation_status is not null and vacation_approval = '승인' AND 
         vacation_start >= DATE_FORMAT(CURDATE(), '%Y-01-01')
+        limit #{pageStart},#{pageSize}
+      	]]>
+ 	</select>
+ 	
+ 	<!-- 승인된 휴가 목록 페이징 -->
+ 	<select id="yVacaCount" resultType="int">
+ 		<![CDATA[
+ 		select count(e.user_no)
+		from employee e
+		join empAttendance v on e.user_no = v.user_no
+		where vacation_status is not null and vacation_approval = '승인' AND 
+        vacation_start >= DATE_FORMAT(CURDATE(), '%Y-01-01')
       	]]>
  	</select>
 
@@ -102,6 +114,18 @@
  	<select id="yVaJob" resultMap="employeeMap">
  		<![CDATA[
  		select e.user_no, name, job, job_rank, vacation_status, vacation_start, vacation_end, vacation_reason
+		from employee e
+		join empAttendance v on e.user_no = v.user_no
+		where e.job=#{job} and vacation_status is not null and vacation_approval = '승인' AND 
+        vacation_start >= DATE_FORMAT(CURDATE(), '%Y-01-01')
+        limit #{pageStart},#{pageSize}
+      	]]>
+ 	</select>
+ 	
+ 	<!-- 직무별 승인된 휴가 목록 -->
+ 	<select id="yVaJobCount" resultType="int">
+ 		<![CDATA[
+ 		select count(e.user_no)
 		from employee e
 		join empAttendance v on e.user_no = v.user_no
 		where e.job=#{job} and vacation_status is not null and vacation_approval = '승인' AND 

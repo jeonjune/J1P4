@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -12,6 +14,9 @@ import com.itwillbs.domain.ClassAttendanceVO;
 
 @Repository
 public class ClassAttendanceDAO {
+	
+	private static final Logger logger = LoggerFactory.getLogger(ClassAttendanceDAO.class);
+	
     private static final String NAMESPACE = "com.itwillbs.mapper.ClassAttendanceMapper";
 
     @Autowired
@@ -34,6 +39,7 @@ public class ClassAttendanceDAO {
         params.put("scheduleId", classSchedule_no);
         params.put("memNo", mem_no);
         ClassAttendanceVO attendance = sqlSession.selectOne(NAMESPACE + ".getAttendanceByScheduleAndMember", params);
+        logger.info(attendance.toString());
         if (attendance == null) {
             throw new RuntimeException("Attendance record not found for scheduleId: " + classSchedule_no + ", memNo: " + mem_no);
         }
