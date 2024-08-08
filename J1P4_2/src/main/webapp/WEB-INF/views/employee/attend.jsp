@@ -128,7 +128,7 @@
 								<td class="dtr-control" tabindex="0">${monthWork.attend_date }</td>
 							 	</c:if>
 							 	<c:if test="${monthWork.vacation_status != null}">
-								<td>${monthWork.vacation_start }~${monthWork.vacation_end }</td>
+								<td>${monthWork.vacation_start }</td>
 							 	</c:if>
 								<td class="dtr-control" tabindex="0">${monthWork.commute_time }</td>
 								<td>${monthWork.quitting_time }</td>
