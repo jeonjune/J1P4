@@ -121,6 +121,9 @@ public class EmployeeController {
 		logger.info("모달창으로 직원 등록(컨트롤러)");
 		
 		logger.info("vo :"+vo);
+		if(vo.getJob().equals("관리자")) {
+			vo.setJob_rank("관리자");
+		}
 
 		//DAO에 동작 호출
 		eService.empJoin(vo);
@@ -434,6 +437,9 @@ public List<String> fileProcess(MultipartHttpServletRequest multiRequest) throws
 		logger.info("@@@@@@@@@@@@@@모달창으로 직원 수정(컨트롤러)");
 		
 		logger.info("vo :"+vo);
+		if(vo.getJob().equals("관리자")) {
+			vo.setJob_rank("관리자");
+		}
 		
 		// 직원 권한부여
 		avo.setUser_id(vo.getUser_id());
@@ -512,6 +518,9 @@ public List<String> fileProcess(MultipartHttpServletRequest multiRequest) throws
 			            countVa = 0;
 			        }
 			        
+			        
+			        
+			        
 			        model.addAttribute("date",dateResult);		        
 			        logger.info("@@@@@@@@@@@@@@date@@@@@@@@@@@ :"+dateResult);
 			        
@@ -583,4 +592,23 @@ public List<String> fileProcess(MultipartHttpServletRequest multiRequest) throws
 	}
 	
 
+	//이메일 중복 체크
+	@ResponseBody
+	@GetMapping(value = "/emailCheck")
+	public int emailCheckGET(@RequestParam("email")String email) throws Exception{
+		int result = eService.emailCheck(email);
+		logger.info("이메일 중복체크 :"+result);
+		return result;
+	}
+	
+	//전화번호 중복 체크
+	@ResponseBody
+	@GetMapping(value = "/phoneCheck")
+	public int phoneCheckGET(@RequestParam("phone_no")String phone_no) throws Exception {
+		int result = eService.phoneCheck(phone_no);
+		logger.info("전화번호 중복체크 :"+result);
+		return result; 
+	}
+	
+	
 }

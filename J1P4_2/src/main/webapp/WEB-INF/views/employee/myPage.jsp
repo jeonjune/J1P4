@@ -9,7 +9,66 @@
 
 <script
 	src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+	
+<script>
+function syncJobRank() {
+    var jobSelect = document.getElementById("jobSelect");
+    var jobRankSelect = document.getElementById("job_rank");
+    var selectedJob = jobSelect.options[jobSelect.selectedIndex].text;
 
+    if (selectedJob === "관리자") {
+        for (var i = 0; i < jobRankSelect.options.length; i++) {
+            if (jobRankSelect.options[i].text === "관리자") {
+                jobRankSelect.selectedIndex = i;
+                jobRankSelect.disabled = true; // 직급 필드를 비활성화
+                break;
+            }
+        }
+    } else {
+        jobRankSelect.disabled = false; // 직급 필드를 활성화
+        var firstNonAdminIndex = 0;
+        for (var i = 0; i < jobRankSelect.options.length; i++) {
+            if (jobRankSelect.options[i].text === "관리자") {
+                jobRankSelect.options[i].disabled = true; // 관리자 직급을 비활성화
+            } else {
+                if (firstNonAdminIndex === 0) {
+                    firstNonAdminIndex = i;
+                }
+                jobRankSelect.options[i].disabled = false; // 다른 직급을 활성화
+            }
+        }
+        if (jobRankSelect.options[jobRankSelect.selectedIndex].text === "관리자") {
+            jobRankSelect.selectedIndex = firstNonAdminIndex; // 첫 번째 활성화된 옵션으로 설정
+        }
+    }
+}
+
+document.addEventListener("DOMContentLoaded", function() {
+    var jobSelect = document.getElementById("job");
+    var jobRankSelect = document.getElementById("job_rank");
+
+    // '관리자'가 첫 번째 옵션인 경우 다음 옵션으로 변경
+    if (jobRankSelect.options[0].text === "관리자") {
+        jobRankSelect.selectedIndex = 1;
+    }
+
+    // 페이지 로드 시 '관리자'를 비활성화
+    for (var i = 0; i < jobRankSelect.options.length; i++) {
+        if (jobRankSelect.options[i].text === "관리자") {
+            jobRankSelect.options[i].disabled = true;
+        }
+    }
+
+    syncJobRank(); // 페이지 로드 시 초기화
+});
+
+</script>	
+ <style>
+     #passwordFields {
+         display: none;
+     }
+ </style>
+ 
 <div class="content-wrapper" style="min-height: 831px;">
 
 	<div class="card cardCustom">
@@ -186,22 +245,28 @@
                             <input type="text" name="name"  class="form-control" value="${myP.name }" readonly>
                         </div>
                         
-                        <div class="form-group" >
-                            <label>비밀번호</label>
-                            <input type="text" name="user_pw" class="pass form-control" id="pw1">
-                        </div>
-                        <span id="checkpass2" style="font-size: 14px;"></span>
-                        <div class="form-group" >
-                            <label>비밀번호 확인</label>
-                            <input type="text" class="pass form-control" id="pw2">
-                        </div>
-                        <span id="checkpass" style="font-size: 14px;"></span>
+                         <div class="form-group">
+			            <label>
+			                <input type="checkbox" name="changePassword" id="changePassword" onclick="togglePasswordFields()"> 비밀번호 변경
+			            </label>
+        				</div>
+				        <div id="passwordFields">
+				            <div class="form-group">
+				                <label>새 비밀번호</label>
+				                <input type="text" name="user_pw" class="pass form-control" id="pw1">
+				            </div>
+				            <span id="checkpass2" style="font-size: 14px;"></span>
+				            <div class="form-group">
+				                <label>새 비밀번호 확인</label>
+				                <input type="text" class="pass form-control" id="pw2">
+				            </div>
+	                        <span id="checkpass" style="font-size: 14px;"></span>
+				        </div>
 
-                        <span id="checkpass" style="font-size: 14px;"></span>
                        
                         <div class="form-group">
                             <label>직무</label>
-                            <form:select path="job" class="form-control" name="job" id="jobSelect">
+                            <form:select path="job" class="form-control" name="job" id="jobSelect" onchange="syncJobRank()">
                             	<form:option selected="true" value="${myP.job}">${myP.job}</form:option>
                                 <form:options items="${job}" itemValue="codeValue" itemLabel="codeValueName"/>
                                 
@@ -210,7 +275,7 @@
                         
                         <div class="form-group">
                             <label>직급</label>
-                            <form:select path="job_rank" class="form-control" name="job_rank">
+                            <form:select path="job_rank" class="form-control" id="job_rank" name="job_rank">
                             	<form:option selected="true" value="${myP.job_rank}">${myP.job_rank}</form:option>
                                 <form:options items="${job_rank}" itemValue="codeValue" itemLabel="codeValueName"/>
                             </form:select>
@@ -218,7 +283,7 @@
  
                         <div class="form-group">
                             <label>전화번호</label>
-                            <input type="text" name="phone_no"  class="form-control" value="${myP.phone_no }">
+                            <input type="text" name="phone_no"  maxlength="13" oninput="formatPhoneNumber(this)" class="form-control" value="${myP.phone_no }">
                         </div>
                       
                         <div class="form-group">
@@ -255,12 +320,15 @@
 <script>
 	$(function() {
 		$("#submitButt").click(function() {
+			// 유효성 검사
+		if (validateForm()) {
+			
 			$.ajax({
 				url : "/employee/myUpdate",
 				type : "POST",
 				data : $("#fm1").serialize(),
 				success : function(data) {
-					alert("내정보가 수정되었습니다.");
+					alert("내 정보가 수정되었습니다.");
 
 					history.go(0);
 
@@ -269,6 +337,8 @@
 					alert("오류발생");
 				}
 			});
+		}
+			
 		});
 	});
 	
@@ -361,74 +431,101 @@
 		}).open();
 	}
 
-	$(document).ready(function(){
-		//비밀번호 유효성검사 , 비밀번호 재확인
-		$('.pass')
-				.keyup(
-						function() {
+	 $(document).ready(function() {
+         // 비밀번호 유효성 검사 및 비밀번호 재확인
+         $('.pass').keyup(function() {
+             let check_pw = /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[$`~!@$!%*#^?&\\(\\)\-_=+]).{8,20}$/;
+             let memberpw = $('#pw1').val();
 
-							let check_pw = /^(?=.*[a-zA-z])(?=.*[0-9])(?=.*[$`~!@$!%*#^?&\\(\\)\-_=+]).{8,20}$/;
-							let memberpw = $('#pw1').val();
+             var pass1 = $('#pw1').val();
+             var pass2 = $('#pw2').val();
 
-							var pass1 = $('#pw1').val();
-							var pass2 = $('#pw2').val();
+             // 비밀번호 조건 일치/불일치
+             if (memberpw === "") {
+                 $('#checkpass2').html('8~20자리의 영어,숫자,특수문자 조합으로 입력해주세요.').css('color', 'red');
+             } else if (!check_pw.test(memberpw)) {
+                 $('#checkpass2').html('8~20자리의 영어,숫자,특수문자 조합으로 입력해주세요.').css('color', 'red');
+             } else {
+                 $('#checkpass2').html('비밀번호가 조건에 일치합니다.').css('color', 'green');
+             }
 
-							//비밀번호 조건 일치/불일치
-							if (!check_pw.test(memberpw)) {
-								$('#checkpass2')
-										.html(
-												'8~20자리의 영어,숫자,특수문자 조합으로 입력해주세요.')
-										.css('color', 'red');
-							} else {
-								$('#checkpass2').html(
-										'비밀번호가 조건에 일치합니다.')
-										.css('color', 'green');
-							}
+             // 비밀번호 재확인
+             if (check_pw.test(memberpw)) {
+                 if (pass1 !== "" || pass2 !== "") {
+                     if (pass1 === pass2) {
+                         $('#checkpass').html('비밀번호가 일치합니다.').css('color', 'green');
+                     } else {
+                         $('#checkpass').html('비밀번호를 다시 확인해주세요.').css('color', 'red');
+                     }
+                 }
+             }
+         });
 
-							//비밀번호 재확인
-							if (check_pw.test(memberpw)) {
-								if (!pass1 == ""
-										|| !pass2 == "") {
-									if (pass1 == pass2) {
-										$('#checkpass')
-												.html(
-														'비밀번호가 일치합니다.')
-												.css('color',
-														'green')
-									} else if (pass1 != pass2) {
-										$('#checkpass')
-												.html(
-														'비밀번호를 다시 확인해주세요.')
-												.css('color',
-														'red');
-									}
+         // 페이지 로드 시 기본 메시지 표시
+         $('#checkpass2').html('8~20자리의 영어,숫자,특수문자 조합으로 입력해주세요.').css('color', 'red');
+     });
 
-								}
-							}
+     function togglePasswordFields() {
+         var changePasswordCheckbox = document.getElementById('changePassword');
+         var passwordFields = document.getElementById('passwordFields');
 
+         if (changePasswordCheckbox.checked) {
+             passwordFields.style.display = 'block';
+         } else {
+             passwordFields.style.display = 'none';
+             // 비밀번호 입력란이 숨겨질 때 메시지 초기화
+             $('#checkpass2').html('8~20자리의 영어,숫자,특수문자 조합으로 입력해주세요.').css('color', 'red');
+             $('#checkpass').html('');
+             $('#pw1').val('');
+             $('#pw2').val('');
+         }
+     }
 
-						});
-	});
+     function validateForm() {
+         var changePasswordCheckbox = document.getElementById('changePassword');
 
-	  document.getElementById('fileInput').addEventListener('change', function(event) {
-          const file = event.target.files[0];
-          const preview = document.getElementById('preview');
+         if (changePasswordCheckbox.checked) {
+             var pass1 = $('#pw1').val();
+             var pass2 = $('#pw2').val();
+             let check_pw = /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[$`~!@$!%*#^?&\\(\\)\-_=+]).{8,20}$/;
 
-          if (file) {
-              const reader = new FileReader();
-              
-              reader.onload = function(e) {
-                  preview.src = e.target.result;
-                  preview.style.display = 'block';
-              }
+             if (!check_pw.test(pass1)) {
+                 alert('비밀번호는 8~20자리의 영어, 숫자, 특수문자 조합으로 입력해주세요.');
+                 return false;
+             }
 
-              reader.readAsDataURL(file);
-          } else {
-              preview.src = '';
-              preview.style.display = 'none';
-          }
-      });
+             if (pass1 !== pass2) {
+                 alert('비밀번호가 일치하지 않습니다.');
+                 return false;
+             }
+         }else {
+             // 비밀번호 변경 체크박스가 선택되지 않은 경우 비밀번호 필드 비활성화
+             $('#pw1').prop('disabled', true);
+             $('#pw2').prop('disabled', true);
+         }
+
+         return true;
+     }
 	
+	  
+	// 연락처 입력 시 자동으로 하이픈 추가
+		function formatPhoneNumber(input) {
+			let value = input.value.replace(/\D/g, ''); // 숫자 이외의 문자 제거
+	        let formattedValue = '';
+	        
+	        if (value.length <= 3) {
+	            formattedValue = value;
+	        } else if (value.length <= 7) {
+	            formattedValue = value.replace(/(\d{3})(\d{0,4})/, '$1-$2');
+	        } else {
+	            formattedValue = value.replace(/(\d{3})(\d{4})(\d{0,4})/, '$1-$2-$3');
+	        }
+	        
+	        input.value = formattedValue;
+	    }
+		
+	  
+	  
 </script>
 
 

@@ -7,9 +7,74 @@
 <%@ include file="../include/header.jsp"%>
 <%@ include file="../include/sidemenu.jsp"%>
 <%@ include file="../include/empMenu.jsp"%>
+
+<style>
+        #emailOk, #emailExists, #emailError {
+            display: none;
+            font-size: 14px;
+        }
+        #emailOk { color: green; }
+        #emailExists, #emailError { color: red; }
+</style>
+
+
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<!-- 카카오 우편번호 -->
+	<!-- 카카오 우편번호 -->
 	<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+	
+<script>
+function syncJobRank() {
+    var jobSelect = document.getElementById("job");
+    var jobRankSelect = document.getElementById("job_rank");
+    var selectedJob = jobSelect.options[jobSelect.selectedIndex].text;
+
+    if (selectedJob === "관리자") {
+        for (var i = 0; i < jobRankSelect.options.length; i++) {
+            if (jobRankSelect.options[i].text === "관리자") {
+                jobRankSelect.selectedIndex = i;
+                jobRankSelect.disabled = true; // 직급 필드를 비활성화
+                break;
+            }
+        }
+    } else {
+        jobRankSelect.disabled = false; // 직급 필드를 활성화
+        var firstNonAdminIndex = 0;
+        for (var i = 0; i < jobRankSelect.options.length; i++) {
+            if (jobRankSelect.options[i].text === "관리자") {
+                jobRankSelect.options[i].disabled = true; // 관리자 직급을 비활성화
+            } else {
+                if (firstNonAdminIndex === 0) {
+                    firstNonAdminIndex = i;
+                }
+                jobRankSelect.options[i].disabled = false; // 다른 직급을 활성화
+            }
+        }
+        if (jobRankSelect.options[jobRankSelect.selectedIndex].text === "관리자") {
+            jobRankSelect.selectedIndex = firstNonAdminIndex; // 첫 번째 활성화된 옵션으로 설정
+        }
+    }
+}
+
+document.addEventListener("DOMContentLoaded", function() {
+    var jobSelect = document.getElementById("job");
+    var jobRankSelect = document.getElementById("job_rank");
+
+    // '관리자'가 첫 번째 옵션인 경우 다음 옵션으로 변경
+    if (jobRankSelect.options[0].text === "관리자") {
+        jobRankSelect.selectedIndex = 1;
+    }
+
+    // 페이지 로드 시 '관리자'를 비활성화
+    for (var i = 0; i < jobRankSelect.options.length; i++) {
+        if (jobRankSelect.options[i].text === "관리자") {
+            jobRankSelect.options[i].disabled = true;
+        }
+    }
+
+    syncJobRank(); // 페이지 로드 시 초기화
+});
+</script>
+    	
 <div class="content-wrapper" style="min-height: 831px;">
 <!-- 검색 / 필터 / 정렬 / 행 개수 데이터 전송 -->
 	<form action="" method="get" class='actionForm'>
@@ -389,7 +454,7 @@
                         
                         <div class="form-group">
                             <label>이름</label>
-                            <input type="text" name="name"  class="form-control" >
+                            <input type="text" name="name"  class="form-control" id="name">
                         </div>
 
                         <div class="form-group" >
@@ -406,26 +471,26 @@
                         <form:form method="post" modelAttribute="employee">
                         <div class="form-group">
                             <label>직무</label>
-                            <form:select path="job" class="form-control" name="job">
+                            <form:select path="job" class="form-control" id="job" name="job" onchange="syncJobRank()">
                                 <form:options items="${job}" itemValue="codeValue" itemLabel="codeValueName"/>
                             </form:select>
                         </div>
                         
                         <div class="form-group">
                             <label>직급</label>
-                            <form:select path="job_rank" class="form-control" name="job_rank">
+                            <form:select path="job_rank" class="form-control" id="job_rank" name="job_rank">
                                 <form:options items="${job_rank}" itemValue="codeValue" itemLabel="codeValueName"/>
                             </form:select>
                         </div>
                         </form:form>
                      
 						<div class="form-group">
-							<label>입사일</label> <input type="date" name="emp_date"
+							<label>입사일</label> <input type="date" name="emp_date" id="emp_date"
 								class="form-control" />
 						</div>
 						
 						<div class="form-group">
-							<label>생일</label> <input type="date" name="birth_date"
+							<label>생일</label> <input type="date" name="birth_date" id="birth_date"
 								class="form-control" />
 						</div>
                       
@@ -437,13 +502,19 @@
  
                         <div class="form-group">
                             <label>전화번호</label>
-                            <input type="text" name="phone_no"  class="form-control" >
+                            <input type="text" name="phone_no"  class="form-control"  maxlength="13" oninput="formatPhoneNumber(this)" id="phone_no">
                         </div>
+                         <span id="phoneOk" style="font-size: 14px;"></span>	
+                         <span id="phoneExists" style="font-size: 14px;"></span>	
+                         <span id="phoneError" style="font-size: 14px;"></span>	
                       
                         <div class="form-group">
                             <label>이메일</label>
-                            <input type="text" name="email"  class="form-control" >
+                            <input type="text" name="email"  class="form-control" id="email">
                         </div>
+                         <span id="emailOk" style="font-size: 14px;">사용 가능한 이메일입니다.</span>	
+                         <span id="emailExists" style="font-size: 14px;">이미 사용 중인 이메일입니다.</span>	
+                         <span id="emailError" style="font-size: 14px;">유효하지 않은 이메일 형식입니다.</span>	
                        
                         <div class="form-group">
                             <label>우편번호</label>
@@ -480,6 +551,34 @@
 
 $(function() {
 	$("#submitButt").click(function() {
+		
+		//빈칸검사
+		   var user_id = $('#user_id').val();
+	       var name = $('#name').val();
+	       var pw1 = $('#pw1').val();
+	       var pw2 = $('#pw2').val();
+	       var emp_date = $('#emp_date').val();
+	       var birth_date = $('#birth_date').val();
+	       var gender = $('input[name="gender"]:checked').val();
+	       var phone_no = $('#phone_no').val();
+	       var email = $('#email').val();
+	       var sample6_postcode = $('#sample6_postcode').val();
+	       var sample6_address = $('#sample6_address').val();
+	       var sample6_detailAddress = $('#sample6_detailAddress').val();
+	      
+	     	if(pw1!=pw2){
+	     		alert("비밀번호를 다시 확인해주세요.");
+	     		 return;
+	     	}
+	        
+	        if (user_id == "" || name == "" || pw1 == "" || pw2 == "" || emp_date=="" ||
+	        	birth_date ==""	|| gender == undefined || phone_no =="" || email=="" || sample6_postcode =="" ||
+	        	sample6_address =="" || sample6_detailAddress == "" ) {
+	            alert("빈칸을 모두 입력해주세요.");
+	            return;
+	        }
+		
+		
 		const token = $("meta[name='_csrf']").attr("content")
 		const header = $("meta[name='_csrf_header']").attr("content");
 		
@@ -502,7 +601,7 @@ $(function() {
 				
 			},
 			error : function() {
-				alert("오류발생");
+				alert("이메일 또는 전화번호가 중복된 정보입니다.");
 			}
 		});
 	});
@@ -1062,6 +1161,76 @@ $(function() {
 		});
 	});
 
+	// 연락처 입력 시 자동으로 하이픈 추가
+	function formatPhoneNumber(input) {
+		let value = input.value.replace(/\D/g, ''); // 숫자 이외의 문자 제거
+        let formattedValue = '';
+        
+        if (value.length <= 3) {
+            formattedValue = value;
+        } else if (value.length <= 7) {
+            formattedValue = value.replace(/(\d{3})(\d{0,4})/, '$1-$2');
+        } else {
+            formattedValue = value.replace(/(\d{3})(\d{4})(\d{0,4})/, '$1-$2-$3');
+        }
+        
+        input.value = formattedValue;
+    }
+	   
+   
+	//이메일 전화번호 중복체크
+	 // 유효성 검사 함수들
+ 	function regMemberEmail(email) {
+      var regExp = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+      return regExp.test(email);
+    }
+
+	// 유효성 검사 로직
+	$('#email').on('input', function() {
+        validateEmail();
+	});   
+
+	// 폼 제출 시 모든 유효성 검사 및 중복 체크 확인
+	 function validateEmail() {
+       var email = $('#email').val();
+       var emailOk = $('#emailOk');
+       var emailExists = $('#emailExists');
+       var emailError = $('#emailError');
+
+       if (!regMemberEmail(email)) { //유효성검사 실패시
+           emailError.show();
+           emailExists.hide();
+           emailOk.hide();
+           return;
+       } else {
+           emailError.hide();
+       }
+	
+       $.ajax({
+           url: '/employee/emailCheck',
+           type : 'GET',
+           dataType: 'json',
+           data: { email: email },
+           success: function(response) {
+               if (response === 1) { 
+                   emailExists.show(); //중복
+                   emailOk.hide(); //
+               } else {
+                   emailExists.hide();
+                   emailOk.show();
+               }
+           },
+           error: function(xhr, status, error) {
+               console.error('이메일 AJAX Error: ', status, error);
+           }
+       });
+	 
+	}
+  
+	
+	
+	
+	
 
 </script>
 

@@ -63,12 +63,17 @@
 					</div>
 					
 					<div class="form-group">
+						<label>추가구입 개수</label> <input type="text" name="addcount"
+							class="form-control" value="${resultVO.addcount }" readonly="readonly"/>
+					</div>
+					
+					<div class="form-group">
 						<label>가격</label> <input type="text" name="cost"
 							class="form-control" value="${resultVO.cost }" readonly="readonly"/>
 					</div>
 					
 					<div class="form-group">
-						<label>총 가격</label> <input type="text" name="total"
+						<label>추가구입 전 총 가격</label> <input type="text" name="total"
 							class="form-control" value="${resultVO.total }" readonly="readonly"/>
 					</div>
 					
@@ -164,13 +169,19 @@ $(document).ready(function() {
     $('#submitBut').on('click', function() {
         var formData = new FormData($('#registForm')[0]);
         
+        alert("${resultVO.e_repair_type }");
+        
         // CSRF 토큰 값을 메타 태그에서 가져오기
         var token = $("meta[name='_csrf']").attr("content");
         var header = $("meta[name='_csrf_header']").attr("content");
         $.ajax({
             url: '/maintenance/detail',
             type: 'POST',
-            data: {"equipment_no":"${resultVO.equipment_no }"},
+            data: {"equipment_no":"${resultVO.equipment_no }",
+            	   "e_repair_type":"${resultVO.e_repair_type }",
+            	   "addcount":"${resultVO.addcount }",
+            	   "total":"${resultVO.total }"
+            	},
             beforeSend: function(xhr) { //header.jsp에 있는 토큰때문에 써주는 것
                 xhr.setRequestHeader(header, token);
             },

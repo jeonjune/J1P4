@@ -71,6 +71,33 @@
 
       });
 
+      
+      // 휴가시작 종료일 반차일때 같은날로 고정하기
+ 		function syncAndLockDate(status) {
+            var startDate = document.getElementById("vacation_start").value;
+            if (startDate) {
+                var start = new Date(startDate);
+                if (status === "오후반차") {
+                    start.setDate(start.getDate() + 1); // 오후 반차인 경우 하루를 더함
+                }
+                var endDate = document.getElementById("vacation_end");
+                endDate.value = start.toISOString().split('T')[0]; // 날짜를 YYYY-MM-DD 형식으로 설정
+                endDate.readOnly = true;
+            }
+        }
+
+        // 휴가 상태를 확인하고 날짜를 동기화 및 고정하는 함수
+        function checkVacationStatus() {
+            var status = document.getElementById("vacation_status").value;
+            if (status === "오전반차" || status === "오후반차") {
+                syncAndLockDate(status);
+            } else {
+                var endDate = document.getElementById("vacation_end");
+                endDate.value = "";
+                endDate.readOnly = false;
+            }
+        }
+
 
     </script>
   <div class="content-wrapper" style="min-height: 831px;">
@@ -98,7 +125,7 @@
 					<div class="m-2">
 					<div class="accordion-item">
 					<div class="textRight">
-						<select name="vacation_status" id="vacation_status" class="form-control">
+						<select name="vacation_status" id="vacation_status" class="form-control" onchange="checkVacationStatus()">
 							<option value="휴가">휴가</option>
 							<option value="오전반차">오전 반차</option>
 							<option value="오후반차">오후 반차</option>
@@ -108,17 +135,17 @@
 					</div>
 					<div class="form-group">
 						<label>휴가 시작일</label> 
-						<input type="date" name="vacation_start" class="form-control" id="vacation_start" />
+						<input type="date" name="vacation_start" class="form-control" id="vacation_start"  onchange="checkVacationStatus()" />
 					</div>
 					<div class="form-group">
 						<label>휴가 종료일(출근일)</label>
-						<input type="date" name="vacation_end" class="form-control" />
+						<input type="date" name="vacation_end" class="form-control" id="vacation_end" />
 					</div>
 					<p><span id="length">0</span> / 500자<p>
 					<textarea rows="20" cols="200" name="vacation_reason" id="vacation_reason" 
 					class="form-control" onkeyup="up()" placeholder="휴가 사유를 입력하세요."></textarea>
 					</div>
-
+				 <span id="checkModal" style="font-size: 14px;"></span>	
 				</div>
 				</form>
 
@@ -127,7 +154,7 @@
 					<button type="button" class="btn btn-secondary"
 						data-bs-dismiss="modal">취소</button>
 					<button type="button" class="btn btn-primary vaSendBtn"
-						data-bs-dismiss="modal">전송하기</button>
+						>전송하기</button>
 				</div>
 
 			</div>
@@ -140,6 +167,30 @@
 <script>
 $(document).ready(function(){
 	$('.vaSendBtn').click(function(){
+		
+		//빈칸검사
+	    var vacation_start = $('#vacation_start').val();
+        var vacation_end = $('#vacation_end').val();
+        var vacation_reason = $('#vacation_reason').val();
+        
+        if (vacation_start == "" || vacation_end == "" || vacation_reason == "") {
+        	  $('#checkModal')
+				.html(
+					 '빈칸을 모두 입력해주세요.')
+				.css('color', 'red');
+	            return;
+	        }else {
+	        	 $('#varModal').modal('hide');
+        	}
+		
+		
+		function getCurrentYear() {
+		    const date = new Date();
+		    return date.getFullYear();
+		}
+		
+		var year = getCurrentYear();
+				
 		$.ajax({
 			url : "/vacation/vacation",
 			type : "POST",
@@ -163,7 +214,7 @@ $(document).ready(function(){
 					
 				}else {					
 				alert("휴가 신청완료 되었습니다.");
-				window.location.href = '/employee/myVacation';
+				window.location.href = '/employee/myVacation?date='+year;
 				}
 			},
 			error : function() {
@@ -183,7 +234,7 @@ function up(){
 	
 	//글자수 제한
 	if(val.length>500){
-		com.value = val.substring(0,5000);
+		com.value = val.substring(0,500);
 		len.textContent = 500; //제한 후 글자수 업데이트
 	}
 }

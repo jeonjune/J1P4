@@ -6,10 +6,31 @@
 <%@ include file="../include/sidemenu.jsp"%>
 <%@ include file="../include/facMenu.jsp"%>
 
+
+
+<style type="text/css">
+
+.centered-circle {
+  width: 100px;
+  height: 100px;
+  background-color: #a2d2ff;
+  border-radius: 50%;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  color: #ffffff; 
+  font-size: 24px;
+  font-weight: bold;
+  text-align : center;
+}
+</style>
+
+
+
 <div class="content-wrapper" style="min-height: 831px;">
 
 	<h1>read</h1>
-	 
+	 <div class="centered-circle"><span>출근일 수 <br>${countAtt }</span></div>
 	<h2 style="margin-top: 10px;">${name}
 						</h2>
 					<div class="card" style="margin-top: 20px;">
@@ -23,9 +44,13 @@
 							<c:out value="${count[2].repair_type}"></c:out>
 							<c:out value="${count[2].count}"></c:out>
 							
-							<c:out value="${fac[0].repair_type}"></c:out>
+							<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-virus2" viewBox="0 0 16 16">
+  <path d="M8 0a1 1 0 0 0-1 1v1.143c0 .557-.407 1.025-.921 1.24-.514.214-1.12.162-1.513-.231l-.809-.809a1 1 0 1 0-1.414 1.414l.809.809c.394.394.445.999.23 1.513C3.169 6.593 2.7 7 2.144 7H1a1 1 0 0 0 0 2h1.143c.557 0 1.025.407 1.24.921.214.514.163 1.12-.231 1.513l-.809.809a1 1 0 0 0 1.414 1.414l.809-.809c.394-.394.999-.445 1.513-.23.514.214.921.682.921 1.24V15a1 1 0 1 0 2 0v-1.143c0-.557.407-1.025.921-1.24.514-.214 1.12-.162 1.513.231l.809.809a1 1 0 0 0 1.414-1.414l-.809-.809c-.393-.394-.445-.999-.23-1.513.214-.514.682-.921 1.24-.921H15a1 1 0 1 0 0-2h-1.143c-.557 0-1.025-.407-1.24-.921-.214-.514-.162-1.12.231-1.513l.809-.809a1 1 0 0 0-1.414-1.414l-.809.809c-.394.393-.999.445-1.513.23-.514-.214-.92-.682-.92-1.24V1a1 1 0 0 0-1-1Zm2 5a1 1 0 1 1-2 0 1 1 0 0 1 2 0M7 7a1 1 0 1 1-2 0 1 1 0 0 1 2 0m1 5a1 1 0 1 1 0-2 1 1 0 0 1 0 2m4-4a1 1 0 1 1-2 0 1 1 0 0 1 2 0"/>
+</svg> <c:out value="${fac[0].repair_type}"></c:out>
 							<c:out value="${fac[0].repair_date}"></c:out>
-							<c:out value="${fac[1].repair_type}"></c:out>
+							<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-tools" viewBox="0 0 16 16">
+  <path d="M1 0 0 1l2.2 3.081a1 1 0 0 0 .815.419h.07a1 1 0 0 1 .708.293l2.675 2.675-2.617 2.654A3.003 3.003 0 0 0 0 13a3 3 0 1 0 5.878-.851l2.654-2.617.968.968-.305.914a1 1 0 0 0 .242 1.023l3.27 3.27a.997.997 0 0 0 1.414 0l1.586-1.586a.997.997 0 0 0 0-1.414l-3.27-3.27a1 1 0 0 0-1.023-.242L10.5 9.5l-.96-.96 2.68-2.643A3.005 3.005 0 0 0 16 3q0-.405-.102-.777l-2.14 2.141L12 4l-.364-1.757L13.777.102a3 3 0 0 0-3.675 3.68L7.462 6.46 4.793 3.793a1 1 0 0 1-.293-.707v-.071a1 1 0 0 0-.419-.814zm9.646 10.646a.5.5 0 0 1 .708 0l2.914 2.915a.5.5 0 0 1-.707.707l-2.915-2.914a.5.5 0 0 1 0-.708M3 11l.471.242.529.026.287.445.445.287.026.529L5 13l-.242.471-.026.529-.445.287-.287.445-.529.026L3 15l-.471-.242L2 14.732l-.287-.445L1.268 14l-.026-.529L1 13l.242-.471.026-.529.445-.287.287-.445.529-.026z"/>
+</svg> <c:out value="${fac[1].repair_type}"></c:out>
 							<c:out value="${fac[1].repair_date}"></c:out>
 							</div>
 						</div>
@@ -170,7 +195,7 @@
 			<section class="content">
 				<div class="container-fluid">
 					<div class="form-group">
-						<label> 유지보수유형 </label> <select id="select_type"
+						<label> 유지보수유형 </label> <select id="select_type" class="form-control"
 							name="repair_type" size="1">
 							<option value="">선택하세요.</option>
 							<option value="청소">청소</option>
@@ -181,7 +206,7 @@
 
 					<div class="form-group">
 						<label>특이사항</label><br>
-						<textarea id="comment" name="repair_status" rows="3" 
+						<textarea class="form-control" id="comment" name="repair_status" rows="3" 
 							placeholder="20자이내입력" onkeyup="up()"></textarea>
 						<p>글자수 <span id="length">0</span><p>
 					</div>

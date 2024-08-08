@@ -11,6 +11,7 @@
 
 
 <h1>반려내역 페이지 - reject</h1>
+${rList }
 
 <!-- 검색 / 필터 / 정렬 / 행 개수 데이터 전송 -->
 	<form action="" method="get" class='actionForm'>
@@ -175,6 +176,9 @@
 					<th class="sorting" tabindex="0" aria-controls="example1"
 						rowspan="1" colspan="1"
 						aria-label="Browser: activate to sort column ascending">장비이름</th>
+					<th class="sorting" tabindex="0" aria-controls="example1"
+						rowspan="1" colspan="1"
+						aria-label="Browser: activate to sort column ascending">추가구매 수</th>
 					
 					<th class="sorting" tabindex="0" aria-controls="example1"
 						rowspan="1" colspan="1"
@@ -190,12 +194,14 @@
 				</tr>
 			</thead>
 			<tbody>
+			
 				<c:forEach var="rList" items="${rList }">
 					<tr class="odd">
 						<td class="dtr-control" tabindex="0">${rList.equipment_no }</td>
 						<td>${rList.field}</td>
 						<td>${rList.e_repair_type}</td>
 						<td>${rList.equipment_name}</td>
+						<td>${rList.addcount}</td>
 						<td>${rList.manufacturer }</td>
 						<td>${rList.name }</td>
 <%-- 						<td>${rList.equipment_reject }</td> --%>
@@ -203,6 +209,8 @@
 					 <c:if test="${rList.status == '반려'}">
 					 	<input type="hidden" id="eqno" value="${rList.equipment_no }">
                      	<button type="button" class="btn btn-warning" onclick="showRejectReason(${rList.equipment_no})">반려 사유 확인</button>
+                     	<button type="button" class="btn btn-primary submitBut"  class="btn btn-primary submitBut" 
+                     	data-equipment_no="${rList.equipment_no}" data-e_repair_type="${rList.e_repair_type}" data-addcount="${rList.addcount}">확인완료</button>
                      </c:if>
                      </td> 						
 					</tr>
@@ -319,6 +327,8 @@
       </div>
    </div>
    <!-- 모달창 끝 -->
+
+
 	
 <script type="text/javascript">
 
@@ -394,6 +404,55 @@ if ('${param.searchType}' == '${pageVO.cri.searchType}'
 	&& '${pageVO.cri.searchType}' != '') {
 $("#selectType").val("${param.searchType}");
 }
+
+
+
+
+//반려내역 - 장비내역으로 돌리기
+$(document).ready(function() {
+    $('.submitBut').on('click', function() {
+    	alert("클릭");
+        var equipment_no = $(this).data('equipment_no');
+        var e_repair_type = $(this).data('e_repair_type');
+        var addcount = $(this).data('addcount');
+
+        var formData = {
+            equipment_no: equipment_no,
+            e_repair_type: e_repair_type,
+            addcount: addcount
+        };
+
+        // CSRF 토큰 값을 메타 태그에서 가져오기
+        var token = $("meta[name='_csrf']").attr("content");
+        var header = $("meta[name='_csrf_header']").attr("content");
+		alert(equipment_no);	
+		alert( e_repair_type);	
+        $.ajax({
+            url: '/maintenance/rejectBack',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(formData),
+            beforeSend: function(xhr) {
+                xhr.setRequestHeader(header, token);
+            },
+            success: function(response) {
+                alert("반려사유 확인완료"); 
+                window.location.href = '/maintenance/equipment';
+            },
+            error: function(xhr, status, error) {
+                alert('등록실패 ' + error);
+            }
+        });
+    });
+});
+
+
+
+
+
+
+
+
 
 </script>
 

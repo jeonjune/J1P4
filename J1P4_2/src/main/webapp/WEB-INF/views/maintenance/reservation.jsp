@@ -94,6 +94,7 @@
           
         });
         calendar.render();
+        calendar.setOption('contentHeight', 650);
       });
 
 
@@ -200,7 +201,7 @@
 							<label>연락처</label> <input type="number" name="rsv_phone" id="rsv_phone"
 							class="form-control" maxlength="13" > 
 						</div>
-
+					 <span id="checkModal" style="font-size: 14px;"></span>	
 				</div>
 				</div>
 				</form:form>
@@ -208,7 +209,7 @@
 				<!-- 모달창 푸터 -->
 				<div class="modal-footer">
 					<button type="button" class="btn btn-primary vaSendBtn"
-						data-bs-dismiss="modal">예약하기</button>
+						>예약하기</button>
 				</div>
 						
 
@@ -433,15 +434,27 @@
 	      
 		        
 		        if (rsv_name == "" || rsv_date == "" || count_people == "" || rsv_phone == "") {
-		            alert("빈칸을 모두 입력해주세요.");
+		            //alert("빈칸을 모두 입력해주세요.");
+		            $('#checkModal')
+					.html(
+							'빈칸을 모두 입력해주세요.')
+					.css('color', 'red');
 		            return;
+		        }else {
+		        	 $('#varModal').modal('hide');
 		        }
 		       
 		        if($('#end_time ').val() == "" || $('#rsv_day').val() == "" || $('#start_time').val() == "" ||
 		        		$('#facility_name').val() == "" || $('#field').val() == ""){
-		        	   alert("선택하지 않은 필드를 선택해주세요.");
+		        	   //alert("선택하지 않은 필드를 선택해주세요.");
+		        	 $('#checkModal')
+					.html(
+							'선택하지 않은 필드를 선택해주세요.')
+					.css('color', 'red');
 		            return;
-		           } 
+		           } else {
+		        	   $('#varModal').modal('hide');
+		           }
 			
 			
 			$.ajax({

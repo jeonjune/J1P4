@@ -172,6 +172,24 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 		return sqlSession.selectOne(NAMESPACE+"appHCount", user_no);
 	}
 
+	//이메일 중복 체크
+	@Override
+	public int emailCheck(String email) throws Exception {
+		int result = sqlSession.selectOne(NAMESPACE+"emailCheck", email);
+		logger.info("이메일 result :" +result);
+		
+		return result;
+	}
+	
+	//전화번호 중복
+	@Override
+	public int phoneCheck(String phone_no) throws Exception {
+		int result = sqlSession.selectOne(NAMESPACE+"phoneCheck", phone_no);
+		logger.info("폰 result :" +result);
+		
+		return result;
+	}
+
 	
 	
 	
