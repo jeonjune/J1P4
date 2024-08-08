@@ -124,6 +124,9 @@ public class ClassAttendanceController {
         List<DailyAttendanceVO> dailyAttendanceList = dailyAttendanceService.getDailyAttendanceByScheduleAndMember(scheduleId, memNo);
         ClassAttendanceVO classAttendance = classAttendanceService.getAttendanceByScheduleAndMember(scheduleId, memNo);
         
+        logger.info(dailyAttendanceList.toString());
+        logger.info(classAttendance.toString());
+        
         Map<String, Object> response = new HashMap<>();
         response.put("dailyAttendanceList", dailyAttendanceList);
         response.put("classAttendance", classAttendance);
