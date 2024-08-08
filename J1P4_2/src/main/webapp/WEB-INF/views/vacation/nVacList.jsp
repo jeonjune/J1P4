@@ -7,10 +7,10 @@
 <%@ include file="../include/sidemenu.jsp"%>
 <%@ include file="../include/empMenu.jsp"%>
 
- <div class="content-wrapper" style="min-height: 831px;">
- 
-<h2>반려된 휴가</h2>
-	<div class="col-sm-12">
+ <div class="content-wrapper p-3" style="min-height: 831px;">
+ 	<div class="my-2">
+ 	<h4>반려 휴가 리스트</h4>
+ 	</div>
 		<table id="example1"
 			class="table table-bordered table-hover"
 			style="background: #fff"
@@ -19,7 +19,7 @@
 				<tr>
 					<th class="sorting" tabindex="0" aria-controls="example1"
 						rowspan="1" colspan="1"
-						aria-label="Rendering engine: activate to sort column ascending">사번</th>
+						aria-label="Rendering engine: activate to sort column ascending">NO</th>
 					<th class="sorting" tabindex="0" aria-controls="example1"
 						rowspan="1" colspan="1"
 						aria-label="Rendering engine: activate to sort column ascending">이름</th>
@@ -75,6 +75,5 @@
  
  
  
- </div>
  
   <%@ include file="../include/footer.jsp"%>
