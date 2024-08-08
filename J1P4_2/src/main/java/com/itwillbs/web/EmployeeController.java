@@ -528,8 +528,15 @@ public List<String> fileProcess(MultipartHttpServletRequest multiRequest) throws
 			                LocalDate sDate = attendance.getVacation_start().toLocalDate();  // Direct conversion
 			                LocalDate eDate = attendance.getVacation_end().toLocalDate();  // Direct conversion
 
-			                List<LocalDate> dates = sDate.datesUntil(eDate).collect(Collectors.toList());
+//			                List<LocalDate> dates = sDate.datesUntil(eDate).collect(Collectors.toList());
 			               
+			                List<LocalDate> dates;
+			                if (sDate.isEqual(eDate)) {
+			                    dates = List.of(sDate);
+			                } else {
+			                    dates = sDate.datesUntil(eDate).collect(Collectors.toList());
+			                }
+			                
 			                LocalDate currentVacationStart = sDate;
 			                
 			                for (LocalDate date2 : dates) {
@@ -539,7 +546,7 @@ public List<String> fileProcess(MultipartHttpServletRequest multiRequest) throws
 			                    EmpAttendanceVO eVO = new EmpAttendanceVO();
 			                    eVO.setAttend_date(sqlDate);
 			                    eVO.setEmpAttend_no(attendance.getEmpAttend_no());
-			                    eVO.setVacation_status("휴가");
+			                    eVO.setVacation_status(attendance.getVacation_status());
 			                    eVO.setVacation_start(java.sql.Date.valueOf(currentVacationStart));
 			                    eVO.setVacation_end(attendance.getVacation_end());
 			                    updatedResult.add(eVO);
