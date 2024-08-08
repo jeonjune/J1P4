@@ -1202,7 +1202,7 @@ $(function() {
            emailExists.hide();
            emailOk.hide();
            return;
-       } else {
+       } else { 
            emailError.hide();
        }
 	
