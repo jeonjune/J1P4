@@ -316,6 +316,10 @@
 					                <form:options items="${levels}" itemValue="codeValue" itemLabel="codeValueName"/>
 					            </form:select>
 					        </div>
+							<div class="mb-3">
+							    <label for="price" class="form-label">금액</label>
+							    <form:input path="price" class="form-control" type="number" required="required" id="price"/>
+							</div>
 					        <div class="mb-3">
 					            <label for="minCapacity" class="form-label">최소인원</label>
 					            <form:input path="minCapacity" class="form-control" type="number" required="required" id="minCapacity"/>
@@ -377,7 +381,7 @@
     const csrfHeader = $('meta[name="_csrf_header"]').attr('content');
 
     $(document).ready(function() {
-        $('#classForm').on('submit', function(event) {
+    	$('#classForm').on('submit', function(event) {
             event.preventDefault();
             $.ajax({
                 url: '${pageContext.request.contextPath}/classes/save',
