@@ -99,7 +99,7 @@
 	<update id="inWork">
 		update empAttendance
 		set work_status='출근'
-		where user_no=#{user_no}
+		where user_no=#{user_no} and attend_date=DATE(now()) and vacation_status is null
 	</update>
 	
 	<!-- 직원 상세페이지 -->
