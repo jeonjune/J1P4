@@ -173,6 +173,7 @@
 	    AND user_no = #{user_no}
 	    AND vacation_start >= CAST(CONCAT(#{date}, '-01-01') AS DATE)
 	    AND vacation_start < CAST(CONCAT(DATE_ADD(CAST(CONCAT(#{date}, '-01-01') AS DATE), INTERVAL 1 YEAR), '-01-01') AS DATE)
+	    ORDER BY vacation_start 
  	]]>
  	</select>
  	

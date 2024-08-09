@@ -110,6 +110,9 @@ public class VacationController {
 	        // 밀리초를 일 단위로 변환
 	        long diffInDays = diffInMillies / (1000 * 60 * 60 * 24);
 	        logger.info("@@@@@@@@@@@@@@diffInDays@@@@@@@@@@@ :"+diffInDays);
+	        if(diffInDays==0) {
+	        	diffInDays = 1;
+	        }
 			
 	        if(appCVa+(diffInDays*2) > 24) {
 	        	logger.info("@@@@@@@@@@@@@@diffInDays@@@@@@@@@@@ :"+diffInDays);
