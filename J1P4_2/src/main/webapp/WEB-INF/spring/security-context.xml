@@ -21,6 +21,7 @@
 		<security:intercept-url pattern="/admin" access="hasRole('ROLE_ADMIN')"/>
 		<security:intercept-url pattern="/teamA/*" access="hasRole('ROLE_ADMIN')"/>
 		<security:intercept-url pattern="/students/*" access="permitAll"/>
+		<security:intercept-url pattern="/main/home" access="hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_MEMBER')"/>
 		<security:intercept-url pattern="/attendance/*" access="hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_MEMBER')"/>
 		<security:intercept-url pattern="/schedules/edit/*" access="hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')"/>
 		<security:intercept-url pattern="/schedules/delete" access="hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')"/>

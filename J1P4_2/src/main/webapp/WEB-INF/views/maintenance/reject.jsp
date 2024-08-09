@@ -7,11 +7,9 @@
 <%@ include file="../include/equipMenu.jsp"%>
 
 
-<div class="content-wrapper" style="min-height: 831px;">
+<div class="content-wrapper p-3" style="min-height: 831px;">
 
 
-<h1>반려내역 페이지 - reject</h1>
-${rList }
 
 <!-- 검색 / 필터 / 정렬 / 행 개수 데이터 전송 -->
 	<form action="" method="get" class='actionForm'>
@@ -47,13 +45,13 @@ ${rList }
 		</div>
 		<div style="display: inline-block;">
 		<!-- 필터 모달창 버튼 -->
-			<button type="button" class="btn btn-primary" data-bs-toggle="modal"
+			<button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
 				data-bs-target="#filterModal">
 				<i class="fas fa-filter fa-fw"></i>
 			</button>
 
 			<!-- 필터 지우기 버튼 -->
-			<button type="button" class="btn btn-info" id="resetFilters">
+			<button type="button" class="btn btn-info btn-sm" id="resetFilters">
 				<i class="fas fa-trash fa-fw"></i>
 			</button>
 		</div>
@@ -157,7 +155,6 @@ ${rList }
 	<!-- 필터 모달창 끝 -->
 
 
-	<div class="col-sm-12">
 		<table id="example1"
 			class="table table-bordered table-hover"
 			style="background: #fff"
@@ -222,7 +219,6 @@ ${rList }
 			</tbody>
 
 		</table>
-	</div>
 	<!-- 페이징 처리 -->
 			<ul class="pagination" >
 				<c:if test="${pageVO.prev }">
@@ -415,7 +411,6 @@ $("#selectType").val("${param.searchType}");
 //반려내역 - 장비내역으로 돌리기
 $(document).ready(function() {
     $('.submitBut').on('click', function() {
-    	alert("클릭");
         var equipment_no = $(this).data('equipment_no');
         var e_repair_type = $(this).data('e_repair_type');
         var addcount = $(this).data('addcount');
@@ -429,8 +424,6 @@ $(document).ready(function() {
         // CSRF 토큰 값을 메타 태그에서 가져오기
         var token = $("meta[name='_csrf']").attr("content");
         var header = $("meta[name='_csrf_header']").attr("content");
-		alert(equipment_no);	
-		alert( e_repair_type);	
         $.ajax({
             url: '/maintenance/rejectBack',
             type: 'POST',

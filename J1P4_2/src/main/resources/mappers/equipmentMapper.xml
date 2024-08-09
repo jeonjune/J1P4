@@ -16,7 +16,7 @@
 	<select id="equipList" resultType="EquipManageVO">
 	select * from equipmentManagement
 	where status='대기'
-	order by equipment_no DESC
+	order by report_date DESC
 	
 	</select>
 	

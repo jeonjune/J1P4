@@ -21,9 +21,9 @@ import java.util.List;
 
 @Component
 public class ScheduleStatusUpdater {
-	
-	private static final Logger logger = LoggerFactory.getLogger(ScheduleStatusUpdater.class);
-	
+    
+    private static final Logger logger = LoggerFactory.getLogger(ScheduleStatusUpdater.class);
+    
     @Autowired
     private ClassScheduleDAO classScheduleDAO;
 
@@ -36,8 +36,11 @@ public class ScheduleStatusUpdater {
     @Autowired
     private RegistrationDAO registrationDAO;
     
-    @Scheduled(cron = "0 0 0 * * ?")  // 매일 자정에 실행 (테스트용)
-//    @Scheduled(cron = "0 * * * * ?")  // 매일 매분에 실행 (테스트용)
+    // 매일 자정에 실행 (실제 환경용)
+//    @Scheduled(cron = "0 0 0 * * ?")
+    
+//     매일 매분에 실행 (테스트용)
+    @Scheduled(cron = "0 * * * * ?")  
     public void updateScheduleStatus() {
         List<ClassScheduleVO> schedules = classScheduleDAO.getRecruitmentSchedules();
         LocalDate today = LocalDate.now();
@@ -45,28 +48,32 @@ public class ScheduleStatusUpdater {
         for (ClassScheduleVO schedule : schedules) {
             LocalDate startDate = schedule.getStartDate().toLocalDate();
             LocalDate endDate = schedule.getEndDate().toLocalDate();
-            long totalClasses = ChronoUnit.DAYS.between(startDate, endDate) + 1;  // 수업 일수 계산
+            long totalClasses = ChronoUnit.DAYS.between(startDate, endDate) + 1;
 
             if (today.isEqual(startDate.minusDays(1))) {
                 ClassVO classVO = classDAO.getClassById(schedule.getClassNo());
                 if (schedule.getCurrentEnrollment() >= classVO.getMinCapacity() && schedule.getCurrentEnrollment() <= classVO.getMaxCapacity()) {
                     schedule.setStatus("정상");
                     classScheduleDAO.updateScheduleStatus(schedule);
-
-                    // 정상 상태로 변경 시 classAttendance 테이블에 학생 등록 정보 삽입
+                    logger.info("@@@@" + schedule.toString());
                     List<RegistrationVO> registeredStudents = registrationDAO.getStudentsBySchedule(schedule.getScheduleId());
                     for (RegistrationVO student : registeredStudents) {
-                        ClassAttendanceVO attendance = new ClassAttendanceVO();
-                        attendance.setClassSchedule_no(schedule.getScheduleId());
-                        attendance.setMem_no(student.getMem_no());
-                        attendance.setTotalClasses((int) totalClasses);  // 총 수업 일수 설정
-                        attendance.setAttendedClasses(0);  // 초기값 설정
+                        Integer scheduleId = schedule.getScheduleId(); // 변경: int -> Integer
+                        Integer memNo = student.getMem_no(); // 변경: int -> Integer
 
-                        // 중복된 항목이 있는지 확인
-                        ClassAttendanceVO existingAttendance = classAttendanceDAO.getAttendanceByScheduleAndMember(schedule.getScheduleId(), student.getMem_no());
-                        if (existingAttendance == null) {
-                            classAttendanceDAO.saveAttendance(attendance);
+                        if (scheduleId == null || memNo == null) {
+                            logger.error("Null value detected: scheduleId={}, memNo={}", scheduleId, memNo);
+                            continue;
                         }
+
+                        ClassAttendanceVO attendance = new ClassAttendanceVO();
+                        attendance.setClassSchedule_no(scheduleId);
+                        attendance.setMem_no(memNo);
+                        attendance.setTotalClasses((int) totalClasses);
+                        attendance.setAttendedClasses(0);
+                        logger.info("@@@" + scheduleId , "@@@" + memNo);
+                        
+                        classAttendanceDAO.saveAttendance(attendance);
                         logger.info("스케줄러 실행 정상처리");
                     }
                 } else {
@@ -76,7 +83,6 @@ public class ScheduleStatusUpdater {
                 }
             }
 
-            // 종료 조건 추가
             if (today.isAfter(endDate)) {
                 schedule.setStatus("종료");
                 classScheduleDAO.updateScheduleStatus(schedule);
@@ -84,4 +90,6 @@ public class ScheduleStatusUpdater {
             }
         }
     }
+
+
 }

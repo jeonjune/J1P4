@@ -112,14 +112,14 @@ public class ClassController {
         model.addAttribute("divisions", commonCodeService.getCommonCodeDetailsByCodeId("DIVISION"));
         model.addAttribute("levels", commonCodeService.getCommonCodeDetailsByCodeId("LEVEL"));
         model.addAttribute("times", commonCodeService.getCommonCodeDetailsByCodeId("TIME"));
-        return "class/classDetail"; // JSP 파일 경로
+        return "class/classDetail"; 
     }
     
     @GetMapping("/search")
     @ResponseBody
-    public List<ClassScheduleVO> classSearch(@RequestParam("status") String status, @RequestParam("classNo") String classNo,  Model model) throws Exception {
+    public List<ClassScheduleVO> classSearch(@RequestParam("status") String status, @RequestParam("classNo") String classNo) throws Exception {
     	
-    	Map<String, Object> search = new HashMap<String, Object>();
+    	Map<String, Object> search = new HashMap<>();
     	search.put("status", status);
     	search.put("classNo", classNo);
     	List<ClassScheduleVO> result = sService.searchClassDetail(search);
