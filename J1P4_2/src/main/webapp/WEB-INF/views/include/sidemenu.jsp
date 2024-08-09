@@ -289,7 +289,7 @@
     <!-- Brand Logo -->
     <a href="/main/home" class="brand-link">
       <img src="${pageContext.request.contextPath }/resources/dist/img/j1p4.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-1" style="opacity: .8">
-      <span class="brand-text font-weight-light">J1P4 Sports</span>
+      <span class="brand-text font-weight-light">STS Sports</span>
     </a>
 
     <!-- Sidebar -->
