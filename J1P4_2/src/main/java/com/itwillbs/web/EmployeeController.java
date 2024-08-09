@@ -619,6 +619,7 @@ public List<String> fileProcess(MultipartHttpServletRequest multiRequest) throws
 			
 			logger.info("@@@@@@@@@@@@@@date@@@@@@@@@@@ :"+dateResult);
 			Integer countVa = eService.yearCountVa(user_no);
+			logger.info("@@@@@@@@@@@@@@countVAAAAAAA@@@@@@@@@@@ :"+countVa);
 			Integer countHalf = eService.yearCountHalf(user_no);
 			if(countVa != null) {
 				if(countHalf != null) {

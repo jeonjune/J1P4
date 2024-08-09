@@ -85,14 +85,14 @@
 	<update id="endWork">
 		update empAttendance
 		set work_status='퇴근',quitting_time=now()
-		where user_no=#{user_no} and attend_date=DATE(now())
+		where user_no=#{user_no} and attend_date=DATE(now()) and vacation_status is null
 	</update>
 
 	<!-- 외출하기 -->
 	<update id="outWork">
 		update empAttendance
 		set work_status='외출'
-		where user_no=#{user_no}
+		where user_no=#{user_no} and attend_date=DATE(now()) and vacation_status is null
 	</update>
 
 	<!-- 복귀하기 -->
@@ -189,14 +189,16 @@
 	<!-- 올해 휴가 카운트 -->
 	<select id="yearCountVa" resultType="int">
 		<![CDATA[
-		select SUM(DATEDIFF(
-        LEAST(vacation_end, LAST_DAY(CURDATE())),
-        GREATEST(vacation_start, DATE_FORMAT(CURDATE(), '%Y-%m-01'))
-    	)) AS total_vacation_days
-		from empAttendance
-		where (vacation_status = '휴가' or vacation_status = '기타') and vacation_approval = '승인' and user_no = #{user_no} AND (
-        vacation_start <= DATE_FORMAT(CURDATE(), '%Y-12-31') 
-      	AND vacation_end >= DATE_FORMAT(CURDATE(), '%Y-01-01'))
+		SELECT SUM(DATEDIFF(
+        LEAST(vacation_end, DATE_FORMAT(CURDATE(), '%Y-12-31')),
+        GREATEST(vacation_start, DATE_FORMAT(CURDATE(), '%Y-01-01'))
+	    )) AS total_vacation_days
+		FROM empAttendance
+		WHERE (vacation_status = '휴가' OR vacation_status = '기타') 
+	    AND vacation_approval != '반려' AND vacation_approval != '미승인'
+	    AND user_no = #{user_no}
+	    AND vacation_start <= DATE_FORMAT(CURDATE(), '%Y-12-31') 
+	    AND vacation_end >= DATE_FORMAT(CURDATE(), '%Y-01-01');
 		]]>
 	</select>
 	<!-- 올해 반차 카운트 -->
@@ -223,14 +225,16 @@
 	<!-- 반려안된 휴가 수 -->
 	<select id="appCount" resultType="int">
 		<![CDATA[
-		select SUM(DATEDIFF(
-        LEAST(vacation_end, LAST_DAY(CURDATE())),
-        GREATEST(vacation_start, DATE_FORMAT(CURDATE(), '%Y-%m-01'))
-    	)) AS total_vacation_days
-		from empAttendance
-		where (vacation_status ='휴가' or vacation_status='기타') and vacation_approval !='반려'  and user_no = #{user_no} AND (
-        vacation_start <= DATE_FORMAT(CURDATE(), '%Y-12-31') 
-      	AND vacation_end >= DATE_FORMAT(CURDATE(), '%Y-01-01'))
+		SELECT SUM(DATEDIFF(
+        LEAST(vacation_end, DATE_FORMAT(CURDATE(), '%Y-12-31')),
+        GREATEST(vacation_start, DATE_FORMAT(CURDATE(), '%Y-01-01'))
+	    )) AS total_vacation_days
+		FROM empAttendance
+		WHERE (vacation_status = '휴가' OR vacation_status = '기타') 
+	    AND vacation_approval != '반려'  
+	    AND user_no = #{user_no}
+	    AND vacation_start <= DATE_FORMAT(CURDATE(), '%Y-12-31') 
+	    AND vacation_end >= DATE_FORMAT(CURDATE(), '%Y-01-01');
 		]]>
 	</select>
 	
