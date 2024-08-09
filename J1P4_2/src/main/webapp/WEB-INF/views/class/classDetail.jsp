@@ -38,58 +38,62 @@
                     <div class="tab-content" id="nav-tabContent">
                         <div class="tab-pane fade show active" id="nav-class" role="tabpanel" aria-labelledby="nav-class-tab">
                             <div class="card">
-                                <div class="card-header">
-                                    <h3 class="card-title">정보 수정</h3>
-                                </div>
-                                <div class="card-body">
-                                    <form:form id="classForm" method="post" action="${pageContext.request.contextPath}/classes/save" modelAttribute="classVO">
-                                        <form:hidden path="classNo" />
-                                        <form:hidden path="price" id="classPrice" value="${classVO.price}" />
-                                        <div class="mb-3">
-                                            <label for="className" class="form-label">강의명</label>
-                                            <form:input path="className" class="form-control" required="required" id="className"/>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label for="description" class="form-label">설명</label>
-                                            <form:textarea path="description" class="form-control" id="description"/>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label for="fieldCode" class="form-label">분야</label>
-                                            <form:select path="fieldCode" class="form-control" id="fieldCode">
-                                                <form:options items="${fields}" itemValue="codeValue" itemLabel="codeValueName"/>
-                                            </form:select>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label for="divisionCode" class="form-label">구분</label>
-                                            <form:select path="divisionCode" class="form-control" id="divisionCode">
-                                                <form:options items="${divisions}" itemValue="codeValue" itemLabel="codeValueName"/>
-                                            </form:select>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label for="levelCode" class="form-label">수준</label>
-                                            <form:select path="levelCode" class="form-control" id="levelCode">
-                                                <form:options items="${levels}" itemValue="codeValue" itemLabel="codeValueName"/>
-                                            </form:select>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label for="minCapacity" class="form-label">최소인원</label>
-                                            <form:input path="minCapacity" class="form-control" type="number" required="required" id="minCapacity"/>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label for="maxCapacity" class="form-label">최대인원</label>
-                                            <form:input path="maxCapacity" class="form-control" type="number" required="required" id="maxCapacity"/>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label for="instructorName" class="form-label">강사명</label>
-                                            <div class="input-group">
-                                                <form:input path="instructorName" class="form-control" id="instructorName" readonly="readonly"/>
-                                                <form:hidden path="instructorNo" id="instructorNo"/>
-                                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#instructorModal">강사 찾기</button>
-                                            </div>
-                                        </div>
-                                        <button type="submit" class="btn btn-primary">저장</button>
-                                    </form:form>
-                                </div>
+	                                <div class="card-header">
+	                                    <h3 class="card-title">정보 수정</h3>
+	                                </div>
+	                              <div class="card-body">
+								    <form:form id="classForm" method="post" action="${pageContext.request.contextPath}/classes/save" modelAttribute="classVO">
+								        <form:hidden path="classNo" />
+								        <form:hidden path="price" id="classPrice" value="${classVO.price}" />
+								        <div class="mb-3">
+								            <label for="className" class="form-label">강의명</label>
+								            <form:input path="className" class="form-control" required="required" id="className"/>
+								        </div>
+								        <div class="mb-3">
+								            <label for="description" class="form-label">설명</label>
+								            <form:textarea path="description" class="form-control" id="description"/>
+								        </div>
+								        <div class="mb-3">
+								            <label for="fieldCode" class="form-label">분야</label>
+								            <form:select path="fieldCode" class="form-control" id="fieldCode">
+								                <form:options items="${fields}" itemValue="codeValue" itemLabel="codeValueName"/>
+								            </form:select>
+								        </div>
+								        <div class="mb-3">
+								            <label for="divisionCode" class="form-label">구분</label>
+								            <form:select path="divisionCode" class="form-control" id="divisionCode">
+								                <form:options items="${divisions}" itemValue="codeValue" itemLabel="codeValueName"/>
+								            </form:select>
+								        </div>
+								        <div class="mb-3">
+								            <label for="levelCode" class="form-label">수준</label>
+								            <form:select path="levelCode" class="form-control" id="levelCode">
+								                <form:options items="${levels}" itemValue="codeValue" itemLabel="codeValueName"/>
+								            </form:select>
+								        </div>
+								        <div class="mb-3">
+								            <label for="minCapacity" class="form-label">최소인원</label>
+								            <form:input path="minCapacity" class="form-control" type="number" required="required" id="minCapacity"/>
+								        </div>
+								        <div class="mb-3">
+								            <label for="maxCapacity" class="form-label">최대인원</label>
+								            <form:input path="maxCapacity" class="form-control" type="number" required="required" id="maxCapacity"/>
+								        </div>
+								        <div class="mb-3">
+								            <label for="price" class="form-label">금액</label>
+								            <form:input path="price" class="form-control" type="number" required="required" id="price"/>
+								        </div>
+								        <div class="mb-3">
+								            <label for="instructorName" class="form-label">강사명</label>
+								            <div class="input-group">
+								                <form:input path="instructorName" class="form-control" id="instructorName" readonly="readonly"/>
+								                <form:hidden path="instructorNo" id="instructorNo"/>
+								                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#instructorModal">강사 찾기</button>
+								            </div>
+								        </div>
+								        <button type="submit" class="btn btn-primary">저장</button>
+								    </form:form>
+								</div>
                             </div>
                         </div>
                         <!-- classDetail.jsp -->
