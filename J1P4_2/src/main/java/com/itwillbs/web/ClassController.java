@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -29,6 +31,9 @@ import com.itwillbs.service.SearchService;
 @Controller
 @RequestMapping("/classes/*")
 public class ClassController {
+	
+
+	private static final Logger logger = LoggerFactory.getLogger(ClassController.class);
 
     @Autowired
     private ClassService classService;
@@ -81,6 +86,8 @@ public class ClassController {
         if (classVO.getClassNo() == 0) {
             classService.addClass(classVO);
         } else {
+        	logger.info("edit 값 존재@@@");
+        	logger.info(classVO.toString());
             classService.editClass(classVO);
         }
         return "redirect:/classes/list";

@@ -44,7 +44,7 @@
 	                              <div class="card-body">
 								    <form:form id="classForm" method="post" action="${pageContext.request.contextPath}/classes/save" modelAttribute="classVO">
 								        <form:hidden path="classNo" />
-								        <form:hidden path="price" id="classPrice" value="${classVO.price}" />
+<%-- 								        <form:hidden path="price" id="classPrice" value="${classVO.price}" /> --%>
 								        <div class="mb-3">
 								            <label for="className" class="form-label">강의명</label>
 								            <form:input path="className" class="form-control" required="required" id="className"/>
@@ -419,7 +419,7 @@
                 return;
             }
 
-            const classPrice = parseInt($('#classPrice').val(), 10);
+            const classPrice = parseInt($('#price').val(), 10);
             const scheduleNo = parseInt($('input[name="scheduleCheckbox"]:checked').val(), 10);
             const studentNo = parseInt(selectedStudents[0], 10);
 

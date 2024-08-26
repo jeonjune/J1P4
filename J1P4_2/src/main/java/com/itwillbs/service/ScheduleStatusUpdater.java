@@ -37,10 +37,9 @@ public class ScheduleStatusUpdater {
     private RegistrationDAO registrationDAO;
     
     // 매일 자정에 실행 (실제 환경용)
-//    @Scheduled(cron = "0 0 0 * * ?")
-    
+    @Scheduled(cron = "0 0 0 * * ?")
 //     매일 매분에 실행 (테스트용)
-    @Scheduled(cron = "0 * * * * ?")  
+//    @Scheduled(cron = "0 * * * * ?")  
     public void updateScheduleStatus() {
         List<ClassScheduleVO> schedules = classScheduleDAO.getRecruitmentSchedules();
         LocalDate today = LocalDate.now();
