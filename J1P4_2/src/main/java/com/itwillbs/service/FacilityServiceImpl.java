@@ -77,6 +77,12 @@ public class FacilityServiceImpl implements FacilityService {
 
 	}
 	
+	//시설 한달 뒤 청소->삭제로 변경
+	@Override
+	public void typeUpdate(FacilityManagementVO vo) throws Exception {
+		fdao.typeUpdate(vo);
+	}
+	
 	
 	
 	

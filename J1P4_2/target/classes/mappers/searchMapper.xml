@@ -221,8 +221,38 @@
     </where>
 	</select>
 	
-	<!-- 장비 검색 결과 리스트 목록 ( 페이징 처리) -->
+	<!-- 장비 검색 결과 리스트 목록 ( 페이징 처리) 사원일때 -->
 	<select id="searchEquip" resultType="EquipManageVO">
+		select * from equipmentManagement
+			<if test="searchType == 'searchAll'">
+				WHERE (equipment_name like CONCAT('%', #{keyword}, '%')
+				OR manufacturer LIKE CONCAT('%', #{keyword}, '%'))
+			</if>
+			<if test="searchType == 'searchName'">
+				WHERE (equipment_name like CONCAT('%', #{keyword}, '%')) 
+			</if>
+			<if test="searchType == 'searchCompany'">
+				WHERE (manufacturer LIKE CONCAT('%', #{keyword}, '%'))
+			</if>
+		<if test="status == '반려'">
+			AND status ='반려' AND manager_no=#{manager_no}
+		</if>
+		<if test="status == '승인'">
+			AND status ='승인'
+		</if>
+			<if test="field != null and field != ''">
+				AND field = #{field}
+			</if>
+			<if test="e_repair_type != null and e_repair_type != ''">
+				AND e_repair_type = #{e_repair_type}
+			</if>
+		ORDER BY equipment_no DESC
+		LIMIT #{pageStart}, #{pageSize}
+	</select>
+	
+	
+	<!-- 장비 검색 결과 리스트 목록 ( 페이징 처리) 팀장일때 -->
+	<select id="searchEquipLeader" resultType="EquipManageVO">
 		select * from equipmentManagement
 			<if test="searchType == 'searchAll'">
 				WHERE (equipment_name like CONCAT('%', #{keyword}, '%')
@@ -249,6 +279,7 @@
 		ORDER BY equipment_no DESC
 		LIMIT #{pageStart}, #{pageSize}
 	</select>
+	
 
 	<!-- 장비 검색 결과 리스트 개수 ( 페이징 처리 ) -->
 	<select id="totalEquipCount" resultType="int">

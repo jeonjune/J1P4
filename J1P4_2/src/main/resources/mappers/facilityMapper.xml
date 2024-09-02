@@ -19,7 +19,7 @@
 	<!-- 시설상세페이지내역조회 -->
 	<select id="facDe" resultType="FacilityManagementVO">
 		select * from facilityManagement
-		where facility_no=#{facility_no}
+		where facility_no=#{facility_no} and repair_type IN ('청소', '점검', '방역')
 		order by facility_no desc
 		limit #{pageStart},${pageSize}
 	</select>
@@ -81,5 +81,19 @@
 	where f.facility_no = #{facility_no}
 	LIMIT 1;
 	</select>
+	
+	<!-- 시설 유지보수유형 한달 뒤 청소->삭제로 업데이트 -->
+	<update id="typeUpdate">
+	<![CDATA[
+	UPDATE facilityManagement
+	SET repair_type = CASE 
+     WHEN repair_type = '청소' 
+     AND repair_date <= LAST_DAY(DATE_SUB(CURDATE(), INTERVAL 1 MONTH)) 
+     THEN '삭제' 
+     ELSE repair_type 
+   	 END
+	WHERE facility_no = #{facility_no}
+	]]>
+	</update>
 	
   </mapper>

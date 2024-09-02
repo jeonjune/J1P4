@@ -26,6 +26,8 @@ public interface SearchService {
 	
 	public List<EquipManageVO> searchEquip(Criteria cri) throws Exception;
 	
+	public List<EquipManageVO> searchEquipLeader(Criteria cri) throws Exception;
+	
 	public int getEquipCount(Criteria cri) throws Exception;
 	
 	public List<FacilityManagementVO> searchFacility(Criteria cri) throws Exception;

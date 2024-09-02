@@ -25,7 +25,7 @@ public class Criteria  {
 	private String status;
 	private Integer facility_no;
 	private String division;
-
+	private Integer manager_no;
 
 	public Criteria() {
 		this.page = 1;

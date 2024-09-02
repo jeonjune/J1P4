@@ -209,8 +209,8 @@
 					 <td>
 					 <c:if test="${rList.status == '반려'}">
 					 	<input type="hidden" id="eqno" value="${rList.equipment_no }">
-                     	<button type="button" class="btn btn-warning" onclick="showRejectReason(${rList.equipment_no})">반려 사유 확인</button>
-                     	<button type="button" class="btn btn-primary submitBut"  class="btn btn-primary submitBut" 
+                     	<button type="button" class="btn btn-warning btn-sm" onclick="showRejectReason(${rList.equipment_no})">반려 사유 확인</button>
+                     	<button type="button" class="btn btn-primary submitBut btn-sm"  class="btn btn-primary submitBut" 
                      	data-equipment_no="${rList.equipment_no}" data-e_repair_type="${rList.e_repair_type}" data-addcount="${rList.addcount}">확인완료</button>
                      </c:if>
                      </td> 						

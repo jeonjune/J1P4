@@ -51,6 +51,7 @@ public class MainController {
 				session.setAttribute("sess_user_no", vo.getUser_no());
 				session.setAttribute("sess_rank", vo.getJob_rank());
 				logger.info("@@@@@@@@@@@@@@file_name@@@@@@@@@@@ :"+session.getAttribute("sess_pic"));
+				logger.info("@@@@@@@@@@@@@@user_no@@@@@@@@@@@ :"+session.getAttribute("sess_user_no"));
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

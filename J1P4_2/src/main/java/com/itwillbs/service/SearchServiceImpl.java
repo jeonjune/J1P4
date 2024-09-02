@@ -65,6 +65,11 @@ public class SearchServiceImpl implements SearchService {
 	}
 
 	@Override
+	public List<EquipManageVO> searchEquipLeader(Criteria cri) throws Exception {
+		return sDao.searchEquipLeader(cri);
+	}
+
+	@Override
 	public int getEquipCount(Criteria cri) throws Exception {
 		return sDao.getEquipCount(cri);
 	}

@@ -14,6 +14,7 @@ import java.util.Map;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -94,12 +95,23 @@ public class EquipmentController {
 	//장비신청내역 페이지
 	//http://localhost:8088/maintenance/list
 	@GetMapping(value = "/list")
-	public String listGET(Model model) throws Exception {
-		List<EquipManageVO> list = eService.equipList();
+	public String listGET(Model model,HttpServletRequest request) throws Exception {
+		HttpSession session = request.getSession();
+		int manager_no = (Integer)session.getAttribute("sess_user_no");
+		String rank = (String)session.getAttribute("sess_rank");
 		
-		model.addAttribute("list",list);
+		if(rank.equals("사원")) {
+			List<EquipManageVO> list = eService.equipList(manager_no); //사원
+			model.addAttribute("list",list);
+			return"/maintenance/list";
+		}
+			List<EquipManageVO> listLeader = eService.equipList();//팀장
+			model.addAttribute("list", listLeader);
+			return "/maintenance/list";
+		
+		
+		
 
-		return "/maintenance/list";
 		
 	}
 	
@@ -118,9 +130,10 @@ public class EquipmentController {
 	
 	@ResponseBody
 	@PostMapping(value = "/regist")
-	 public String registPOST(MultipartHttpServletRequest multiRequest, EquipManageVO vo, fileVO fvo, Model model) throws Exception {
+	 public String registPOST(MultipartHttpServletRequest multiRequest, EquipManageVO vo, fileVO fvo, Model model, HttpServletRequest request) throws Exception {
         logger.info("22222222 vo 2222222222222 : " + vo);
-        vo.setManager_no(12); // 로그인 기능 들고올때까지 임시로 설정(user_no) 나중에 세션에 담아서 사용
+        HttpSession session = request.getSession();
+        vo.setManager_no((Integer)(session.getAttribute("sess_user_no"))); // 로그인 기능 들고올때까지 임시로 설정(user_no) 나중에 세션에 담아서 사용
 
         // 폼 데이터 처리
         multiRequest.setCharacterEncoding("UTF-8");
@@ -214,8 +227,15 @@ logger.debug(" downloadGET() 실행 ");
 	//반려내역
 	//http://localhost:8088/maintenance/reject
 	@GetMapping(value = "/reject")
-	public void rejectGET(Model model,Criteria cri) throws Exception {
+	public void rejectGET(Model model, Criteria cri, HttpServletRequest request) throws Exception {
+		HttpSession session = request.getSession();
+		int manager_no = (Integer)session.getAttribute("sess_user_no");
+		String rank = (String)session.getAttribute("sess_rank");
+		cri.setManager_no(manager_no);
 		
+		//사원일때
+		if(rank.equals("사원")) {
+			
 		if(cri.getKeyword() != null) {
 			
 			List<EquipManageVO> rList = sService.searchEquip(cri);
@@ -230,6 +250,9 @@ logger.debug(" downloadGET() 실행 ");
 			return;
 		}
 		
+		List<EquipManageVO> rListManager_no = eService.rejectList(cri);
+		model.addAttribute("rList", rListManager_no);
+		
 		List<EquipManageVO> rList = eService.rejectList(cri);
 		model.addAttribute("rList", rList);
 		
@@ -240,15 +263,45 @@ logger.debug(" downloadGET() 실행 ");
 		// 연결된 뷰페이지로 정보 전달
 		model.addAttribute("pageVO",pageVO);
 		
+	}else {//팀장일때
+			if(cri.getKeyword() != null) {
+			
+			List<EquipManageVO> rList = sService.searchEquipLeader(cri);
+			// 하단 페이징처리 정보
+			PageVO pageVO = new PageVO();
+			pageVO.setCri(cri);
+			pageVO.setTotalCount(sService.getEquipCount(cri));
+			// 연결된 뷰페이지로 정보 전달
+			model.addAttribute("rList", rList);
+			model.addAttribute("pageVO",pageVO);
+			
+			return;
+		}
+		
+		List<EquipManageVO> rListManager_no = eService.rejectListLeader(cri);
+		model.addAttribute("rList", rListManager_no);
+		
+		List<EquipManageVO> rList = eService.rejectListLeader(cri);
+		model.addAttribute("rList", rList);
+		
+		PageVO pageVO = new PageVO();
+		pageVO.setCri(cri);
+		pageVO.setTotalCount(eService.rejectListCount());
+
+		// 연결된 뷰페이지로 정보 전달
+		model.addAttribute("pageVO",pageVO);
+		
+		}
+		
 	}
 	
 	//장비신청 상세페이지
 	//http://localhost:8088/maintenance/detail
 	@GetMapping(value = "/detail")
 	public void detailGET(Model model, @RequestParam("equipment_no") int eno) throws Exception {
+		
 		//전달정보 저장 
 		logger.info("####eno##### :"+ eno);
-		
 		//DAO 저장된 정보 가져오기
 		Map<String, Object> resultVO = eService.equipDetail(eno);
 		logger.info("resultVO :"+ resultVO);
@@ -293,6 +346,7 @@ logger.debug(" downloadGET() 실행 ");
 		//http://localhost:8088/maintenance/equipdetail
 		@GetMapping(value = "/equipdetail")
 		public void equipDetailGET(Model model, @RequestParam("equipment_no") int eno) throws Exception {
+			
 			//전달정보 저장 
 			logger.info("####eno##### :"+ eno);
 			
@@ -303,7 +357,6 @@ logger.debug(" downloadGET() 실행 ");
 			//전달할 정보 저장
 			model.addAttribute("resultVO", result.get("EquipManageVO"));
 			model.addAttribute("fileList", result.get("fileVO"));
-			
 			model.addAttribute("fields", commonCodeService.getCommonCodeDetailsByCodeId("FIELD"));
 		}
 	
@@ -311,12 +364,26 @@ logger.debug(" downloadGET() 실행 ");
 	//장비내역 (추가구매/수리/폐기) - 수정하기
 	@ResponseBody
 	@PostMapping(value = "/equipdetail")
-	public String equipdetailPOST(EquipManageVO vo, @RequestParam("equipment_no")int eno) throws Exception {
-		logger.info("!!!! eno !!!!!!! :"+ eno);
-		vo.setEquipment_no(eno);
-		eService.equipUpdate(vo);
+	public String equipdetailPOST(EquipManageVO vo, @RequestParam("equipment_no")int eno, HttpServletRequest request) throws Exception {
+		HttpSession session = request.getSession();
+		int manager_no = (Integer)session.getAttribute("sess_user_no");
 		
-		return"redirect:/maintenance/list";
+		logger.info("!!!! eno !!!!!!! :"+ eno);
+		
+		//vo객체에 필요한 값 설정
+		vo.setEquipment_no(eno);
+		//유저번호 조회
+		 int manager_noGET = eService.selectManager_no(eno);
+		
+		logger.info("유저번호:"+ manager_noGET);
+		logger.info("세션담긴번호:"+ manager_no);
+		if(manager_no == manager_noGET) {
+			//업데이트요청
+			eService.equipUpdate(vo);
+			return"success";
+		}else{
+			return"fail";
+		}
 	}
 	
 	//장비내역 (수리중 -> 정상)으로 수정하기
