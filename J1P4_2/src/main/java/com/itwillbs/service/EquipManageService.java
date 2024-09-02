@@ -12,7 +12,10 @@ public interface EquipManageService {
 	//장비신청
 	public void equipAdd(EquipManageVO vo) throws Exception;
 			
-	//장비신청내역리스트
+	//장비신청내역리스트 - 사원
+	public List<EquipManageVO> equipList(int manager_no) throws Exception;
+	
+	//장비신청내역리스트 - 팀장
 	public List<EquipManageVO> equipList() throws Exception;
 	
 	//특정 장비신청 상세페이지 조회
@@ -36,6 +39,9 @@ public interface EquipManageService {
 	//반려내역리스트
 	public List<EquipManageVO> rejectList(Criteria cri) throws Exception;
 	
+	//반려내역리스트 - 팀장일때
+	public List<EquipManageVO> rejectListLeader(Criteria cri) throws Exception;
+	
 	//반려내역리스트 페이징
 	public int rejectListCount() throws Exception;
 	
@@ -56,5 +62,8 @@ public interface EquipManageService {
 	
 	//반려내역- 확인 누르면 장비내역으로 복귀
 	public void rejectBack(EquipManageVO vo) throws Exception;
+	
+	//유저번호 가져오기
+	public int selectManager_no(int eno) throws Exception;
 
 }

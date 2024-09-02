@@ -29,11 +29,18 @@ public class EquipManageServiceImpl implements EquipManageService {
 		
 	}
 
-	//장비신청내역리스트
+	//장비신청내역리스트 - 사원
+	@Override
+	public List<EquipManageVO> equipList(int manager_no) throws Exception {
+		return edao.equipList(manager_no);
+		
+	}
+	
+	
+	//장비신청내역리스트 - 팀장
 	@Override
 	public List<EquipManageVO> equipList() throws Exception {
 		return edao.equipList();
-		
 	}
 
 	//특정 장비신청 상세페이지 조회
@@ -74,12 +81,18 @@ public class EquipManageServiceImpl implements EquipManageService {
 		edao.updateReject(vo);
 	}
 	
-	//반려내역리스트
+	//반려내역리스트 -사원일때
 	@Override
 	public List<EquipManageVO> rejectList(Criteria cri) throws Exception {
 		return edao.rejectList(cri);
 	}
 	
+	//반려내역리스트 - 팀장일때
+	@Override
+	public List<EquipManageVO> rejectListLeader(Criteria cri) throws Exception {
+		return edao.rejectListLeader(cri);
+	}
+
 	//반려내역리스트 페이징
 	@Override
 	public int rejectListCount() throws Exception {
@@ -122,6 +135,12 @@ public class EquipManageServiceImpl implements EquipManageService {
 	@Override
 	public void rejectBack(EquipManageVO vo) throws Exception {
 		edao.rejectBack(vo);
+	}
+
+	//유저번호 가져오기
+	@Override
+	public int selectManager_no(int eno) throws Exception {
+		return edao.selectManager_no(eno);
 	}
 	
 	

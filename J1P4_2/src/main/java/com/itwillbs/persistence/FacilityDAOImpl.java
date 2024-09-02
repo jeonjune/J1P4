@@ -75,6 +75,15 @@ public class FacilityDAOImpl implements FacilityDAO {
 		return sqlSession.selectOne(NAMESPACE+"facName", facNo);
 	}
 	
+	//시설 한달 뒤 청소->삭제로 변경
+	@Override
+	public void typeUpdate(FacilityManagementVO vo) throws Exception {
+		sqlSession.update(NAMESPACE+"typeUpdate", vo);
+		
+	}
+	
+	
+	
 	
 	
 	

@@ -12,12 +12,18 @@
    	values(#{name},#{report_date},#{e_repair_type},#{field},#{equipment_name},#{manufacturer},#{count},#{cost},#{total},#{repair_reason},#{manager_no})
    	</insert>
 	
-	<!-- 장비신청내역 -->
+	<!-- 장비신청내역 - 사원일때 -->
 	<select id="equipList" resultType="EquipManageVO">
+	select * from equipmentManagement
+	where status='대기' and manager_no=#{manager_no}
+	order by report_date DESC
+	</select>
+	
+	<!-- 장비신청내역 - 팀장일때 -->
+	<select id="equipLeaderList" resultType="EquipManageVO">
 	select * from equipmentManagement
 	where status='대기'
 	order by report_date DESC
-	
 	</select>
 	
 	<!-- 특정 장비신청 내역 상세페이지 조회 -->
@@ -79,8 +85,16 @@
 	where equipment_no=#{equipment_no}
 	</update>	
 	
-	<!-- 반려내역 리스트 조회 -->
+	<!-- 반려내역 리스트 조회 -사원일때 -->
 	<select id="rejectList" resultType="EquipManageVO">
+	select * from equipmentManagement
+	where status='반려' and manager_no=#{manager_no}
+	order by reject_date desc
+	limit #{pageStart},${pageSize}
+	</select>
+	
+	<!-- 반려내역 리스트 조회 -팀장일때 -->
+	<select id="rejectListLeader" resultType="EquipManageVO">
 	select * from equipmentManagement
 	where status='반려'
 	order by reject_date desc
@@ -106,6 +120,11 @@
 	set status='대기', e_repair_type=#{e_repair_type},count=#{count},addcount=#{addcount},cost=#{cost},total=#{count}*#{cost},repair_reason=#{repair_reason},report_date=#{report_date}
 	where equipment_no=#{equipment_no}
 	</update>
+	
+	<!-- 로그인한 세션과 저장된 세션이 일치할때 추가구매/수리/폐기 수정가능하도록 -->
+	<select id="selectManager_no" resultType="int" >
+	select manager_no from equipmentManagement where equipment_no=#{equipment_no}
+	</select>
 	
 	<!-- 수리중 -> 정상으로 수정 -->
 	<update id="repairOk">

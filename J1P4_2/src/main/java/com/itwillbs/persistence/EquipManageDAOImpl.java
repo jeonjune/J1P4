@@ -29,12 +29,21 @@ public class EquipManageDAOImpl implements EquipManageDAO {
 		
 	}
 	
-	//장비신청내역 리스트
+
+
+	//장비신청내역 리스트 - 사원
 	@Override
-	public List<EquipManageVO> equipList() throws Exception {
-		return sqlSession.selectList(NAMESPACE+"equipList");
+	public List<EquipManageVO> equipList(int manager_no) throws Exception {
+		return sqlSession.selectList(NAMESPACE+"equipList",manager_no);
 		
 	}
+	
+	//장비신청내역 리스트 - 팀장
+	@Override
+	public List<EquipManageVO> equipList() throws Exception {
+		return sqlSession.selectList(NAMESPACE+"equipLeaderList");
+	}
+
 
 	//특정 장비신청 상세페이지 조회
 	@Override
@@ -78,13 +87,22 @@ public class EquipManageDAOImpl implements EquipManageDAO {
 		sqlSession.update(NAMESPACE+"updateReject", vo);
 	}
 	
-	//반려내역리스트
+	//반려내역리스트 - 사원일때
 	@Override
 	public List<EquipManageVO> rejectList(Criteria cri) throws Exception {
 		
 		return sqlSession.selectList(NAMESPACE+"rejectList",cri);
 	}
 	
+	
+	//반려내역리스트 - 팀장일때
+	@Override
+	public List<EquipManageVO> rejectListLeader(Criteria cri) throws Exception {
+		return sqlSession.selectList(NAMESPACE+"rejectListLeader", cri);
+	}
+
+
+
 	//반려내역리스트 페이징
 	@Override
 	public int rejectListCount() throws Exception {
@@ -131,6 +149,13 @@ public class EquipManageDAOImpl implements EquipManageDAO {
 	public void rejectBack(EquipManageVO vo) throws Exception {
 	sqlSession.update(NAMESPACE+"rejectBack", vo);
 		
+	}
+
+
+	//유저번호 가져오기
+	@Override
+	public int selectManager_no(int eno) throws Exception {
+		return sqlSession.selectOne(NAMESPACE+"selectManager_no", eno);
 	}
 	
 	

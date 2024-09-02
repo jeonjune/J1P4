@@ -134,10 +134,14 @@ public class FacilityController {
 		
 		fService.facDeIn(vo);
 		logger.info("#########vo########## :"+vo);
+		fService.typeUpdate(vo); //한달기준으로 시설 유지보수유형을 청소->삭제로 업데이트 해준다.
 		
 		return "maintenance/read";
 		
 	}
+	
+	
+	
 	
 	 //------------------------------------------------------------------------캘린더
 	   

@@ -57,6 +57,12 @@ public class SearchDAOImpl implements SearchDAO {
 	public List<EquipManageVO> searchEquip(Criteria cri) throws Exception {
 		return sqlSession.selectList(NAMESPACE + "searchEquip", cri);
 	}
+	
+
+	@Override
+	public List<EquipManageVO> searchEquipLeader(Criteria cri) throws Exception {
+		return sqlSession.selectList(NAMESPACE+"searchEquipLeader",cri);
+	}
 
 	@Override
 	public int getEquipCount(Criteria cri) throws Exception {

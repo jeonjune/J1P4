@@ -150,8 +150,13 @@ $(document).ready(function() {
                 xhr.setRequestHeader(header, token);
             },
             success: function(response) {
+            	if(response == "success"){
                 alert("장비 유지보수 신청이 완료되었습니다.");
                 window.location.href = '/maintenance/list';
+            		
+            	}else{
+            	alert("등록할 수 없습니다. 권한이 없습니다.");	
+            	}
             },
             error: function(error) {
                 alert('등록실패 ');

@@ -32,4 +32,7 @@ public interface FacilityService {
 	//시설 이름 조회
 	public String facName(int facNo) throws Exception;
 	
+	//시설 한달 뒤 청소->삭제로 변경
+	public void typeUpdate(FacilityManagementVO vo) throws Exception;
+	
 }
