@@ -86,7 +86,7 @@
 	<update id="typeUpdate">
 	<![CDATA[
 	UPDATE facilityManagement
-	SET repair_type = CASE 
+	SET repair_type = CASE
      WHEN repair_type = '청소' 
      AND repair_date <= LAST_DAY(DATE_SUB(CURDATE(), INTERVAL 1 MONTH)) 
      THEN '삭제' 
