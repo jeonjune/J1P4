@@ -90,7 +90,7 @@
      WHEN repair_type = '청소' 
      AND repair_date <= LAST_DAY(DATE_SUB(CURDATE(), INTERVAL 1 MONTH)) 
      THEN '삭제' 
-     ELSE repair_type 
+     ELSE repair_type
    	 END
 	WHERE facility_no = #{facility_no}
 	]]>
