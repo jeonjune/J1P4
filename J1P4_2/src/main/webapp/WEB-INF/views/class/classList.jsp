@@ -394,7 +394,7 @@
                     location.reload();
                 },
                 error: function(error) {
-                    alert('Error occurred while saving the class.');
+                    alert('강의를 저장하는 중 오류가 발생하였습니다.');
                 }
             });
         });
@@ -423,7 +423,7 @@
                         });
                     },
                     error: function(error) {
-                        alert('Error occurred while searching for instructors.');
+                        alert('강사를 검색 중 오류가 발생하였습니다.');
                     }
                 });
             }
@@ -431,18 +431,25 @@
         
         $('#selectInstructorButton').on('click', function(event) {
             event.preventDefault();
-            const selectedInstructor = $('input[name="instructorCheckbox"]:checked').val();
-            const selectedInstructorName = $('input[name="instructorCheckbox"]:checked').closest('tr').find('td:nth-child(3)').text();
-
-            if (!selectedInstructor) {
-                alert('Please select an instructor.');
+            const selectedInstructor = $('input[name="instructorCheckbox"]:checked');
+            
+            // 선택된 강사의 수를 확인.
+            if (selectedInstructor.length === 0) {
+                alert('강사를 선택하세요.');
+                return;
+            } else if (selectedInstructor.length > 1) {
+                alert('강사는 한 명만 선택할 수 있습니다.');
                 return;
             }
 
-            $('#instructorNo').val(selectedInstructor);
+            const selectedInstructorVal = selectedInstructor.val();
+            const selectedInstructorName = selectedInstructor.closest('tr').find('td:nth-child(3)').text();
+
+            $('#instructorNo').val(selectedInstructorVal);
             $('#instructorName').val(selectedInstructorName);
             $('#instructorModal').modal('hide');
         });
+
 
         $('#studentSearch').on('input', function() {
             const query = $(this).val();
@@ -469,7 +476,7 @@
                         });
                     },
                     error: function(error) {
-                        alert('Error occurred while searching for students.');
+                        alert('학생을 검색 중 오류가 발생하였습니다.');
                     }
                 });
             }
@@ -483,7 +490,7 @@
             });
 
             if (selectedSchedules.length === 0) {
-                alert('Please select at least one schedule.');
+                alert('일정을 선택하세요.');
                 return;
             }
 
@@ -493,13 +500,13 @@
             });
 
             if (selectedStudents.length === 0) {
-                alert('Please select at least one student.');
+                alert('학생을 선택하세요.');
                 return;
             }
 
             const registrationData = selectedStudents.map(studentNo => ({
                 mem_no: studentNo,
-                schedule_no: selectedSchedules[0] // Assuming registering one schedule at a time
+                schedule_no: selectedSchedules[0] // 한번에 하나의 일정을 등록
             }));
 
             $.ajax({
@@ -516,7 +523,7 @@
                     location.reload();
                 },
                 error: function(error) {
-                    alert('Error occurred while registering student(s).');
+                    alert('학생 등록 중 오류 발생');
                 }
             });
         });
@@ -547,7 +554,7 @@
         });
 
         if (selected.length === 0) {
-            alert('Please select at least one class to delete.');
+            alert('강의를 선택하세요.');
             return;
         }
 
@@ -564,7 +571,7 @@
                     location.reload();
                 },
                 error: function(error) {
-                    alert('Error occurred while deleting classes.');
+                    alert('강의를 삭제 중 오류 발생');
                 }
             });
         }

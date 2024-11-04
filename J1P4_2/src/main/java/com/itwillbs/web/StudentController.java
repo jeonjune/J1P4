@@ -53,20 +53,20 @@ public class StudentController {
 
         RegistrationVO registration = request.getRegistration();
         if (registration == null) {
-            throw new NullPointerException("Registration data is null");
+            throw new NullPointerException("등록 정보가 올바르지 않습니다.");
         }
 
         registration.setRegistration_date(new java.sql.Date(System.currentTimeMillis()));
         registrationService.registerStudent(registration);
         
-        System.out.println("Registration No: " + registration.getRegistration_no());
+        System.out.println("등록번호: " + registration.getRegistration_no());
         if (registration.getRegistration_no() == null) {
-            throw new NullPointerException("Registration number is null after registration");
+            throw new NullPointerException("등록 후 등록번호가 비어있습니다.");
         }
 
         PaymentVO payment = request.getPaymentInfo();
         if (payment == null) {
-            throw new NullPointerException("Payment data is null");
+            throw new NullPointerException("결제 정보가 올바르지 않습니다.");
         }
 
         payment.setRegistrationNo(registration.getRegistration_no()); // 적절한 값 설정

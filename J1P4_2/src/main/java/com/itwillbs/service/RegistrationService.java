@@ -31,7 +31,7 @@ public class RegistrationService {
 
         // 현재 수강 인원이 최대 수강 인원 이상인지 확인
         if (scheduleVO.getCurrentEnrollment() >= classVO.getMaxCapacity()) {
-            throw new RuntimeException("Maximum capacity reached for this class.");
+            throw new RuntimeException("수강인원 초과하였습니다.");
         }
 
         // 수강 신청 등록

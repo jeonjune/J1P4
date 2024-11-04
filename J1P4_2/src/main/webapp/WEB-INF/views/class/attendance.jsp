@@ -105,8 +105,8 @@
                                 '<td>' + student.mem_no + '</td>' +
                                 '<td><a href="javascript:void(0);" onclick="showDailyAttendance(' + student.mem_no + ',' + scheduleId + ');">' + student.mem_name + '</a></td>' +
                                 '<td>' + student.mem_phone + '</td>' +
-                                '<td><input type="number" id="attended_classes_' + student.mem_no + '" value="' + student.attendedClasses + '" readonly/></td>' +
-                                '<td><input type="number" id="total_classes_' + student.mem_no + '" value="' + student.totalClasses + '" readonly/></td>' +
+                                '<td>' + student.attendedClasses + '</td>' +
+                                '<td>' + student.totalClasses + '</td>' +
                                 '<td>' + student.attendanceRate + '%</td>' +
                                 '</tr>';
             });

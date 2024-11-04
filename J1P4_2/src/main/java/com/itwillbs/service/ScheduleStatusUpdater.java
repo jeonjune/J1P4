@@ -48,8 +48,10 @@ public class ScheduleStatusUpdater {
             LocalDate startDate = schedule.getStartDate().toLocalDate();
             LocalDate endDate = schedule.getEndDate().toLocalDate();
             long totalClasses = ChronoUnit.DAYS.between(startDate, endDate) + 1;
-
-            if (today.isEqual(startDate.minusDays(1))) {
+            logger.info(startDate.toString());
+            logger.info(today.toString());
+            logger.info(startDate.minusDays(1).toString());
+            if (startDate.isEqual(today.minusDays(1))) {
                 ClassVO classVO = classDAO.getClassById(schedule.getClassNo());
                 if (schedule.getCurrentEnrollment() >= classVO.getMinCapacity() && schedule.getCurrentEnrollment() <= classVO.getMaxCapacity()) {
                     schedule.setStatus("정상");

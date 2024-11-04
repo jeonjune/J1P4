@@ -86,8 +86,6 @@ public class ClassController {
         if (classVO.getClassNo() == 0) {
             classService.addClass(classVO);
         } else {
-        	logger.info("edit 값 존재@@@");
-        	logger.info(classVO.toString());
             classService.editClass(classVO);
         }
         return "redirect:/classes/list";

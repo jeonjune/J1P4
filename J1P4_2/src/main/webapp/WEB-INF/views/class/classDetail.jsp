@@ -307,30 +307,69 @@
                     location.reload();
                 },
                 error: function(error) {
-                    alert('Error occurred while saving the class.');
+                    alert('강의 등록 중 오류 발생');
                 }
             });
         });
 
-        $('#scheduleForm').on('submit', function(event) {
-            event.preventDefault();
-            const form = $(this);
-            $.ajax({
-                url: form.attr('action'),
-                method: 'POST',
-                data: form.serialize(),
-                beforeSend: function(xhr) {
-                    xhr.setRequestHeader(csrfHeader, csrfToken);
-                },
-                success: function(response) {
-                    $('#scheduleModal').modal('hide');
-                    location.reload();
-                },
-                error: function(error) {
-                    alert('Error occurred while saving the schedule.');
-                }
-            });
+        $(document).ready(function() {
+        	$(document).ready(function() {
+        		$(document).ready(function() {
+        		    $('#scheduleForm').on('submit', function(event) {
+        		        event.preventDefault();
+
+        		        const startDate = new Date($('#startDate').val());
+        		        const endDate = new Date($('#endDate').val());
+        		        const startTimeCode = $('#startTime').val(); // e.g., "T9"
+        		        const endTimeCode = $('#endTime').val(); // e.g., "T10"
+
+        		        // 시간값 비었는지 체크
+        		        if (!startTimeCode || !endTimeCode) {
+        		            alert('Start time and end time must be provided.');
+        		            return;
+        		        }
+
+        		        // time code값 파싱 (EX. T09에서 T를 제거 후 int로 변환)
+        		        const startHour = parseInt(startTimeCode.substring(1)); 
+        		        const endHour = parseInt(endTimeCode.substring(1)); 
+
+        		        
+
+        		        
+        		        if (endDate < startDate) {
+        		            alert('종료 날짜가 시작 날짜보다 이릅니다.');
+        		            return;
+        		        }
+
+        		        if (startDate.getTime() === endDate.getTime() || startHour >= endHour) {
+        		            alert('종료 시간이 시작 시간보다 이릅니다.');
+        		            return;
+        		        }
+
+        		        
+        		        const form = $(this);
+        		        $.ajax({
+        		            url: form.attr('action'),
+        		            method: 'POST',
+        		            data: form.serialize(),
+        		            beforeSend: function(xhr) {
+        		                xhr.setRequestHeader(csrfHeader, csrfToken);
+        		            },
+        		            success: function(response) {
+        		                $('#scheduleModal').modal('hide');
+        		                location.reload();
+        		            },
+        		            error: function(error) {
+        		                alert('일정 등록 중 문제가 발생하였습니다.');
+        		            }
+        		        });
+        		    });
+        		});
+
+        	});
+
         });
+
 
         $('#instructorSearch').on('input', function() {
             const query = $(this).val();
@@ -356,7 +395,7 @@
                         });
                     },
                     error: function(error) {
-                        alert('Error occurred while searching for instructors.');
+                        alert('강사 검색 중 오류 발생');
                     }
                 });
             }
@@ -364,15 +403,21 @@
         
         $('#selectInstructorButton').on('click', function(event) {
             event.preventDefault();
-            const selectedInstructor = $('input[name="instructorCheckbox"]:checked').val();
-            const selectedInstructorName = $('input[name="instructorCheckbox"]:checked').closest('tr').find('td:nth-child(3)').text();
-
-            if (!selectedInstructor) {
-                alert('Please select an instructor.');
+            const selectedInstructor = $('input[name="instructorCheckbox"]:checked');
+            
+            // 선택된 강사의 수를 확인.
+            if (selectedInstructor.length === 0) {
+                alert('강사를 선택하세요.');
+                return;
+            } else if (selectedInstructor.length > 1) {
+                alert('강사는 한 명만 선택할 수 있습니다.');
                 return;
             }
 
-            $('#instructorNo').val(selectedInstructor);
+            const selectedInstructorVal = selectedInstructor.val();
+            const selectedInstructorName = selectedInstructor.closest('tr').find('td:nth-child(3)').text();
+
+            $('#instructorNo').val(selectedInstructorVal);
             $('#instructorName').val(selectedInstructorName);
             $('#instructorModal').modal('hide');
         });
@@ -402,7 +447,7 @@
                         });
                     },
                     error: function(error) {
-                        alert('Error occurred while searching for students.');
+                        alert('학생 검색 중 오류 발생');
                     }
                 });
             }
@@ -415,7 +460,7 @@
             }).get();
 
             if (selectedStudents.length !== 1) {
-                alert('회원 등록을 위해 하나의 일정만 선택해야 합니다.');
+                alert('회원 등록을 위해 한명만 선택해야 합니다.');
                 return;
             }
 
@@ -524,7 +569,7 @@
 
 
     function deleteSchedule(scheduleId) {
-        if (confirm('Are you sure you want to delete this schedule?')) {
+        if (confirm('일정을 삭제하시겠습니까?')) {
             $.ajax({
                 url: '${pageContext.request.contextPath}/schedules/delete/' + scheduleId,
                 method: 'POST',
@@ -538,7 +583,7 @@
                     location.reload();
                 },
                 error: function(error) {
-                    alert('Error occurred while deleting schedule.');
+                    alert('삭제 중 오류 발생');
                 }
             });
         }
@@ -551,12 +596,12 @@
         });
 
         if (selectedSchedules.length === 0) {
-            alert('Please select at least one schedule to edit.');
+            alert('일정을 선택하세요.');
             return;
         }
 
         if (selectedSchedules.length > 1) {
-            alert('Please select only one schedule to edit.');
+            alert('하나의 일정만 선택하세요.');
             return;
         }
 
@@ -570,11 +615,11 @@
         });
 
         if (selectedSchedules.length === 0) {
-            alert('Please select at least one schedule to delete.');
+            alert('일정을 선택하세요.');
             return;
         }
 
-        if (confirm('Are you sure you want to delete the selected schedules?')) {
+        if (confirm('선택한 일정을 삭제하시겠습니까?')) {
             $.ajax({
                 url: '${pageContext.request.contextPath}/schedules/delete',
                 method: 'POST',
@@ -587,7 +632,7 @@
                     location.reload();
                 },
                 error: function(error) {
-                    alert('Error occurred while deleting schedules.');
+                    alert('삭제 중 오류 발생');
                 }
             });
         }

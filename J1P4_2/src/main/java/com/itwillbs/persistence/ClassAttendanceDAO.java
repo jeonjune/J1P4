@@ -41,7 +41,7 @@ public class ClassAttendanceDAO {
         ClassAttendanceVO attendance = sqlSession.selectOne(NAMESPACE + ".getAttendanceByScheduleAndMember", params);
         logger.info(attendance.toString());
         if (attendance == null) {
-            throw new RuntimeException("Attendance record not found for scheduleId: " + classSchedule_no + ", memNo: " + mem_no);
+            throw new RuntimeException("해당 출석정보를 찾을 수 없습니다." + classSchedule_no + ", 회원번호: " + mem_no);
         }
         return attendance;
     }
