@@ -200,8 +200,19 @@
 						${eList.e_repair_type}
 						</c:if>
 						</td>
-						<td><a
-							href="/maintenance/equipdetail?equipment_no=${eList.equipment_no}">${eList.equipment_name }</a></td>
+						<!-- 수정부분11/05 폐기일때 장비이름 클릭못하도록 비활성화 -->
+						<td>
+                <c:choose>
+                    <c:when test="${eList.e_repair_type eq '폐기'}">
+                        <span style="color: grey; cursor: not-allowed;">${eList.equipment_name}</span>
+                    </c:when>
+                    
+                    <c:otherwise>
+                        <a href="/maintenance/equipdetail?equipment_no=${eList.equipment_no}">${eList.equipment_name}</a>
+                    </c:otherwise>
+                </c:choose>
+            </td>
+						<!-- 수정부분 끝-->
 						<td>${eList.manufacturer }</td>
 						<td>${eList.cost }</td>
 						<td>${eList.count }</td>

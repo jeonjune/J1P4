@@ -5,7 +5,26 @@
 
 <mapper namespace="com.itwillbs.mapper.PaymentMapper">
     <insert id="insertPayment" parameterType="com.itwillbs.domain.PaymentVO">
-        INSERT INTO payment (registration_no, payment_date, amount, payment_status, payment_method, transaction_id, merchant_id)
-        VALUES (#{registrationNo}, #{paymentDate}, #{amount}, #{paymentStatus}, #{paymentMethod}, #{transactionId}, #{merchantId})
+        INSERT INTO payment (registration_no, payment_date, amount, payment_status, payment_method, transaction_id, merchant_id, faReservation_no, status)
+        VALUES (#{registrationNo}, #{paymentDate}, #{amount}, #{paymentStatus}, #{paymentMethod}, #{transactionId}, #{merchantId}, #{faReservation_no}, '결제완료')
     </insert>
+    
+    
+    <!-- 11/23 환불기능구현 -->
+  	<!-- merchant_id 조회 -->
+  	<select id="getMerchantId" resultType="String" parameterType="int">
+  	select merchant_id
+ 	from payment
+ 	where faReservation_no = #{faReservation_no}
+  	</select>
+  	
+  	<!-- 결제상태 업데이트 -->
+  	<update id="payStatus" parameterType="map">
+  	update payment
+ 	set status = #{status}
+ 	where faReservation_no = #{faReservation_no}
+  	</update>
+  	<!-- 11/23끝 -->
+    
+    
 </mapper>

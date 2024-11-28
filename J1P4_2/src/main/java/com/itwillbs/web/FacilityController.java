@@ -9,10 +9,14 @@ import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -28,7 +32,12 @@ import com.itwillbs.service.CommonCodeService;
 import com.itwillbs.service.FacReservationService;
 import com.itwillbs.domain.MemberVO;
 import com.itwillbs.domain.PageVO;
+import com.itwillbs.domain.PaymentVO;
+import com.itwillbs.domain.RegistrationPaymentRequest;
+import com.itwillbs.domain.RegistrationVO;
+import com.itwillbs.domain.TimeTableVO;
 import com.itwillbs.service.FacilityService;
+import com.itwillbs.service.PaymentService;
 import com.itwillbs.service.SearchService;
 
 @Controller
@@ -47,6 +56,10 @@ public class FacilityController {
    
    @Autowired
    private CommonCodeService commonCodeService;
+   
+   @Autowired
+   private PaymentService paymentService;
+   
 	
 	
 	//시설리스트
@@ -168,15 +181,57 @@ public class FacilityController {
 	      return mv;
 	   }
 	   
+	   
 	   //시설예약 등록
+	   @PostMapping("/reservation")
+	    @ResponseBody
+	    public String rsvPOST(@RequestBody RegistrationPaymentRequest request) throws Exception {
+	        System.out.println("Received request: " + request);
+
+	        FacilityReservationVO registration = request.getReservation();
+	        if (registration == null) {
+	            throw new NullPointerException("Registration data is null");
+	        }
+	        
+	        //시설번호 가져오기
+	       int facNo = registration.getFacility_no();
+	       System.out.println("시설번호!!!!"+facNo);
+	       System.out.println("시설 이름!!!!"+ frService.facName(facNo));
+	       registration.setFacility_name(frService.facName(facNo));
+	       //String facName = frService.facName(facNo);
+	       
+	       
+	        // 예약 정보 등록 후 생성된 예약번호 반환
+	        int generatedReservationNo = frService.reservation(registration); // 예약정보를 insert
+	        System.out.println("생성된 예약번호: " + generatedReservationNo);
+	        System.out.println("test : " + registration.toString());
+	        
+	        System.out.println("예약번호!!! " +registration.getFaReservation_no()); 
+	        System.out.println("이름 " +registration.getRsv_name()); 
+	        
+	        PaymentVO payment = request.getPaymentInfo();
+	        if (payment == null) {
+	            throw new NullPointerException("Payment data is null");
+	        }
+
+	        payment.setFaReservation_no(generatedReservationNo); // 예약번호 설정
+	        payment.setPaymentDate(new java.sql.Date(System.currentTimeMillis()));
+	        paymentService.savePayment(payment);
+
+	        return "Success";
+	    }
+	   
+	   //시설별 시간대 조회 11/20일 수정중
+	   @GetMapping("/timeSelect")
 	   @ResponseBody
-	   @PostMapping(value = "/reservation")
-	   public String rsvPOST(FacilityReservationVO vo) throws Exception {
-	      logger.info("모달창으로 휴가신청(컨트롤러)");
-	      vo.setManager_no(12);
-	      frService.reservation(vo);
-	      return "maintenance/reservation";
+	   public List<TimeTableVO> timeSelect(@RequestParam("facility_no") int facNo, @RequestParam("rsv_date") String rsvDate) throws Exception{
+		   System.out.println("timeSelect실행");
+		   System.out.println("Facility No: " + facNo + ", 예약 날짜: " + rsvDate);
+		   
+		   return frService.timeSelect(facNo, rsvDate);
+		   
 	   }
+	   
 	   
 	   //시설예약 수정
 	   @ResponseBody
@@ -185,16 +240,27 @@ public class FacilityController {
 	      logger.info("모달창수정완료)");
 	      logger.info("#### vo ##### :"+vo);
 	      frService.rsvUpdate(vo);
-	      //return"maintenance/reservation";
+	      
 	   }
 	   
-	   //시설예약 삭제
+	   
+	   //11/23 환불기능 - 결제취소, 시설예약 삭제
 	   @ResponseBody
-	   @PostMapping(value = "/rsvDelete")
-	   public void rsvDeletePOST(FacilityReservationVO vo) throws Exception {
-	      logger.info("삭제완료");
-	      frService.rsvDelete(vo);
-	   }
+	   @PostMapping("/rsvDelete")
+	    public ResponseEntity<String> cancelReservation(@ModelAttribute FacilityReservationVO vo) {
+	        try {
+	            String result = paymentService.cancelPayment(vo.getFaReservation_no());
+	            System.out.println("으아아아아악"+result);
+	            frService.rsvDelete(vo); //삭제쿼리
+	            return ResponseEntity.ok(result);
+	        } catch (Exception e) {
+	            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("에러 발생: " + e.getMessage());
+	        }
+	        
+	    }
+	   
+	   //11/23 환불기능 - 시설예약 삭제시 환불 api 끝
+	   
 	   
 	   //시설예약 회원검색
 	   @ResponseBody

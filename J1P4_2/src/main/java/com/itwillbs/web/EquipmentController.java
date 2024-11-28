@@ -133,7 +133,7 @@ public class EquipmentController {
 	 public String registPOST(MultipartHttpServletRequest multiRequest, EquipManageVO vo, fileVO fvo, Model model, HttpServletRequest request) throws Exception {
         logger.info("22222222 vo 2222222222222 : " + vo);
         HttpSession session = request.getSession();
-        vo.setManager_no((Integer)(session.getAttribute("sess_user_no"))); // 로그인 기능 들고올때까지 임시로 설정(user_no) 나중에 세션에 담아서 사용
+        vo.setManager_no((Integer)(session.getAttribute("sess_user_no")));
 
         // 폼 데이터 처리
         multiRequest.setCharacterEncoding("UTF-8");

@@ -14,4 +14,6 @@ public class PaymentVO {
     private String paymentMethod;
     private String transactionId;
     private String merchantId;
+    private int faReservation_no;
+    private String status;
 }
