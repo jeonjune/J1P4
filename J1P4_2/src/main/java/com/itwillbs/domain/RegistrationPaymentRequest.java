@@ -9,5 +9,6 @@ import lombok.Data;
 public class RegistrationPaymentRequest {
     private RegistrationVO registration;
     private PaymentVO paymentInfo;
+    private FacilityReservationVO reservation;
     
 }

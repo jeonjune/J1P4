@@ -6,16 +6,54 @@
   <mapper namespace="com.itwillbs.mapper.facReservationMapper">
 
 	<!-- 시설예약 등록 -->
-	<insert id="reservation">
-	insert into facilityReservation (faReservation_no,manager_no,facility_no,mem_no,rsv_name,rsv_date,start_time,end_time,rsv_day,facility_name,field,count_people,rsv_phone,rsv_status)
-	values(#{faReservation_no},#{manager_no},#{facility_no},#{mem_no},#{rsv_name},#{rsv_date},#{start_time},#{end_time},#{rsv_day},#{facility_name},#{field},#{count_people},#{rsv_phone},'예약완료')
-	</insert>
-  	
+	<insert id="reservation" parameterType="FacilityReservationVO" useGeneratedKeys="true" keyProperty="faReservation_no">
+    INSERT INTO facilityReservation (
+        manager_no, facility_no, mem_no, rsv_name, rsv_date, total_time, rsv_day, facility_name, field, count_people, rsv_phone, rsv_status, price, total_price, round, status_no, time1
+        <if test="time2 != null">, time2</if>
+        <if test="time3 != null">, time3</if>
+    )
+    VALUES (
+        #{manager_no}, #{facility_no}, #{mem_no}, #{rsv_name}, #{rsv_date}, #{total_time}, #{rsv_day}, #{facility_name}, #{field}, #{count_people}, #{rsv_phone}, '예약완료', 5000, #{total_price}, #{round}, 1, #{time1}
+        <if test="time2 != null">, #{time2}</if>
+        <if test="time3 != null">, #{time3}</if>
+    )
+</insert>
+
+	  	
   	<!-- 시설예약 캘린더에서 조회 -->
   	<select id="rsvSelect" resultType="FacilityReservationVO">
   	select * from facilityReservation
   	where rsv_status is not null
   	</select>
+  	
+  
+
+	<!-- 예약가능 시간대 조회(중복된 시간대도 포함) -->
+	<select id="timeSelect" resultType="TimeTableVO">
+    SELECT t.round, t.time, 
+           CASE 
+               WHEN fr.time1 = t.time OR fr.time2 = t.time OR fr.time3 = t.time THEN 1
+               ELSE 0
+           END AS status_no, 
+           t.facility_no
+    FROM timeTable t
+    LEFT JOIN (
+        SELECT facility_no, rsv_date, time1, time2, time3
+        FROM facilityReservation
+        WHERE rsv_date = #{rsv_date} AND facility_no = #{facility_no}
+    ) fr 
+    ON t.facility_no = fr.facility_no 
+       AND (fr.time1 = t.time OR fr.time2 = t.time OR fr.time3 = t.time)
+    WHERE t.facility_no = #{facility_no};
+	</select>
+
+
+  	
+  	<!-- 시설번호 가져오기 11/04 -->
+  	<select id="facName" resultType="String">
+  		select facility_name from facility where facility_no=#{facility_no}
+  	</select>
+
   	
   	<!-- 시설예약 수정 -->
   	<update id="rsvUpdate">
